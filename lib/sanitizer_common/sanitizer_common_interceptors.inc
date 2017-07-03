@@ -3799,6 +3799,7 @@ INTERCEPTOR(int, pthread_mutex_lock, void *m) {
   COMMON_INTERCEPTOR_ENTER(ctx, pthread_mutex_lock, m);
   COMMON_INTERCEPTOR_MUTEX_PRE_LOCK(ctx, m);
   int res = REAL(pthread_mutex_lock)(m);
+
   if (res == errno_EOWNERDEAD)
     COMMON_INTERCEPTOR_MUTEX_REPAIR(ctx, m);
   if (res == 0 || res == errno_EOWNERDEAD)
