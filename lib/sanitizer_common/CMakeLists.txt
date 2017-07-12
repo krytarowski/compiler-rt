@@ -23,6 +23,7 @@ set(SANITIZER_SOURCES_NOTERMINATION
   sanitizer_procmaps_freebsd.cc
   sanitizer_procmaps_linux.cc
   sanitizer_procmaps_mac.cc
+  sanitizer_procmaps_netbsd.cc
   sanitizer_stackdepot.cc
   sanitizer_stacktrace.cc
   sanitizer_stacktrace_printer.cc
