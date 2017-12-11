@@ -34,6 +34,7 @@ fi
 
 # NetBSD awk(1) or compatible (like gawk(1)).
 nbawk=${AWK:-awk}
+clangformat=${CLANGFORMAT:-clang-format}
 
 topdir=${TOPDIR:-..}
 nbsdsyscallhooksh=$topdir/include/sanitizer/netbsd_syscall_hooks.h
@@ -41,7 +42,77 @@ sanitizernbsyscallsinc=$topdir/lib/sanitizer_common/sanitizer_common_syscalls.in
 
 # Generate include/sanitizer/netbsd_syscall_hooks.h
 
-echo -n "Generating include/sanitizer/netbsd_syscall_hooks.h..."
+echo -n "Generating include/sanitizer/netbsd_syscall_hooks.h ..."
+
+cat $1 | $nbawk '
+BEGIN {
+  parsingheader=0
+
+  printf "//===-- netbsd_syscall_hooks.h --------------------------------------------===//\n"
+  printf "//\n"
+  printf "//                     The LLVM Compiler Infrastructure\n"
+  printf "//\n"
+  printf "// This file is distributed under the University of Illinois Open Source\n"
+  printf "// License. See LICENSE.TXT for details.\n"
+  printf "//\n"
+  printf "//===----------------------------------------------------------------------===//\n"
+  printf "//\n"
+  printf "// This file is a part of public sanitizer interface.\n"
+  printf "//\n"
+  printf "// System call handlers.\n"
+  printf "//\n"
+  printf "// Interface methods declared in this header implement pre- and post- syscall\n"
+  printf "// actions for the active sanitizer.\n"
+  printf "// Usage:\n"
+  printf "//   __sanitizer_syscall_pre_getfoo(...args...);\n"
+  printf "//   long res = syscall(SYS_getfoo, ...args...);\n"
+  printf "//   __sanitizer_syscall_post_getfoo(res, ...args...);\n"
+  printf "//\n"
+  printf "// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED\n"
+  printf "//\n"
+  printf "//===----------------------------------------------------------------------===//\n"
+  printf "#ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H\n"
+  printf "#define SANITIZER_NETBSD_SYSCALL_HOOKS_H\n"
+  printf "\n"
+}
+
+# skip the following lines
+#  - empty
+NF == 0 {
+  next
+}
+#  - comment
+$1 == ";" {
+  next
+}
+
+# separator between the header and table with syscalls
+$0 == "%%" {
+  parsingheader = 0
+  next
+}
+
+parsingheader == 0 && $0 ~ /^#/ {
+  print
+  next
+}
+
+parsingheader == 0 && $1 ~ /^[0-9]+$/ {
+  printf "a kuku\n"
+  next
+}
+
+END {
+  printf "\n"
+  printf "#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H\n"
+}
+' | $clangformat - > $nbsdsyscallhooksh
+
+echo "OK"
+
+# Generate lib/sanitizer_common/sanitizer_common_syscalls.inc
+
+echo -n "Generating lib/sanitizer_common/sanitizer_common_syscalls.inc ..."
 
 cat $1 | $nbawk '
 BEGIN {
@@ -63,16 +134,6 @@ NR == 1 {
   printf "//\n"
   printf "//===----------------------------------------------------------------------===//\n"
 }
-' > $nbsdsyscallhooksh
-
-echo "OK"
-
-# Generate lib/sanitizer_common/sanitizer_common_syscalls.inc
-
-echo -n "Generating lib/sanitizer_common/sanitizer_common_syscalls.inc..."
-
-cat $1 | $nbawk "
- 
-" > $nbsdsyscallhooksh
+' | $clangformat - > $sanitizernbsyscallsinc
 
 echo "OK"
