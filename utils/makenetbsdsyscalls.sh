@@ -46,7 +46,7 @@ echo -n "Generating include/sanitizer/netbsd_syscall_hooks.h ..."
 
 cat $1 | $nbawk '
 BEGIN {
-  parsingheader=0
+  parsingheader=1
 
   printf "//===-- netbsd_syscall_hooks.h --------------------------------------------===//\n"
   printf "//\n"
@@ -98,7 +98,8 @@ parsingheader == 0 && $0 ~ /^#/ {
 }
 
 parsingheader == 0 && $1 ~ /^[0-9]+$/ {
-  printf "a kuku\n"
+  print "a kuku\n"
+  print
   next
 }
 
