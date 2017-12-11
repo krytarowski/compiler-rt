@@ -1917,7 +1917,7 @@ INTERCEPTOR(__sanitizer_group *, fgetgrent, void *fp) {
 #define INIT_FGETPWENT
 #endif
 
-#if SANITIZER_INTERCEPT_GETPWENT_R
+#if SANITIZER_INTERCEPT_GETPWENT_R && 0
 INTERCEPTOR(int, getpwent_r, __sanitizer_passwd *pwbuf, char *buf,
             SIZE_T buflen, __sanitizer_passwd **pwbufp) {
   void *ctx;
@@ -4518,7 +4518,7 @@ INTERCEPTOR(void, sincosl, long double x, long double *sin, long double *cos) {
 #define INIT_SINCOS
 #endif
 
-#if SANITIZER_INTERCEPT_REMQUO
+#if SANITIZER_INTERCEPT_REMQUO && 0
 INTERCEPTOR(double, remquo, double x, double y, int *quo) {
   void *ctx;
   COMMON_INTERCEPTOR_ENTER(ctx, remquo, x, y, quo);
@@ -4557,7 +4557,7 @@ INTERCEPTOR(long double, remquol, long double x, long double y, int *quo) {
 #define INIT_REMQUO
 #endif
 
-#if SANITIZER_INTERCEPT_LGAMMA
+#if SANITIZER_INTERCEPT_LGAMMA && 0
 extern int signgam;
 INTERCEPTOR(double, lgamma, double x) {
   void *ctx;
@@ -6169,7 +6169,7 @@ INTERCEPTOR(int, __lxstat64, int version, const char *path, void *buf) {
 
 // FIXME: add other *stat interceptor
 
-#if SANITIZER_INTERCEPT_UTMP
+#if SANITIZER_INTERCEPT_UTMP && !SANITIZER_NETBSD
 INTERCEPTOR(void *, getutent, int dummy) {
   void *ctx;
   COMMON_INTERCEPTOR_ENTER(ctx, getutent, dummy);
