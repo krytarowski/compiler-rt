@@ -24,2022 +24,2728 @@
 #ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H
 #define SANITIZER_NETBSD_SYSCALL_HOOKS_H
 
-a kuku
-
-    0 INDIR { int|sys||syscall(int code, \
-a kuku
-
-1	STD 		{
-    void | sys || exit(int rval); }
-a kuku
-
-2	STD 		{
-    int | sys || fork(void); }
-a kuku
-
-3	STD 	 RUMP	{
-    ssize_t | sys || read(int fd, void *buf, size_t nbyte); }
-a kuku
-
-4	STD 	 RUMP	{ ssize_t|sys||write(int fd, const void *buf, \
-a kuku
-
-5	STD 	 RUMP	{ int|sys||open(const char *path, \
-a kuku
-
-6	STD	 RUMP	{
-        int | sys || close(int fd); }
-a kuku
-
-7	COMPAT_50 MODULAR compat { int|sys||wait4(pid_t pid, int *status, \
-a kuku
-
-8	COMPAT_43 MODULAR compat	\
-a kuku
-
-9	STD 	 RUMP	{
-          int | sys || link(const char *path, const char *link); }
-a kuku
-
-10	STD 	 RUMP	{
-          int | sys || unlink(const char *path); }
-a kuku
-
-11	OBSOL		execv
-a kuku
-
-12	STD 	 RUMP	{
-          int | sys || chdir(const char *path); }
-a kuku
-
-13	STD 	 RUMP	{
-          int | sys || fchdir(int fd); }
-a kuku
-
-14	COMPAT_50 MODULAR compat RUMP	\
-a kuku
-
-15	STD 	 RUMP	{
-          int | sys || chmod(const char *path, mode_t mode); }
-a kuku
-
-16	STD 	 RUMP	{ int|sys||chown(const char *path, uid_t uid, \
-a kuku
-
-17	STD 		{
-            int | sys || obreak(char *nsize); } break
-a kuku
-
-18	COMPAT_20 MODULAR compat { int|sys||getfsstat(struct statfs12 *buf, \
-a kuku
-
-19	COMPAT_43 MODULAR compat	\
-a kuku
-
-20	NOERR 	RUMP	{
-              pid_t | sys || getpid_with_ppid(void); } getpid
-a kuku
-
-21	COMPAT_40 MODULAR compat	\
-a kuku
-
-22	STD 	RUMP	{
-              int | sys || unmount(const char *path, int flags); }
-a kuku
-
-23	STD 	RUMP	{
-              int | sys || setuid(uid_t uid); }
-a kuku
-
-24	NOERR 	RUMP	{
-              uid_t | sys || getuid_with_euid(void); } getuid
-a kuku
-
-25	NOERR 	RUMP	{
-              uid_t | sys || geteuid(void); }
-a kuku
-
-26	STD 	MODULAR ptrace	\
-a kuku
-
-27	STD 	RUMP	{ ssize_t|sys||recvmsg(int s, struct msghdr *msg, \
-a kuku
-
-28	STD 	RUMP	{ ssize_t|sys||sendmsg(int s, \
-a kuku
-
-29	STD 	RUMP	{ ssize_t|sys||recvfrom(int s, void *buf, size_t len, \
-a kuku
-
-30	STD	RUMP	{ int|sys||accept(int s, struct sockaddr *name, \
-a kuku
-
-31	STD	RUMP	{ int|sys||getpeername(int fdes, struct sockaddr *asa, \
-a kuku
-
-32	STD	RUMP	{ int|sys||getsockname(int fdes, struct sockaddr *asa, \
-a kuku
-
-33	STD 	RUMP	{
-                          int | sys || access(const char *path, int flags); }
-a kuku
-
-34	STD 	 RUMP	{
-                          int | sys || chflags(const char *path, u_long flags); }
-a kuku
-
-35	STD 	RUMP	{
-                          int | sys || fchflags(int fd, u_long flags); }
-a kuku
-
-36	NOERR 	 RUMP	{
-                          void | sys || sync(void); }
-a kuku
-
-37	STD 		{
-                          int | sys || kill(pid_t pid, int signum); }
-a kuku
-
-38	COMPAT_43 MODULAR compat	\
-a kuku
-
-39	NOERR 	RUMP	{
-                          pid_t | sys || getppid(void); }
-a kuku
-
-40	COMPAT_43 MODULAR compat	\
-a kuku
-
-41	STD 	RUMP	{
-                          int | sys || dup(int fd); }
-a kuku
-
-42	STD 	RUMP	{
-                          int | sys || pipe(void); }
-a kuku
-
-43	NOERR 	RUMP	{
-                          gid_t | sys || getegid(void); }
-a kuku
-
-44	STD 		{ int|sys||profil(char *samples, size_t size, \
-a kuku
-
-45	STD 	RUMP	{ int|sys||ktrace(const char *fname, int ops, \
-a kuku
-
-46	COMPAT_13 MODULAR compat { int|sys||sigaction(int signum, \
-a kuku
-
-47	NOERR 	RUMP	{
-                                gid_t | sys || getgid_with_egid(void); } getgid
-a kuku
-
-48	COMPAT_13 MODULAR compat { int|sys||sigprocmask(int how, \
-a kuku
-
-49	STD 	RUMP	{
-                                  int | sys ||
-                                      __getlogin(char *namebuf, size_t namelen); }
-a kuku
-
-50	STD 	RUMP 	{
-                                  int | sys || __setlogin(const char *namebuf); }
-a kuku
-
-51	STD 		{
-                                  int | sys || acct(const char *path); }
-a kuku
-
-52	COMPAT_13 MODULAR compat {
-                                  int | sys || sigpending(void); } sigpending13
-a kuku
-
-53	COMPAT_13 MODULAR compat { int|sys||sigaltstack( \
-a kuku
-
-54	STD	RUMP	{ int|sys||ioctl(int fd, \
-a kuku
-
-55	COMPAT_12 MODULAR compat {
-                                      int | sys || reboot(int opt); } oreboot
-a kuku
-
-56	STD 	 RUMP	{
-                                      int | sys || revoke(const char *path); }
-a kuku
-
-57	STD 	 RUMP	{ int|sys||symlink(const char *path, \
-a kuku
-
-58	STD 	 RUMP	{ ssize_t|sys||readlink(const char *path, char *buf, \
-a kuku
-
-59	STD 		{ int|sys||execve(const char *path, \
-a kuku
-
-60	STD 	 RUMP	{
-                                            mode_t | sys ||
-                                                umask(mode_t newmask); }
-a kuku
-
-61	STD 	 RUMP	{
-                                            int | sys ||
-                                                chroot(const char *path); }
-a kuku
-
-62	COMPAT_43 MODULAR compat	\
-a kuku
-
-63	COMPAT_43 MODULAR compat	\
-a kuku
-
-64	COMPAT_43 MODULAR compat	\
-a kuku
-
-65	COMPAT_12 MODULAR compat {
-                                            int | sys ||
-                                                msync(void *addr, size_t len); }
-a kuku
-
-66	STD 		{
-                                            int | sys || vfork(void); }
-a kuku
-
-67	OBSOL		vread
-a kuku
-
-68	OBSOL		vwrite
-a kuku
-
-69	STD 		{
-                                            int | sys || sbrk(intptr_t incr); }
-a kuku
-
-70	STD 		{
-                                            int | sys || sstk(int incr); }
-a kuku
-
-71	COMPAT_43 MODULAR compat	\
-a kuku
-
-72	STD 		{
-                                            int | sys || ovadvise(int anom); } vadvise
-a kuku
-
-73	STD 		{
-                                            int | sys ||
-                                                munmap(void *addr, size_t len); }
-a kuku
-
-74	STD 		{ int|sys||mprotect(void *addr, size_t len, \
-a kuku
-
-75	STD 		{ int|sys||madvise(void *addr, size_t len, \
-a kuku
-
-76	OBSOL		vhangup
-a kuku
-
-77	OBSOL		vlimit
-a kuku
-
-78	STD 		{ int|sys||mincore(void *addr, size_t len, \
-a kuku
-
-79	STD 	RUMP	{ int|sys||getgroups(int gidsetsize, \
-a kuku
-
-80	STD 	RUMP	{ int|sys||setgroups(int gidsetsize, \
-a kuku
-
-81	STD 	RUMP	{
-                                                      int | sys ||
-                                                          getpgrp(void); }
-a kuku
-
-82	STD 	RUMP	{
-                                                      int | sys ||
-                                                          setpgid(pid_t pid,
-                                                                  pid_t pgid); }
-a kuku
-
-83	COMPAT_50 MODULAR compat { int|sys||setitimer(int which, \
-a kuku
-
-84	COMPAT_43 MODULAR compat {
-                                                        int | sys || wait(void); } owait
-a kuku
-
-85	COMPAT_12 MODULAR compat {
-                                                        int | sys ||
-                                                            swapon(const char
-                                                                       *name); } oswapon
-a kuku
-
-86	COMPAT_50 MODULAR compat { int|sys||getitimer(int which, \
-a kuku
-
-87	COMPAT_43 MODULAR compat	\
-a kuku
-
-88	COMPAT_43 MODULAR compat	\
-a kuku
-
-89	COMPAT_43 MODULAR compat	\
-a kuku
-
-90	STD 	 RUMP	{
-                                                          int | sys ||
-                                                              dup2(int from,
-                                                                   int to); }
-a kuku
-
-91	UNIMPL		getdopt
-a kuku
-
-92	STD	RUMP	{
-                                                          int | sys ||
-                                                              fcntl(int fd,
-                                                                    int cmd,
-                                                                    ... void
-                                                                        *arg); }
-a kuku
-
-93	COMPAT_50 MODULAR compat RUMP	\
-a kuku
-
-94	UNIMPL		setdopt
-a kuku
-
-95	STD	RUMP 	{
-                                                          int | sys ||
-                                                              fsync(int fd); }
-a kuku
-
-96	STD 		{
-                                                          int | sys ||
-                                                              setpriority(
-                                                                  int which,
-                                                                  id_t who,
-                                                                  int prio); }
-a kuku
-
-97	COMPAT_30 MODULAR compat	\
-a kuku
-
-98	STD	RUMP	{ int|sys||connect(int s, const struct sockaddr *name, \
-a kuku
-
-99	COMPAT_43 MODULAR compat	\
-a kuku
-
-100	STD 		{
-                                                            int | sys ||
-                                                                getpriority(
-                                                                    int which,
-                                                                    id_t who); }
-a kuku
-
-101	COMPAT_43 MODULAR compat { int|sys||send(int s, void *buf, int len, \
-a kuku
-
-102	COMPAT_43 MODULAR compat { int|sys||recv(int s, void *buf, int len, \
-a kuku
-
-103	COMPAT_13 MODULAR compat	\
-a kuku
-
-104	STD	RUMP	{ int|sys||bind(int s, const struct sockaddr *name, \
-a kuku
-
-105	STD	RUMP	{ int|sys||setsockopt(int s, int level, int name, \
-a kuku
-
-106	STD	RUMP	{
-                                                                    int | sys ||
-                                                                        listen(
-                                                                            int s,
-                                                                            int backlog); }
-a kuku
-
-107	OBSOL		vtimes
-a kuku
-
-108	COMPAT_43 MODULAR compat	\
-a kuku
-
-109	COMPAT_43 MODULAR compat {
-                                                                    int | sys ||
-                                                                        sigblock(
-                                                                            int mask); } osigblock
-a kuku
-
-110	COMPAT_43 MODULAR compat {
-                                                                    int | sys ||
-                                                                        sigsetmask(
-                                                                            int mask); } osigsetmask
-a kuku
-
-111	COMPAT_13 MODULAR compat {
-                                                                    int | sys ||
-                                                                        sigsuspend(
-                                                                            int mask); } sigsuspend13
-a kuku
-
-112	COMPAT_43 MODULAR compat { int|sys||sigstack(struct sigstack *nss, \
-a kuku
-
-113	COMPAT_43 MODULAR compat	\
-a kuku
-
-114	COMPAT_43 MODULAR compat	\
-a kuku
-
-115	OBSOL		vtrace
-a kuku
-
-116	COMPAT_50 MODULAR compat { int|sys||gettimeofday(struct timeval50 *tp, \
-a kuku
-
-117	COMPAT_50 MODULAR compat	\
-a kuku
-
-118	STD	RUMP	{ int|sys||getsockopt(int s, int level, int name, \
-a kuku
-
-119	OBSOL		resuba
-a kuku
-
-120	STD 	RUMP	{ ssize_t|sys||readv(int fd, \
-a kuku
-
-121	STD 	RUMP	{ ssize_t|sys||writev(int fd, \
-a kuku
-
-122	COMPAT_50 MODULAR compat	\
-a kuku
-
-123	STD 	 RUMP	{
-                                                                              int | sys ||
-                                                                                  fchown(
-                                                                                      int fd,
-                                                                                      uid_t
-                                                                                          uid,
-                                                                                      gid_t
-                                                                                          gid); }
-a kuku
-
-124	STD 	 RUMP	{
-                                                                              int | sys ||
-                                                                                  fchmod(
-                                                                                      int fd,
-                                                                                      mode_t
-                                                                                          mode); }
-a kuku
-
-125	COMPAT_43 MODULAR compat	\
-a kuku
-
-126	STD 	RUMP	{
-                                                                              int | sys ||
-                                                                                  setreuid(
-                                                                                      uid_t
-                                                                                          ruid,
-                                                                                      uid_t
-                                                                                          euid); }
-a kuku
-
-127	STD 	RUMP	{
-                                                                              int | sys ||
-                                                                                  setregid(
-                                                                                      gid_t
-                                                                                          rgid,
-                                                                                      gid_t
-                                                                                          egid); }
-a kuku
-
-128	STD 	 RUMP	{
-                                                                              int | sys ||
-                                                                                  rename(
-                                                                                      const char
-                                                                                          *from,
-                                                                                      const char
-                                                                                          *to); }
-a kuku
-
-129	COMPAT_43 MODULAR compat	\
-a kuku
-
-130	COMPAT_43 MODULAR compat	\
-a kuku
-
-131	STD 	 RUMP	{
-                                                                              int | sys ||
-                                                                                  flock(
-                                                                                      int fd,
-                                                                                      int how); }
-a kuku
-
-132	STD 	 RUMP	{
-                                                                              int | sys ||
-                                                                                  mkfifo(
-                                                                                      const char
-                                                                                          *path,
-                                                                                      mode_t
-                                                                                          mode); }
-a kuku
-
-133	STD 	 RUMP	{ ssize_t|sys||sendto(int s, const void *buf, \
-a kuku
-
-134	STD	 RUMP	{
-                                                                                int | sys ||
-                                                                                    shutdown(
-                                                                                        int s,
-                                                                                        int how); }
-a kuku
-
-135	STD	 RUMP	{ int|sys||socketpair(int domain, int type, \
-a kuku
-
-136	STD 	 RUMP	{
-                                                                                  int | sys ||
-                                                                                      mkdir(
-                                                                                          const char
-                                                                                              *path,
-                                                                                          mode_t
-                                                                                              mode); }
-a kuku
-
-137	STD 	 RUMP	{
-                                                                                  int | sys ||
-                                                                                      rmdir(
-                                                                                          const char
-                                                                                              *path); }
-a kuku
-
-138	COMPAT_50 MODULAR compat RUMP { int|sys||utimes(const char *path, \
-a kuku
-
-139	OBSOL		4.2 sigreturn
-a kuku
-
-140	COMPAT_50 MODULAR compat	\
-a kuku
-
-141	COMPAT_43 MODULAR compat	\
-a kuku
-
-142	COMPAT_43 MODULAR compat	\
-a kuku
-
-143	COMPAT_43 MODULAR compat	\
-a kuku
-
-144	COMPAT_43 MODULAR compat	\
-a kuku
-
-145	COMPAT_43 MODULAR compat { int|sys||setrlimit(int which, \
-a kuku
-
-146	COMPAT_43 MODULAR compat	\
-a kuku
-
-147	STD 	RUMP 	{
-                                                                                      int | sys ||
-                                                                                          setsid(
-                                                                                              void); }
-a kuku
-
-148	COMPAT_50 MODULAR XXX { int|sys||quotactl(const char *path, int cmd, \
-a kuku
-
-149	COMPAT_43 MODULAR compat {
-                                                                                        int | sys ||
-                                                                                            quota(
-                                                                                                void); } oquota
-a kuku
-
-150	COMPAT_43 MODULAR compat { int|sys||getsockname(int fdec, void *asa, \
-a kuku
-
-151	UNIMPL
-a kuku
-
-152	UNIMPL
-a kuku
-
-153	UNIMPL
-a kuku
-
-154	UNIMPL
-a kuku
-
-155	STD MODULAR nfsserver RUMP  {
-                                                                                          int | sys ||
-                                                                                              nfssvc(
-                                                                                                  int flag,
-                                                                                                  void *
-                                                                                                      argp); }
-a kuku
-
-156	COMPAT_43 MODULAR compat	\
-a kuku
-
-157	COMPAT_20 MODULAR compat { int|sys||statfs(const char *path, \
-a kuku
-
-158	COMPAT_20 MODULAR compat	\
-a kuku
-
-159	UNIMPL
-a kuku
-
-160	UNIMPL
-a kuku
-
-161	COMPAT_30 MODULAR compat { int|sys||getfh(const char *fname, \
-a kuku
-
-162	COMPAT_09 MODULAR compat	\
-a kuku
-
-163	COMPAT_09 MODULAR compat	\
-a kuku
-
-164	COMPAT_09 MODULAR compat	\
-a kuku
-
-165	STD 		{
-                                                                                              int | sys ||
-                                                                                                  sysarch(
-                                                                                                      int op,
-                                                                                                      void *
-                                                                                                          parms); }
-a kuku
-
-166	UNIMPL
-a kuku
-
-167	UNIMPL
-a kuku
-
-168	UNIMPL
+#define __sanitizer_syscall_pre_syscall() \
+  __sanitizer_syscall_pre_impl_syscall()
+#define __sanitizer_syscall_post_syscall() \
+  __sanitizer_syscall_post_impl_syscall()
+#define __sanitizer_syscall_pre_exit() \
+  __sanitizer_syscall_pre_impl_exit()
+#define __sanitizer_syscall_post_exit() \
+  __sanitizer_syscall_post_impl_exit()
+#define __sanitizer_syscall_pre_fork() \
+  __sanitizer_syscall_pre_impl_fork()
+#define __sanitizer_syscall_post_fork() \
+  __sanitizer_syscall_post_impl_fork()
+#define __sanitizer_syscall_pre_read() \
+  __sanitizer_syscall_pre_impl_read()
+#define __sanitizer_syscall_post_read() \
+  __sanitizer_syscall_post_impl_read()
+#define __sanitizer_syscall_pre_write() \
+  __sanitizer_syscall_pre_impl_write()
+#define __sanitizer_syscall_post_write() \
+  __sanitizer_syscall_post_impl_write()
+#define __sanitizer_syscall_pre_open() \
+  __sanitizer_syscall_pre_impl_open()
+#define __sanitizer_syscall_post_open() \
+  __sanitizer_syscall_post_impl_open()
+#define __sanitizer_syscall_pre_close() \
+  __sanitizer_syscall_pre_impl_close()
+#define __sanitizer_syscall_post_close() \
+  __sanitizer_syscall_post_impl_close()
+#define __sanitizer_syscall_pre_compat_50_wait4() \
+  __sanitizer_syscall_pre_impl_compat_50_wait4()
+#define __sanitizer_syscall_post_compat_50_wait4() \
+  __sanitizer_syscall_post_impl_compat_50_wait4()
+#define __sanitizer_syscall_pre_compat_43_ocreat() \
+  __sanitizer_syscall_pre_impl_compat_43_ocreat()
+#define __sanitizer_syscall_post_compat_43_ocreat() \
+  __sanitizer_syscall_post_impl_compat_43_ocreat()
+#define __sanitizer_syscall_pre_link() \
+  __sanitizer_syscall_pre_impl_link()
+#define __sanitizer_syscall_post_link() \
+  __sanitizer_syscall_post_impl_link()
+#define __sanitizer_syscall_pre_unlink() \
+  __sanitizer_syscall_pre_impl_unlink()
+#define __sanitizer_syscall_post_unlink() \
+  __sanitizer_syscall_post_impl_unlink()
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_chdir() \
+  __sanitizer_syscall_pre_impl_chdir()
+#define __sanitizer_syscall_post_chdir() \
+  __sanitizer_syscall_post_impl_chdir()
+#define __sanitizer_syscall_pre_fchdir() \
+  __sanitizer_syscall_pre_impl_fchdir()
+#define __sanitizer_syscall_post_fchdir() \
+  __sanitizer_syscall_post_impl_fchdir()
+#define __sanitizer_syscall_pre_compat_50_mknod() \
+  __sanitizer_syscall_pre_impl_compat_50_mknod()
+#define __sanitizer_syscall_post_compat_50_mknod() \
+  __sanitizer_syscall_post_impl_compat_50_mknod()
+#define __sanitizer_syscall_pre_chmod() \
+  __sanitizer_syscall_pre_impl_chmod()
+#define __sanitizer_syscall_post_chmod() \
+  __sanitizer_syscall_post_impl_chmod()
+#define __sanitizer_syscall_pre_chown() \
+  __sanitizer_syscall_pre_impl_chown()
+#define __sanitizer_syscall_post_chown() \
+  __sanitizer_syscall_post_impl_chown()
+#define __sanitizer_syscall_pre_break() \
+  __sanitizer_syscall_pre_impl_break()
+#define __sanitizer_syscall_post_break() \
+  __sanitizer_syscall_post_impl_break()
+#define __sanitizer_syscall_pre_compat_20_getfsstat() \
+  __sanitizer_syscall_pre_impl_compat_20_getfsstat()
+#define __sanitizer_syscall_post_compat_20_getfsstat() \
+  __sanitizer_syscall_post_impl_compat_20_getfsstat()
+#define __sanitizer_syscall_pre_compat_43_olseek() \
+  __sanitizer_syscall_pre_impl_compat_43_olseek()
+#define __sanitizer_syscall_post_compat_43_olseek() \
+  __sanitizer_syscall_post_impl_compat_43_olseek()
+#define __sanitizer_syscall_pre_getpid() \
+  __sanitizer_syscall_pre_impl_getpid()
+#define __sanitizer_syscall_post_getpid() \
+  __sanitizer_syscall_post_impl_getpid()
+#define __sanitizer_syscall_pre_compat_40_mount() \
+  __sanitizer_syscall_pre_impl_compat_40_mount()
+#define __sanitizer_syscall_post_compat_40_mount() \
+  __sanitizer_syscall_post_impl_compat_40_mount()
+#define __sanitizer_syscall_pre_unmount() \
+  __sanitizer_syscall_pre_impl_unmount()
+#define __sanitizer_syscall_post_unmount() \
+  __sanitizer_syscall_post_impl_unmount()
+#define __sanitizer_syscall_pre_setuid() \
+  __sanitizer_syscall_pre_impl_setuid()
+#define __sanitizer_syscall_post_setuid() \
+  __sanitizer_syscall_post_impl_setuid()
+#define __sanitizer_syscall_pre_getuid() \
+  __sanitizer_syscall_pre_impl_getuid()
+#define __sanitizer_syscall_post_getuid() \
+  __sanitizer_syscall_post_impl_getuid()
+#define __sanitizer_syscall_pre_geteuid() \
+  __sanitizer_syscall_pre_impl_geteuid()
+#define __sanitizer_syscall_post_geteuid() \
+  __sanitizer_syscall_post_impl_geteuid()
+#define __sanitizer_syscall_pre_ptrace() \
+  __sanitizer_syscall_pre_impl_ptrace()
+#define __sanitizer_syscall_post_ptrace() \
+  __sanitizer_syscall_post_impl_ptrace()
+#define __sanitizer_syscall_pre_recvmsg() \
+  __sanitizer_syscall_pre_impl_recvmsg()
+#define __sanitizer_syscall_post_recvmsg() \
+  __sanitizer_syscall_post_impl_recvmsg()
+#define __sanitizer_syscall_pre_sendmsg() \
+  __sanitizer_syscall_pre_impl_sendmsg()
+#define __sanitizer_syscall_post_sendmsg() \
+  __sanitizer_syscall_post_impl_sendmsg()
+#define __sanitizer_syscall_pre_recvfrom() \
+  __sanitizer_syscall_pre_impl_recvfrom()
+#define __sanitizer_syscall_post_recvfrom() \
+  __sanitizer_syscall_post_impl_recvfrom()
+#define __sanitizer_syscall_pre_accept() \
+  __sanitizer_syscall_pre_impl_accept()
+#define __sanitizer_syscall_post_accept() \
+  __sanitizer_syscall_post_impl_accept()
+#define __sanitizer_syscall_pre_getpeername() \
+  __sanitizer_syscall_pre_impl_getpeername()
+#define __sanitizer_syscall_post_getpeername() \
+  __sanitizer_syscall_post_impl_getpeername()
+#define __sanitizer_syscall_pre_getsockname() \
+  __sanitizer_syscall_pre_impl_getsockname()
+#define __sanitizer_syscall_post_getsockname() \
+  __sanitizer_syscall_post_impl_getsockname()
+#define __sanitizer_syscall_pre_access() \
+  __sanitizer_syscall_pre_impl_access()
+#define __sanitizer_syscall_post_access() \
+  __sanitizer_syscall_post_impl_access()
+#define __sanitizer_syscall_pre_chflags() \
+  __sanitizer_syscall_pre_impl_chflags()
+#define __sanitizer_syscall_post_chflags() \
+  __sanitizer_syscall_post_impl_chflags()
+#define __sanitizer_syscall_pre_fchflags() \
+  __sanitizer_syscall_pre_impl_fchflags()
+#define __sanitizer_syscall_post_fchflags() \
+  __sanitizer_syscall_post_impl_fchflags()
+#define __sanitizer_syscall_pre_sync() \
+  __sanitizer_syscall_pre_impl_sync()
+#define __sanitizer_syscall_post_sync() \
+  __sanitizer_syscall_post_impl_sync()
+#define __sanitizer_syscall_pre_kill() \
+  __sanitizer_syscall_pre_impl_kill()
+#define __sanitizer_syscall_post_kill() \
+  __sanitizer_syscall_post_impl_kill()
+#define __sanitizer_syscall_pre_compat_43_stat43() \
+  __sanitizer_syscall_pre_impl_compat_43_stat43()
+#define __sanitizer_syscall_post_compat_43_stat43() \
+  __sanitizer_syscall_post_impl_compat_43_stat43()
+#define __sanitizer_syscall_pre_getppid() \
+  __sanitizer_syscall_pre_impl_getppid()
+#define __sanitizer_syscall_post_getppid() \
+  __sanitizer_syscall_post_impl_getppid()
+#define __sanitizer_syscall_pre_compat_43_lstat43() \
+  __sanitizer_syscall_pre_impl_compat_43_lstat43()
+#define __sanitizer_syscall_post_compat_43_lstat43() \
+  __sanitizer_syscall_post_impl_compat_43_lstat43()
+#define __sanitizer_syscall_pre_dup() \
+  __sanitizer_syscall_pre_impl_dup()
+#define __sanitizer_syscall_post_dup() \
+  __sanitizer_syscall_post_impl_dup()
+#define __sanitizer_syscall_pre_pipe() \
+  __sanitizer_syscall_pre_impl_pipe()
+#define __sanitizer_syscall_post_pipe() \
+  __sanitizer_syscall_post_impl_pipe()
+#define __sanitizer_syscall_pre_getegid() \
+  __sanitizer_syscall_pre_impl_getegid()
+#define __sanitizer_syscall_post_getegid() \
+  __sanitizer_syscall_post_impl_getegid()
+#define __sanitizer_syscall_pre_profil() \
+  __sanitizer_syscall_pre_impl_profil()
+#define __sanitizer_syscall_post_profil() \
+  __sanitizer_syscall_post_impl_profil()
+#define __sanitizer_syscall_pre_ktrace() \
+  __sanitizer_syscall_pre_impl_ktrace()
+#define __sanitizer_syscall_post_ktrace() \
+  __sanitizer_syscall_post_impl_ktrace()
+#define __sanitizer_syscall_pre_compat_13_sigaction13() \
+  __sanitizer_syscall_pre_impl_compat_13_sigaction13()
+#define __sanitizer_syscall_post_compat_13_sigaction13() \
+  __sanitizer_syscall_post_impl_compat_13_sigaction13()
+#define __sanitizer_syscall_pre_getgid() \
+  __sanitizer_syscall_pre_impl_getgid()
+#define __sanitizer_syscall_post_getgid() \
+  __sanitizer_syscall_post_impl_getgid()
+#define __sanitizer_syscall_pre_compat_13_sigprocmask13() \
+  __sanitizer_syscall_pre_impl_compat_13_sigprocmask13()
+#define __sanitizer_syscall_post_compat_13_sigprocmask13() \
+  __sanitizer_syscall_post_impl_compat_13_sigprocmask13()
+#define __sanitizer_syscall_pre___getlogin() \
+  __sanitizer_syscall_pre_impl___getlogin()
+#define __sanitizer_syscall_post___getlogin() \
+  __sanitizer_syscall_post_impl___getlogin()
+#define __sanitizer_syscall_pre___setlogin() \
+  __sanitizer_syscall_pre_impl___setlogin()
+#define __sanitizer_syscall_post___setlogin() \
+  __sanitizer_syscall_post_impl___setlogin()
+#define __sanitizer_syscall_pre_acct() \
+  __sanitizer_syscall_pre_impl_acct()
+#define __sanitizer_syscall_post_acct() \
+  __sanitizer_syscall_post_impl_acct()
+#define __sanitizer_syscall_pre_compat_13_sigpending13() \
+  __sanitizer_syscall_pre_impl_compat_13_sigpending13()
+#define __sanitizer_syscall_post_compat_13_sigpending13() \
+  __sanitizer_syscall_post_impl_compat_13_sigpending13()
+#define __sanitizer_syscall_pre_compat_13_sigaltstack13() \
+  __sanitizer_syscall_pre_impl_compat_13_sigaltstack13()
+#define __sanitizer_syscall_post_compat_13_sigaltstack13() \
+  __sanitizer_syscall_post_impl_compat_13_sigaltstack13()
+#define __sanitizer_syscall_pre_ioctl() \
+  __sanitizer_syscall_pre_impl_ioctl()
+#define __sanitizer_syscall_post_ioctl() \
+  __sanitizer_syscall_post_impl_ioctl()
+#define __sanitizer_syscall_pre_compat_12_oreboot() \
+  __sanitizer_syscall_pre_impl_compat_12_oreboot()
+#define __sanitizer_syscall_post_compat_12_oreboot() \
+  __sanitizer_syscall_post_impl_compat_12_oreboot()
+#define __sanitizer_syscall_pre_revoke() \
+  __sanitizer_syscall_pre_impl_revoke()
+#define __sanitizer_syscall_post_revoke() \
+  __sanitizer_syscall_post_impl_revoke()
+#define __sanitizer_syscall_pre_symlink() \
+  __sanitizer_syscall_pre_impl_symlink()
+#define __sanitizer_syscall_post_symlink() \
+  __sanitizer_syscall_post_impl_symlink()
+#define __sanitizer_syscall_pre_readlink() \
+  __sanitizer_syscall_pre_impl_readlink()
+#define __sanitizer_syscall_post_readlink() \
+  __sanitizer_syscall_post_impl_readlink()
+#define __sanitizer_syscall_pre_execve() \
+  __sanitizer_syscall_pre_impl_execve()
+#define __sanitizer_syscall_post_execve() \
+  __sanitizer_syscall_post_impl_execve()
+#define __sanitizer_syscall_pre_umask() \
+  __sanitizer_syscall_pre_impl_umask()
+#define __sanitizer_syscall_post_umask() \
+  __sanitizer_syscall_post_impl_umask()
+#define __sanitizer_syscall_pre_chroot() \
+  __sanitizer_syscall_pre_impl_chroot()
+#define __sanitizer_syscall_post_chroot() \
+  __sanitizer_syscall_post_impl_chroot()
+#define __sanitizer_syscall_pre_compat_43_fstat43() \
+  __sanitizer_syscall_pre_impl_compat_43_fstat43()
+#define __sanitizer_syscall_post_compat_43_fstat43() \
+  __sanitizer_syscall_post_impl_compat_43_fstat43()
+#define __sanitizer_syscall_pre_compat_43_ogetkerninfo() \
+  __sanitizer_syscall_pre_impl_compat_43_ogetkerninfo()
+#define __sanitizer_syscall_post_compat_43_ogetkerninfo() \
+  __sanitizer_syscall_post_impl_compat_43_ogetkerninfo()
+#define __sanitizer_syscall_pre_compat_43_ogetpagesize() \
+  __sanitizer_syscall_pre_impl_compat_43_ogetpagesize()
+#define __sanitizer_syscall_post_compat_43_ogetpagesize() \
+  __sanitizer_syscall_post_impl_compat_43_ogetpagesize()
+#define __sanitizer_syscall_pre_compat_12_msync() \
+  __sanitizer_syscall_pre_impl_compat_12_msync()
+#define __sanitizer_syscall_post_compat_12_msync() \
+  __sanitizer_syscall_post_impl_compat_12_msync()
+#define __sanitizer_syscall_pre_vfork() \
+  __sanitizer_syscall_pre_impl_vfork()
+#define __sanitizer_syscall_post_vfork() \
+  __sanitizer_syscall_post_impl_vfork()
+/* syscall  has been skipped */
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_sbrk() \
+  __sanitizer_syscall_pre_impl_sbrk()
+#define __sanitizer_syscall_post_sbrk() \
+  __sanitizer_syscall_post_impl_sbrk()
+#define __sanitizer_syscall_pre_sstk() \
+  __sanitizer_syscall_pre_impl_sstk()
+#define __sanitizer_syscall_post_sstk() \
+  __sanitizer_syscall_post_impl_sstk()
+#define __sanitizer_syscall_pre_compat_43_ommap() \
+  __sanitizer_syscall_pre_impl_compat_43_ommap()
+#define __sanitizer_syscall_post_compat_43_ommap() \
+  __sanitizer_syscall_post_impl_compat_43_ommap()
+#define __sanitizer_syscall_pre_vadvise() \
+  __sanitizer_syscall_pre_impl_vadvise()
+#define __sanitizer_syscall_post_vadvise() \
+  __sanitizer_syscall_post_impl_vadvise()
+#define __sanitizer_syscall_pre_munmap() \
+  __sanitizer_syscall_pre_impl_munmap()
+#define __sanitizer_syscall_post_munmap() \
+  __sanitizer_syscall_post_impl_munmap()
+#define __sanitizer_syscall_pre_mprotect() \
+  __sanitizer_syscall_pre_impl_mprotect()
+#define __sanitizer_syscall_post_mprotect() \
+  __sanitizer_syscall_post_impl_mprotect()
+#define __sanitizer_syscall_pre_madvise() \
+  __sanitizer_syscall_pre_impl_madvise()
+#define __sanitizer_syscall_post_madvise() \
+  __sanitizer_syscall_post_impl_madvise()
+/* syscall  has been skipped */
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_mincore() \
+  __sanitizer_syscall_pre_impl_mincore()
+#define __sanitizer_syscall_post_mincore() \
+  __sanitizer_syscall_post_impl_mincore()
+#define __sanitizer_syscall_pre_getgroups() \
+  __sanitizer_syscall_pre_impl_getgroups()
+#define __sanitizer_syscall_post_getgroups() \
+  __sanitizer_syscall_post_impl_getgroups()
+#define __sanitizer_syscall_pre_setgroups() \
+  __sanitizer_syscall_pre_impl_setgroups()
+#define __sanitizer_syscall_post_setgroups() \
+  __sanitizer_syscall_post_impl_setgroups()
+#define __sanitizer_syscall_pre_getpgrp() \
+  __sanitizer_syscall_pre_impl_getpgrp()
+#define __sanitizer_syscall_post_getpgrp() \
+  __sanitizer_syscall_post_impl_getpgrp()
+#define __sanitizer_syscall_pre_setpgid() \
+  __sanitizer_syscall_pre_impl_setpgid()
+#define __sanitizer_syscall_post_setpgid() \
+  __sanitizer_syscall_post_impl_setpgid()
+#define __sanitizer_syscall_pre_compat_50_setitimer() \
+  __sanitizer_syscall_pre_impl_compat_50_setitimer()
+#define __sanitizer_syscall_post_compat_50_setitimer() \
+  __sanitizer_syscall_post_impl_compat_50_setitimer()
+#define __sanitizer_syscall_pre_compat_43_owait() \
+  __sanitizer_syscall_pre_impl_compat_43_owait()
+#define __sanitizer_syscall_post_compat_43_owait() \
+  __sanitizer_syscall_post_impl_compat_43_owait()
+#define __sanitizer_syscall_pre_compat_12_oswapon() \
+  __sanitizer_syscall_pre_impl_compat_12_oswapon()
+#define __sanitizer_syscall_post_compat_12_oswapon() \
+  __sanitizer_syscall_post_impl_compat_12_oswapon()
+#define __sanitizer_syscall_pre_compat_50_getitimer() \
+  __sanitizer_syscall_pre_impl_compat_50_getitimer()
+#define __sanitizer_syscall_post_compat_50_getitimer() \
+  __sanitizer_syscall_post_impl_compat_50_getitimer()
+#define __sanitizer_syscall_pre_compat_43_ogethostname() \
+  __sanitizer_syscall_pre_impl_compat_43_ogethostname()
+#define __sanitizer_syscall_post_compat_43_ogethostname() \
+  __sanitizer_syscall_post_impl_compat_43_ogethostname()
+#define __sanitizer_syscall_pre_compat_43_osethostname() \
+  __sanitizer_syscall_pre_impl_compat_43_osethostname()
+#define __sanitizer_syscall_post_compat_43_osethostname() \
+  __sanitizer_syscall_post_impl_compat_43_osethostname()
+#define __sanitizer_syscall_pre_compat_43_ogetdtablesize() \
+  __sanitizer_syscall_pre_impl_compat_43_ogetdtablesize()
+#define __sanitizer_syscall_post_compat_43_ogetdtablesize() \
+  __sanitizer_syscall_post_impl_compat_43_ogetdtablesize()
+#define __sanitizer_syscall_pre_dup2() \
+  __sanitizer_syscall_pre_impl_dup2()
+#define __sanitizer_syscall_post_dup2() \
+  __sanitizer_syscall_post_impl_dup2()
+/* syscall getdopt has been skipped */
+#define __sanitizer_syscall_pre_fcntl() \
+  __sanitizer_syscall_pre_impl_fcntl()
+#define __sanitizer_syscall_post_fcntl() \
+  __sanitizer_syscall_post_impl_fcntl()
+#define __sanitizer_syscall_pre_compat_50_select() \
+  __sanitizer_syscall_pre_impl_compat_50_select()
+#define __sanitizer_syscall_post_compat_50_select() \
+  __sanitizer_syscall_post_impl_compat_50_select()
+/* syscall setdopt has been skipped */
+#define __sanitizer_syscall_pre_fsync() \
+  __sanitizer_syscall_pre_impl_fsync()
+#define __sanitizer_syscall_post_fsync() \
+  __sanitizer_syscall_post_impl_fsync()
+#define __sanitizer_syscall_pre_setpriority() \
+  __sanitizer_syscall_pre_impl_setpriority()
+#define __sanitizer_syscall_post_setpriority() \
+  __sanitizer_syscall_post_impl_setpriority()
+#define __sanitizer_syscall_pre_compat_30_socket() \
+  __sanitizer_syscall_pre_impl_compat_30_socket()
+#define __sanitizer_syscall_post_compat_30_socket() \
+  __sanitizer_syscall_post_impl_compat_30_socket()
+#define __sanitizer_syscall_pre_connect() \
+  __sanitizer_syscall_pre_impl_connect()
+#define __sanitizer_syscall_post_connect() \
+  __sanitizer_syscall_post_impl_connect()
+#define __sanitizer_syscall_pre_compat_43_oaccept() \
+  __sanitizer_syscall_pre_impl_compat_43_oaccept()
+#define __sanitizer_syscall_post_compat_43_oaccept() \
+  __sanitizer_syscall_post_impl_compat_43_oaccept()
+#define __sanitizer_syscall_pre_getpriority() \
+  __sanitizer_syscall_pre_impl_getpriority()
+#define __sanitizer_syscall_post_getpriority() \
+  __sanitizer_syscall_post_impl_getpriority()
+#define __sanitizer_syscall_pre_compat_43_osend() \
+  __sanitizer_syscall_pre_impl_compat_43_osend()
+#define __sanitizer_syscall_post_compat_43_osend() \
+  __sanitizer_syscall_post_impl_compat_43_osend()
+#define __sanitizer_syscall_pre_compat_43_orecv() \
+  __sanitizer_syscall_pre_impl_compat_43_orecv()
+#define __sanitizer_syscall_post_compat_43_orecv() \
+  __sanitizer_syscall_post_impl_compat_43_orecv()
+#define __sanitizer_syscall_pre_compat_13_sigreturn13() \
+  __sanitizer_syscall_pre_impl_compat_13_sigreturn13()
+#define __sanitizer_syscall_post_compat_13_sigreturn13() \
+  __sanitizer_syscall_post_impl_compat_13_sigreturn13()
+#define __sanitizer_syscall_pre_bind() \
+  __sanitizer_syscall_pre_impl_bind()
+#define __sanitizer_syscall_post_bind() \
+  __sanitizer_syscall_post_impl_bind()
+#define __sanitizer_syscall_pre_setsockopt() \
+  __sanitizer_syscall_pre_impl_setsockopt()
+#define __sanitizer_syscall_post_setsockopt() \
+  __sanitizer_syscall_post_impl_setsockopt()
+#define __sanitizer_syscall_pre_listen() \
+  __sanitizer_syscall_pre_impl_listen()
+#define __sanitizer_syscall_post_listen() \
+  __sanitizer_syscall_post_impl_listen()
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_compat_43_osigvec() \
+  __sanitizer_syscall_pre_impl_compat_43_osigvec()
+#define __sanitizer_syscall_post_compat_43_osigvec() \
+  __sanitizer_syscall_post_impl_compat_43_osigvec()
+#define __sanitizer_syscall_pre_compat_43_osigblock() \
+  __sanitizer_syscall_pre_impl_compat_43_osigblock()
+#define __sanitizer_syscall_post_compat_43_osigblock() \
+  __sanitizer_syscall_post_impl_compat_43_osigblock()
+#define __sanitizer_syscall_pre_compat_43_osigsetmask() \
+  __sanitizer_syscall_pre_impl_compat_43_osigsetmask()
+#define __sanitizer_syscall_post_compat_43_osigsetmask() \
+  __sanitizer_syscall_post_impl_compat_43_osigsetmask()
+#define __sanitizer_syscall_pre_compat_13_sigsuspend13() \
+  __sanitizer_syscall_pre_impl_compat_13_sigsuspend13()
+#define __sanitizer_syscall_post_compat_13_sigsuspend13() \
+  __sanitizer_syscall_post_impl_compat_13_sigsuspend13()
+#define __sanitizer_syscall_pre_compat_43_osigstack() \
+  __sanitizer_syscall_pre_impl_compat_43_osigstack()
+#define __sanitizer_syscall_post_compat_43_osigstack() \
+  __sanitizer_syscall_post_impl_compat_43_osigstack()
+#define __sanitizer_syscall_pre_compat_43_orecvmsg() \
+  __sanitizer_syscall_pre_impl_compat_43_orecvmsg()
+#define __sanitizer_syscall_post_compat_43_orecvmsg() \
+  __sanitizer_syscall_post_impl_compat_43_orecvmsg()
+#define __sanitizer_syscall_pre_compat_43_osendmsg() \
+  __sanitizer_syscall_pre_impl_compat_43_osendmsg()
+#define __sanitizer_syscall_post_compat_43_osendmsg() \
+  __sanitizer_syscall_post_impl_compat_43_osendmsg()
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_compat_50_gettimeofday() \
+  __sanitizer_syscall_pre_impl_compat_50_gettimeofday()
+#define __sanitizer_syscall_post_compat_50_gettimeofday() \
+  __sanitizer_syscall_post_impl_compat_50_gettimeofday()
+#define __sanitizer_syscall_pre_compat_50_getrusage() \
+  __sanitizer_syscall_pre_impl_compat_50_getrusage()
+#define __sanitizer_syscall_post_compat_50_getrusage() \
+  __sanitizer_syscall_post_impl_compat_50_getrusage()
+#define __sanitizer_syscall_pre_getsockopt() \
+  __sanitizer_syscall_pre_impl_getsockopt()
+#define __sanitizer_syscall_post_getsockopt() \
+  __sanitizer_syscall_post_impl_getsockopt()
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_readv() \
+  __sanitizer_syscall_pre_impl_readv()
+#define __sanitizer_syscall_post_readv() \
+  __sanitizer_syscall_post_impl_readv()
+#define __sanitizer_syscall_pre_writev() \
+  __sanitizer_syscall_pre_impl_writev()
+#define __sanitizer_syscall_post_writev() \
+  __sanitizer_syscall_post_impl_writev()
+#define __sanitizer_syscall_pre_compat_50_settimeofday() \
+  __sanitizer_syscall_pre_impl_compat_50_settimeofday()
+#define __sanitizer_syscall_post_compat_50_settimeofday() \
+  __sanitizer_syscall_post_impl_compat_50_settimeofday()
+#define __sanitizer_syscall_pre_fchown() \
+  __sanitizer_syscall_pre_impl_fchown()
+#define __sanitizer_syscall_post_fchown() \
+  __sanitizer_syscall_post_impl_fchown()
+#define __sanitizer_syscall_pre_fchmod() \
+  __sanitizer_syscall_pre_impl_fchmod()
+#define __sanitizer_syscall_post_fchmod() \
+  __sanitizer_syscall_post_impl_fchmod()
+#define __sanitizer_syscall_pre_compat_43_orecvfrom() \
+  __sanitizer_syscall_pre_impl_compat_43_orecvfrom()
+#define __sanitizer_syscall_post_compat_43_orecvfrom() \
+  __sanitizer_syscall_post_impl_compat_43_orecvfrom()
+#define __sanitizer_syscall_pre_setreuid() \
+  __sanitizer_syscall_pre_impl_setreuid()
+#define __sanitizer_syscall_post_setreuid() \
+  __sanitizer_syscall_post_impl_setreuid()
+#define __sanitizer_syscall_pre_setregid() \
+  __sanitizer_syscall_pre_impl_setregid()
+#define __sanitizer_syscall_post_setregid() \
+  __sanitizer_syscall_post_impl_setregid()
+#define __sanitizer_syscall_pre_rename() \
+  __sanitizer_syscall_pre_impl_rename()
+#define __sanitizer_syscall_post_rename() \
+  __sanitizer_syscall_post_impl_rename()
+#define __sanitizer_syscall_pre_compat_43_otruncate() \
+  __sanitizer_syscall_pre_impl_compat_43_otruncate()
+#define __sanitizer_syscall_post_compat_43_otruncate() \
+  __sanitizer_syscall_post_impl_compat_43_otruncate()
+#define __sanitizer_syscall_pre_compat_43_oftruncate() \
+  __sanitizer_syscall_pre_impl_compat_43_oftruncate()
+#define __sanitizer_syscall_post_compat_43_oftruncate() \
+  __sanitizer_syscall_post_impl_compat_43_oftruncate()
+#define __sanitizer_syscall_pre_flock() \
+  __sanitizer_syscall_pre_impl_flock()
+#define __sanitizer_syscall_post_flock() \
+  __sanitizer_syscall_post_impl_flock()
+#define __sanitizer_syscall_pre_mkfifo() \
+  __sanitizer_syscall_pre_impl_mkfifo()
+#define __sanitizer_syscall_post_mkfifo() \
+  __sanitizer_syscall_post_impl_mkfifo()
+#define __sanitizer_syscall_pre_sendto() \
+  __sanitizer_syscall_pre_impl_sendto()
+#define __sanitizer_syscall_post_sendto() \
+  __sanitizer_syscall_post_impl_sendto()
+#define __sanitizer_syscall_pre_shutdown() \
+  __sanitizer_syscall_pre_impl_shutdown()
+#define __sanitizer_syscall_post_shutdown() \
+  __sanitizer_syscall_post_impl_shutdown()
+#define __sanitizer_syscall_pre_socketpair() \
+  __sanitizer_syscall_pre_impl_socketpair()
+#define __sanitizer_syscall_post_socketpair() \
+  __sanitizer_syscall_post_impl_socketpair()
+#define __sanitizer_syscall_pre_mkdir() \
+  __sanitizer_syscall_pre_impl_mkdir()
+#define __sanitizer_syscall_post_mkdir() \
+  __sanitizer_syscall_post_impl_mkdir()
+#define __sanitizer_syscall_pre_rmdir() \
+  __sanitizer_syscall_pre_impl_rmdir()
+#define __sanitizer_syscall_post_rmdir() \
+  __sanitizer_syscall_post_impl_rmdir()
+#define __sanitizer_syscall_pre_compat_50_utimes() \
+  __sanitizer_syscall_pre_impl_compat_50_utimes()
+#define __sanitizer_syscall_post_compat_50_utimes() \
+  __sanitizer_syscall_post_impl_compat_50_utimes()
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_compat_50_adjtime() \
+  __sanitizer_syscall_pre_impl_compat_50_adjtime()
+#define __sanitizer_syscall_post_compat_50_adjtime() \
+  __sanitizer_syscall_post_impl_compat_50_adjtime()
+#define __sanitizer_syscall_pre_compat_43_ogetpeername() \
+  __sanitizer_syscall_pre_impl_compat_43_ogetpeername()
+#define __sanitizer_syscall_post_compat_43_ogetpeername() \
+  __sanitizer_syscall_post_impl_compat_43_ogetpeername()
+#define __sanitizer_syscall_pre_compat_43_ogethostid() \
+  __sanitizer_syscall_pre_impl_compat_43_ogethostid()
+#define __sanitizer_syscall_post_compat_43_ogethostid() \
+  __sanitizer_syscall_post_impl_compat_43_ogethostid()
+#define __sanitizer_syscall_pre_compat_43_osethostid() \
+  __sanitizer_syscall_pre_impl_compat_43_osethostid()
+#define __sanitizer_syscall_post_compat_43_osethostid() \
+  __sanitizer_syscall_post_impl_compat_43_osethostid()
+#define __sanitizer_syscall_pre_compat_43_ogetrlimit() \
+  __sanitizer_syscall_pre_impl_compat_43_ogetrlimit()
+#define __sanitizer_syscall_post_compat_43_ogetrlimit() \
+  __sanitizer_syscall_post_impl_compat_43_ogetrlimit()
+#define __sanitizer_syscall_pre_compat_43_osetrlimit() \
+  __sanitizer_syscall_pre_impl_compat_43_osetrlimit()
+#define __sanitizer_syscall_post_compat_43_osetrlimit() \
+  __sanitizer_syscall_post_impl_compat_43_osetrlimit()
+#define __sanitizer_syscall_pre_compat_43_okillpg() \
+  __sanitizer_syscall_pre_impl_compat_43_okillpg()
+#define __sanitizer_syscall_post_compat_43_okillpg() \
+  __sanitizer_syscall_post_impl_compat_43_okillpg()
+#define __sanitizer_syscall_pre_setsid() \
+  __sanitizer_syscall_pre_impl_setsid()
+#define __sanitizer_syscall_post_setsid() \
+  __sanitizer_syscall_post_impl_setsid()
+#define __sanitizer_syscall_pre_compat_50_quotactl() \
+  __sanitizer_syscall_pre_impl_compat_50_quotactl()
+#define __sanitizer_syscall_post_compat_50_quotactl() \
+  __sanitizer_syscall_post_impl_compat_50_quotactl()
+#define __sanitizer_syscall_pre_compat_43_oquota() \
+  __sanitizer_syscall_pre_impl_compat_43_oquota()
+#define __sanitizer_syscall_post_compat_43_oquota() \
+  __sanitizer_syscall_post_impl_compat_43_oquota()
+#define __sanitizer_syscall_pre_compat_43_ogetsockname() \
+  __sanitizer_syscall_pre_impl_compat_43_ogetsockname()
+#define __sanitizer_syscall_post_compat_43_ogetsockname() \
+  __sanitizer_syscall_post_impl_compat_43_ogetsockname()
+/* syscall 151 has been skipped */
+/* syscall 152 has been skipped */
+/* syscall 153 has been skipped */
+/* syscall 154 has been skipped */
+#define __sanitizer_syscall_pre_nfssvc() \
+  __sanitizer_syscall_pre_impl_nfssvc()
+#define __sanitizer_syscall_post_nfssvc() \
+  __sanitizer_syscall_post_impl_nfssvc()
+#define __sanitizer_syscall_pre_compat_43_ogetdirentries() \
+  __sanitizer_syscall_pre_impl_compat_43_ogetdirentries()
+#define __sanitizer_syscall_post_compat_43_ogetdirentries() \
+  __sanitizer_syscall_post_impl_compat_43_ogetdirentries()
+#define __sanitizer_syscall_pre_compat_20_statfs() \
+  __sanitizer_syscall_pre_impl_compat_20_statfs()
+#define __sanitizer_syscall_post_compat_20_statfs() \
+  __sanitizer_syscall_post_impl_compat_20_statfs()
+#define __sanitizer_syscall_pre_compat_20_fstatfs() \
+  __sanitizer_syscall_pre_impl_compat_20_fstatfs()
+#define __sanitizer_syscall_post_compat_20_fstatfs() \
+  __sanitizer_syscall_post_impl_compat_20_fstatfs()
+/* syscall 159 has been skipped */
+/* syscall 160 has been skipped */
+#define __sanitizer_syscall_pre_compat_30_getfh() \
+  __sanitizer_syscall_pre_impl_compat_30_getfh()
+#define __sanitizer_syscall_post_compat_30_getfh() \
+  __sanitizer_syscall_post_impl_compat_30_getfh()
+#define __sanitizer_syscall_pre_compat_09_ogetdomainname() \
+  __sanitizer_syscall_pre_impl_compat_09_ogetdomainname()
+#define __sanitizer_syscall_post_compat_09_ogetdomainname() \
+  __sanitizer_syscall_post_impl_compat_09_ogetdomainname()
+#define __sanitizer_syscall_pre_compat_09_osetdomainname() \
+  __sanitizer_syscall_pre_impl_compat_09_osetdomainname()
+#define __sanitizer_syscall_post_compat_09_osetdomainname() \
+  __sanitizer_syscall_post_impl_compat_09_osetdomainname()
+#define __sanitizer_syscall_pre_compat_09_ouname() \
+  __sanitizer_syscall_pre_impl_compat_09_ouname()
+#define __sanitizer_syscall_post_compat_09_ouname() \
+  __sanitizer_syscall_post_impl_compat_09_ouname()
+#define __sanitizer_syscall_pre_sysarch() \
+  __sanitizer_syscall_pre_impl_sysarch()
+#define __sanitizer_syscall_post_sysarch() \
+  __sanitizer_syscall_post_impl_sysarch()
+/* syscall 166 has been skipped */
+/* syscall 167 has been skipped */
+/* syscall 168 has been skipped */
 #if !defined(_LP64)
-a kuku
-
-169	COMPAT_10 MODULAR sysv_ipc	\
+#define __sanitizer_syscall_pre_compat_10_osemsys() \
+  __sanitizer_syscall_pre_impl_compat_10_osemsys()
+#define __sanitizer_syscall_post_compat_10_osemsys() \
+  __sanitizer_syscall_post_impl_compat_10_osemsys()
 #else
-a kuku
-
-169	EXCL		1.0 semsys
-#endif
+/* syscall  has been skipped */
 #if !defined(_LP64)
-a kuku
-
-170	COMPAT_10 MODULAR sysv_ipc	\
+#define __sanitizer_syscall_pre_compat_10_omsgsys() \
+  __sanitizer_syscall_pre_impl_compat_10_omsgsys()
+#define __sanitizer_syscall_post_compat_10_omsgsys() \
+  __sanitizer_syscall_post_impl_compat_10_omsgsys()
 #else
-a kuku
-
-170	EXCL		1.0 msgsys
-#endif
+/* syscall  has been skipped */
 #if !defined(_LP64)
-a kuku
-
-171	COMPAT_10 MODULAR sysv_ipc	\
+#define __sanitizer_syscall_pre_compat_10_oshmsys() \
+  __sanitizer_syscall_pre_impl_compat_10_oshmsys()
+#define __sanitizer_syscall_post_compat_10_oshmsys() \
+  __sanitizer_syscall_post_impl_compat_10_oshmsys()
 #else
-a kuku
-
-171	EXCL		1.0 shmsys
+/* syscall  has been skipped */
 #endif
-a kuku
-
-172	UNIMPL
-a kuku
-
-173	STD 	 RUMP	{ ssize_t|sys||pread(int fd, void *buf, \
-a kuku
-
-174	STD 	 RUMP	{ ssize_t|sys||pwrite(int fd, const void *buf, \
-a kuku
-
-175	COMPAT_30	{
-                                                                                                  int | sys ||
-                                                                                                      ntp_gettime(
-                                                                                                          struct
-                                                                                                          ntptimeval30 *
-                                                                                                          ntvp); }
+/* syscall 172 has been skipped */
+#define __sanitizer_syscall_pre_pread() \
+  __sanitizer_syscall_pre_impl_pread()
+#define __sanitizer_syscall_post_pread() \
+  __sanitizer_syscall_post_impl_pread()
+#define __sanitizer_syscall_pre_pwrite() \
+  __sanitizer_syscall_pre_impl_pwrite()
+#define __sanitizer_syscall_post_pwrite() \
+  __sanitizer_syscall_post_impl_pwrite()
+#define __sanitizer_syscall_pre_compat_30_ntp_gettime() \
+  __sanitizer_syscall_pre_impl_compat_30_ntp_gettime()
+#define __sanitizer_syscall_post_compat_30_ntp_gettime() \
+  __sanitizer_syscall_post_impl_compat_30_ntp_gettime()
 #if defined(NTP) || !defined(_KERNEL_OPT)
-a kuku
-
-176	STD 		{
-                                                                                                  int | sys ||
-                                                                                                      ntp_adjtime(
-                                                                                                          struct
-                                                                                                          timex *
-                                                                                                          tp); }
+#define __sanitizer_syscall_pre_ntp_adjtime() \
+  __sanitizer_syscall_pre_impl_ntp_adjtime()
+#define __sanitizer_syscall_post_ntp_adjtime() \
+  __sanitizer_syscall_post_impl_ntp_adjtime()
 #else
-a kuku
-
-176	EXCL		ntp_adjtime
+/* syscall  has been skipped */
 #endif
-a kuku
-
-177	UNIMPL
-a kuku
-
-178	UNIMPL
-a kuku
-
-179	UNIMPL
-a kuku
-
-180	UNIMPL
-a kuku
-
-181	STD 	RUMP	{
-                                                                                                  int | sys ||
-                                                                                                      setgid(
-                                                                                                          gid_t
-                                                                                                              gid); }
-a kuku
-
-182	STD 	RUMP	{
-                                                                                                  int | sys ||
-                                                                                                      setegid(
-                                                                                                          gid_t
-                                                                                                              egid); }
-a kuku
-
-183	STD 	RUMP	{
-                                                                                                  int | sys ||
-                                                                                                      seteuid(
-                                                                                                          uid_t
-                                                                                                              euid); }
-a kuku
-
-184	STD MODULAR lfs	{ int|sys||lfs_bmapv(fsid_t *fsidp, \
-a kuku
-
-185	STD MODULAR lfs	{ int|sys||lfs_markv(fsid_t *fsidp, \
-a kuku
-
-186	STD MODULAR lfs	{
-                                                                                                      int | sys ||
-                                                                                                          lfs_segclean(
-                                                                                                              fsid_t *
-                                                                                                                  fsidp,
-                                                                                                              u_long
-                                                                                                                  segment); }
-a kuku
-
-187	COMPAT_50 MODULAR compat { int|sys||lfs_segwait(fsid_t *fsidp, \
-a kuku
-
-188	COMPAT_12 MODULAR compat	\
-a kuku
-
-189	COMPAT_12 MODULAR compat	\
-a kuku
-
-190	COMPAT_12 MODULAR compat { int|sys||lstat(const char *path, \
-a kuku
-
-191	STD 	RUMP	{
-                                                                                                          long | sys ||
-                                                                                                              pathconf(
-                                                                                                                  const char
-                                                                                                                      *path,
-                                                                                                                  int name); }
-a kuku
-
-192	STD 	RUMP	{
-                                                                                                          long | sys ||
-                                                                                                              fpathconf(
-                                                                                                                  int fd,
-                                                                                                                  int name); }
-a kuku
-
-193	UNIMPL
-a kuku
-
-194	STD 	RUMP	{ int|sys||getrlimit(int which, \
-a kuku
-
-195	STD 	RUMP	{ int|sys||setrlimit(int which, \
-a kuku
-
-196	COMPAT_12 MODULAR compat	\
-a kuku
-
-197	STD 		{ void *|sys||mmap(void *addr, size_t len, int prot, \
-a kuku
-
-198	INDIR		{ quad_t|sys||__syscall(quad_t code, \
-a kuku
-
-199	STD 	 RUMP	{ off_t|sys||lseek(int fd, int PAD, off_t offset, \
-a kuku
-
-200	STD 	 RUMP	{ int|sys||truncate(const char *path, int PAD, \
-a kuku
-
-201	STD 	 RUMP	{
-                                                                                                                      int | sys ||
-                                                                                                                          ftruncate(
-                                                                                                                              int fd,
-                                                                                                                              int PAD,
-                                                                                                                              off_t
-                                                                                                                                  length); }
-a kuku
-
-202	STD	 RUMP 	{ int|sys||__sysctl(const int *name, u_int namelen, \
-a kuku
-
-203	STD 		{
-                                                                                                                        int | sys ||
-                                                                                                                            mlock(
-                                                                                                                                const void
-                                                                                                                                    *addr,
-                                                                                                                                size_t
-                                                                                                                                    len); }
-a kuku
-
-204	STD 		{
-                                                                                                                        int | sys ||
-                                                                                                                            munlock(
-                                                                                                                                const void
-                                                                                                                                    *addr,
-                                                                                                                                size_t
-                                                                                                                                    len); }
-a kuku
-
-205	STD 		{
-                                                                                                                        int | sys ||
-                                                                                                                            undelete(
-                                                                                                                                const char
-                                                                                                                                    *path); }
-a kuku
-
-206	COMPAT_50 MODULAR compat RUMP { int|sys||futimes(int fd, \
-a kuku
-
-207	STD 	 RUMP	{
-                                                                                                                          pid_t | sys ||
-                                                                                                                              getpgid(
-                                                                                                                                  pid_t
-                                                                                                                                      pid); }
-a kuku
-
-208	STD	 RUMP	{
-                                                                                                                          int | sys ||
-                                                                                                                              reboot(
-                                                                                                                                  int opt,
-                                                                                                                                  char *
-                                                                                                                                      bootstr); }
-a kuku
-
-209	STD 	 RUMP	{ int|sys||poll(struct pollfd *fds, u_int nfds, \
-a kuku
-
-210	EXTERN	MODULAR openafs { int|sys||afssys(long id, long a1, long a2, \
-a kuku
-
-211	UNIMPL
-a kuku
-
-212	UNIMPL
-a kuku
-
-213	UNIMPL
-a kuku
-
-214	UNIMPL
-a kuku
-
-215	UNIMPL
-a kuku
-
-216	UNIMPL
-a kuku
-
-217	UNIMPL
-a kuku
-
-218	UNIMPL
-a kuku
-
-219	UNIMPL
-a kuku
-
-220	COMPAT_14 MODULAR sysv_ipc	\
-a kuku
-
-221	STD MODULAR sysv_ipc { int|sys||semget(key_t key, int nsems, \
-a kuku
-
-222	STD MODULAR sysv_ipc { int|sys||semop(int semid, struct sembuf *sops, \
-a kuku
-
-223	STD MODULAR sysv_ipc {
-                                                                                                                                  int | sys ||
-                                                                                                                                      semconfig(
-                                                                                                                                          int flag); }
-a kuku
-
-224	COMPAT_14 MODULAR sysv_ipc { int|sys||msgctl(int msqid, int cmd, \
-a kuku
-
-225	STD MODULAR sysv_ipc {
-                                                                                                                                    int | sys ||
-                                                                                                                                        msgget(
-                                                                                                                                            key_t
-                                                                                                                                                key,
-                                                                                                                                            int msgflg); }
-a kuku
-
-226	STD MODULAR sysv_ipc { int|sys||msgsnd(int msqid, const void *msgp, \
-a kuku
-
-227	STD MODULAR sysv_ipc { ssize_t|sys||msgrcv(int msqid, void *msgp, \
-a kuku
-
-228	STD MODULAR sysv_ipc { void *|sys||shmat(int shmid,	\
-a kuku
-
-229	COMPAT_14 MODULAR sysv_ipc { int|sys||shmctl(int shmid, int cmd, \
-a kuku
-
-230	STD MODULAR sysv_ipc {
-                                                                                                                                            int | sys ||
-                                                                                                                                                shmdt(
-                                                                                                                                                    const void
-                                                                                                                                                        *shmaddr); }
-a kuku
-
-231	STD MODULAR sysv_ipc { int|sys||shmget(key_t key, size_t size,	\
-a kuku
-
-232	COMPAT_50 MODULAR compat { int|sys||clock_gettime(clockid_t clock_id, \
-a kuku
-
-233	COMPAT_50 MODULAR compat { int|sys||clock_settime(clockid_t clock_id, \
-a kuku
-
-234	COMPAT_50 MODULAR compat { int|sys||clock_getres(clockid_t clock_id, \
-a kuku
-
-235	STD  RUMP	{ int|sys||timer_create(clockid_t clock_id, \
-a kuku
-
-236	STD  RUMP	{
-                                                                                                                                                      int | sys ||
-                                                                                                                                                          timer_delete(
-                                                                                                                                                              timer_t
-                                                                                                                                                                  timerid); }
-a kuku
-
-237	COMPAT_50 MODULAR compat { int|sys||timer_settime(timer_t timerid, \
-a kuku
-
-238	COMPAT_50 MODULAR compat { int|sys||timer_gettime(timer_t timerid, \
-a kuku
-
-239	STD  RUMP	{
-                                                                                                                                                          int | sys ||
-                                                                                                                                                              timer_getoverrun(
-                                                                                                                                                                  timer_t
-                                                                                                                                                                      timerid); }
-a kuku
-
-240	COMPAT_50 MODULAR compat	\
-a kuku
-
-241	STD 	 RUMP	{
-                                                                                                                                                          int | sys ||
-                                                                                                                                                              fdatasync(
-                                                                                                                                                                  int fd); }
-a kuku
-
-242	STD 		{
-                                                                                                                                                          int | sys ||
-                                                                                                                                                              mlockall(
-                                                                                                                                                                  int flags); }
-a kuku
-
-243	STD 		{
-                                                                                                                                                          int | sys ||
-                                                                                                                                                              munlockall(
-                                                                                                                                                                  void); }
-a kuku
-
-244	COMPAT_50 MODULAR compat	\
-a kuku
-
-245	STD		{ int|sys||sigqueueinfo(pid_t pid, \
-a kuku
-
-246	STD RUMP 	{
-                                                                                                                                                            int | sys ||
-                                                                                                                                                                modctl(
-                                                                                                                                                                    int cmd,
-                                                                                                                                                                    void *
-                                                                                                                                                                        arg); }
-a kuku
-
-247	STD MODULAR ksem RUMP {
-                                                                                                                                                            int | sys ||
-                                                                                                                                                                _ksem_init(
-                                                                                                                                                                    unsigned int
-                                                                                                                                                                        value,
-                                                                                                                                                                    intptr_t
-                                                                                                                                                                        *idp); }
-a kuku
-
-248	STD MODULAR ksem RUMP { int|sys||_ksem_open(const char *name, int oflag, \
-a kuku
-
-249	STD MODULAR ksem RUMP {
-                                                                                                                                                              int | sys ||
-                                                                                                                                                                  _ksem_unlink(
-                                                                                                                                                                      const char
-                                                                                                                                                                          *name); }
-a kuku
-
-250	STD MODULAR ksem RUMP {
-                                                                                                                                                              int | sys ||
-                                                                                                                                                                  _ksem_close(
-                                                                                                                                                                      intptr_t
-                                                                                                                                                                          id); }
-a kuku
-
-251	STD MODULAR ksem RUMP {
-                                                                                                                                                              int | sys ||
-                                                                                                                                                                  _ksem_post(
-                                                                                                                                                                      intptr_t
-                                                                                                                                                                          id); }
-a kuku
-
-252	STD MODULAR ksem RUMP {
-                                                                                                                                                              int | sys ||
-                                                                                                                                                                  _ksem_wait(
-                                                                                                                                                                      intptr_t
-                                                                                                                                                                          id); }
-a kuku
-
-253	STD MODULAR ksem RUMP {
-                                                                                                                                                              int | sys ||
-                                                                                                                                                                  _ksem_trywait(
-                                                                                                                                                                      intptr_t
-                                                                                                                                                                          id); }
-a kuku
-
-254	STD MODULAR ksem RUMP { int|sys||_ksem_getvalue(intptr_t id, \
-a kuku
-
-255	STD MODULAR ksem RUMP {
-                                                                                                                                                                int | sys ||
-                                                                                                                                                                    _ksem_destroy(
-                                                                                                                                                                        intptr_t
-                                                                                                                                                                            id); }
-a kuku
-
-256	STD MODULAR ksem RUMP { int|sys||_ksem_timedwait(intptr_t id, \
-a kuku
-
-257	STD MODULAR mqueue	\
-a kuku
-
-258	STD MODULAR mqueue	{
-                                                                                                                                                                  int | sys ||
-                                                                                                                                                                      mq_close(
-                                                                                                                                                                          mqd_t
-                                                                                                                                                                              mqdes); }
-a kuku
-
-259	STD MODULAR mqueue	{
-                                                                                                                                                                  int | sys ||
-                                                                                                                                                                      mq_unlink(
-                                                                                                                                                                          const char
-                                                                                                                                                                              *name); }
-a kuku
-
-260	STD MODULAR mqueue	\
-a kuku
-
-261	STD MODULAR mqueue	\
-a kuku
-
-262	STD MODULAR mqueue	\
-a kuku
-
-263	STD MODULAR mqueue	\
-a kuku
-
-264	STD MODULAR mqueue	\
-a kuku
-
-265	COMPAT_50 MODULAR compat	\
-a kuku
-
-266	COMPAT_50 MODULAR compat	\
-a kuku
-
-267	UNIMPL
-a kuku
-
-268	UNIMPL
-a kuku
-
-269	UNIMPL
-a kuku
-
-270	STD 	 RUMP	{ int|sys||__posix_rename(const char *from, \
-a kuku
-
-271	STD 		{
-                                                                                                                                                                    int | sys ||
-                                                                                                                                                                        swapctl(
-                                                                                                                                                                            int cmd,
-                                                                                                                                                                            void *
-                                                                                                                                                                                arg,
-                                                                                                                                                                            int misc); }
-a kuku
-
-272	COMPAT_30 MODULAR compat {
-                                                                                                                                                                    int | sys ||
-                                                                                                                                                                        getdents(
-                                                                                                                                                                            int fd,
-                                                                                                                                                                            char *
-                                                                                                                                                                                buf,
-                                                                                                                                                                            size_t
-                                                                                                                                                                                count); }
-a kuku
-
-273	STD 		{ int|sys||minherit(void *addr, size_t len, \
-a kuku
-
-274	STD 	 RUMP	{
-                                                                                                                                                                      int | sys ||
-                                                                                                                                                                          lchmod(
-                                                                                                                                                                              const char
-                                                                                                                                                                                  *path,
-                                                                                                                                                                              mode_t
-                                                                                                                                                                                  mode); }
-a kuku
-
-275	STD 	 RUMP	{ int|sys||lchown(const char *path, uid_t uid, \
-a kuku
-
-276	COMPAT_50 MODULAR compat RUMP { int|sys||lutimes(const char *path, \
-a kuku
-
-277	STD 		{
-                                                                                                                                                                          int |
-                                                                                                                                                                              sys |
-                                                                                                                                                                              13 |
-                                                                                                                                                                              msync(
-                                                                                                                                                                                  void *
-                                                                                                                                                                                      addr,
-                                                                                                                                                                                  size_t
-                                                                                                                                                                                      len,
-                                                                                                                                                                                  int flags); }
-a kuku
-
-278	COMPAT_30 MODULAR compat	\
-a kuku
-
-279	COMPAT_30 MODULAR compat	\
-a kuku
-
-280	COMPAT_30 MODULAR compat	\
-a kuku
-
-281	STD 		{ int|sys|14|sigaltstack( \
-a kuku
-
-282	STD 		{
-                                                                                                                                                                            int |
-                                                                                                                                                                                sys |
-                                                                                                                                                                                14 |
-                                                                                                                                                                                vfork(
-                                                                                                                                                                                    void); }
-a kuku
-
-283	STD 	RUMP	{ int|sys||__posix_chown(const char *path, uid_t uid, \
-a kuku
-
-284	STD 	RUMP	{ int|sys||__posix_fchown(int fd, uid_t uid, \
-a kuku
-
-285	STD 	RUMP	{ int|sys||__posix_lchown(const char *path, uid_t uid, \
-a kuku
-
-286	STD 	RUMP	{
-                                                                                                                                                                                  pid_t | sys ||
-                                                                                                                                                                                      getsid(
-                                                                                                                                                                                          pid_t
-                                                                                                                                                                                              pid); }
-a kuku
-
-287	STD 		{
-                                                                                                                                                                                  pid_t | sys ||
-                                                                                                                                                                                      __clone(
-                                                                                                                                                                                          int flags,
-                                                                                                                                                                                          void *
-                                                                                                                                                                                              stack); }
-a kuku
-
-288	STD 	RUMP	{ int|sys||fktrace(int fd, int ops, \
-a kuku
-
-289	STD 	RUMP	{ ssize_t|sys||preadv(int fd, \
-a kuku
-
-290	STD 	RUMP	{ ssize_t|sys||pwritev(int fd, \
-a kuku
-
-291	COMPAT_16 MODULAR compat { int|sys|14|sigaction(int signum, \
-a kuku
-
-292	STD 		{
-                                                                                                                                                                                          int |
-                                                                                                                                                                                              sys |
-                                                                                                                                                                                              14 |
-                                                                                                                                                                                              sigpending(
-                                                                                                                                                                                                  sigset_t *
-                                                                                                                                                                                                  set); }
-a kuku
-
-293	STD 		{ int|sys|14|sigprocmask(int how, \
-a kuku
-
-294	STD 		{
-                                                                                                                                                                                            int |
-                                                                                                                                                                                                sys |
-                                                                                                                                                                                                14 |
-                                                                                                                                                                                                sigsuspend(
-                                                                                                                                                                                                    const sigset_t
-                                                                                                                                                                                                        *set); }
-a kuku
-
-295	COMPAT_16 MODULAR compat	\
-a kuku
-
-296	STD 	 RUMP	{
-                                                                                                                                                                                            int | sys ||
-                                                                                                                                                                                                __getcwd(
-                                                                                                                                                                                                    char *
-                                                                                                                                                                                                        bufp,
-                                                                                                                                                                                                    size_t
-                                                                                                                                                                                                        length); }
-a kuku
-
-297	STD 	 RUMP	{
-                                                                                                                                                                                            int | sys ||
-                                                                                                                                                                                                fchroot(
-                                                                                                                                                                                                    int fd); }
-a kuku
-
-298	COMPAT_30 MODULAR compat	\
-a kuku
-
-299	COMPAT_30 MODULAR compat	\
-a kuku
-
-300	COMPAT_20 MODULAR compat	\
-a kuku
-
-301	COMPAT_50 MODULAR sysv_ipc	\
-a kuku
-
-302	COMPAT_50 MODULAR sysv_ipc { int|sys|13|msgctl(int msqid, int cmd, \
-a kuku
-
-303	COMPAT_50 MODULAR sysv_ipc { int|sys|13|shmctl(int shmid, int cmd, \
-a kuku
-
-304	STD 	 RUMP	{
-                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                    lchflags(
-                                                                                                                                                                                                        const char
-                                                                                                                                                                                                            *path,
-                                                                                                                                                                                                        u_long
-                                                                                                                                                                                                            flags); }
-a kuku
-
-305	NOERR 	RUMP	{
-                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                    issetugid(
-                                                                                                                                                                                                        void); }
-a kuku
-
-306	STD	RUMP	{ int|sys||utrace(const char *label, void *addr, \
-a kuku
-
-307	STD 		{
-                                                                                                                                                                                                  int | sys ||
-                                                                                                                                                                                                      getcontext(
-                                                                                                                                                                                                          struct
-                                                                                                                                                                                                          __ucontext *
-                                                                                                                                                                                                          ucp); }
-a kuku
-
-308	STD 		{
-                                                                                                                                                                                                  int | sys ||
-                                                                                                                                                                                                      setcontext(
-                                                                                                                                                                                                          const struct
-                                                                                                                                                                                                          __ucontext
-                                                                                                                                                                                                              *ucp); }
-a kuku
-
-309	STD 		{ int|sys||_lwp_create(const struct __ucontext *ucp, \
-a kuku
-
-310	STD 		{
-                                                                                                                                                                                                    int | sys ||
-                                                                                                                                                                                                        _lwp_exit(
-                                                                                                                                                                                                            void); }
-a kuku
-
-311	STD 		{
-                                                                                                                                                                                                    lwpid_t |
-                                                                                                                                                                                                            sys ||
-                                                                                                                                                                                                        _lwp_self(
-                                                                                                                                                                                                            void); }
-a kuku
-
-312	STD 		{ int|sys||_lwp_wait(lwpid_t wait_for, \
-a kuku
-
-313	STD 		{
-                                                                                                                                                                                                      int | sys ||
-                                                                                                                                                                                                          _lwp_suspend(
-                                                                                                                                                                                                              lwpid_t
-                                                                                                                                                                                                                  target); }
-a kuku
-
-314	STD 		{
-                                                                                                                                                                                                      int | sys ||
-                                                                                                                                                                                                          _lwp_continue(
-                                                                                                                                                                                                              lwpid_t
-                                                                                                                                                                                                                  target); }
-a kuku
-
-315	STD 		{
-                                                                                                                                                                                                      int | sys ||
-                                                                                                                                                                                                          _lwp_wakeup(
-                                                                                                                                                                                                              lwpid_t
-                                                                                                                                                                                                                  target); }
-a kuku
-
-316	STD 		{
-                                                                                                                                                                                                      void * |
-                                                                                                                                                                                                              sys ||
-                                                                                                                                                                                                          _lwp_getprivate(
-                                                                                                                                                                                                              void); }
-a kuku
-
-317	STD 		{
-                                                                                                                                                                                                      void | sys ||
-                                                                                                                                                                                                          _lwp_setprivate(
-                                                                                                                                                                                                              void *
-                                                                                                                                                                                                                  ptr); }
-a kuku
-
-318	STD 		{
-                                                                                                                                                                                                      int | sys ||
-                                                                                                                                                                                                          _lwp_kill(
-                                                                                                                                                                                                              lwpid_t
-                                                                                                                                                                                                                  target,
-                                                                                                                                                                                                              int signo); }
-a kuku
-
-319	STD 		{
-                                                                                                                                                                                                      int | sys ||
-                                                                                                                                                                                                          _lwp_detach(
-                                                                                                                                                                                                              lwpid_t
-                                                                                                                                                                                                                  target); }
-a kuku
-
-320	COMPAT_50 MODULAR compat	\
-a kuku
-
-321	STD 		{
-                                                                                                                                                                                                      int | sys ||
-                                                                                                                                                                                                          _lwp_unpark(
-                                                                                                                                                                                                              lwpid_t
-                                                                                                                                                                                                                  target,
-                                                                                                                                                                                                              const void
-                                                                                                                                                                                                                  *hint); }
-a kuku
-
-322	STD 		{ ssize_t|sys||_lwp_unpark_all(const lwpid_t *targets, \
-a kuku
-
-323	STD 		{ int|sys||_lwp_setname(lwpid_t target, \
-a kuku
-
-324	STD 		{ int|sys||_lwp_getname(lwpid_t target, \
-a kuku
-
-325	STD 		{ int|sys||_lwp_ctl(int features, \
-a kuku
-
-326	UNIMPL
-a kuku
-
-327	UNIMPL
-a kuku
-
-328	UNIMPL
-a kuku
-
-329	UNIMPL
-a kuku
-
-330	COMPAT_60 	{ int|sys||sa_register(void *newv, void **oldv, \
-a kuku
-
-331	COMPAT_60 	{
-                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                    sa_stacks(
-                                                                                                                                                                                                                        int num,
-                                                                                                                                                                                                                        stack_t
-                                                                                                                                                                                                                            *stacks); }
-a kuku
-
-332	COMPAT_60 	{
-                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                    sa_enable(
-                                                                                                                                                                                                                        void); }
-a kuku
-
-333	COMPAT_60 	{
-                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                    sa_setconcurrency(
-                                                                                                                                                                                                                        int concurrency); }
-a kuku
-
-334	COMPAT_60 	{
-                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                    sa_yield(
-                                                                                                                                                                                                                        void); }
-a kuku
-
-335	COMPAT_60 	{
-                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                    sa_preempt(
-                                                                                                                                                                                                                        int sa_id); }
-a kuku
-
-336	OBSOL 		sys_sa_unblockyield
-a kuku
-
-337	UNIMPL
-a kuku
-
-338	UNIMPL
-a kuku
-
-339	UNIMPL
-a kuku
-
-340	STD 		{ int|sys||__sigaction_sigtramp(int signum, \
-a kuku
-
-341	STD		{
-                                                                                                                                                                                                                  int | sys ||
-                                                                                                                                                                                                                      pmc_get_info(
-                                                                                                                                                                                                                          int ctr,
-                                                                                                                                                                                                                          int op,
-                                                                                                                                                                                                                          void *
-                                                                                                                                                                                                                              args); }
-a kuku
-
-342	STD		{
-                                                                                                                                                                                                                  int | sys ||
-                                                                                                                                                                                                                      pmc_control(
-                                                                                                                                                                                                                          int ctr,
-                                                                                                                                                                                                                          int op,
-                                                                                                                                                                                                                          void *
-                                                                                                                                                                                                                              args); }
-a kuku
-
-343	STD 		{
-                                                                                                                                                                                                                  int | sys ||
-                                                                                                                                                                                                                      rasctl(
-                                                                                                                                                                                                                          void *
-                                                                                                                                                                                                                              addr,
-                                                                                                                                                                                                                          size_t
-                                                                                                                                                                                                                              len,
-                                                                                                                                                                                                                          int op); }
-a kuku
-
-344	STD	RUMP	{
-                                                                                                                                                                                                                  int | sys ||
-                                                                                                                                                                                                                      kqueue(
-                                                                                                                                                                                                                          void); }
-a kuku
-
-345	COMPAT_50 MODULAR compat RUMP { int|sys||kevent(int fd, \
-a kuku
-
-346	STD 		{ int|sys||_sched_setparam(pid_t pid, lwpid_t lid, \
-a kuku
-
-347	STD 		{ int|sys||_sched_getparam(pid_t pid, lwpid_t lid, \
-a kuku
-
-348	STD 		{ int|sys||_sched_setaffinity(pid_t pid, lwpid_t lid, \
-a kuku
-
-349	STD 		{ int|sys||_sched_getaffinity(pid_t pid, lwpid_t lid, \
-a kuku
-
-350	STD 		{
-                                                                                                                                                                                                                            int | sys ||
-                                                                                                                                                                                                                                sched_yield(
-                                                                                                                                                                                                                                    void); }
-a kuku
-
-351	STD		{
-                                                                                                                                                                                                                            int | sys ||
-                                                                                                                                                                                                                                _sched_protect(
-                                                                                                                                                                                                                                    int priority); }	
-a kuku
-
-352	UNIMPL
-a kuku
-
-353	UNIMPL
-a kuku
-
-354	STD	RUMP	{ int|sys||fsync_range(int fd, int flags, off_t start, \
-a kuku
-
-355	STD 		{
-                                                                                                                                                                                                                              int | sys ||
-                                                                                                                                                                                                                                  uuidgen(
-                                                                                                                                                                                                                                      struct
-                                                                                                                                                                                                                                          uuid *
-                                                                                                                                                                                                                                          store,
-                                                                                                                                                                                                                                      int count); }
-a kuku
-
-356	STD 	RUMP	{ int|sys||getvfsstat(struct statvfs *buf, \
-a kuku
-
-357	STD 	RUMP	{ int|sys||statvfs1(const char *path, \
-a kuku
-
-358	STD 	RUMP	{ int|sys||fstatvfs1(int fd, struct statvfs *buf, \
-a kuku
-
-359	COMPAT_30 MODULAR compat	\
-a kuku
-
-360	STD 	RUMP	{ int|sys||extattrctl(const char *path, int cmd, \
-a kuku
-
-361	STD 	RUMP	{ int|sys||extattr_set_file(const char *path, \
-a kuku
-
-362	STD 	RUMP	{ ssize_t|sys||extattr_get_file(const char *path, \
-a kuku
-
-363	STD 	RUMP	{ int|sys||extattr_delete_file(const char *path, \
-a kuku
-
-364	STD 	RUMP	{ int|sys||extattr_set_fd(int fd, \
-a kuku
-
-365	STD 	RUMP	{ ssize_t|sys||extattr_get_fd(int fd, \
-a kuku
-
-366	STD 	RUMP	{ int|sys||extattr_delete_fd(int fd, \
-a kuku
-
-367	STD 	RUMP	{ int|sys||extattr_set_link(const char *path, \
-a kuku
-
-368	STD 	RUMP	{ ssize_t|sys||extattr_get_link(const char *path, \
-a kuku
-
-369	STD 	RUMP	{ int|sys||extattr_delete_link(const char *path, \
-a kuku
-
-370	STD 	RUMP	{ ssize_t|sys||extattr_list_fd(int fd, \
-a kuku
-
-371	STD 	RUMP	{ ssize_t|sys||extattr_list_file(const char *path, \
-a kuku
-
-372	STD 	RUMP	{ ssize_t|sys||extattr_list_link(const char *path, \
-a kuku
-
-373	COMPAT_50 MODULAR compat RUMP	\
-a kuku
-
-374	COMPAT_50 MODULAR compat RUMP	\
-a kuku
-
-375	STD 	RUMP	{ int|sys||setxattr(const char *path, \
-a kuku
-
-376	STD 	RUMP	{ int|sys||lsetxattr(const char *path, \
-a kuku
-
-377	STD 	RUMP	{ int|sys||fsetxattr(int fd, \
-a kuku
-
-378	STD 	RUMP	{ int|sys||getxattr(const char *path, \
-a kuku
-
-379	STD 	RUMP	{ int|sys||lgetxattr(const char *path, \
-a kuku
-
-380	STD 	RUMP	{ int|sys||fgetxattr(int fd, \
-a kuku
-
-381	STD 	RUMP	{ int|sys||listxattr(const char *path, \
-a kuku
-
-382	STD 	RUMP	{ int|sys||llistxattr(const char *path, \
-a kuku
-
-383	STD 	RUMP	{ int|sys||flistxattr(int fd, \
-a kuku
-
-384	STD 	RUMP	{ int|sys||removexattr(const char *path, \
-a kuku
-
-385	STD 	RUMP	{ int|sys||lremovexattr(const char *path, \
-a kuku
-
-386	STD 	RUMP	{ int|sys||fremovexattr(int fd, \
-a kuku
-
-387	COMPAT_50 MODULAR compat RUMP	\
-a kuku
-
-388	COMPAT_50 MODULAR compat RUMP	\
-a kuku
-
-389	COMPAT_50 MODULAR compat RUMP	\
-a kuku
-
-390	STD 	RUMP	{
-                                                                                                                                                                                                                                                                                      int |
-                                                                                                                                                                                                                                                                                          sys |
-                                                                                                                                                                                                                                                                                          30 |
-                                                                                                                                                                                                                                                                                          getdents(
-                                                                                                                                                                                                                                                                                              int fd,
-                                                                                                                                                                                                                                                                                              char *
-                                                                                                                                                                                                                                                                                                  buf,
-                                                                                                                                                                                                                                                                                              size_t
-                                                                                                                                                                                                                                                                                                  count); }
-a kuku
-
-391	IGNORED		old posix_fadvise
-a kuku
-
-392	COMPAT_30 MODULAR compat { int|sys|30|fhstat(const struct compat_30_fhandle \
-a kuku
-
-393	COMPAT_50 MODULAR compat	\
-a kuku
-
-394	STD	 RUMP	{
-                                                                                                                                                                                                                                                                                        int |
-                                                                                                                                                                                                                                                                                            sys |
-                                                                                                                                                                                                                                                                                            30 |
-                                                                                                                                                                                                                                                                                            socket(
-                                                                                                                                                                                                                                                                                                int domain,
-                                                                                                                                                                                                                                                                                                int type,
-                                                                                                                                                                                                                                                                                                int protocol); }
-a kuku
-
-395	STD 	 RUMP	{ int|sys|30|getfh(const char *fname, void *fhp, \
-a kuku
-
-396	STD 	 RUMP	{ int|sys|40|fhopen(const void *fhp, size_t fh_size,\
-a kuku
-
-397	STD 	 RUMP	{ int|sys|40|fhstatvfs1(const void *fhp, \
-a kuku
-
-398	COMPAT_50 MODULAR compat RUMP { int|sys|40|fhstat(const void *fhp, \
-a kuku
-
-399	STD MODULAR aio RUMP	\
-a kuku
-
-400	STD MODULAR aio RUMP	\
-a kuku
-
-401	STD MODULAR aio RUMP	\
-a kuku
-
-402	STD MODULAR aio RUMP	\
-a kuku
-
-403	STD MODULAR aio RUMP	\
-a kuku
-
-404	COMPAT_50 MODULAR compat	\
-a kuku
-
-405	STD MODULAR aio RUMP	\
-a kuku
-
-406	STD MODULAR aio RUMP	\
-a kuku
-
-407	UNIMPL
-a kuku
-
-408	UNIMPL
-a kuku
-
-409	UNIMPL
-a kuku
-
-410	STD  RUMP	{ int|sys|50|mount(const char *type, \
-a kuku
-
-411	STD 		{ void *|sys||mremap(void *old_address, size_t old_size, \
-a kuku
-
-412	STD 		{
-                                                                                                                                                                                                                                                                                                    int | sys ||
-                                                                                                                                                                                                                                                                                                        pset_create(
-                                                                                                                                                                                                                                                                                                            psetid_t *
-                                                                                                                                                                                                                                                                                                            psid); }
-a kuku
-
-413	STD 		{
-                                                                                                                                                                                                                                                                                                    int | sys ||
-                                                                                                                                                                                                                                                                                                        pset_destroy(
-                                                                                                                                                                                                                                                                                                            psetid_t
-                                                                                                                                                                                                                                                                                                                psid); }
-a kuku
-
-414	STD 		{ int|sys||pset_assign(psetid_t psid, cpuid_t cpuid, \
-a kuku
-
-415	STD 		{ int|sys||_pset_bind(idtype_t idtype, id_t first_id, \
-a kuku
-
-416	NOERR RUMP	{ int|sys|50|posix_fadvise(int fd, int PAD, \
-a kuku
-
-417	STD  RUMP	{ int|sys|50|select(int nd, fd_set *in, fd_set *ou, \
-a kuku
-
-418	STD  RUMP	{ int|sys|50|gettimeofday(struct timeval *tp, \
-a kuku
-
-419	STD  RUMP	{ int|sys|50|settimeofday(const struct timeval *tv, \
-a kuku
-
-420	STD  RUMP	{ int|sys|50|utimes(const char *path, \
-a kuku
-
-421	STD  RUMP	{ int|sys|50|adjtime(const struct timeval *delta, \
-a kuku
-
-422	STD  MODULAR lfs { int|sys|50|lfs_segwait(fsid_t *fsidp, \
-a kuku
-
-423	STD  RUMP	{ int|sys|50|futimes(int fd, \
-a kuku
-
-424	STD  RUMP 	{ int|sys|50|lutimes(const char *path, \
-a kuku
-
-425	STD  RUMP	{ int|sys|50|setitimer(int which, \
-a kuku
-
-426	STD  RUMP	{ int|sys|50|getitimer(int which, \
-a kuku
-
-427	STD  RUMP	{ int|sys|50|clock_gettime(clockid_t clock_id, \
-a kuku
-
-428	STD  RUMP	{ int|sys|50|clock_settime(clockid_t clock_id, \
-a kuku
-
-429	STD  RUMP	{ int|sys|50|clock_getres(clockid_t clock_id, \
-a kuku
-
-430	STD  RUMP	{ int|sys|50|nanosleep(const struct timespec *rqtp, \
-a kuku
-
-431	STD 		{ int|sys|50|__sigtimedwait(const sigset_t *set, \
-a kuku
-
-432	STD MODULAR mqueue	\
-a kuku
-
-433	STD MODULAR mqueue	\
-a kuku
-
-434	COMPAT_60 MODULAR compat \
-a kuku
-
-435	STD	RUMP	{ int|sys|50|kevent(int fd, \
-a kuku
-
-436	STD 	RUMP	{ int|sys|50|pselect(int nd, fd_set *in, fd_set *ou, \
-a kuku
-
-437	STD 	RUMP	{ int|sys|50|pollts(struct pollfd *fds, u_int nfds, \
-a kuku
-
-438	STD MODULAR aio RUMP { int|sys|50|aio_suspend( \
-a kuku
-
-439	STD  RUMP	{
-                                                                                                                                                                                                                                                                                                                                                int |
-                                                                                                                                                                                                                                                                                                                                                    sys |
-                                                                                                                                                                                                                                                                                                                                                    50 |
-                                                                                                                                                                                                                                                                                                                                                    stat(
-                                                                                                                                                                                                                                                                                                                                                        const char
-                                                                                                                                                                                                                                                                                                                                                            *path,
-                                                                                                                                                                                                                                                                                                                                                        struct stat *
-                                                                                                                                                                                                                                                                                                                                                            ub); }
-a kuku
-
-440	STD  RUMP	{
-                                                                                                                                                                                                                                                                                                                                                int |
-                                                                                                                                                                                                                                                                                                                                                    sys |
-                                                                                                                                                                                                                                                                                                                                                    50 |
-                                                                                                                                                                                                                                                                                                                                                    fstat(int fd,
-                                                                                                                                                                                                                                                                                                                                                          struct
-                                                                                                                                                                                                                                                                                                                                                          stat
-                                                                                                                                                                                                                                                                                                                                                              *sb); }
-a kuku
-
-441	STD  RUMP	{
-                                                                                                                                                                                                                                                                                                                                                int |
-                                                                                                                                                                                                                                                                                                                                                    sys |
-                                                                                                                                                                                                                                                                                                                                                    50 |
-                                                                                                                                                                                                                                                                                                                                                    lstat(
-                                                                                                                                                                                                                                                                                                                                                        const char
-                                                                                                                                                                                                                                                                                                                                                            *path,
-                                                                                                                                                                                                                                                                                                                                                        struct stat *
-                                                                                                                                                                                                                                                                                                                                                            ub); }
-a kuku
-
-442	STD MODULAR sysv_ipc { int|sys|50|__semctl(int semid, int semnum, \
-a kuku
-
-443	STD MODULAR sysv_ipc { int|sys|50|shmctl(int shmid, int cmd, \
-a kuku
-
-444	STD MODULAR sysv_ipc { int|sys|50|msgctl(int msqid, int cmd, \
-a kuku
-
-445	STD 		{
-                                                                                                                                                                                                                                                                                                                                                      int |
-                                                                                                                                                                                                                                                                                                                                                          sys | 50 | getrusage(int who, struct rusage *rusage); }
-a kuku
-
-446	STD  RUMP	{ int|sys|50|timer_settime(timer_t timerid, \
-a kuku
-
-447	STD  RUMP	{ int|sys|50|timer_gettime(timer_t timerid, struct \
+/* syscall 177 has been skipped */
+/* syscall 178 has been skipped */
+/* syscall 179 has been skipped */
+/* syscall 180 has been skipped */
+#define __sanitizer_syscall_pre_setgid() \
+  __sanitizer_syscall_pre_impl_setgid()
+#define __sanitizer_syscall_post_setgid() \
+  __sanitizer_syscall_post_impl_setgid()
+#define __sanitizer_syscall_pre_setegid() \
+  __sanitizer_syscall_pre_impl_setegid()
+#define __sanitizer_syscall_post_setegid() \
+  __sanitizer_syscall_post_impl_setegid()
+#define __sanitizer_syscall_pre_seteuid() \
+  __sanitizer_syscall_pre_impl_seteuid()
+#define __sanitizer_syscall_post_seteuid() \
+  __sanitizer_syscall_post_impl_seteuid()
+#define __sanitizer_syscall_pre_lfs_bmapv() \
+  __sanitizer_syscall_pre_impl_lfs_bmapv()
+#define __sanitizer_syscall_post_lfs_bmapv() \
+  __sanitizer_syscall_post_impl_lfs_bmapv()
+#define __sanitizer_syscall_pre_lfs_markv() \
+  __sanitizer_syscall_pre_impl_lfs_markv()
+#define __sanitizer_syscall_post_lfs_markv() \
+  __sanitizer_syscall_post_impl_lfs_markv()
+#define __sanitizer_syscall_pre_lfs_segclean() \
+  __sanitizer_syscall_pre_impl_lfs_segclean()
+#define __sanitizer_syscall_post_lfs_segclean() \
+  __sanitizer_syscall_post_impl_lfs_segclean()
+#define __sanitizer_syscall_pre_compat_50_lfs_segwait() \
+  __sanitizer_syscall_pre_impl_compat_50_lfs_segwait()
+#define __sanitizer_syscall_post_compat_50_lfs_segwait() \
+  __sanitizer_syscall_post_impl_compat_50_lfs_segwait()
+#define __sanitizer_syscall_pre_compat_12_stat12() \
+  __sanitizer_syscall_pre_impl_compat_12_stat12()
+#define __sanitizer_syscall_post_compat_12_stat12() \
+  __sanitizer_syscall_post_impl_compat_12_stat12()
+#define __sanitizer_syscall_pre_compat_12_fstat12() \
+  __sanitizer_syscall_pre_impl_compat_12_fstat12()
+#define __sanitizer_syscall_post_compat_12_fstat12() \
+  __sanitizer_syscall_post_impl_compat_12_fstat12()
+#define __sanitizer_syscall_pre_compat_12_lstat12() \
+  __sanitizer_syscall_pre_impl_compat_12_lstat12()
+#define __sanitizer_syscall_post_compat_12_lstat12() \
+  __sanitizer_syscall_post_impl_compat_12_lstat12()
+#define __sanitizer_syscall_pre_pathconf() \
+  __sanitizer_syscall_pre_impl_pathconf()
+#define __sanitizer_syscall_post_pathconf() \
+  __sanitizer_syscall_post_impl_pathconf()
+#define __sanitizer_syscall_pre_fpathconf() \
+  __sanitizer_syscall_pre_impl_fpathconf()
+#define __sanitizer_syscall_post_fpathconf() \
+  __sanitizer_syscall_post_impl_fpathconf()
+/* syscall 193 has been skipped */
+#define __sanitizer_syscall_pre_getrlimit() \
+  __sanitizer_syscall_pre_impl_getrlimit()
+#define __sanitizer_syscall_post_getrlimit() \
+  __sanitizer_syscall_post_impl_getrlimit()
+#define __sanitizer_syscall_pre_setrlimit() \
+  __sanitizer_syscall_pre_impl_setrlimit()
+#define __sanitizer_syscall_post_setrlimit() \
+  __sanitizer_syscall_post_impl_setrlimit()
+#define __sanitizer_syscall_pre_compat_12_getdirentries() \
+  __sanitizer_syscall_pre_impl_compat_12_getdirentries()
+#define __sanitizer_syscall_post_compat_12_getdirentries() \
+  __sanitizer_syscall_post_impl_compat_12_getdirentries()
+#define __sanitizer_syscall_pre_mmap() \
+  __sanitizer_syscall_pre_impl_mmap()
+#define __sanitizer_syscall_post_mmap() \
+  __sanitizer_syscall_post_impl_mmap()
+#define __sanitizer_syscall_pre___syscall() \
+  __sanitizer_syscall_pre_impl___syscall()
+#define __sanitizer_syscall_post___syscall() \
+  __sanitizer_syscall_post_impl___syscall()
+#define __sanitizer_syscall_pre_lseek() \
+  __sanitizer_syscall_pre_impl_lseek()
+#define __sanitizer_syscall_post_lseek() \
+  __sanitizer_syscall_post_impl_lseek()
+#define __sanitizer_syscall_pre_truncate() \
+  __sanitizer_syscall_pre_impl_truncate()
+#define __sanitizer_syscall_post_truncate() \
+  __sanitizer_syscall_post_impl_truncate()
+#define __sanitizer_syscall_pre_ftruncate() \
+  __sanitizer_syscall_pre_impl_ftruncate()
+#define __sanitizer_syscall_post_ftruncate() \
+  __sanitizer_syscall_post_impl_ftruncate()
+#define __sanitizer_syscall_pre___sysctl() \
+  __sanitizer_syscall_pre_impl___sysctl()
+#define __sanitizer_syscall_post___sysctl() \
+  __sanitizer_syscall_post_impl___sysctl()
+#define __sanitizer_syscall_pre_mlock() \
+  __sanitizer_syscall_pre_impl_mlock()
+#define __sanitizer_syscall_post_mlock() \
+  __sanitizer_syscall_post_impl_mlock()
+#define __sanitizer_syscall_pre_munlock() \
+  __sanitizer_syscall_pre_impl_munlock()
+#define __sanitizer_syscall_post_munlock() \
+  __sanitizer_syscall_post_impl_munlock()
+#define __sanitizer_syscall_pre_undelete() \
+  __sanitizer_syscall_pre_impl_undelete()
+#define __sanitizer_syscall_post_undelete() \
+  __sanitizer_syscall_post_impl_undelete()
+#define __sanitizer_syscall_pre_compat_50_futimes() \
+  __sanitizer_syscall_pre_impl_compat_50_futimes()
+#define __sanitizer_syscall_post_compat_50_futimes() \
+  __sanitizer_syscall_post_impl_compat_50_futimes()
+#define __sanitizer_syscall_pre_getpgid() \
+  __sanitizer_syscall_pre_impl_getpgid()
+#define __sanitizer_syscall_post_getpgid() \
+  __sanitizer_syscall_post_impl_getpgid()
+#define __sanitizer_syscall_pre_reboot() \
+  __sanitizer_syscall_pre_impl_reboot()
+#define __sanitizer_syscall_post_reboot() \
+  __sanitizer_syscall_post_impl_reboot()
+#define __sanitizer_syscall_pre_poll() \
+  __sanitizer_syscall_pre_impl_poll()
+#define __sanitizer_syscall_post_poll() \
+  __sanitizer_syscall_post_impl_poll()
+#define __sanitizer_syscall_pre_afssys() \
+  __sanitizer_syscall_pre_impl_afssys()
+#define __sanitizer_syscall_post_afssys() \
+  __sanitizer_syscall_post_impl_afssys()
+/* syscall 211 has been skipped */
+/* syscall 212 has been skipped */
+/* syscall 213 has been skipped */
+/* syscall 214 has been skipped */
+/* syscall 215 has been skipped */
+/* syscall 216 has been skipped */
+/* syscall 217 has been skipped */
+/* syscall 218 has been skipped */
+/* syscall 219 has been skipped */
+#define __sanitizer_syscall_pre_compat_14___semctl() \
+  __sanitizer_syscall_pre_impl_compat_14___semctl()
+#define __sanitizer_syscall_post_compat_14___semctl() \
+  __sanitizer_syscall_post_impl_compat_14___semctl()
+#define __sanitizer_syscall_pre_semget() \
+  __sanitizer_syscall_pre_impl_semget()
+#define __sanitizer_syscall_post_semget() \
+  __sanitizer_syscall_post_impl_semget()
+#define __sanitizer_syscall_pre_semop() \
+  __sanitizer_syscall_pre_impl_semop()
+#define __sanitizer_syscall_post_semop() \
+  __sanitizer_syscall_post_impl_semop()
+#define __sanitizer_syscall_pre_semconfig() \
+  __sanitizer_syscall_pre_impl_semconfig()
+#define __sanitizer_syscall_post_semconfig() \
+  __sanitizer_syscall_post_impl_semconfig()
+#define __sanitizer_syscall_pre_compat_14_msgctl() \
+  __sanitizer_syscall_pre_impl_compat_14_msgctl()
+#define __sanitizer_syscall_post_compat_14_msgctl() \
+  __sanitizer_syscall_post_impl_compat_14_msgctl()
+#define __sanitizer_syscall_pre_msgget() \
+  __sanitizer_syscall_pre_impl_msgget()
+#define __sanitizer_syscall_post_msgget() \
+  __sanitizer_syscall_post_impl_msgget()
+#define __sanitizer_syscall_pre_msgsnd() \
+  __sanitizer_syscall_pre_impl_msgsnd()
+#define __sanitizer_syscall_post_msgsnd() \
+  __sanitizer_syscall_post_impl_msgsnd()
+#define __sanitizer_syscall_pre_msgrcv() \
+  __sanitizer_syscall_pre_impl_msgrcv()
+#define __sanitizer_syscall_post_msgrcv() \
+  __sanitizer_syscall_post_impl_msgrcv()
+#define __sanitizer_syscall_pre_shmat() \
+  __sanitizer_syscall_pre_impl_shmat()
+#define __sanitizer_syscall_post_shmat() \
+  __sanitizer_syscall_post_impl_shmat()
+#define __sanitizer_syscall_pre_compat_14_shmctl() \
+  __sanitizer_syscall_pre_impl_compat_14_shmctl()
+#define __sanitizer_syscall_post_compat_14_shmctl() \
+  __sanitizer_syscall_post_impl_compat_14_shmctl()
+#define __sanitizer_syscall_pre_shmdt() \
+  __sanitizer_syscall_pre_impl_shmdt()
+#define __sanitizer_syscall_post_shmdt() \
+  __sanitizer_syscall_post_impl_shmdt()
+#define __sanitizer_syscall_pre_shmget() \
+  __sanitizer_syscall_pre_impl_shmget()
+#define __sanitizer_syscall_post_shmget() \
+  __sanitizer_syscall_post_impl_shmget()
+#define __sanitizer_syscall_pre_compat_50_clock_gettime() \
+  __sanitizer_syscall_pre_impl_compat_50_clock_gettime()
+#define __sanitizer_syscall_post_compat_50_clock_gettime() \
+  __sanitizer_syscall_post_impl_compat_50_clock_gettime()
+#define __sanitizer_syscall_pre_compat_50_clock_settime() \
+  __sanitizer_syscall_pre_impl_compat_50_clock_settime()
+#define __sanitizer_syscall_post_compat_50_clock_settime() \
+  __sanitizer_syscall_post_impl_compat_50_clock_settime()
+#define __sanitizer_syscall_pre_compat_50_clock_getres() \
+  __sanitizer_syscall_pre_impl_compat_50_clock_getres()
+#define __sanitizer_syscall_post_compat_50_clock_getres() \
+  __sanitizer_syscall_post_impl_compat_50_clock_getres()
+#define __sanitizer_syscall_pre_timer_create() \
+  __sanitizer_syscall_pre_impl_timer_create()
+#define __sanitizer_syscall_post_timer_create() \
+  __sanitizer_syscall_post_impl_timer_create()
+#define __sanitizer_syscall_pre_timer_delete() \
+  __sanitizer_syscall_pre_impl_timer_delete()
+#define __sanitizer_syscall_post_timer_delete() \
+  __sanitizer_syscall_post_impl_timer_delete()
+#define __sanitizer_syscall_pre_compat_50_timer_settime() \
+  __sanitizer_syscall_pre_impl_compat_50_timer_settime()
+#define __sanitizer_syscall_post_compat_50_timer_settime() \
+  __sanitizer_syscall_post_impl_compat_50_timer_settime()
+#define __sanitizer_syscall_pre_compat_50_timer_gettime() \
+  __sanitizer_syscall_pre_impl_compat_50_timer_gettime()
+#define __sanitizer_syscall_post_compat_50_timer_gettime() \
+  __sanitizer_syscall_post_impl_compat_50_timer_gettime()
+#define __sanitizer_syscall_pre_timer_getoverrun() \
+  __sanitizer_syscall_pre_impl_timer_getoverrun()
+#define __sanitizer_syscall_post_timer_getoverrun() \
+  __sanitizer_syscall_post_impl_timer_getoverrun()
+#define __sanitizer_syscall_pre_compat_50_nanosleep() \
+  __sanitizer_syscall_pre_impl_compat_50_nanosleep()
+#define __sanitizer_syscall_post_compat_50_nanosleep() \
+  __sanitizer_syscall_post_impl_compat_50_nanosleep()
+#define __sanitizer_syscall_pre_fdatasync() \
+  __sanitizer_syscall_pre_impl_fdatasync()
+#define __sanitizer_syscall_post_fdatasync() \
+  __sanitizer_syscall_post_impl_fdatasync()
+#define __sanitizer_syscall_pre_mlockall() \
+  __sanitizer_syscall_pre_impl_mlockall()
+#define __sanitizer_syscall_post_mlockall() \
+  __sanitizer_syscall_post_impl_mlockall()
+#define __sanitizer_syscall_pre_munlockall() \
+  __sanitizer_syscall_pre_impl_munlockall()
+#define __sanitizer_syscall_post_munlockall() \
+  __sanitizer_syscall_post_impl_munlockall()
+#define __sanitizer_syscall_pre_compat_50___sigtimedwait() \
+  __sanitizer_syscall_pre_impl_compat_50___sigtimedwait()
+#define __sanitizer_syscall_post_compat_50___sigtimedwait() \
+  __sanitizer_syscall_post_impl_compat_50___sigtimedwait()
+#define __sanitizer_syscall_pre_sigqueueinfo() \
+  __sanitizer_syscall_pre_impl_sigqueueinfo()
+#define __sanitizer_syscall_post_sigqueueinfo() \
+  __sanitizer_syscall_post_impl_sigqueueinfo()
+#define __sanitizer_syscall_pre_modctl() \
+  __sanitizer_syscall_pre_impl_modctl()
+#define __sanitizer_syscall_post_modctl() \
+  __sanitizer_syscall_post_impl_modctl()
+#define __sanitizer_syscall_pre__ksem_init() \
+  __sanitizer_syscall_pre_impl__ksem_init()
+#define __sanitizer_syscall_post__ksem_init() \
+  __sanitizer_syscall_post_impl__ksem_init()
+#define __sanitizer_syscall_pre__ksem_open() \
+  __sanitizer_syscall_pre_impl__ksem_open()
+#define __sanitizer_syscall_post__ksem_open() \
+  __sanitizer_syscall_post_impl__ksem_open()
+#define __sanitizer_syscall_pre__ksem_unlink() \
+  __sanitizer_syscall_pre_impl__ksem_unlink()
+#define __sanitizer_syscall_post__ksem_unlink() \
+  __sanitizer_syscall_post_impl__ksem_unlink()
+#define __sanitizer_syscall_pre__ksem_close() \
+  __sanitizer_syscall_pre_impl__ksem_close()
+#define __sanitizer_syscall_post__ksem_close() \
+  __sanitizer_syscall_post_impl__ksem_close()
+#define __sanitizer_syscall_pre__ksem_post() \
+  __sanitizer_syscall_pre_impl__ksem_post()
+#define __sanitizer_syscall_post__ksem_post() \
+  __sanitizer_syscall_post_impl__ksem_post()
+#define __sanitizer_syscall_pre__ksem_wait() \
+  __sanitizer_syscall_pre_impl__ksem_wait()
+#define __sanitizer_syscall_post__ksem_wait() \
+  __sanitizer_syscall_post_impl__ksem_wait()
+#define __sanitizer_syscall_pre__ksem_trywait() \
+  __sanitizer_syscall_pre_impl__ksem_trywait()
+#define __sanitizer_syscall_post__ksem_trywait() \
+  __sanitizer_syscall_post_impl__ksem_trywait()
+#define __sanitizer_syscall_pre__ksem_getvalue() \
+  __sanitizer_syscall_pre_impl__ksem_getvalue()
+#define __sanitizer_syscall_post__ksem_getvalue() \
+  __sanitizer_syscall_post_impl__ksem_getvalue()
+#define __sanitizer_syscall_pre__ksem_destroy() \
+  __sanitizer_syscall_pre_impl__ksem_destroy()
+#define __sanitizer_syscall_post__ksem_destroy() \
+  __sanitizer_syscall_post_impl__ksem_destroy()
+#define __sanitizer_syscall_pre__ksem_timedwait() \
+  __sanitizer_syscall_pre_impl__ksem_timedwait()
+#define __sanitizer_syscall_post__ksem_timedwait() \
+  __sanitizer_syscall_post_impl__ksem_timedwait()
+#define __sanitizer_syscall_pre_mq_open() \
+  __sanitizer_syscall_pre_impl_mq_open()
+#define __sanitizer_syscall_post_mq_open() \
+  __sanitizer_syscall_post_impl_mq_open()
+#define __sanitizer_syscall_pre_mq_close() \
+  __sanitizer_syscall_pre_impl_mq_close()
+#define __sanitizer_syscall_post_mq_close() \
+  __sanitizer_syscall_post_impl_mq_close()
+#define __sanitizer_syscall_pre_mq_unlink() \
+  __sanitizer_syscall_pre_impl_mq_unlink()
+#define __sanitizer_syscall_post_mq_unlink() \
+  __sanitizer_syscall_post_impl_mq_unlink()
+#define __sanitizer_syscall_pre_mq_getattr() \
+  __sanitizer_syscall_pre_impl_mq_getattr()
+#define __sanitizer_syscall_post_mq_getattr() \
+  __sanitizer_syscall_post_impl_mq_getattr()
+#define __sanitizer_syscall_pre_mq_setattr() \
+  __sanitizer_syscall_pre_impl_mq_setattr()
+#define __sanitizer_syscall_post_mq_setattr() \
+  __sanitizer_syscall_post_impl_mq_setattr()
+#define __sanitizer_syscall_pre_mq_notify() \
+  __sanitizer_syscall_pre_impl_mq_notify()
+#define __sanitizer_syscall_post_mq_notify() \
+  __sanitizer_syscall_post_impl_mq_notify()
+#define __sanitizer_syscall_pre_mq_send() \
+  __sanitizer_syscall_pre_impl_mq_send()
+#define __sanitizer_syscall_post_mq_send() \
+  __sanitizer_syscall_post_impl_mq_send()
+#define __sanitizer_syscall_pre_mq_receive() \
+  __sanitizer_syscall_pre_impl_mq_receive()
+#define __sanitizer_syscall_post_mq_receive() \
+  __sanitizer_syscall_post_impl_mq_receive()
+#define __sanitizer_syscall_pre_compat_50_mq_timedsend() \
+  __sanitizer_syscall_pre_impl_compat_50_mq_timedsend()
+#define __sanitizer_syscall_post_compat_50_mq_timedsend() \
+  __sanitizer_syscall_post_impl_compat_50_mq_timedsend()
+#define __sanitizer_syscall_pre_compat_50_mq_timedreceive() \
+  __sanitizer_syscall_pre_impl_compat_50_mq_timedreceive()
+#define __sanitizer_syscall_post_compat_50_mq_timedreceive() \
+  __sanitizer_syscall_post_impl_compat_50_mq_timedreceive()
+/* syscall 267 has been skipped */
+/* syscall 268 has been skipped */
+/* syscall 269 has been skipped */
+#define __sanitizer_syscall_pre___posix_rename() \
+  __sanitizer_syscall_pre_impl___posix_rename()
+#define __sanitizer_syscall_post___posix_rename() \
+  __sanitizer_syscall_post_impl___posix_rename()
+#define __sanitizer_syscall_pre_swapctl() \
+  __sanitizer_syscall_pre_impl_swapctl()
+#define __sanitizer_syscall_post_swapctl() \
+  __sanitizer_syscall_post_impl_swapctl()
+#define __sanitizer_syscall_pre_compat_30_getdents() \
+  __sanitizer_syscall_pre_impl_compat_30_getdents()
+#define __sanitizer_syscall_post_compat_30_getdents() \
+  __sanitizer_syscall_post_impl_compat_30_getdents()
+#define __sanitizer_syscall_pre_minherit() \
+  __sanitizer_syscall_pre_impl_minherit()
+#define __sanitizer_syscall_post_minherit() \
+  __sanitizer_syscall_post_impl_minherit()
+#define __sanitizer_syscall_pre_lchmod() \
+  __sanitizer_syscall_pre_impl_lchmod()
+#define __sanitizer_syscall_post_lchmod() \
+  __sanitizer_syscall_post_impl_lchmod()
+#define __sanitizer_syscall_pre_lchown() \
+  __sanitizer_syscall_pre_impl_lchown()
+#define __sanitizer_syscall_post_lchown() \
+  __sanitizer_syscall_post_impl_lchown()
+#define __sanitizer_syscall_pre_compat_50_lutimes() \
+  __sanitizer_syscall_pre_impl_compat_50_lutimes()
+#define __sanitizer_syscall_post_compat_50_lutimes() \
+  __sanitizer_syscall_post_impl_compat_50_lutimes()
+#define __sanitizer_syscall_pre___msync13() \
+  __sanitizer_syscall_pre_impl___msync13()
+#define __sanitizer_syscall_post___msync13() \
+  __sanitizer_syscall_post_impl___msync13()
+#define __sanitizer_syscall_pre_compat_30___stat13() \
+  __sanitizer_syscall_pre_impl_compat_30___stat13()
+#define __sanitizer_syscall_post_compat_30___stat13() \
+  __sanitizer_syscall_post_impl_compat_30___stat13()
+#define __sanitizer_syscall_pre_compat_30___fstat13() \
+  __sanitizer_syscall_pre_impl_compat_30___fstat13()
+#define __sanitizer_syscall_post_compat_30___fstat13() \
+  __sanitizer_syscall_post_impl_compat_30___fstat13()
+#define __sanitizer_syscall_pre_compat_30___lstat13() \
+  __sanitizer_syscall_pre_impl_compat_30___lstat13()
+#define __sanitizer_syscall_post_compat_30___lstat13() \
+  __sanitizer_syscall_post_impl_compat_30___lstat13()
+#define __sanitizer_syscall_pre___sigaltstack14() \
+  __sanitizer_syscall_pre_impl___sigaltstack14()
+#define __sanitizer_syscall_post___sigaltstack14() \
+  __sanitizer_syscall_post_impl___sigaltstack14()
+#define __sanitizer_syscall_pre___vfork14() \
+  __sanitizer_syscall_pre_impl___vfork14()
+#define __sanitizer_syscall_post___vfork14() \
+  __sanitizer_syscall_post_impl___vfork14()
+#define __sanitizer_syscall_pre___posix_chown() \
+  __sanitizer_syscall_pre_impl___posix_chown()
+#define __sanitizer_syscall_post___posix_chown() \
+  __sanitizer_syscall_post_impl___posix_chown()
+#define __sanitizer_syscall_pre___posix_fchown() \
+  __sanitizer_syscall_pre_impl___posix_fchown()
+#define __sanitizer_syscall_post___posix_fchown() \
+  __sanitizer_syscall_post_impl___posix_fchown()
+#define __sanitizer_syscall_pre___posix_lchown() \
+  __sanitizer_syscall_pre_impl___posix_lchown()
+#define __sanitizer_syscall_post___posix_lchown() \
+  __sanitizer_syscall_post_impl___posix_lchown()
+#define __sanitizer_syscall_pre_getsid() \
+  __sanitizer_syscall_pre_impl_getsid()
+#define __sanitizer_syscall_post_getsid() \
+  __sanitizer_syscall_post_impl_getsid()
+#define __sanitizer_syscall_pre___clone() \
+  __sanitizer_syscall_pre_impl___clone()
+#define __sanitizer_syscall_post___clone() \
+  __sanitizer_syscall_post_impl___clone()
+#define __sanitizer_syscall_pre_fktrace() \
+  __sanitizer_syscall_pre_impl_fktrace()
+#define __sanitizer_syscall_post_fktrace() \
+  __sanitizer_syscall_post_impl_fktrace()
+#define __sanitizer_syscall_pre_preadv() \
+  __sanitizer_syscall_pre_impl_preadv()
+#define __sanitizer_syscall_post_preadv() \
+  __sanitizer_syscall_post_impl_preadv()
+#define __sanitizer_syscall_pre_pwritev() \
+  __sanitizer_syscall_pre_impl_pwritev()
+#define __sanitizer_syscall_post_pwritev() \
+  __sanitizer_syscall_post_impl_pwritev()
+#define __sanitizer_syscall_pre_compat_16___sigaction14() \
+  __sanitizer_syscall_pre_impl_compat_16___sigaction14()
+#define __sanitizer_syscall_post_compat_16___sigaction14() \
+  __sanitizer_syscall_post_impl_compat_16___sigaction14()
+#define __sanitizer_syscall_pre___sigpending14() \
+  __sanitizer_syscall_pre_impl___sigpending14()
+#define __sanitizer_syscall_post___sigpending14() \
+  __sanitizer_syscall_post_impl___sigpending14()
+#define __sanitizer_syscall_pre___sigprocmask14() \
+  __sanitizer_syscall_pre_impl___sigprocmask14()
+#define __sanitizer_syscall_post___sigprocmask14() \
+  __sanitizer_syscall_post_impl___sigprocmask14()
+#define __sanitizer_syscall_pre___sigsuspend14() \
+  __sanitizer_syscall_pre_impl___sigsuspend14()
+#define __sanitizer_syscall_post___sigsuspend14() \
+  __sanitizer_syscall_post_impl___sigsuspend14()
+#define __sanitizer_syscall_pre_compat_16___sigreturn14() \
+  __sanitizer_syscall_pre_impl_compat_16___sigreturn14()
+#define __sanitizer_syscall_post_compat_16___sigreturn14() \
+  __sanitizer_syscall_post_impl_compat_16___sigreturn14()
+#define __sanitizer_syscall_pre___getcwd() \
+  __sanitizer_syscall_pre_impl___getcwd()
+#define __sanitizer_syscall_post___getcwd() \
+  __sanitizer_syscall_post_impl___getcwd()
+#define __sanitizer_syscall_pre_fchroot() \
+  __sanitizer_syscall_pre_impl_fchroot()
+#define __sanitizer_syscall_post_fchroot() \
+  __sanitizer_syscall_post_impl_fchroot()
+#define __sanitizer_syscall_pre_compat_30_fhopen() \
+  __sanitizer_syscall_pre_impl_compat_30_fhopen()
+#define __sanitizer_syscall_post_compat_30_fhopen() \
+  __sanitizer_syscall_post_impl_compat_30_fhopen()
+#define __sanitizer_syscall_pre_compat_30_fhstat() \
+  __sanitizer_syscall_pre_impl_compat_30_fhstat()
+#define __sanitizer_syscall_post_compat_30_fhstat() \
+  __sanitizer_syscall_post_impl_compat_30_fhstat()
+#define __sanitizer_syscall_pre_compat_20_fhstatfs() \
+  __sanitizer_syscall_pre_impl_compat_20_fhstatfs()
+#define __sanitizer_syscall_post_compat_20_fhstatfs() \
+  __sanitizer_syscall_post_impl_compat_20_fhstatfs()
+#define __sanitizer_syscall_pre_compat_50_____semctl13() \
+  __sanitizer_syscall_pre_impl_compat_50_____semctl13()
+#define __sanitizer_syscall_post_compat_50_____semctl13() \
+  __sanitizer_syscall_post_impl_compat_50_____semctl13()
+#define __sanitizer_syscall_pre_compat_50___msgctl13() \
+  __sanitizer_syscall_pre_impl_compat_50___msgctl13()
+#define __sanitizer_syscall_post_compat_50___msgctl13() \
+  __sanitizer_syscall_post_impl_compat_50___msgctl13()
+#define __sanitizer_syscall_pre_compat_50___shmctl13() \
+  __sanitizer_syscall_pre_impl_compat_50___shmctl13()
+#define __sanitizer_syscall_post_compat_50___shmctl13() \
+  __sanitizer_syscall_post_impl_compat_50___shmctl13()
+#define __sanitizer_syscall_pre_lchflags() \
+  __sanitizer_syscall_pre_impl_lchflags()
+#define __sanitizer_syscall_post_lchflags() \
+  __sanitizer_syscall_post_impl_lchflags()
+#define __sanitizer_syscall_pre_issetugid() \
+  __sanitizer_syscall_pre_impl_issetugid()
+#define __sanitizer_syscall_post_issetugid() \
+  __sanitizer_syscall_post_impl_issetugid()
+#define __sanitizer_syscall_pre_utrace() \
+  __sanitizer_syscall_pre_impl_utrace()
+#define __sanitizer_syscall_post_utrace() \
+  __sanitizer_syscall_post_impl_utrace()
+#define __sanitizer_syscall_pre_getcontext() \
+  __sanitizer_syscall_pre_impl_getcontext()
+#define __sanitizer_syscall_post_getcontext() \
+  __sanitizer_syscall_post_impl_getcontext()
+#define __sanitizer_syscall_pre_setcontext() \
+  __sanitizer_syscall_pre_impl_setcontext()
+#define __sanitizer_syscall_post_setcontext() \
+  __sanitizer_syscall_post_impl_setcontext()
+#define __sanitizer_syscall_pre__lwp_create() \
+  __sanitizer_syscall_pre_impl__lwp_create()
+#define __sanitizer_syscall_post__lwp_create() \
+  __sanitizer_syscall_post_impl__lwp_create()
+#define __sanitizer_syscall_pre__lwp_exit() \
+  __sanitizer_syscall_pre_impl__lwp_exit()
+#define __sanitizer_syscall_post__lwp_exit() \
+  __sanitizer_syscall_post_impl__lwp_exit()
+#define __sanitizer_syscall_pre__lwp_self() \
+  __sanitizer_syscall_pre_impl__lwp_self()
+#define __sanitizer_syscall_post__lwp_self() \
+  __sanitizer_syscall_post_impl__lwp_self()
+#define __sanitizer_syscall_pre__lwp_wait() \
+  __sanitizer_syscall_pre_impl__lwp_wait()
+#define __sanitizer_syscall_post__lwp_wait() \
+  __sanitizer_syscall_post_impl__lwp_wait()
+#define __sanitizer_syscall_pre__lwp_suspend() \
+  __sanitizer_syscall_pre_impl__lwp_suspend()
+#define __sanitizer_syscall_post__lwp_suspend() \
+  __sanitizer_syscall_post_impl__lwp_suspend()
+#define __sanitizer_syscall_pre__lwp_continue() \
+  __sanitizer_syscall_pre_impl__lwp_continue()
+#define __sanitizer_syscall_post__lwp_continue() \
+  __sanitizer_syscall_post_impl__lwp_continue()
+#define __sanitizer_syscall_pre__lwp_wakeup() \
+  __sanitizer_syscall_pre_impl__lwp_wakeup()
+#define __sanitizer_syscall_post__lwp_wakeup() \
+  __sanitizer_syscall_post_impl__lwp_wakeup()
+#define __sanitizer_syscall_pre__lwp_getprivate() \
+  __sanitizer_syscall_pre_impl__lwp_getprivate()
+#define __sanitizer_syscall_post__lwp_getprivate() \
+  __sanitizer_syscall_post_impl__lwp_getprivate()
+#define __sanitizer_syscall_pre__lwp_setprivate() \
+  __sanitizer_syscall_pre_impl__lwp_setprivate()
+#define __sanitizer_syscall_post__lwp_setprivate() \
+  __sanitizer_syscall_post_impl__lwp_setprivate()
+#define __sanitizer_syscall_pre__lwp_kill() \
+  __sanitizer_syscall_pre_impl__lwp_kill()
+#define __sanitizer_syscall_post__lwp_kill() \
+  __sanitizer_syscall_post_impl__lwp_kill()
+#define __sanitizer_syscall_pre__lwp_detach() \
+  __sanitizer_syscall_pre_impl__lwp_detach()
+#define __sanitizer_syscall_post__lwp_detach() \
+  __sanitizer_syscall_post_impl__lwp_detach()
+#define __sanitizer_syscall_pre_compat_50__lwp_park() \
+  __sanitizer_syscall_pre_impl_compat_50__lwp_park()
+#define __sanitizer_syscall_post_compat_50__lwp_park() \
+  __sanitizer_syscall_post_impl_compat_50__lwp_park()
+#define __sanitizer_syscall_pre__lwp_unpark() \
+  __sanitizer_syscall_pre_impl__lwp_unpark()
+#define __sanitizer_syscall_post__lwp_unpark() \
+  __sanitizer_syscall_post_impl__lwp_unpark()
+#define __sanitizer_syscall_pre__lwp_unpark_all() \
+  __sanitizer_syscall_pre_impl__lwp_unpark_all()
+#define __sanitizer_syscall_post__lwp_unpark_all() \
+  __sanitizer_syscall_post_impl__lwp_unpark_all()
+#define __sanitizer_syscall_pre__lwp_setname() \
+  __sanitizer_syscall_pre_impl__lwp_setname()
+#define __sanitizer_syscall_post__lwp_setname() \
+  __sanitizer_syscall_post_impl__lwp_setname()
+#define __sanitizer_syscall_pre__lwp_getname() \
+  __sanitizer_syscall_pre_impl__lwp_getname()
+#define __sanitizer_syscall_post__lwp_getname() \
+  __sanitizer_syscall_post_impl__lwp_getname()
+#define __sanitizer_syscall_pre__lwp_ctl() \
+  __sanitizer_syscall_pre_impl__lwp_ctl()
+#define __sanitizer_syscall_post__lwp_ctl() \
+  __sanitizer_syscall_post_impl__lwp_ctl()
+/* syscall 326 has been skipped */
+/* syscall 327 has been skipped */
+/* syscall 328 has been skipped */
+/* syscall 329 has been skipped */
+#define __sanitizer_syscall_pre_compat_60_sa_register() \
+  __sanitizer_syscall_pre_impl_compat_60_sa_register()
+#define __sanitizer_syscall_post_compat_60_sa_register() \
+  __sanitizer_syscall_post_impl_compat_60_sa_register()
+#define __sanitizer_syscall_pre_compat_60_sa_stacks() \
+  __sanitizer_syscall_pre_impl_compat_60_sa_stacks()
+#define __sanitizer_syscall_post_compat_60_sa_stacks() \
+  __sanitizer_syscall_post_impl_compat_60_sa_stacks()
+#define __sanitizer_syscall_pre_compat_60_sa_enable() \
+  __sanitizer_syscall_pre_impl_compat_60_sa_enable()
+#define __sanitizer_syscall_post_compat_60_sa_enable() \
+  __sanitizer_syscall_post_impl_compat_60_sa_enable()
+#define __sanitizer_syscall_pre_compat_60_sa_setconcurrency() \
+  __sanitizer_syscall_pre_impl_compat_60_sa_setconcurrency()
+#define __sanitizer_syscall_post_compat_60_sa_setconcurrency() \
+  __sanitizer_syscall_post_impl_compat_60_sa_setconcurrency()
+#define __sanitizer_syscall_pre_compat_60_sa_yield() \
+  __sanitizer_syscall_pre_impl_compat_60_sa_yield()
+#define __sanitizer_syscall_post_compat_60_sa_yield() \
+  __sanitizer_syscall_post_impl_compat_60_sa_yield()
+#define __sanitizer_syscall_pre_compat_60_sa_preempt() \
+  __sanitizer_syscall_pre_impl_compat_60_sa_preempt()
+#define __sanitizer_syscall_post_compat_60_sa_preempt() \
+  __sanitizer_syscall_post_impl_compat_60_sa_preempt()
+/* syscall  has been skipped */
+/* syscall 337 has been skipped */
+/* syscall 338 has been skipped */
+/* syscall 339 has been skipped */
+#define __sanitizer_syscall_pre___sigaction_sigtramp() \
+  __sanitizer_syscall_pre_impl___sigaction_sigtramp()
+#define __sanitizer_syscall_post___sigaction_sigtramp() \
+  __sanitizer_syscall_post_impl___sigaction_sigtramp()
+#define __sanitizer_syscall_pre_pmc_get_info() \
+  __sanitizer_syscall_pre_impl_pmc_get_info()
+#define __sanitizer_syscall_post_pmc_get_info() \
+  __sanitizer_syscall_post_impl_pmc_get_info()
+#define __sanitizer_syscall_pre_pmc_control() \
+  __sanitizer_syscall_pre_impl_pmc_control()
+#define __sanitizer_syscall_post_pmc_control() \
+  __sanitizer_syscall_post_impl_pmc_control()
+#define __sanitizer_syscall_pre_rasctl() \
+  __sanitizer_syscall_pre_impl_rasctl()
+#define __sanitizer_syscall_post_rasctl() \
+  __sanitizer_syscall_post_impl_rasctl()
+#define __sanitizer_syscall_pre_kqueue() \
+  __sanitizer_syscall_pre_impl_kqueue()
+#define __sanitizer_syscall_post_kqueue() \
+  __sanitizer_syscall_post_impl_kqueue()
+#define __sanitizer_syscall_pre_compat_50_kevent() \
+  __sanitizer_syscall_pre_impl_compat_50_kevent()
+#define __sanitizer_syscall_post_compat_50_kevent() \
+  __sanitizer_syscall_post_impl_compat_50_kevent()
+#define __sanitizer_syscall_pre__sched_setparam() \
+  __sanitizer_syscall_pre_impl__sched_setparam()
+#define __sanitizer_syscall_post__sched_setparam() \
+  __sanitizer_syscall_post_impl__sched_setparam()
+#define __sanitizer_syscall_pre__sched_getparam() \
+  __sanitizer_syscall_pre_impl__sched_getparam()
+#define __sanitizer_syscall_post__sched_getparam() \
+  __sanitizer_syscall_post_impl__sched_getparam()
+#define __sanitizer_syscall_pre__sched_setaffinity() \
+  __sanitizer_syscall_pre_impl__sched_setaffinity()
+#define __sanitizer_syscall_post__sched_setaffinity() \
+  __sanitizer_syscall_post_impl__sched_setaffinity()
+#define __sanitizer_syscall_pre__sched_getaffinity() \
+  __sanitizer_syscall_pre_impl__sched_getaffinity()
+#define __sanitizer_syscall_post__sched_getaffinity() \
+  __sanitizer_syscall_post_impl__sched_getaffinity()
+#define __sanitizer_syscall_pre_sched_yield() \
+  __sanitizer_syscall_pre_impl_sched_yield()
+#define __sanitizer_syscall_post_sched_yield() \
+  __sanitizer_syscall_post_impl_sched_yield()
+#define __sanitizer_syscall_pre__sched_protect() \
+  __sanitizer_syscall_pre_impl__sched_protect()
+#define __sanitizer_syscall_post__sched_protect() \
+  __sanitizer_syscall_post_impl__sched_protect()
+/* syscall 352 has been skipped */
+/* syscall 353 has been skipped */
+#define __sanitizer_syscall_pre_fsync_range() \
+  __sanitizer_syscall_pre_impl_fsync_range()
+#define __sanitizer_syscall_post_fsync_range() \
+  __sanitizer_syscall_post_impl_fsync_range()
+#define __sanitizer_syscall_pre_uuidgen() \
+  __sanitizer_syscall_pre_impl_uuidgen()
+#define __sanitizer_syscall_post_uuidgen() \
+  __sanitizer_syscall_post_impl_uuidgen()
+#define __sanitizer_syscall_pre_getvfsstat() \
+  __sanitizer_syscall_pre_impl_getvfsstat()
+#define __sanitizer_syscall_post_getvfsstat() \
+  __sanitizer_syscall_post_impl_getvfsstat()
+#define __sanitizer_syscall_pre_statvfs1() \
+  __sanitizer_syscall_pre_impl_statvfs1()
+#define __sanitizer_syscall_post_statvfs1() \
+  __sanitizer_syscall_post_impl_statvfs1()
+#define __sanitizer_syscall_pre_fstatvfs1() \
+  __sanitizer_syscall_pre_impl_fstatvfs1()
+#define __sanitizer_syscall_post_fstatvfs1() \
+  __sanitizer_syscall_post_impl_fstatvfs1()
+#define __sanitizer_syscall_pre_compat_30_fhstatvfs1() \
+  __sanitizer_syscall_pre_impl_compat_30_fhstatvfs1()
+#define __sanitizer_syscall_post_compat_30_fhstatvfs1() \
+  __sanitizer_syscall_post_impl_compat_30_fhstatvfs1()
+#define __sanitizer_syscall_pre_extattrctl() \
+  __sanitizer_syscall_pre_impl_extattrctl()
+#define __sanitizer_syscall_post_extattrctl() \
+  __sanitizer_syscall_post_impl_extattrctl()
+#define __sanitizer_syscall_pre_extattr_set_file() \
+  __sanitizer_syscall_pre_impl_extattr_set_file()
+#define __sanitizer_syscall_post_extattr_set_file() \
+  __sanitizer_syscall_post_impl_extattr_set_file()
+#define __sanitizer_syscall_pre_extattr_get_file() \
+  __sanitizer_syscall_pre_impl_extattr_get_file()
+#define __sanitizer_syscall_post_extattr_get_file() \
+  __sanitizer_syscall_post_impl_extattr_get_file()
+#define __sanitizer_syscall_pre_extattr_delete_file() \
+  __sanitizer_syscall_pre_impl_extattr_delete_file()
+#define __sanitizer_syscall_post_extattr_delete_file() \
+  __sanitizer_syscall_post_impl_extattr_delete_file()
+#define __sanitizer_syscall_pre_extattr_set_fd() \
+  __sanitizer_syscall_pre_impl_extattr_set_fd()
+#define __sanitizer_syscall_post_extattr_set_fd() \
+  __sanitizer_syscall_post_impl_extattr_set_fd()
+#define __sanitizer_syscall_pre_extattr_get_fd() \
+  __sanitizer_syscall_pre_impl_extattr_get_fd()
+#define __sanitizer_syscall_post_extattr_get_fd() \
+  __sanitizer_syscall_post_impl_extattr_get_fd()
+#define __sanitizer_syscall_pre_extattr_delete_fd() \
+  __sanitizer_syscall_pre_impl_extattr_delete_fd()
+#define __sanitizer_syscall_post_extattr_delete_fd() \
+  __sanitizer_syscall_post_impl_extattr_delete_fd()
+#define __sanitizer_syscall_pre_extattr_set_link() \
+  __sanitizer_syscall_pre_impl_extattr_set_link()
+#define __sanitizer_syscall_post_extattr_set_link() \
+  __sanitizer_syscall_post_impl_extattr_set_link()
+#define __sanitizer_syscall_pre_extattr_get_link() \
+  __sanitizer_syscall_pre_impl_extattr_get_link()
+#define __sanitizer_syscall_post_extattr_get_link() \
+  __sanitizer_syscall_post_impl_extattr_get_link()
+#define __sanitizer_syscall_pre_extattr_delete_link() \
+  __sanitizer_syscall_pre_impl_extattr_delete_link()
+#define __sanitizer_syscall_post_extattr_delete_link() \
+  __sanitizer_syscall_post_impl_extattr_delete_link()
+#define __sanitizer_syscall_pre_extattr_list_fd() \
+  __sanitizer_syscall_pre_impl_extattr_list_fd()
+#define __sanitizer_syscall_post_extattr_list_fd() \
+  __sanitizer_syscall_post_impl_extattr_list_fd()
+#define __sanitizer_syscall_pre_extattr_list_file() \
+  __sanitizer_syscall_pre_impl_extattr_list_file()
+#define __sanitizer_syscall_post_extattr_list_file() \
+  __sanitizer_syscall_post_impl_extattr_list_file()
+#define __sanitizer_syscall_pre_extattr_list_link() \
+  __sanitizer_syscall_pre_impl_extattr_list_link()
+#define __sanitizer_syscall_post_extattr_list_link() \
+  __sanitizer_syscall_post_impl_extattr_list_link()
+#define __sanitizer_syscall_pre_compat_50_pselect() \
+  __sanitizer_syscall_pre_impl_compat_50_pselect()
+#define __sanitizer_syscall_post_compat_50_pselect() \
+  __sanitizer_syscall_post_impl_compat_50_pselect()
+#define __sanitizer_syscall_pre_compat_50_pollts() \
+  __sanitizer_syscall_pre_impl_compat_50_pollts()
+#define __sanitizer_syscall_post_compat_50_pollts() \
+  __sanitizer_syscall_post_impl_compat_50_pollts()
+#define __sanitizer_syscall_pre_setxattr() \
+  __sanitizer_syscall_pre_impl_setxattr()
+#define __sanitizer_syscall_post_setxattr() \
+  __sanitizer_syscall_post_impl_setxattr()
+#define __sanitizer_syscall_pre_lsetxattr() \
+  __sanitizer_syscall_pre_impl_lsetxattr()
+#define __sanitizer_syscall_post_lsetxattr() \
+  __sanitizer_syscall_post_impl_lsetxattr()
+#define __sanitizer_syscall_pre_fsetxattr() \
+  __sanitizer_syscall_pre_impl_fsetxattr()
+#define __sanitizer_syscall_post_fsetxattr() \
+  __sanitizer_syscall_post_impl_fsetxattr()
+#define __sanitizer_syscall_pre_getxattr() \
+  __sanitizer_syscall_pre_impl_getxattr()
+#define __sanitizer_syscall_post_getxattr() \
+  __sanitizer_syscall_post_impl_getxattr()
+#define __sanitizer_syscall_pre_lgetxattr() \
+  __sanitizer_syscall_pre_impl_lgetxattr()
+#define __sanitizer_syscall_post_lgetxattr() \
+  __sanitizer_syscall_post_impl_lgetxattr()
+#define __sanitizer_syscall_pre_fgetxattr() \
+  __sanitizer_syscall_pre_impl_fgetxattr()
+#define __sanitizer_syscall_post_fgetxattr() \
+  __sanitizer_syscall_post_impl_fgetxattr()
+#define __sanitizer_syscall_pre_listxattr() \
+  __sanitizer_syscall_pre_impl_listxattr()
+#define __sanitizer_syscall_post_listxattr() \
+  __sanitizer_syscall_post_impl_listxattr()
+#define __sanitizer_syscall_pre_llistxattr() \
+  __sanitizer_syscall_pre_impl_llistxattr()
+#define __sanitizer_syscall_post_llistxattr() \
+  __sanitizer_syscall_post_impl_llistxattr()
+#define __sanitizer_syscall_pre_flistxattr() \
+  __sanitizer_syscall_pre_impl_flistxattr()
+#define __sanitizer_syscall_post_flistxattr() \
+  __sanitizer_syscall_post_impl_flistxattr()
+#define __sanitizer_syscall_pre_removexattr() \
+  __sanitizer_syscall_pre_impl_removexattr()
+#define __sanitizer_syscall_post_removexattr() \
+  __sanitizer_syscall_post_impl_removexattr()
+#define __sanitizer_syscall_pre_lremovexattr() \
+  __sanitizer_syscall_pre_impl_lremovexattr()
+#define __sanitizer_syscall_post_lremovexattr() \
+  __sanitizer_syscall_post_impl_lremovexattr()
+#define __sanitizer_syscall_pre_fremovexattr() \
+  __sanitizer_syscall_pre_impl_fremovexattr()
+#define __sanitizer_syscall_post_fremovexattr() \
+  __sanitizer_syscall_post_impl_fremovexattr()
+#define __sanitizer_syscall_pre_compat_50___stat30() \
+  __sanitizer_syscall_pre_impl_compat_50___stat30()
+#define __sanitizer_syscall_post_compat_50___stat30() \
+  __sanitizer_syscall_post_impl_compat_50___stat30()
+#define __sanitizer_syscall_pre_compat_50___fstat30() \
+  __sanitizer_syscall_pre_impl_compat_50___fstat30()
+#define __sanitizer_syscall_post_compat_50___fstat30() \
+  __sanitizer_syscall_post_impl_compat_50___fstat30()
+#define __sanitizer_syscall_pre_compat_50___lstat30() \
+  __sanitizer_syscall_pre_impl_compat_50___lstat30()
+#define __sanitizer_syscall_post_compat_50___lstat30() \
+  __sanitizer_syscall_post_impl_compat_50___lstat30()
+#define __sanitizer_syscall_pre___getdents30() \
+  __sanitizer_syscall_pre_impl___getdents30()
+#define __sanitizer_syscall_post___getdents30() \
+  __sanitizer_syscall_post_impl___getdents30()
+#define __sanitizer_syscall_pre_posix_fadvise() \
+  __sanitizer_syscall_pre_impl_posix_fadvise()
+#define __sanitizer_syscall_post_posix_fadvise() \
+  __sanitizer_syscall_post_impl_posix_fadvise()
+#define __sanitizer_syscall_pre_compat_30___fhstat30() \
+  __sanitizer_syscall_pre_impl_compat_30___fhstat30()
+#define __sanitizer_syscall_post_compat_30___fhstat30() \
+  __sanitizer_syscall_post_impl_compat_30___fhstat30()
+#define __sanitizer_syscall_pre_compat_50___ntp_gettime30() \
+  __sanitizer_syscall_pre_impl_compat_50___ntp_gettime30()
+#define __sanitizer_syscall_post_compat_50___ntp_gettime30() \
+  __sanitizer_syscall_post_impl_compat_50___ntp_gettime30()
+#define __sanitizer_syscall_pre___socket30() \
+  __sanitizer_syscall_pre_impl___socket30()
+#define __sanitizer_syscall_post___socket30() \
+  __sanitizer_syscall_post_impl___socket30()
+#define __sanitizer_syscall_pre___getfh30() \
+  __sanitizer_syscall_pre_impl___getfh30()
+#define __sanitizer_syscall_post___getfh30() \
+  __sanitizer_syscall_post_impl___getfh30()
+#define __sanitizer_syscall_pre___fhopen40() \
+  __sanitizer_syscall_pre_impl___fhopen40()
+#define __sanitizer_syscall_post___fhopen40() \
+  __sanitizer_syscall_post_impl___fhopen40()
+#define __sanitizer_syscall_pre___fhstatvfs140() \
+  __sanitizer_syscall_pre_impl___fhstatvfs140()
+#define __sanitizer_syscall_post___fhstatvfs140() \
+  __sanitizer_syscall_post_impl___fhstatvfs140()
+#define __sanitizer_syscall_pre_compat_50___fhstat40() \
+  __sanitizer_syscall_pre_impl_compat_50___fhstat40()
+#define __sanitizer_syscall_post_compat_50___fhstat40() \
+  __sanitizer_syscall_post_impl_compat_50___fhstat40()
+#define __sanitizer_syscall_pre_aio_cancel() \
+  __sanitizer_syscall_pre_impl_aio_cancel()
+#define __sanitizer_syscall_post_aio_cancel() \
+  __sanitizer_syscall_post_impl_aio_cancel()
+#define __sanitizer_syscall_pre_aio_error() \
+  __sanitizer_syscall_pre_impl_aio_error()
+#define __sanitizer_syscall_post_aio_error() \
+  __sanitizer_syscall_post_impl_aio_error()
+#define __sanitizer_syscall_pre_aio_fsync() \
+  __sanitizer_syscall_pre_impl_aio_fsync()
+#define __sanitizer_syscall_post_aio_fsync() \
+  __sanitizer_syscall_post_impl_aio_fsync()
+#define __sanitizer_syscall_pre_aio_read() \
+  __sanitizer_syscall_pre_impl_aio_read()
+#define __sanitizer_syscall_post_aio_read() \
+  __sanitizer_syscall_post_impl_aio_read()
+#define __sanitizer_syscall_pre_aio_return() \
+  __sanitizer_syscall_pre_impl_aio_return()
+#define __sanitizer_syscall_post_aio_return() \
+  __sanitizer_syscall_post_impl_aio_return()
+#define __sanitizer_syscall_pre_compat_50_aio_suspend() \
+  __sanitizer_syscall_pre_impl_compat_50_aio_suspend()
+#define __sanitizer_syscall_post_compat_50_aio_suspend() \
+  __sanitizer_syscall_post_impl_compat_50_aio_suspend()
+#define __sanitizer_syscall_pre_aio_write() \
+  __sanitizer_syscall_pre_impl_aio_write()
+#define __sanitizer_syscall_post_aio_write() \
+  __sanitizer_syscall_post_impl_aio_write()
+#define __sanitizer_syscall_pre_lio_listio() \
+  __sanitizer_syscall_pre_impl_lio_listio()
+#define __sanitizer_syscall_post_lio_listio() \
+  __sanitizer_syscall_post_impl_lio_listio()
+/* syscall 407 has been skipped */
+/* syscall 408 has been skipped */
+/* syscall 409 has been skipped */
+#define __sanitizer_syscall_pre___mount50() \
+  __sanitizer_syscall_pre_impl___mount50()
+#define __sanitizer_syscall_post___mount50() \
+  __sanitizer_syscall_post_impl___mount50()
+#define __sanitizer_syscall_pre_mremap() \
+  __sanitizer_syscall_pre_impl_mremap()
+#define __sanitizer_syscall_post_mremap() \
+  __sanitizer_syscall_post_impl_mremap()
+#define __sanitizer_syscall_pre_pset_create() \
+  __sanitizer_syscall_pre_impl_pset_create()
+#define __sanitizer_syscall_post_pset_create() \
+  __sanitizer_syscall_post_impl_pset_create()
+#define __sanitizer_syscall_pre_pset_destroy() \
+  __sanitizer_syscall_pre_impl_pset_destroy()
+#define __sanitizer_syscall_post_pset_destroy() \
+  __sanitizer_syscall_post_impl_pset_destroy()
+#define __sanitizer_syscall_pre_pset_assign() \
+  __sanitizer_syscall_pre_impl_pset_assign()
+#define __sanitizer_syscall_post_pset_assign() \
+  __sanitizer_syscall_post_impl_pset_assign()
+#define __sanitizer_syscall_pre__pset_bind() \
+  __sanitizer_syscall_pre_impl__pset_bind()
+#define __sanitizer_syscall_post__pset_bind() \
+  __sanitizer_syscall_post_impl__pset_bind()
+#define __sanitizer_syscall_pre___posix_fadvise50() \
+  __sanitizer_syscall_pre_impl___posix_fadvise50()
+#define __sanitizer_syscall_post___posix_fadvise50() \
+  __sanitizer_syscall_post_impl___posix_fadvise50()
+#define __sanitizer_syscall_pre___select50() \
+  __sanitizer_syscall_pre_impl___select50()
+#define __sanitizer_syscall_post___select50() \
+  __sanitizer_syscall_post_impl___select50()
+#define __sanitizer_syscall_pre___gettimeofday50() \
+  __sanitizer_syscall_pre_impl___gettimeofday50()
+#define __sanitizer_syscall_post___gettimeofday50() \
+  __sanitizer_syscall_post_impl___gettimeofday50()
+#define __sanitizer_syscall_pre___settimeofday50() \
+  __sanitizer_syscall_pre_impl___settimeofday50()
+#define __sanitizer_syscall_post___settimeofday50() \
+  __sanitizer_syscall_post_impl___settimeofday50()
+#define __sanitizer_syscall_pre___utimes50() \
+  __sanitizer_syscall_pre_impl___utimes50()
+#define __sanitizer_syscall_post___utimes50() \
+  __sanitizer_syscall_post_impl___utimes50()
+#define __sanitizer_syscall_pre___adjtime50() \
+  __sanitizer_syscall_pre_impl___adjtime50()
+#define __sanitizer_syscall_post___adjtime50() \
+  __sanitizer_syscall_post_impl___adjtime50()
+#define __sanitizer_syscall_pre___lfs_segwait50() \
+  __sanitizer_syscall_pre_impl___lfs_segwait50()
+#define __sanitizer_syscall_post___lfs_segwait50() \
+  __sanitizer_syscall_post_impl___lfs_segwait50()
+#define __sanitizer_syscall_pre___futimes50() \
+  __sanitizer_syscall_pre_impl___futimes50()
+#define __sanitizer_syscall_post___futimes50() \
+  __sanitizer_syscall_post_impl___futimes50()
+#define __sanitizer_syscall_pre___lutimes50() \
+  __sanitizer_syscall_pre_impl___lutimes50()
+#define __sanitizer_syscall_post___lutimes50() \
+  __sanitizer_syscall_post_impl___lutimes50()
+#define __sanitizer_syscall_pre___setitimer50() \
+  __sanitizer_syscall_pre_impl___setitimer50()
+#define __sanitizer_syscall_post___setitimer50() \
+  __sanitizer_syscall_post_impl___setitimer50()
+#define __sanitizer_syscall_pre___getitimer50() \
+  __sanitizer_syscall_pre_impl___getitimer50()
+#define __sanitizer_syscall_post___getitimer50() \
+  __sanitizer_syscall_post_impl___getitimer50()
+#define __sanitizer_syscall_pre___clock_gettime50() \
+  __sanitizer_syscall_pre_impl___clock_gettime50()
+#define __sanitizer_syscall_post___clock_gettime50() \
+  __sanitizer_syscall_post_impl___clock_gettime50()
+#define __sanitizer_syscall_pre___clock_settime50() \
+  __sanitizer_syscall_pre_impl___clock_settime50()
+#define __sanitizer_syscall_post___clock_settime50() \
+  __sanitizer_syscall_post_impl___clock_settime50()
+#define __sanitizer_syscall_pre___clock_getres50() \
+  __sanitizer_syscall_pre_impl___clock_getres50()
+#define __sanitizer_syscall_post___clock_getres50() \
+  __sanitizer_syscall_post_impl___clock_getres50()
+#define __sanitizer_syscall_pre___nanosleep50() \
+  __sanitizer_syscall_pre_impl___nanosleep50()
+#define __sanitizer_syscall_post___nanosleep50() \
+  __sanitizer_syscall_post_impl___nanosleep50()
+#define __sanitizer_syscall_pre_____sigtimedwait50() \
+  __sanitizer_syscall_pre_impl_____sigtimedwait50()
+#define __sanitizer_syscall_post_____sigtimedwait50() \
+  __sanitizer_syscall_post_impl_____sigtimedwait50()
+#define __sanitizer_syscall_pre___mq_timedsend50() \
+  __sanitizer_syscall_pre_impl___mq_timedsend50()
+#define __sanitizer_syscall_post___mq_timedsend50() \
+  __sanitizer_syscall_post_impl___mq_timedsend50()
+#define __sanitizer_syscall_pre___mq_timedreceive50() \
+  __sanitizer_syscall_pre_impl___mq_timedreceive50()
+#define __sanitizer_syscall_post___mq_timedreceive50() \
+  __sanitizer_syscall_post_impl___mq_timedreceive50()
+#define __sanitizer_syscall_pre_compat_60__lwp_park() \
+  __sanitizer_syscall_pre_impl_compat_60__lwp_park()
+#define __sanitizer_syscall_post_compat_60__lwp_park() \
+  __sanitizer_syscall_post_impl_compat_60__lwp_park()
+#define __sanitizer_syscall_pre___kevent50() \
+  __sanitizer_syscall_pre_impl___kevent50()
+#define __sanitizer_syscall_post___kevent50() \
+  __sanitizer_syscall_post_impl___kevent50()
+#define __sanitizer_syscall_pre___pselect50() \
+  __sanitizer_syscall_pre_impl___pselect50()
+#define __sanitizer_syscall_post___pselect50() \
+  __sanitizer_syscall_post_impl___pselect50()
+#define __sanitizer_syscall_pre___pollts50() \
+  __sanitizer_syscall_pre_impl___pollts50()
+#define __sanitizer_syscall_post___pollts50() \
+  __sanitizer_syscall_post_impl___pollts50()
+#define __sanitizer_syscall_pre___aio_suspend50() \
+  __sanitizer_syscall_pre_impl___aio_suspend50()
+#define __sanitizer_syscall_post___aio_suspend50() \
+  __sanitizer_syscall_post_impl___aio_suspend50()
+#define __sanitizer_syscall_pre___stat50() \
+  __sanitizer_syscall_pre_impl___stat50()
+#define __sanitizer_syscall_post___stat50() \
+  __sanitizer_syscall_post_impl___stat50()
+#define __sanitizer_syscall_pre___fstat50() \
+  __sanitizer_syscall_pre_impl___fstat50()
+#define __sanitizer_syscall_post___fstat50() \
+  __sanitizer_syscall_post_impl___fstat50()
+#define __sanitizer_syscall_pre___lstat50() \
+  __sanitizer_syscall_pre_impl___lstat50()
+#define __sanitizer_syscall_post___lstat50() \
+  __sanitizer_syscall_post_impl___lstat50()
+#define __sanitizer_syscall_pre_____semctl50() \
+  __sanitizer_syscall_pre_impl_____semctl50()
+#define __sanitizer_syscall_post_____semctl50() \
+  __sanitizer_syscall_post_impl_____semctl50()
+#define __sanitizer_syscall_pre___shmctl50() \
+  __sanitizer_syscall_pre_impl___shmctl50()
+#define __sanitizer_syscall_post___shmctl50() \
+  __sanitizer_syscall_post_impl___shmctl50()
+#define __sanitizer_syscall_pre___msgctl50() \
+  __sanitizer_syscall_pre_impl___msgctl50()
+#define __sanitizer_syscall_post___msgctl50() \
+  __sanitizer_syscall_post_impl___msgctl50()
+#define __sanitizer_syscall_pre___getrusage50() \
+  __sanitizer_syscall_pre_impl___getrusage50()
+#define __sanitizer_syscall_post___getrusage50() \
+  __sanitizer_syscall_post_impl___getrusage50()
+#define __sanitizer_syscall_pre___timer_settime50() \
+  __sanitizer_syscall_pre_impl___timer_settime50()
+#define __sanitizer_syscall_post___timer_settime50() \
+  __sanitizer_syscall_post_impl___timer_settime50()
+#define __sanitizer_syscall_pre___timer_gettime50() \
+  __sanitizer_syscall_pre_impl___timer_gettime50()
+#define __sanitizer_syscall_post___timer_gettime50() \
+  __sanitizer_syscall_post_impl___timer_gettime50()
 #if defined(NTP) || !defined(_KERNEL_OPT)
-a kuku
-
-448	STD		{
-                                                                                                                                                                                                                                                                                                                                                          int |
-                                                                                                                                                                                                                                                                                                                                                              sys |
-                                                                                                                                                                                                                                                                                                                                                              50 |
-                                                                                                                                                                                                                                                                                                                                                              ntp_gettime(
-                                                                                                                                                                                                                                                                                                                                                                  struct
-                                                                                                                                                                                                                                                                                                                                                                  ntptimeval *
-                                                                                                                                                                                                                                                                                                                                                                  ntvp); }
+#define __sanitizer_syscall_pre___ntp_gettime50() \
+  __sanitizer_syscall_pre_impl___ntp_gettime50()
+#define __sanitizer_syscall_post___ntp_gettime50() \
+  __sanitizer_syscall_post_impl___ntp_gettime50()
 #else
-a kuku
-
-    448 EXCL ___ntp_gettime50
+/* syscall  has been skipped */
 #endif
-a kuku
+#define __sanitizer_syscall_pre___wait450() \
+  __sanitizer_syscall_pre_impl___wait450()
+#define __sanitizer_syscall_post___wait450() \
+  __sanitizer_syscall_post_impl___wait450()
+#define __sanitizer_syscall_pre___mknod50() \
+  __sanitizer_syscall_pre_impl___mknod50()
+#define __sanitizer_syscall_post___mknod50() \
+  __sanitizer_syscall_post_impl___mknod50()
+#define __sanitizer_syscall_pre___fhstat50() \
+  __sanitizer_syscall_pre_impl___fhstat50()
+#define __sanitizer_syscall_post___fhstat50() \
+  __sanitizer_syscall_post_impl___fhstat50()
+/* syscall  has been skipped */
+#define __sanitizer_syscall_pre_pipe2() \
+  __sanitizer_syscall_pre_impl_pipe2()
+#define __sanitizer_syscall_post_pipe2() \
+  __sanitizer_syscall_post_impl_pipe2()
+#define __sanitizer_syscall_pre_dup3() \
+  __sanitizer_syscall_pre_impl_dup3()
+#define __sanitizer_syscall_post_dup3() \
+  __sanitizer_syscall_post_impl_dup3()
+#define __sanitizer_syscall_pre_kqueue1() \
+  __sanitizer_syscall_pre_impl_kqueue1()
+#define __sanitizer_syscall_post_kqueue1() \
+  __sanitizer_syscall_post_impl_kqueue1()
+#define __sanitizer_syscall_pre_paccept() \
+  __sanitizer_syscall_pre_impl_paccept()
+#define __sanitizer_syscall_post_paccept() \
+  __sanitizer_syscall_post_impl_paccept()
+#define __sanitizer_syscall_pre_linkat() \
+  __sanitizer_syscall_pre_impl_linkat()
+#define __sanitizer_syscall_post_linkat() \
+  __sanitizer_syscall_post_impl_linkat()
+#define __sanitizer_syscall_pre_renameat() \
+  __sanitizer_syscall_pre_impl_renameat()
+#define __sanitizer_syscall_post_renameat() \
+  __sanitizer_syscall_post_impl_renameat()
+#define __sanitizer_syscall_pre_mkfifoat() \
+  __sanitizer_syscall_pre_impl_mkfifoat()
+#define __sanitizer_syscall_post_mkfifoat() \
+  __sanitizer_syscall_post_impl_mkfifoat()
+#define __sanitizer_syscall_pre_mknodat() \
+  __sanitizer_syscall_pre_impl_mknodat()
+#define __sanitizer_syscall_post_mknodat() \
+  __sanitizer_syscall_post_impl_mknodat()
+#define __sanitizer_syscall_pre_mkdirat() \
+  __sanitizer_syscall_pre_impl_mkdirat()
+#define __sanitizer_syscall_post_mkdirat() \
+  __sanitizer_syscall_post_impl_mkdirat()
+#define __sanitizer_syscall_pre_faccessat() \
+  __sanitizer_syscall_pre_impl_faccessat()
+#define __sanitizer_syscall_post_faccessat() \
+  __sanitizer_syscall_post_impl_faccessat()
+#define __sanitizer_syscall_pre_fchmodat() \
+  __sanitizer_syscall_pre_impl_fchmodat()
+#define __sanitizer_syscall_post_fchmodat() \
+  __sanitizer_syscall_post_impl_fchmodat()
+#define __sanitizer_syscall_pre_fchownat() \
+  __sanitizer_syscall_pre_impl_fchownat()
+#define __sanitizer_syscall_post_fchownat() \
+  __sanitizer_syscall_post_impl_fchownat()
+#define __sanitizer_syscall_pre_fexecve() \
+  __sanitizer_syscall_pre_impl_fexecve()
+#define __sanitizer_syscall_post_fexecve() \
+  __sanitizer_syscall_post_impl_fexecve()
+#define __sanitizer_syscall_pre_fstatat() \
+  __sanitizer_syscall_pre_impl_fstatat()
+#define __sanitizer_syscall_post_fstatat() \
+  __sanitizer_syscall_post_impl_fstatat()
+#define __sanitizer_syscall_pre_utimensat() \
+  __sanitizer_syscall_pre_impl_utimensat()
+#define __sanitizer_syscall_post_utimensat() \
+  __sanitizer_syscall_post_impl_utimensat()
+#define __sanitizer_syscall_pre_openat() \
+  __sanitizer_syscall_pre_impl_openat()
+#define __sanitizer_syscall_post_openat() \
+  __sanitizer_syscall_post_impl_openat()
+#define __sanitizer_syscall_pre_readlinkat() \
+  __sanitizer_syscall_pre_impl_readlinkat()
+#define __sanitizer_syscall_post_readlinkat() \
+  __sanitizer_syscall_post_impl_readlinkat()
+#define __sanitizer_syscall_pre_symlinkat() \
+  __sanitizer_syscall_pre_impl_symlinkat()
+#define __sanitizer_syscall_post_symlinkat() \
+  __sanitizer_syscall_post_impl_symlinkat()
+#define __sanitizer_syscall_pre_unlinkat() \
+  __sanitizer_syscall_pre_impl_unlinkat()
+#define __sanitizer_syscall_post_unlinkat() \
+  __sanitizer_syscall_post_impl_unlinkat()
+#define __sanitizer_syscall_pre_futimens() \
+  __sanitizer_syscall_pre_impl_futimens()
+#define __sanitizer_syscall_post_futimens() \
+  __sanitizer_syscall_post_impl_futimens()
+#define __sanitizer_syscall_pre___quotactl() \
+  __sanitizer_syscall_pre_impl___quotactl()
+#define __sanitizer_syscall_post___quotactl() \
+  __sanitizer_syscall_post_impl___quotactl()
+#define __sanitizer_syscall_pre_posix_spawn() \
+  __sanitizer_syscall_pre_impl_posix_spawn()
+#define __sanitizer_syscall_post_posix_spawn() \
+  __sanitizer_syscall_post_impl_posix_spawn()
+#define __sanitizer_syscall_pre_recvmmsg() \
+  __sanitizer_syscall_pre_impl_recvmmsg()
+#define __sanitizer_syscall_post_recvmmsg() \
+  __sanitizer_syscall_post_impl_recvmmsg()
+#define __sanitizer_syscall_pre_sendmmsg() \
+  __sanitizer_syscall_pre_impl_sendmmsg()
+#define __sanitizer_syscall_post_sendmmsg() \
+  __sanitizer_syscall_post_impl_sendmmsg()
+#define __sanitizer_syscall_pre_clock_nanosleep() \
+  __sanitizer_syscall_pre_impl_clock_nanosleep()
+#define __sanitizer_syscall_post_clock_nanosleep() \
+  __sanitizer_syscall_post_impl_clock_nanosleep()
+#define __sanitizer_syscall_pre____lwp_park60() \
+  __sanitizer_syscall_pre_impl____lwp_park60()
+#define __sanitizer_syscall_post____lwp_park60() \
+  __sanitizer_syscall_post_impl____lwp_park60()
+#define __sanitizer_syscall_pre_posix_fallocate() \
+  __sanitizer_syscall_pre_impl_posix_fallocate()
+#define __sanitizer_syscall_post_posix_fallocate() \
+  __sanitizer_syscall_post_impl_posix_fallocate()
+#define __sanitizer_syscall_pre_fdiscard() \
+  __sanitizer_syscall_pre_impl_fdiscard()
+#define __sanitizer_syscall_post_fdiscard() \
+  __sanitizer_syscall_post_impl_fdiscard()
+#define __sanitizer_syscall_pre_wait6() \
+  __sanitizer_syscall_pre_impl_wait6()
+#define __sanitizer_syscall_post_wait6() \
+  __sanitizer_syscall_post_impl_wait6()
+#define __sanitizer_syscall_pre_clock_getcpuclockid2() \
+  __sanitizer_syscall_pre_impl_clock_getcpuclockid2()
+#define __sanitizer_syscall_post_clock_getcpuclockid2() \
+  __sanitizer_syscall_post_impl_clock_getcpuclockid2()
 
-449	STD 		{ int|sys|50|wait4(pid_t pid, int *status, \
-a kuku
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-450	STD  RUMP	{ int|sys|50|mknod(const char *path, mode_t mode, \
-a kuku
+// Private declarations. Do not call directly from user code. Use macros above.
+void __sanitizer_syscall_pre_impl_syscall();
+void __sanitizer_syscall_post_impl_syscall();
+void __sanitizer_syscall_pre_impl_exit();
+void __sanitizer_syscall_post_impl_exit();
+void __sanitizer_syscall_pre_impl_fork();
+void __sanitizer_syscall_post_impl_fork();
+void __sanitizer_syscall_pre_impl_read();
+void __sanitizer_syscall_post_impl_read();
+void __sanitizer_syscall_pre_impl_write();
+void __sanitizer_syscall_post_impl_write();
+void __sanitizer_syscall_pre_impl_open();
+void __sanitizer_syscall_post_impl_open();
+void __sanitizer_syscall_pre_impl_close();
+void __sanitizer_syscall_post_impl_close();
+void __sanitizer_syscall_pre_impl_compat_50_wait4();
+void __sanitizer_syscall_post_impl_compat_50_wait4();
+void __sanitizer_syscall_pre_impl_compat_43_ocreat();
+void __sanitizer_syscall_post_impl_compat_43_ocreat();
+void __sanitizer_syscall_pre_impl_link();
+void __sanitizer_syscall_post_impl_link();
+void __sanitizer_syscall_pre_impl_unlink();
+void __sanitizer_syscall_post_impl_unlink();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_chdir();
+void __sanitizer_syscall_post_impl_chdir();
+void __sanitizer_syscall_pre_impl_fchdir();
+void __sanitizer_syscall_post_impl_fchdir();
+void __sanitizer_syscall_pre_impl_compat_50_mknod();
+void __sanitizer_syscall_post_impl_compat_50_mknod();
+void __sanitizer_syscall_pre_impl_chmod();
+void __sanitizer_syscall_post_impl_chmod();
+void __sanitizer_syscall_pre_impl_chown();
+void __sanitizer_syscall_post_impl_chown();
+void __sanitizer_syscall_pre_impl_break();
+void __sanitizer_syscall_post_impl_break();
+void __sanitizer_syscall_pre_impl_compat_20_getfsstat();
+void __sanitizer_syscall_post_impl_compat_20_getfsstat();
+void __sanitizer_syscall_pre_impl_compat_43_olseek();
+void __sanitizer_syscall_post_impl_compat_43_olseek();
+void __sanitizer_syscall_pre_impl_getpid();
+void __sanitizer_syscall_post_impl_getpid();
+void __sanitizer_syscall_pre_impl_compat_40_mount();
+void __sanitizer_syscall_post_impl_compat_40_mount();
+void __sanitizer_syscall_pre_impl_unmount();
+void __sanitizer_syscall_post_impl_unmount();
+void __sanitizer_syscall_pre_impl_setuid();
+void __sanitizer_syscall_post_impl_setuid();
+void __sanitizer_syscall_pre_impl_getuid();
+void __sanitizer_syscall_post_impl_getuid();
+void __sanitizer_syscall_pre_impl_geteuid();
+void __sanitizer_syscall_post_impl_geteuid();
+void __sanitizer_syscall_pre_impl_ptrace();
+void __sanitizer_syscall_post_impl_ptrace();
+void __sanitizer_syscall_pre_impl_recvmsg();
+void __sanitizer_syscall_post_impl_recvmsg();
+void __sanitizer_syscall_pre_impl_sendmsg();
+void __sanitizer_syscall_post_impl_sendmsg();
+void __sanitizer_syscall_pre_impl_recvfrom();
+void __sanitizer_syscall_post_impl_recvfrom();
+void __sanitizer_syscall_pre_impl_accept();
+void __sanitizer_syscall_post_impl_accept();
+void __sanitizer_syscall_pre_impl_getpeername();
+void __sanitizer_syscall_post_impl_getpeername();
+void __sanitizer_syscall_pre_impl_getsockname();
+void __sanitizer_syscall_post_impl_getsockname();
+void __sanitizer_syscall_pre_impl_access();
+void __sanitizer_syscall_post_impl_access();
+void __sanitizer_syscall_pre_impl_chflags();
+void __sanitizer_syscall_post_impl_chflags();
+void __sanitizer_syscall_pre_impl_fchflags();
+void __sanitizer_syscall_post_impl_fchflags();
+void __sanitizer_syscall_pre_impl_sync();
+void __sanitizer_syscall_post_impl_sync();
+void __sanitizer_syscall_pre_impl_kill();
+void __sanitizer_syscall_post_impl_kill();
+void __sanitizer_syscall_pre_impl_compat_43_stat43();
+void __sanitizer_syscall_post_impl_compat_43_stat43();
+void __sanitizer_syscall_pre_impl_getppid();
+void __sanitizer_syscall_post_impl_getppid();
+void __sanitizer_syscall_pre_impl_compat_43_lstat43();
+void __sanitizer_syscall_post_impl_compat_43_lstat43();
+void __sanitizer_syscall_pre_impl_dup();
+void __sanitizer_syscall_post_impl_dup();
+void __sanitizer_syscall_pre_impl_pipe();
+void __sanitizer_syscall_post_impl_pipe();
+void __sanitizer_syscall_pre_impl_getegid();
+void __sanitizer_syscall_post_impl_getegid();
+void __sanitizer_syscall_pre_impl_profil();
+void __sanitizer_syscall_post_impl_profil();
+void __sanitizer_syscall_pre_impl_ktrace();
+void __sanitizer_syscall_post_impl_ktrace();
+void __sanitizer_syscall_pre_impl_compat_13_sigaction13();
+void __sanitizer_syscall_post_impl_compat_13_sigaction13();
+void __sanitizer_syscall_pre_impl_getgid();
+void __sanitizer_syscall_post_impl_getgid();
+void __sanitizer_syscall_pre_impl_compat_13_sigprocmask13();
+void __sanitizer_syscall_post_impl_compat_13_sigprocmask13();
+void __sanitizer_syscall_pre_impl___getlogin();
+void __sanitizer_syscall_post_impl___getlogin();
+void __sanitizer_syscall_pre_impl___setlogin();
+void __sanitizer_syscall_post_impl___setlogin();
+void __sanitizer_syscall_pre_impl_acct();
+void __sanitizer_syscall_post_impl_acct();
+void __sanitizer_syscall_pre_impl_compat_13_sigpending13();
+void __sanitizer_syscall_post_impl_compat_13_sigpending13();
+void __sanitizer_syscall_pre_impl_compat_13_sigaltstack13();
+void __sanitizer_syscall_post_impl_compat_13_sigaltstack13();
+void __sanitizer_syscall_pre_impl_ioctl();
+void __sanitizer_syscall_post_impl_ioctl();
+void __sanitizer_syscall_pre_impl_compat_12_oreboot();
+void __sanitizer_syscall_post_impl_compat_12_oreboot();
+void __sanitizer_syscall_pre_impl_revoke();
+void __sanitizer_syscall_post_impl_revoke();
+void __sanitizer_syscall_pre_impl_symlink();
+void __sanitizer_syscall_post_impl_symlink();
+void __sanitizer_syscall_pre_impl_readlink();
+void __sanitizer_syscall_post_impl_readlink();
+void __sanitizer_syscall_pre_impl_execve();
+void __sanitizer_syscall_post_impl_execve();
+void __sanitizer_syscall_pre_impl_umask();
+void __sanitizer_syscall_post_impl_umask();
+void __sanitizer_syscall_pre_impl_chroot();
+void __sanitizer_syscall_post_impl_chroot();
+void __sanitizer_syscall_pre_impl_compat_43_fstat43();
+void __sanitizer_syscall_post_impl_compat_43_fstat43();
+void __sanitizer_syscall_pre_impl_compat_43_ogetkerninfo();
+void __sanitizer_syscall_post_impl_compat_43_ogetkerninfo();
+void __sanitizer_syscall_pre_impl_compat_43_ogetpagesize();
+void __sanitizer_syscall_post_impl_compat_43_ogetpagesize();
+void __sanitizer_syscall_pre_impl_compat_12_msync();
+void __sanitizer_syscall_post_impl_compat_12_msync();
+void __sanitizer_syscall_pre_impl_vfork();
+void __sanitizer_syscall_post_impl_vfork();
+/* syscall  has been skipped */
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_sbrk();
+void __sanitizer_syscall_post_impl_sbrk();
+void __sanitizer_syscall_pre_impl_sstk();
+void __sanitizer_syscall_post_impl_sstk();
+void __sanitizer_syscall_pre_impl_compat_43_ommap();
+void __sanitizer_syscall_post_impl_compat_43_ommap();
+void __sanitizer_syscall_pre_impl_vadvise();
+void __sanitizer_syscall_post_impl_vadvise();
+void __sanitizer_syscall_pre_impl_munmap();
+void __sanitizer_syscall_post_impl_munmap();
+void __sanitizer_syscall_pre_impl_mprotect();
+void __sanitizer_syscall_post_impl_mprotect();
+void __sanitizer_syscall_pre_impl_madvise();
+void __sanitizer_syscall_post_impl_madvise();
+/* syscall  has been skipped */
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_mincore();
+void __sanitizer_syscall_post_impl_mincore();
+void __sanitizer_syscall_pre_impl_getgroups();
+void __sanitizer_syscall_post_impl_getgroups();
+void __sanitizer_syscall_pre_impl_setgroups();
+void __sanitizer_syscall_post_impl_setgroups();
+void __sanitizer_syscall_pre_impl_getpgrp();
+void __sanitizer_syscall_post_impl_getpgrp();
+void __sanitizer_syscall_pre_impl_setpgid();
+void __sanitizer_syscall_post_impl_setpgid();
+void __sanitizer_syscall_pre_impl_compat_50_setitimer();
+void __sanitizer_syscall_post_impl_compat_50_setitimer();
+void __sanitizer_syscall_pre_impl_compat_43_owait();
+void __sanitizer_syscall_post_impl_compat_43_owait();
+void __sanitizer_syscall_pre_impl_compat_12_oswapon();
+void __sanitizer_syscall_post_impl_compat_12_oswapon();
+void __sanitizer_syscall_pre_impl_compat_50_getitimer();
+void __sanitizer_syscall_post_impl_compat_50_getitimer();
+void __sanitizer_syscall_pre_impl_compat_43_ogethostname();
+void __sanitizer_syscall_post_impl_compat_43_ogethostname();
+void __sanitizer_syscall_pre_impl_compat_43_osethostname();
+void __sanitizer_syscall_post_impl_compat_43_osethostname();
+void __sanitizer_syscall_pre_impl_compat_43_ogetdtablesize();
+void __sanitizer_syscall_post_impl_compat_43_ogetdtablesize();
+void __sanitizer_syscall_pre_impl_dup2();
+void __sanitizer_syscall_post_impl_dup2();
+/* syscall getdopt has been skipped */
+void __sanitizer_syscall_pre_impl_fcntl();
+void __sanitizer_syscall_post_impl_fcntl();
+void __sanitizer_syscall_pre_impl_compat_50_select();
+void __sanitizer_syscall_post_impl_compat_50_select();
+/* syscall setdopt has been skipped */
+void __sanitizer_syscall_pre_impl_fsync();
+void __sanitizer_syscall_post_impl_fsync();
+void __sanitizer_syscall_pre_impl_setpriority();
+void __sanitizer_syscall_post_impl_setpriority();
+void __sanitizer_syscall_pre_impl_compat_30_socket();
+void __sanitizer_syscall_post_impl_compat_30_socket();
+void __sanitizer_syscall_pre_impl_connect();
+void __sanitizer_syscall_post_impl_connect();
+void __sanitizer_syscall_pre_impl_compat_43_oaccept();
+void __sanitizer_syscall_post_impl_compat_43_oaccept();
+void __sanitizer_syscall_pre_impl_getpriority();
+void __sanitizer_syscall_post_impl_getpriority();
+void __sanitizer_syscall_pre_impl_compat_43_osend();
+void __sanitizer_syscall_post_impl_compat_43_osend();
+void __sanitizer_syscall_pre_impl_compat_43_orecv();
+void __sanitizer_syscall_post_impl_compat_43_orecv();
+void __sanitizer_syscall_pre_impl_compat_13_sigreturn13();
+void __sanitizer_syscall_post_impl_compat_13_sigreturn13();
+void __sanitizer_syscall_pre_impl_bind();
+void __sanitizer_syscall_post_impl_bind();
+void __sanitizer_syscall_pre_impl_setsockopt();
+void __sanitizer_syscall_post_impl_setsockopt();
+void __sanitizer_syscall_pre_impl_listen();
+void __sanitizer_syscall_post_impl_listen();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_compat_43_osigvec();
+void __sanitizer_syscall_post_impl_compat_43_osigvec();
+void __sanitizer_syscall_pre_impl_compat_43_osigblock();
+void __sanitizer_syscall_post_impl_compat_43_osigblock();
+void __sanitizer_syscall_pre_impl_compat_43_osigsetmask();
+void __sanitizer_syscall_post_impl_compat_43_osigsetmask();
+void __sanitizer_syscall_pre_impl_compat_13_sigsuspend13();
+void __sanitizer_syscall_post_impl_compat_13_sigsuspend13();
+void __sanitizer_syscall_pre_impl_compat_43_osigstack();
+void __sanitizer_syscall_post_impl_compat_43_osigstack();
+void __sanitizer_syscall_pre_impl_compat_43_orecvmsg();
+void __sanitizer_syscall_post_impl_compat_43_orecvmsg();
+void __sanitizer_syscall_pre_impl_compat_43_osendmsg();
+void __sanitizer_syscall_post_impl_compat_43_osendmsg();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_compat_50_gettimeofday();
+void __sanitizer_syscall_post_impl_compat_50_gettimeofday();
+void __sanitizer_syscall_pre_impl_compat_50_getrusage();
+void __sanitizer_syscall_post_impl_compat_50_getrusage();
+void __sanitizer_syscall_pre_impl_getsockopt();
+void __sanitizer_syscall_post_impl_getsockopt();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_readv();
+void __sanitizer_syscall_post_impl_readv();
+void __sanitizer_syscall_pre_impl_writev();
+void __sanitizer_syscall_post_impl_writev();
+void __sanitizer_syscall_pre_impl_compat_50_settimeofday();
+void __sanitizer_syscall_post_impl_compat_50_settimeofday();
+void __sanitizer_syscall_pre_impl_fchown();
+void __sanitizer_syscall_post_impl_fchown();
+void __sanitizer_syscall_pre_impl_fchmod();
+void __sanitizer_syscall_post_impl_fchmod();
+void __sanitizer_syscall_pre_impl_compat_43_orecvfrom();
+void __sanitizer_syscall_post_impl_compat_43_orecvfrom();
+void __sanitizer_syscall_pre_impl_setreuid();
+void __sanitizer_syscall_post_impl_setreuid();
+void __sanitizer_syscall_pre_impl_setregid();
+void __sanitizer_syscall_post_impl_setregid();
+void __sanitizer_syscall_pre_impl_rename();
+void __sanitizer_syscall_post_impl_rename();
+void __sanitizer_syscall_pre_impl_compat_43_otruncate();
+void __sanitizer_syscall_post_impl_compat_43_otruncate();
+void __sanitizer_syscall_pre_impl_compat_43_oftruncate();
+void __sanitizer_syscall_post_impl_compat_43_oftruncate();
+void __sanitizer_syscall_pre_impl_flock();
+void __sanitizer_syscall_post_impl_flock();
+void __sanitizer_syscall_pre_impl_mkfifo();
+void __sanitizer_syscall_post_impl_mkfifo();
+void __sanitizer_syscall_pre_impl_sendto();
+void __sanitizer_syscall_post_impl_sendto();
+void __sanitizer_syscall_pre_impl_shutdown();
+void __sanitizer_syscall_post_impl_shutdown();
+void __sanitizer_syscall_pre_impl_socketpair();
+void __sanitizer_syscall_post_impl_socketpair();
+void __sanitizer_syscall_pre_impl_mkdir();
+void __sanitizer_syscall_post_impl_mkdir();
+void __sanitizer_syscall_pre_impl_rmdir();
+void __sanitizer_syscall_post_impl_rmdir();
+void __sanitizer_syscall_pre_impl_compat_50_utimes();
+void __sanitizer_syscall_post_impl_compat_50_utimes();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_compat_50_adjtime();
+void __sanitizer_syscall_post_impl_compat_50_adjtime();
+void __sanitizer_syscall_pre_impl_compat_43_ogetpeername();
+void __sanitizer_syscall_post_impl_compat_43_ogetpeername();
+void __sanitizer_syscall_pre_impl_compat_43_ogethostid();
+void __sanitizer_syscall_post_impl_compat_43_ogethostid();
+void __sanitizer_syscall_pre_impl_compat_43_osethostid();
+void __sanitizer_syscall_post_impl_compat_43_osethostid();
+void __sanitizer_syscall_pre_impl_compat_43_ogetrlimit();
+void __sanitizer_syscall_post_impl_compat_43_ogetrlimit();
+void __sanitizer_syscall_pre_impl_compat_43_osetrlimit();
+void __sanitizer_syscall_post_impl_compat_43_osetrlimit();
+void __sanitizer_syscall_pre_impl_compat_43_okillpg();
+void __sanitizer_syscall_post_impl_compat_43_okillpg();
+void __sanitizer_syscall_pre_impl_setsid();
+void __sanitizer_syscall_post_impl_setsid();
+void __sanitizer_syscall_pre_impl_compat_50_quotactl();
+void __sanitizer_syscall_post_impl_compat_50_quotactl();
+void __sanitizer_syscall_pre_impl_compat_43_oquota();
+void __sanitizer_syscall_post_impl_compat_43_oquota();
+void __sanitizer_syscall_pre_impl_compat_43_ogetsockname();
+void __sanitizer_syscall_post_impl_compat_43_ogetsockname();
+/* syscall 151 has been skipped */
+/* syscall 152 has been skipped */
+/* syscall 153 has been skipped */
+/* syscall 154 has been skipped */
+void __sanitizer_syscall_pre_impl_nfssvc();
+void __sanitizer_syscall_post_impl_nfssvc();
+void __sanitizer_syscall_pre_impl_compat_43_ogetdirentries();
+void __sanitizer_syscall_post_impl_compat_43_ogetdirentries();
+void __sanitizer_syscall_pre_impl_compat_20_statfs();
+void __sanitizer_syscall_post_impl_compat_20_statfs();
+void __sanitizer_syscall_pre_impl_compat_20_fstatfs();
+void __sanitizer_syscall_post_impl_compat_20_fstatfs();
+/* syscall 159 has been skipped */
+/* syscall 160 has been skipped */
+void __sanitizer_syscall_pre_impl_compat_30_getfh();
+void __sanitizer_syscall_post_impl_compat_30_getfh();
+void __sanitizer_syscall_pre_impl_compat_09_ogetdomainname();
+void __sanitizer_syscall_post_impl_compat_09_ogetdomainname();
+void __sanitizer_syscall_pre_impl_compat_09_osetdomainname();
+void __sanitizer_syscall_post_impl_compat_09_osetdomainname();
+void __sanitizer_syscall_pre_impl_compat_09_ouname();
+void __sanitizer_syscall_post_impl_compat_09_ouname();
+void __sanitizer_syscall_pre_impl_sysarch();
+void __sanitizer_syscall_post_impl_sysarch();
+/* syscall 166 has been skipped */
+/* syscall 167 has been skipped */
+/* syscall 168 has been skipped */
+void __sanitizer_syscall_pre_impl_compat_10_osemsys();
+void __sanitizer_syscall_post_impl_compat_10_osemsys();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_compat_10_omsgsys();
+void __sanitizer_syscall_post_impl_compat_10_omsgsys();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_compat_10_oshmsys();
+void __sanitizer_syscall_post_impl_compat_10_oshmsys();
+/* syscall  has been skipped */
+/* syscall 172 has been skipped */
+void __sanitizer_syscall_pre_impl_pread();
+void __sanitizer_syscall_post_impl_pread();
+void __sanitizer_syscall_pre_impl_pwrite();
+void __sanitizer_syscall_post_impl_pwrite();
+void __sanitizer_syscall_pre_impl_compat_30_ntp_gettime();
+void __sanitizer_syscall_post_impl_compat_30_ntp_gettime();
+void __sanitizer_syscall_pre_impl_ntp_adjtime();
+void __sanitizer_syscall_post_impl_ntp_adjtime();
+/* syscall  has been skipped */
+/* syscall 177 has been skipped */
+/* syscall 178 has been skipped */
+/* syscall 179 has been skipped */
+/* syscall 180 has been skipped */
+void __sanitizer_syscall_pre_impl_setgid();
+void __sanitizer_syscall_post_impl_setgid();
+void __sanitizer_syscall_pre_impl_setegid();
+void __sanitizer_syscall_post_impl_setegid();
+void __sanitizer_syscall_pre_impl_seteuid();
+void __sanitizer_syscall_post_impl_seteuid();
+void __sanitizer_syscall_pre_impl_lfs_bmapv();
+void __sanitizer_syscall_post_impl_lfs_bmapv();
+void __sanitizer_syscall_pre_impl_lfs_markv();
+void __sanitizer_syscall_post_impl_lfs_markv();
+void __sanitizer_syscall_pre_impl_lfs_segclean();
+void __sanitizer_syscall_post_impl_lfs_segclean();
+void __sanitizer_syscall_pre_impl_compat_50_lfs_segwait();
+void __sanitizer_syscall_post_impl_compat_50_lfs_segwait();
+void __sanitizer_syscall_pre_impl_compat_12_stat12();
+void __sanitizer_syscall_post_impl_compat_12_stat12();
+void __sanitizer_syscall_pre_impl_compat_12_fstat12();
+void __sanitizer_syscall_post_impl_compat_12_fstat12();
+void __sanitizer_syscall_pre_impl_compat_12_lstat12();
+void __sanitizer_syscall_post_impl_compat_12_lstat12();
+void __sanitizer_syscall_pre_impl_pathconf();
+void __sanitizer_syscall_post_impl_pathconf();
+void __sanitizer_syscall_pre_impl_fpathconf();
+void __sanitizer_syscall_post_impl_fpathconf();
+/* syscall 193 has been skipped */
+void __sanitizer_syscall_pre_impl_getrlimit();
+void __sanitizer_syscall_post_impl_getrlimit();
+void __sanitizer_syscall_pre_impl_setrlimit();
+void __sanitizer_syscall_post_impl_setrlimit();
+void __sanitizer_syscall_pre_impl_compat_12_getdirentries();
+void __sanitizer_syscall_post_impl_compat_12_getdirentries();
+void __sanitizer_syscall_pre_impl_mmap();
+void __sanitizer_syscall_post_impl_mmap();
+void __sanitizer_syscall_pre_impl___syscall();
+void __sanitizer_syscall_post_impl___syscall();
+void __sanitizer_syscall_pre_impl_lseek();
+void __sanitizer_syscall_post_impl_lseek();
+void __sanitizer_syscall_pre_impl_truncate();
+void __sanitizer_syscall_post_impl_truncate();
+void __sanitizer_syscall_pre_impl_ftruncate();
+void __sanitizer_syscall_post_impl_ftruncate();
+void __sanitizer_syscall_pre_impl___sysctl();
+void __sanitizer_syscall_post_impl___sysctl();
+void __sanitizer_syscall_pre_impl_mlock();
+void __sanitizer_syscall_post_impl_mlock();
+void __sanitizer_syscall_pre_impl_munlock();
+void __sanitizer_syscall_post_impl_munlock();
+void __sanitizer_syscall_pre_impl_undelete();
+void __sanitizer_syscall_post_impl_undelete();
+void __sanitizer_syscall_pre_impl_compat_50_futimes();
+void __sanitizer_syscall_post_impl_compat_50_futimes();
+void __sanitizer_syscall_pre_impl_getpgid();
+void __sanitizer_syscall_post_impl_getpgid();
+void __sanitizer_syscall_pre_impl_reboot();
+void __sanitizer_syscall_post_impl_reboot();
+void __sanitizer_syscall_pre_impl_poll();
+void __sanitizer_syscall_post_impl_poll();
+void __sanitizer_syscall_pre_impl_afssys();
+void __sanitizer_syscall_post_impl_afssys();
+/* syscall 211 has been skipped */
+/* syscall 212 has been skipped */
+/* syscall 213 has been skipped */
+/* syscall 214 has been skipped */
+/* syscall 215 has been skipped */
+/* syscall 216 has been skipped */
+/* syscall 217 has been skipped */
+/* syscall 218 has been skipped */
+/* syscall 219 has been skipped */
+void __sanitizer_syscall_pre_impl_compat_14___semctl();
+void __sanitizer_syscall_post_impl_compat_14___semctl();
+void __sanitizer_syscall_pre_impl_semget();
+void __sanitizer_syscall_post_impl_semget();
+void __sanitizer_syscall_pre_impl_semop();
+void __sanitizer_syscall_post_impl_semop();
+void __sanitizer_syscall_pre_impl_semconfig();
+void __sanitizer_syscall_post_impl_semconfig();
+void __sanitizer_syscall_pre_impl_compat_14_msgctl();
+void __sanitizer_syscall_post_impl_compat_14_msgctl();
+void __sanitizer_syscall_pre_impl_msgget();
+void __sanitizer_syscall_post_impl_msgget();
+void __sanitizer_syscall_pre_impl_msgsnd();
+void __sanitizer_syscall_post_impl_msgsnd();
+void __sanitizer_syscall_pre_impl_msgrcv();
+void __sanitizer_syscall_post_impl_msgrcv();
+void __sanitizer_syscall_pre_impl_shmat();
+void __sanitizer_syscall_post_impl_shmat();
+void __sanitizer_syscall_pre_impl_compat_14_shmctl();
+void __sanitizer_syscall_post_impl_compat_14_shmctl();
+void __sanitizer_syscall_pre_impl_shmdt();
+void __sanitizer_syscall_post_impl_shmdt();
+void __sanitizer_syscall_pre_impl_shmget();
+void __sanitizer_syscall_post_impl_shmget();
+void __sanitizer_syscall_pre_impl_compat_50_clock_gettime();
+void __sanitizer_syscall_post_impl_compat_50_clock_gettime();
+void __sanitizer_syscall_pre_impl_compat_50_clock_settime();
+void __sanitizer_syscall_post_impl_compat_50_clock_settime();
+void __sanitizer_syscall_pre_impl_compat_50_clock_getres();
+void __sanitizer_syscall_post_impl_compat_50_clock_getres();
+void __sanitizer_syscall_pre_impl_timer_create();
+void __sanitizer_syscall_post_impl_timer_create();
+void __sanitizer_syscall_pre_impl_timer_delete();
+void __sanitizer_syscall_post_impl_timer_delete();
+void __sanitizer_syscall_pre_impl_compat_50_timer_settime();
+void __sanitizer_syscall_post_impl_compat_50_timer_settime();
+void __sanitizer_syscall_pre_impl_compat_50_timer_gettime();
+void __sanitizer_syscall_post_impl_compat_50_timer_gettime();
+void __sanitizer_syscall_pre_impl_timer_getoverrun();
+void __sanitizer_syscall_post_impl_timer_getoverrun();
+void __sanitizer_syscall_pre_impl_compat_50_nanosleep();
+void __sanitizer_syscall_post_impl_compat_50_nanosleep();
+void __sanitizer_syscall_pre_impl_fdatasync();
+void __sanitizer_syscall_post_impl_fdatasync();
+void __sanitizer_syscall_pre_impl_mlockall();
+void __sanitizer_syscall_post_impl_mlockall();
+void __sanitizer_syscall_pre_impl_munlockall();
+void __sanitizer_syscall_post_impl_munlockall();
+void __sanitizer_syscall_pre_impl_compat_50___sigtimedwait();
+void __sanitizer_syscall_post_impl_compat_50___sigtimedwait();
+void __sanitizer_syscall_pre_impl_sigqueueinfo();
+void __sanitizer_syscall_post_impl_sigqueueinfo();
+void __sanitizer_syscall_pre_impl_modctl();
+void __sanitizer_syscall_post_impl_modctl();
+void __sanitizer_syscall_pre_impl__ksem_init();
+void __sanitizer_syscall_post_impl__ksem_init();
+void __sanitizer_syscall_pre_impl__ksem_open();
+void __sanitizer_syscall_post_impl__ksem_open();
+void __sanitizer_syscall_pre_impl__ksem_unlink();
+void __sanitizer_syscall_post_impl__ksem_unlink();
+void __sanitizer_syscall_pre_impl__ksem_close();
+void __sanitizer_syscall_post_impl__ksem_close();
+void __sanitizer_syscall_pre_impl__ksem_post();
+void __sanitizer_syscall_post_impl__ksem_post();
+void __sanitizer_syscall_pre_impl__ksem_wait();
+void __sanitizer_syscall_post_impl__ksem_wait();
+void __sanitizer_syscall_pre_impl__ksem_trywait();
+void __sanitizer_syscall_post_impl__ksem_trywait();
+void __sanitizer_syscall_pre_impl__ksem_getvalue();
+void __sanitizer_syscall_post_impl__ksem_getvalue();
+void __sanitizer_syscall_pre_impl__ksem_destroy();
+void __sanitizer_syscall_post_impl__ksem_destroy();
+void __sanitizer_syscall_pre_impl__ksem_timedwait();
+void __sanitizer_syscall_post_impl__ksem_timedwait();
+void __sanitizer_syscall_pre_impl_mq_open();
+void __sanitizer_syscall_post_impl_mq_open();
+void __sanitizer_syscall_pre_impl_mq_close();
+void __sanitizer_syscall_post_impl_mq_close();
+void __sanitizer_syscall_pre_impl_mq_unlink();
+void __sanitizer_syscall_post_impl_mq_unlink();
+void __sanitizer_syscall_pre_impl_mq_getattr();
+void __sanitizer_syscall_post_impl_mq_getattr();
+void __sanitizer_syscall_pre_impl_mq_setattr();
+void __sanitizer_syscall_post_impl_mq_setattr();
+void __sanitizer_syscall_pre_impl_mq_notify();
+void __sanitizer_syscall_post_impl_mq_notify();
+void __sanitizer_syscall_pre_impl_mq_send();
+void __sanitizer_syscall_post_impl_mq_send();
+void __sanitizer_syscall_pre_impl_mq_receive();
+void __sanitizer_syscall_post_impl_mq_receive();
+void __sanitizer_syscall_pre_impl_compat_50_mq_timedsend();
+void __sanitizer_syscall_post_impl_compat_50_mq_timedsend();
+void __sanitizer_syscall_pre_impl_compat_50_mq_timedreceive();
+void __sanitizer_syscall_post_impl_compat_50_mq_timedreceive();
+/* syscall 267 has been skipped */
+/* syscall 268 has been skipped */
+/* syscall 269 has been skipped */
+void __sanitizer_syscall_pre_impl___posix_rename();
+void __sanitizer_syscall_post_impl___posix_rename();
+void __sanitizer_syscall_pre_impl_swapctl();
+void __sanitizer_syscall_post_impl_swapctl();
+void __sanitizer_syscall_pre_impl_compat_30_getdents();
+void __sanitizer_syscall_post_impl_compat_30_getdents();
+void __sanitizer_syscall_pre_impl_minherit();
+void __sanitizer_syscall_post_impl_minherit();
+void __sanitizer_syscall_pre_impl_lchmod();
+void __sanitizer_syscall_post_impl_lchmod();
+void __sanitizer_syscall_pre_impl_lchown();
+void __sanitizer_syscall_post_impl_lchown();
+void __sanitizer_syscall_pre_impl_compat_50_lutimes();
+void __sanitizer_syscall_post_impl_compat_50_lutimes();
+void __sanitizer_syscall_pre_impl___msync13();
+void __sanitizer_syscall_post_impl___msync13();
+void __sanitizer_syscall_pre_impl_compat_30___stat13();
+void __sanitizer_syscall_post_impl_compat_30___stat13();
+void __sanitizer_syscall_pre_impl_compat_30___fstat13();
+void __sanitizer_syscall_post_impl_compat_30___fstat13();
+void __sanitizer_syscall_pre_impl_compat_30___lstat13();
+void __sanitizer_syscall_post_impl_compat_30___lstat13();
+void __sanitizer_syscall_pre_impl___sigaltstack14();
+void __sanitizer_syscall_post_impl___sigaltstack14();
+void __sanitizer_syscall_pre_impl___vfork14();
+void __sanitizer_syscall_post_impl___vfork14();
+void __sanitizer_syscall_pre_impl___posix_chown();
+void __sanitizer_syscall_post_impl___posix_chown();
+void __sanitizer_syscall_pre_impl___posix_fchown();
+void __sanitizer_syscall_post_impl___posix_fchown();
+void __sanitizer_syscall_pre_impl___posix_lchown();
+void __sanitizer_syscall_post_impl___posix_lchown();
+void __sanitizer_syscall_pre_impl_getsid();
+void __sanitizer_syscall_post_impl_getsid();
+void __sanitizer_syscall_pre_impl___clone();
+void __sanitizer_syscall_post_impl___clone();
+void __sanitizer_syscall_pre_impl_fktrace();
+void __sanitizer_syscall_post_impl_fktrace();
+void __sanitizer_syscall_pre_impl_preadv();
+void __sanitizer_syscall_post_impl_preadv();
+void __sanitizer_syscall_pre_impl_pwritev();
+void __sanitizer_syscall_post_impl_pwritev();
+void __sanitizer_syscall_pre_impl_compat_16___sigaction14();
+void __sanitizer_syscall_post_impl_compat_16___sigaction14();
+void __sanitizer_syscall_pre_impl___sigpending14();
+void __sanitizer_syscall_post_impl___sigpending14();
+void __sanitizer_syscall_pre_impl___sigprocmask14();
+void __sanitizer_syscall_post_impl___sigprocmask14();
+void __sanitizer_syscall_pre_impl___sigsuspend14();
+void __sanitizer_syscall_post_impl___sigsuspend14();
+void __sanitizer_syscall_pre_impl_compat_16___sigreturn14();
+void __sanitizer_syscall_post_impl_compat_16___sigreturn14();
+void __sanitizer_syscall_pre_impl___getcwd();
+void __sanitizer_syscall_post_impl___getcwd();
+void __sanitizer_syscall_pre_impl_fchroot();
+void __sanitizer_syscall_post_impl_fchroot();
+void __sanitizer_syscall_pre_impl_compat_30_fhopen();
+void __sanitizer_syscall_post_impl_compat_30_fhopen();
+void __sanitizer_syscall_pre_impl_compat_30_fhstat();
+void __sanitizer_syscall_post_impl_compat_30_fhstat();
+void __sanitizer_syscall_pre_impl_compat_20_fhstatfs();
+void __sanitizer_syscall_post_impl_compat_20_fhstatfs();
+void __sanitizer_syscall_pre_impl_compat_50_____semctl13();
+void __sanitizer_syscall_post_impl_compat_50_____semctl13();
+void __sanitizer_syscall_pre_impl_compat_50___msgctl13();
+void __sanitizer_syscall_post_impl_compat_50___msgctl13();
+void __sanitizer_syscall_pre_impl_compat_50___shmctl13();
+void __sanitizer_syscall_post_impl_compat_50___shmctl13();
+void __sanitizer_syscall_pre_impl_lchflags();
+void __sanitizer_syscall_post_impl_lchflags();
+void __sanitizer_syscall_pre_impl_issetugid();
+void __sanitizer_syscall_post_impl_issetugid();
+void __sanitizer_syscall_pre_impl_utrace();
+void __sanitizer_syscall_post_impl_utrace();
+void __sanitizer_syscall_pre_impl_getcontext();
+void __sanitizer_syscall_post_impl_getcontext();
+void __sanitizer_syscall_pre_impl_setcontext();
+void __sanitizer_syscall_post_impl_setcontext();
+void __sanitizer_syscall_pre_impl__lwp_create();
+void __sanitizer_syscall_post_impl__lwp_create();
+void __sanitizer_syscall_pre_impl__lwp_exit();
+void __sanitizer_syscall_post_impl__lwp_exit();
+void __sanitizer_syscall_pre_impl__lwp_self();
+void __sanitizer_syscall_post_impl__lwp_self();
+void __sanitizer_syscall_pre_impl__lwp_wait();
+void __sanitizer_syscall_post_impl__lwp_wait();
+void __sanitizer_syscall_pre_impl__lwp_suspend();
+void __sanitizer_syscall_post_impl__lwp_suspend();
+void __sanitizer_syscall_pre_impl__lwp_continue();
+void __sanitizer_syscall_post_impl__lwp_continue();
+void __sanitizer_syscall_pre_impl__lwp_wakeup();
+void __sanitizer_syscall_post_impl__lwp_wakeup();
+void __sanitizer_syscall_pre_impl__lwp_getprivate();
+void __sanitizer_syscall_post_impl__lwp_getprivate();
+void __sanitizer_syscall_pre_impl__lwp_setprivate();
+void __sanitizer_syscall_post_impl__lwp_setprivate();
+void __sanitizer_syscall_pre_impl__lwp_kill();
+void __sanitizer_syscall_post_impl__lwp_kill();
+void __sanitizer_syscall_pre_impl__lwp_detach();
+void __sanitizer_syscall_post_impl__lwp_detach();
+void __sanitizer_syscall_pre_impl_compat_50__lwp_park();
+void __sanitizer_syscall_post_impl_compat_50__lwp_park();
+void __sanitizer_syscall_pre_impl__lwp_unpark();
+void __sanitizer_syscall_post_impl__lwp_unpark();
+void __sanitizer_syscall_pre_impl__lwp_unpark_all();
+void __sanitizer_syscall_post_impl__lwp_unpark_all();
+void __sanitizer_syscall_pre_impl__lwp_setname();
+void __sanitizer_syscall_post_impl__lwp_setname();
+void __sanitizer_syscall_pre_impl__lwp_getname();
+void __sanitizer_syscall_post_impl__lwp_getname();
+void __sanitizer_syscall_pre_impl__lwp_ctl();
+void __sanitizer_syscall_post_impl__lwp_ctl();
+/* syscall 326 has been skipped */
+/* syscall 327 has been skipped */
+/* syscall 328 has been skipped */
+/* syscall 329 has been skipped */
+void __sanitizer_syscall_pre_impl_compat_60_sa_register();
+void __sanitizer_syscall_post_impl_compat_60_sa_register();
+void __sanitizer_syscall_pre_impl_compat_60_sa_stacks();
+void __sanitizer_syscall_post_impl_compat_60_sa_stacks();
+void __sanitizer_syscall_pre_impl_compat_60_sa_enable();
+void __sanitizer_syscall_post_impl_compat_60_sa_enable();
+void __sanitizer_syscall_pre_impl_compat_60_sa_setconcurrency();
+void __sanitizer_syscall_post_impl_compat_60_sa_setconcurrency();
+void __sanitizer_syscall_pre_impl_compat_60_sa_yield();
+void __sanitizer_syscall_post_impl_compat_60_sa_yield();
+void __sanitizer_syscall_pre_impl_compat_60_sa_preempt();
+void __sanitizer_syscall_post_impl_compat_60_sa_preempt();
+/* syscall  has been skipped */
+/* syscall 337 has been skipped */
+/* syscall 338 has been skipped */
+/* syscall 339 has been skipped */
+void __sanitizer_syscall_pre_impl___sigaction_sigtramp();
+void __sanitizer_syscall_post_impl___sigaction_sigtramp();
+void __sanitizer_syscall_pre_impl_pmc_get_info();
+void __sanitizer_syscall_post_impl_pmc_get_info();
+void __sanitizer_syscall_pre_impl_pmc_control();
+void __sanitizer_syscall_post_impl_pmc_control();
+void __sanitizer_syscall_pre_impl_rasctl();
+void __sanitizer_syscall_post_impl_rasctl();
+void __sanitizer_syscall_pre_impl_kqueue();
+void __sanitizer_syscall_post_impl_kqueue();
+void __sanitizer_syscall_pre_impl_compat_50_kevent();
+void __sanitizer_syscall_post_impl_compat_50_kevent();
+void __sanitizer_syscall_pre_impl__sched_setparam();
+void __sanitizer_syscall_post_impl__sched_setparam();
+void __sanitizer_syscall_pre_impl__sched_getparam();
+void __sanitizer_syscall_post_impl__sched_getparam();
+void __sanitizer_syscall_pre_impl__sched_setaffinity();
+void __sanitizer_syscall_post_impl__sched_setaffinity();
+void __sanitizer_syscall_pre_impl__sched_getaffinity();
+void __sanitizer_syscall_post_impl__sched_getaffinity();
+void __sanitizer_syscall_pre_impl_sched_yield();
+void __sanitizer_syscall_post_impl_sched_yield();
+void __sanitizer_syscall_pre_impl__sched_protect();
+void __sanitizer_syscall_post_impl__sched_protect();
+/* syscall 352 has been skipped */
+/* syscall 353 has been skipped */
+void __sanitizer_syscall_pre_impl_fsync_range();
+void __sanitizer_syscall_post_impl_fsync_range();
+void __sanitizer_syscall_pre_impl_uuidgen();
+void __sanitizer_syscall_post_impl_uuidgen();
+void __sanitizer_syscall_pre_impl_getvfsstat();
+void __sanitizer_syscall_post_impl_getvfsstat();
+void __sanitizer_syscall_pre_impl_statvfs1();
+void __sanitizer_syscall_post_impl_statvfs1();
+void __sanitizer_syscall_pre_impl_fstatvfs1();
+void __sanitizer_syscall_post_impl_fstatvfs1();
+void __sanitizer_syscall_pre_impl_compat_30_fhstatvfs1();
+void __sanitizer_syscall_post_impl_compat_30_fhstatvfs1();
+void __sanitizer_syscall_pre_impl_extattrctl();
+void __sanitizer_syscall_post_impl_extattrctl();
+void __sanitizer_syscall_pre_impl_extattr_set_file();
+void __sanitizer_syscall_post_impl_extattr_set_file();
+void __sanitizer_syscall_pre_impl_extattr_get_file();
+void __sanitizer_syscall_post_impl_extattr_get_file();
+void __sanitizer_syscall_pre_impl_extattr_delete_file();
+void __sanitizer_syscall_post_impl_extattr_delete_file();
+void __sanitizer_syscall_pre_impl_extattr_set_fd();
+void __sanitizer_syscall_post_impl_extattr_set_fd();
+void __sanitizer_syscall_pre_impl_extattr_get_fd();
+void __sanitizer_syscall_post_impl_extattr_get_fd();
+void __sanitizer_syscall_pre_impl_extattr_delete_fd();
+void __sanitizer_syscall_post_impl_extattr_delete_fd();
+void __sanitizer_syscall_pre_impl_extattr_set_link();
+void __sanitizer_syscall_post_impl_extattr_set_link();
+void __sanitizer_syscall_pre_impl_extattr_get_link();
+void __sanitizer_syscall_post_impl_extattr_get_link();
+void __sanitizer_syscall_pre_impl_extattr_delete_link();
+void __sanitizer_syscall_post_impl_extattr_delete_link();
+void __sanitizer_syscall_pre_impl_extattr_list_fd();
+void __sanitizer_syscall_post_impl_extattr_list_fd();
+void __sanitizer_syscall_pre_impl_extattr_list_file();
+void __sanitizer_syscall_post_impl_extattr_list_file();
+void __sanitizer_syscall_pre_impl_extattr_list_link();
+void __sanitizer_syscall_post_impl_extattr_list_link();
+void __sanitizer_syscall_pre_impl_compat_50_pselect();
+void __sanitizer_syscall_post_impl_compat_50_pselect();
+void __sanitizer_syscall_pre_impl_compat_50_pollts();
+void __sanitizer_syscall_post_impl_compat_50_pollts();
+void __sanitizer_syscall_pre_impl_setxattr();
+void __sanitizer_syscall_post_impl_setxattr();
+void __sanitizer_syscall_pre_impl_lsetxattr();
+void __sanitizer_syscall_post_impl_lsetxattr();
+void __sanitizer_syscall_pre_impl_fsetxattr();
+void __sanitizer_syscall_post_impl_fsetxattr();
+void __sanitizer_syscall_pre_impl_getxattr();
+void __sanitizer_syscall_post_impl_getxattr();
+void __sanitizer_syscall_pre_impl_lgetxattr();
+void __sanitizer_syscall_post_impl_lgetxattr();
+void __sanitizer_syscall_pre_impl_fgetxattr();
+void __sanitizer_syscall_post_impl_fgetxattr();
+void __sanitizer_syscall_pre_impl_listxattr();
+void __sanitizer_syscall_post_impl_listxattr();
+void __sanitizer_syscall_pre_impl_llistxattr();
+void __sanitizer_syscall_post_impl_llistxattr();
+void __sanitizer_syscall_pre_impl_flistxattr();
+void __sanitizer_syscall_post_impl_flistxattr();
+void __sanitizer_syscall_pre_impl_removexattr();
+void __sanitizer_syscall_post_impl_removexattr();
+void __sanitizer_syscall_pre_impl_lremovexattr();
+void __sanitizer_syscall_post_impl_lremovexattr();
+void __sanitizer_syscall_pre_impl_fremovexattr();
+void __sanitizer_syscall_post_impl_fremovexattr();
+void __sanitizer_syscall_pre_impl_compat_50___stat30();
+void __sanitizer_syscall_post_impl_compat_50___stat30();
+void __sanitizer_syscall_pre_impl_compat_50___fstat30();
+void __sanitizer_syscall_post_impl_compat_50___fstat30();
+void __sanitizer_syscall_pre_impl_compat_50___lstat30();
+void __sanitizer_syscall_post_impl_compat_50___lstat30();
+void __sanitizer_syscall_pre_impl___getdents30();
+void __sanitizer_syscall_post_impl___getdents30();
+void __sanitizer_syscall_pre_impl_posix_fadvise();
+void __sanitizer_syscall_post_impl_posix_fadvise();
+void __sanitizer_syscall_pre_impl_compat_30___fhstat30();
+void __sanitizer_syscall_post_impl_compat_30___fhstat30();
+void __sanitizer_syscall_pre_impl_compat_50___ntp_gettime30();
+void __sanitizer_syscall_post_impl_compat_50___ntp_gettime30();
+void __sanitizer_syscall_pre_impl___socket30();
+void __sanitizer_syscall_post_impl___socket30();
+void __sanitizer_syscall_pre_impl___getfh30();
+void __sanitizer_syscall_post_impl___getfh30();
+void __sanitizer_syscall_pre_impl___fhopen40();
+void __sanitizer_syscall_post_impl___fhopen40();
+void __sanitizer_syscall_pre_impl___fhstatvfs140();
+void __sanitizer_syscall_post_impl___fhstatvfs140();
+void __sanitizer_syscall_pre_impl_compat_50___fhstat40();
+void __sanitizer_syscall_post_impl_compat_50___fhstat40();
+void __sanitizer_syscall_pre_impl_aio_cancel();
+void __sanitizer_syscall_post_impl_aio_cancel();
+void __sanitizer_syscall_pre_impl_aio_error();
+void __sanitizer_syscall_post_impl_aio_error();
+void __sanitizer_syscall_pre_impl_aio_fsync();
+void __sanitizer_syscall_post_impl_aio_fsync();
+void __sanitizer_syscall_pre_impl_aio_read();
+void __sanitizer_syscall_post_impl_aio_read();
+void __sanitizer_syscall_pre_impl_aio_return();
+void __sanitizer_syscall_post_impl_aio_return();
+void __sanitizer_syscall_pre_impl_compat_50_aio_suspend();
+void __sanitizer_syscall_post_impl_compat_50_aio_suspend();
+void __sanitizer_syscall_pre_impl_aio_write();
+void __sanitizer_syscall_post_impl_aio_write();
+void __sanitizer_syscall_pre_impl_lio_listio();
+void __sanitizer_syscall_post_impl_lio_listio();
+/* syscall 407 has been skipped */
+/* syscall 408 has been skipped */
+/* syscall 409 has been skipped */
+void __sanitizer_syscall_pre_impl___mount50();
+void __sanitizer_syscall_post_impl___mount50();
+void __sanitizer_syscall_pre_impl_mremap();
+void __sanitizer_syscall_post_impl_mremap();
+void __sanitizer_syscall_pre_impl_pset_create();
+void __sanitizer_syscall_post_impl_pset_create();
+void __sanitizer_syscall_pre_impl_pset_destroy();
+void __sanitizer_syscall_post_impl_pset_destroy();
+void __sanitizer_syscall_pre_impl_pset_assign();
+void __sanitizer_syscall_post_impl_pset_assign();
+void __sanitizer_syscall_pre_impl__pset_bind();
+void __sanitizer_syscall_post_impl__pset_bind();
+void __sanitizer_syscall_pre_impl___posix_fadvise50();
+void __sanitizer_syscall_post_impl___posix_fadvise50();
+void __sanitizer_syscall_pre_impl___select50();
+void __sanitizer_syscall_post_impl___select50();
+void __sanitizer_syscall_pre_impl___gettimeofday50();
+void __sanitizer_syscall_post_impl___gettimeofday50();
+void __sanitizer_syscall_pre_impl___settimeofday50();
+void __sanitizer_syscall_post_impl___settimeofday50();
+void __sanitizer_syscall_pre_impl___utimes50();
+void __sanitizer_syscall_post_impl___utimes50();
+void __sanitizer_syscall_pre_impl___adjtime50();
+void __sanitizer_syscall_post_impl___adjtime50();
+void __sanitizer_syscall_pre_impl___lfs_segwait50();
+void __sanitizer_syscall_post_impl___lfs_segwait50();
+void __sanitizer_syscall_pre_impl___futimes50();
+void __sanitizer_syscall_post_impl___futimes50();
+void __sanitizer_syscall_pre_impl___lutimes50();
+void __sanitizer_syscall_post_impl___lutimes50();
+void __sanitizer_syscall_pre_impl___setitimer50();
+void __sanitizer_syscall_post_impl___setitimer50();
+void __sanitizer_syscall_pre_impl___getitimer50();
+void __sanitizer_syscall_post_impl___getitimer50();
+void __sanitizer_syscall_pre_impl___clock_gettime50();
+void __sanitizer_syscall_post_impl___clock_gettime50();
+void __sanitizer_syscall_pre_impl___clock_settime50();
+void __sanitizer_syscall_post_impl___clock_settime50();
+void __sanitizer_syscall_pre_impl___clock_getres50();
+void __sanitizer_syscall_post_impl___clock_getres50();
+void __sanitizer_syscall_pre_impl___nanosleep50();
+void __sanitizer_syscall_post_impl___nanosleep50();
+void __sanitizer_syscall_pre_impl_____sigtimedwait50();
+void __sanitizer_syscall_post_impl_____sigtimedwait50();
+void __sanitizer_syscall_pre_impl___mq_timedsend50();
+void __sanitizer_syscall_post_impl___mq_timedsend50();
+void __sanitizer_syscall_pre_impl___mq_timedreceive50();
+void __sanitizer_syscall_post_impl___mq_timedreceive50();
+void __sanitizer_syscall_pre_impl_compat_60__lwp_park();
+void __sanitizer_syscall_post_impl_compat_60__lwp_park();
+void __sanitizer_syscall_pre_impl___kevent50();
+void __sanitizer_syscall_post_impl___kevent50();
+void __sanitizer_syscall_pre_impl___pselect50();
+void __sanitizer_syscall_post_impl___pselect50();
+void __sanitizer_syscall_pre_impl___pollts50();
+void __sanitizer_syscall_post_impl___pollts50();
+void __sanitizer_syscall_pre_impl___aio_suspend50();
+void __sanitizer_syscall_post_impl___aio_suspend50();
+void __sanitizer_syscall_pre_impl___stat50();
+void __sanitizer_syscall_post_impl___stat50();
+void __sanitizer_syscall_pre_impl___fstat50();
+void __sanitizer_syscall_post_impl___fstat50();
+void __sanitizer_syscall_pre_impl___lstat50();
+void __sanitizer_syscall_post_impl___lstat50();
+void __sanitizer_syscall_pre_impl_____semctl50();
+void __sanitizer_syscall_post_impl_____semctl50();
+void __sanitizer_syscall_pre_impl___shmctl50();
+void __sanitizer_syscall_post_impl___shmctl50();
+void __sanitizer_syscall_pre_impl___msgctl50();
+void __sanitizer_syscall_post_impl___msgctl50();
+void __sanitizer_syscall_pre_impl___getrusage50();
+void __sanitizer_syscall_post_impl___getrusage50();
+void __sanitizer_syscall_pre_impl___timer_settime50();
+void __sanitizer_syscall_post_impl___timer_settime50();
+void __sanitizer_syscall_pre_impl___timer_gettime50();
+void __sanitizer_syscall_post_impl___timer_gettime50();
+void __sanitizer_syscall_pre_impl___ntp_gettime50();
+void __sanitizer_syscall_post_impl___ntp_gettime50();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl___wait450();
+void __sanitizer_syscall_post_impl___wait450();
+void __sanitizer_syscall_pre_impl___mknod50();
+void __sanitizer_syscall_post_impl___mknod50();
+void __sanitizer_syscall_pre_impl___fhstat50();
+void __sanitizer_syscall_post_impl___fhstat50();
+/* syscall  has been skipped */
+void __sanitizer_syscall_pre_impl_pipe2();
+void __sanitizer_syscall_post_impl_pipe2();
+void __sanitizer_syscall_pre_impl_dup3();
+void __sanitizer_syscall_post_impl_dup3();
+void __sanitizer_syscall_pre_impl_kqueue1();
+void __sanitizer_syscall_post_impl_kqueue1();
+void __sanitizer_syscall_pre_impl_paccept();
+void __sanitizer_syscall_post_impl_paccept();
+void __sanitizer_syscall_pre_impl_linkat();
+void __sanitizer_syscall_post_impl_linkat();
+void __sanitizer_syscall_pre_impl_renameat();
+void __sanitizer_syscall_post_impl_renameat();
+void __sanitizer_syscall_pre_impl_mkfifoat();
+void __sanitizer_syscall_post_impl_mkfifoat();
+void __sanitizer_syscall_pre_impl_mknodat();
+void __sanitizer_syscall_post_impl_mknodat();
+void __sanitizer_syscall_pre_impl_mkdirat();
+void __sanitizer_syscall_post_impl_mkdirat();
+void __sanitizer_syscall_pre_impl_faccessat();
+void __sanitizer_syscall_post_impl_faccessat();
+void __sanitizer_syscall_pre_impl_fchmodat();
+void __sanitizer_syscall_post_impl_fchmodat();
+void __sanitizer_syscall_pre_impl_fchownat();
+void __sanitizer_syscall_post_impl_fchownat();
+void __sanitizer_syscall_pre_impl_fexecve();
+void __sanitizer_syscall_post_impl_fexecve();
+void __sanitizer_syscall_pre_impl_fstatat();
+void __sanitizer_syscall_post_impl_fstatat();
+void __sanitizer_syscall_pre_impl_utimensat();
+void __sanitizer_syscall_post_impl_utimensat();
+void __sanitizer_syscall_pre_impl_openat();
+void __sanitizer_syscall_post_impl_openat();
+void __sanitizer_syscall_pre_impl_readlinkat();
+void __sanitizer_syscall_post_impl_readlinkat();
+void __sanitizer_syscall_pre_impl_symlinkat();
+void __sanitizer_syscall_post_impl_symlinkat();
+void __sanitizer_syscall_pre_impl_unlinkat();
+void __sanitizer_syscall_post_impl_unlinkat();
+void __sanitizer_syscall_pre_impl_futimens();
+void __sanitizer_syscall_post_impl_futimens();
+void __sanitizer_syscall_pre_impl___quotactl();
+void __sanitizer_syscall_post_impl___quotactl();
+void __sanitizer_syscall_pre_impl_posix_spawn();
+void __sanitizer_syscall_post_impl_posix_spawn();
+void __sanitizer_syscall_pre_impl_recvmmsg();
+void __sanitizer_syscall_post_impl_recvmmsg();
+void __sanitizer_syscall_pre_impl_sendmmsg();
+void __sanitizer_syscall_post_impl_sendmmsg();
+void __sanitizer_syscall_pre_impl_clock_nanosleep();
+void __sanitizer_syscall_post_impl_clock_nanosleep();
+void __sanitizer_syscall_pre_impl____lwp_park60();
+void __sanitizer_syscall_post_impl____lwp_park60();
+void __sanitizer_syscall_pre_impl_posix_fallocate();
+void __sanitizer_syscall_post_impl_posix_fallocate();
+void __sanitizer_syscall_pre_impl_fdiscard();
+void __sanitizer_syscall_post_impl_fdiscard();
+void __sanitizer_syscall_pre_impl_wait6();
+void __sanitizer_syscall_post_impl_wait6();
+void __sanitizer_syscall_pre_impl_clock_getcpuclockid2();
+void __sanitizer_syscall_post_impl_clock_getcpuclockid2();
 
-451	STD  RUMP 	{ int|sys|50|fhstat(const void *fhp, \
-a kuku
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
-452	OBSOL		5.99 quotactl
-a kuku
-
-453	STD  RUMP	{
-                                                                                                                                                                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                                                                                                                                                                    pipe2(
-                                                                                                                                                                                                                                                                                                                                                                        int *
-                                                                                                                                                                                                                                                                                                                                                                            fildes,
-                                                                                                                                                                                                                                                                                                                                                                        int flags); }
-a kuku
-
-454	STD  RUMP	{
-                                                                                                                                                                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                                                                                                                                                                    dup3(
-                                                                                                                                                                                                                                                                                                                                                                        int from,
-                                                                                                                                                                                                                                                                                                                                                                        int to, int flags); }
-a kuku
-
-455	STD  RUMP	{
-                                                                                                                                                                                                                                                                                                                                                                int | sys ||
-                                                                                                                                                                                                                                                                                                                                                                    kqueue1(
-                                                                                                                                                                                                                                                                                                                                                                        int flags); }
-a kuku
-
-456	STD  RUMP	{ int|sys||paccept(int s, struct sockaddr *name, \
-a kuku
-
-457	STD  RUMP	{ int|sys||linkat(int fd1, const char *name1, \
-a kuku
-
-458	STD  RUMP	{ int|sys||renameat(int fromfd, const char *from, \
-a kuku
-
-459	STD  RUMP	{ int|sys||mkfifoat(int fd, const char *path, \
-a kuku
-
-460	STD  RUMP	{ int|sys||mknodat(int fd, const char *path, \
-a kuku
-
-461	STD  RUMP	{ int|sys||mkdirat(int fd, const char *path, \
-a kuku
-
-462	STD  RUMP	{ int|sys||faccessat(int fd, const char *path, \
-a kuku
-
-463	STD  RUMP	{ int|sys||fchmodat(int fd, const char *path, \
-a kuku
-
-464	STD  RUMP	{ int|sys||fchownat(int fd, const char *path, \
-a kuku
-
-465	STD  		{ int|sys||fexecve(int fd, \
-a kuku
-
-466	STD  RUMP	{ int|sys||fstatat(int fd, const char *path, \
-a kuku
-
-467	STD  RUMP	{ int|sys||utimensat(int fd, const char *path, \
-a kuku
-
-468	STD  RUMP	{ int|sys||openat(int fd, const char *path, \
-a kuku
-
-469	STD  RUMP	{ ssize_t|sys||readlinkat(int fd, const char *path, \
-a kuku
-
-470	STD  RUMP	{ int|sys||symlinkat(const char *path1, int fd, \
-a kuku
-
-471	STD  RUMP	{ int|sys||unlinkat(int fd, const char *path, \
-a kuku
-
-472	STD  RUMP	{ int|sys||futimens(int fd, \
-a kuku
-
-473	STD  RUMP	{ int|sys||__quotactl(const char *path, \
-a kuku
-
-474	NOERR		{ int|sys||posix_spawn(pid_t *pid, const char *path, \
-a kuku
-
-475	STD  RUMP	{ int|sys||recvmmsg(int s, struct mmsghdr *mmsg, \
-a kuku
-
-476	STD  RUMP	{ int|sys||sendmmsg(int s, struct mmsghdr *mmsg, \
-a kuku
-
-477	NOERR	RUMP	{ int|sys||clock_nanosleep(clockid_t clock_id, \
-a kuku
-
-478	STD 		{ int|sys|60|_lwp_park(clockid_t clock_id, int flags, \
-a kuku
-
-479	NOERR	RUMP	{ int|sys||posix_fallocate(int fd, int PAD, off_t pos, \
-a kuku
-
-480	STD  RUMP	{ int|sys||fdiscard(int fd, int PAD, off_t pos, \
-a kuku
-
-481	STD 		{ int|sys||wait6(idtype_t idtype, id_t id, \
-a kuku
-
-482	STD		{ int|sys||clock_getcpuclockid2(idtype_t idtype,
-
-#endif // SANITIZER_NETBSD_SYSCALL_HOOKS_H
+#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H

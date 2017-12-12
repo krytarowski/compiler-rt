@@ -48,32 +48,34 @@ cat $1 | $nbawk '
 BEGIN {
   parsingheader=1
 
-  printf "//===-- netbsd_syscall_hooks.h --------------------------------------------===//\n"
-  printf "//\n"
-  printf "//                     The LLVM Compiler Infrastructure\n"
-  printf "//\n"
-  printf "// This file is distributed under the University of Illinois Open Source\n"
-  printf "// License. See LICENSE.TXT for details.\n"
-  printf "//\n"
-  printf "//===----------------------------------------------------------------------===//\n"
-  printf "//\n"
-  printf "// This file is a part of public sanitizer interface.\n"
-  printf "//\n"
-  printf "// System call handlers.\n"
-  printf "//\n"
-  printf "// Interface methods declared in this header implement pre- and post- syscall\n"
-  printf "// actions for the active sanitizer.\n"
-  printf "// Usage:\n"
-  printf "//   __sanitizer_syscall_pre_getfoo(...args...);\n"
-  printf "//   long res = syscall(SYS_getfoo, ...args...);\n"
-  printf "//   __sanitizer_syscall_post_getfoo(res, ...args...);\n"
-  printf "//\n"
-  printf "// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED\n"
-  printf "//\n"
-  printf "//===----------------------------------------------------------------------===//\n"
-  printf "#ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H\n"
-  printf "#define SANITIZER_NETBSD_SYSCALL_HOOKS_H\n"
-  printf "\n"
+  parsedsyscalls=0
+
+  print "//===-- netbsd_syscall_hooks.h --------------------------------------------===//"
+  print "//"
+  print "//                     The LLVM Compiler Infrastructure"
+  print "//"
+  print "// This file is distributed under the University of Illinois Open Source"
+  print "// License. See LICENSE.TXT for details."
+  print "//"
+  print "//===----------------------------------------------------------------------===//"
+  print "//"
+  print "// This file is a part of public sanitizer interface."
+  print "//"
+  print "// System call handlers."
+  print "//"
+  print "// Interface methods declared in this header implement pre- and post- syscall"
+  print "// actions for the active sanitizer."
+  print "// Usage:"
+  print "//   __sanitizer_syscall_pre_getfoo(...args...);"
+  print "//   long res = syscall(SYS_getfoo, ...args...);"
+  print "//   __sanitizer_syscall_post_getfoo(res, ...args...);"
+  print "//"
+  print "// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED"
+  print "//"
+  print "//===----------------------------------------------------------------------===//"
+  print "#ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H"
+  print "#define SANITIZER_NETBSD_SYSCALL_HOOKS_H"
+  print ""
 }
 
 # skip the following lines
@@ -92,20 +94,127 @@ $0 == "%%" {
   next
 }
 
+# preserve 'if/elif/else/endif' C preprocessor as-is
 parsingheader == 0 && $0 ~ /^#/ {
-  print
+  ifelifelseendif[parsedsyscalls] = $0
   next
 }
 
 parsingheader == 0 && $1 ~ /^[0-9]+$/ {
-  print "a kuku\n"
-  print
+  # first join multiple lines into single one
+  while (sub(/\\$/, "")) {
+    getline line
+    $0 = $0 "" line
+  }
+
+  # Skip unwanted syscalls
+  skip=0
+  if ($0 ~ /OBSOL/ || $0 ~ /EXCL/ || $0 ~ /UNIMPL/) {
+    skip=1
+  }
+
+  # Compose the syscall name
+  #  - compat?
+  compat=""
+  if (match($0, /COMPAT_[0-9]+/)) {
+    compat = tolower(substr($0, RSTART, RLENGTH))
+  }
+  # - alias name?
+  alias=""
+  if ($(NF) != "}" && !skip) {
+    alias = alias "" $(NF)
+  }
+  # - compat version?
+  compatver=""
+  if (match($0, /\|[0-9]+\|/)) {
+    compatver = tolower(substr($0, RSTART + 1, RLENGTH - 2))
+  }
+  # - basename?
+  basename=""
+  if ($0 ~ /UNIMPL/) {
+    if (NF >= 3) {
+      basename = $3
+    } else {
+      basename = $1
+    }
+  } else {
+    if (match($0, /\|[_a-z0-9]+\(/)) {
+      basename = tolower(substr($0, RSTART + 1, RLENGTH - 2))
+    }
+  }
+
+  syscallname=""
+
+  if (skip) {
+    syscallname= syscallname "$"
+  }
+
+  if (length(compat) > 0) {
+    syscallname = syscallname "" compat "_";
+  }
+  if (length(alias) > 0) {
+    syscallname = syscallname "" alias;
+  } else {
+    if (length(compatver) > 0) {
+      syscallname = syscallname "__" basename "" compatver;
+    } else {
+      syscallname = syscallname "" basename;
+    }
+  }
+
+  # Store the syscallname
+  syscalls[parsedsyscalls]=syscallname;
+  parsedsyscalls++;
+
+  # Done with this line
   next
 }
 
 END {
-  printf "\n"
-  printf "#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H\n"
+  for (i = 0; i < parsedsyscalls; i++) {
+
+    if (i in ifelifelseendif) {
+      print ifelifelseendif[i]
+    }
+
+    sn = syscalls[i];
+
+    if (sn ~ /^\$/) {
+      print "/* syscall " substr(sn,2) " has been skipped */"
+      continue
+    }
+
+    print "#define __sanitizer_syscall_pre_" sn "() \\"
+    print "  __sanitizer_syscall_pre_impl_" sn "()"
+    print "#define __sanitizer_syscall_post_" sn "() \\"
+    print "  __sanitizer_syscall_post_impl_" sn "()"
+  }
+
+  print ""
+  print "#ifdef __cplusplus"
+  print "extern \"C\" {"
+  print "#endif"
+  print ""
+  print "// Private declarations. Do not call directly from user code. Use macros above."
+
+  for (i = 0; i < parsedsyscalls; i++) {
+    sn = syscalls[i];
+
+    if (sn ~ /^\$/) {
+      print "/* syscall " substr(sn,2) " has been skipped */"
+      continue
+    }
+
+    print "void __sanitizer_syscall_pre_impl_" sn "();"
+    print "void __sanitizer_syscall_post_impl_" sn "();"
+  }
+
+  print ""
+  print "#ifdef __cplusplus"
+  print "} // extern \"C\""
+  print "#endif"
+  print ""
+  print "#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H"
 }
 ' | $clangformat - > $nbsdsyscallhooksh
 
@@ -119,21 +228,21 @@ cat $1 | $nbawk '
 BEGIN {
 }
 NR == 1 {
-  printf "//===-- sanitizer_netbsd_syscalls.inc ---------------------------*- C++ -*-===//\n"
-  printf "//\n"
-  printf "//                     The LLVM Compiler Infrastructure\n"
-  printf "//\n"
-  printf "// This file is distributed under the University of Illinois Open Source\n"
-  printf "// License. See LICENSE.TXT for details.\n"
-  printf "//\n"
-  printf "//===----------------------------------------------------------------------===//\n"
-  printf "//\n"
-  printf "// NetBSD syscalls handlers for tools like AddressSanitizer,\n"
-  printf "// ThreadSanitizer, MemorySanitizer, etc.\n"
-  printf "//\n"
-  printf "// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED\n"
-  printf "//\n"
-  printf "//===----------------------------------------------------------------------===//\n"
+  print "//===-- sanitizer_netbsd_syscalls.inc ---------------------------*- C++ -*-===//"
+  print "//"
+  print "//                     The LLVM Compiler Infrastructure"
+  print "//"
+  print "// This file is distributed under the University of Illinois Open Source"
+  print "// License. See LICENSE.TXT for details."
+  print "//"
+  print "//===----------------------------------------------------------------------===//"
+  print "//"
+  print "// NetBSD syscalls handlers for tools like AddressSanitizer,"
+  print "// ThreadSanitizer, MemorySanitizer, etc."
+  print "//"
+  print "// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED"
+  print "//"
+  print "//===----------------------------------------------------------------------===//"
 }
 ' | $clangformat - > $sanitizernbsyscallsinc
 
