@@ -36,7 +36,7 @@ fi
 nbawk=${AWK:-awk}
 clangformat=${CLANGFORMAT:-clang-format}
 
-topdir=${TOPDIR:-..}
+topdir=$(dirname $(readlink -f $0))/..
 nbsdsyscallhooksh=$topdir/include/sanitizer/netbsd_syscall_hooks.h
 sanitizernbsyscallsinc=$topdir/lib/sanitizer_common/sanitizer_common_syscalls.inc
 
