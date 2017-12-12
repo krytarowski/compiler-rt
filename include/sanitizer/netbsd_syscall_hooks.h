@@ -68,7 +68,7 @@
   __sanitizer_syscall_pre_impl_unlink()
 #define __sanitizer_syscall_post_unlink() \
   __sanitizer_syscall_post_impl_unlink()
-/* syscall  has been skipped */
+/* syscall 11 has been skipped */
 #define __sanitizer_syscall_pre_chdir() \
   __sanitizer_syscall_pre_impl_chdir()
 #define __sanitizer_syscall_post_chdir() \
@@ -289,8 +289,8 @@
   __sanitizer_syscall_pre_impl_vfork()
 #define __sanitizer_syscall_post_vfork() \
   __sanitizer_syscall_post_impl_vfork()
-/* syscall  has been skipped */
-/* syscall  has been skipped */
+/* syscall 67 has been skipped */
+/* syscall 68 has been skipped */
 #define __sanitizer_syscall_pre_sbrk() \
   __sanitizer_syscall_pre_impl_sbrk()
 #define __sanitizer_syscall_post_sbrk() \
@@ -319,8 +319,8 @@
   __sanitizer_syscall_pre_impl_madvise()
 #define __sanitizer_syscall_post_madvise() \
   __sanitizer_syscall_post_impl_madvise()
-/* syscall  has been skipped */
-/* syscall  has been skipped */
+/* syscall 76 has been skipped */
+/* syscall 77 has been skipped */
 #define __sanitizer_syscall_pre_mincore() \
   __sanitizer_syscall_pre_impl_mincore()
 #define __sanitizer_syscall_post_mincore() \
@@ -373,7 +373,7 @@
   __sanitizer_syscall_pre_impl_dup2()
 #define __sanitizer_syscall_post_dup2() \
   __sanitizer_syscall_post_impl_dup2()
-/* syscall getdopt has been skipped */
+/* syscall 91 has been skipped */
 #define __sanitizer_syscall_pre_fcntl() \
   __sanitizer_syscall_pre_impl_fcntl()
 #define __sanitizer_syscall_post_fcntl() \
@@ -382,7 +382,7 @@
   __sanitizer_syscall_pre_impl_compat_50_select()
 #define __sanitizer_syscall_post_compat_50_select() \
   __sanitizer_syscall_post_impl_compat_50_select()
-/* syscall setdopt has been skipped */
+/* syscall 94 has been skipped */
 #define __sanitizer_syscall_pre_fsync() \
   __sanitizer_syscall_pre_impl_fsync()
 #define __sanitizer_syscall_post_fsync() \
@@ -431,7 +431,7 @@
   __sanitizer_syscall_pre_impl_listen()
 #define __sanitizer_syscall_post_listen() \
   __sanitizer_syscall_post_impl_listen()
-/* syscall  has been skipped */
+/* syscall 107 has been skipped */
 #define __sanitizer_syscall_pre_compat_43_osigvec() \
   __sanitizer_syscall_pre_impl_compat_43_osigvec()
 #define __sanitizer_syscall_post_compat_43_osigvec() \
@@ -460,7 +460,7 @@
   __sanitizer_syscall_pre_impl_compat_43_osendmsg()
 #define __sanitizer_syscall_post_compat_43_osendmsg() \
   __sanitizer_syscall_post_impl_compat_43_osendmsg()
-/* syscall  has been skipped */
+/* syscall 115 has been skipped */
 #define __sanitizer_syscall_pre_compat_50_gettimeofday() \
   __sanitizer_syscall_pre_impl_compat_50_gettimeofday()
 #define __sanitizer_syscall_post_compat_50_gettimeofday() \
@@ -473,7 +473,7 @@
   __sanitizer_syscall_pre_impl_getsockopt()
 #define __sanitizer_syscall_post_getsockopt() \
   __sanitizer_syscall_post_impl_getsockopt()
-/* syscall  has been skipped */
+/* syscall 119 has been skipped */
 #define __sanitizer_syscall_pre_readv() \
   __sanitizer_syscall_pre_impl_readv()
 #define __sanitizer_syscall_post_readv() \
@@ -550,7 +550,7 @@
   __sanitizer_syscall_pre_impl_compat_50_utimes()
 #define __sanitizer_syscall_post_compat_50_utimes() \
   __sanitizer_syscall_post_impl_compat_50_utimes()
-/* syscall  has been skipped */
+/* syscall 139 has been skipped */
 #define __sanitizer_syscall_pre_compat_50_adjtime() \
   __sanitizer_syscall_pre_impl_compat_50_adjtime()
 #define __sanitizer_syscall_post_compat_50_adjtime() \
@@ -646,21 +646,21 @@
 #define __sanitizer_syscall_post_compat_10_osemsys() \
   __sanitizer_syscall_post_impl_compat_10_osemsys()
 #else
-/* syscall  has been skipped */
+/* syscall 169 has been skipped */
 #if !defined(_LP64)
 #define __sanitizer_syscall_pre_compat_10_omsgsys() \
   __sanitizer_syscall_pre_impl_compat_10_omsgsys()
 #define __sanitizer_syscall_post_compat_10_omsgsys() \
   __sanitizer_syscall_post_impl_compat_10_omsgsys()
 #else
-/* syscall  has been skipped */
+/* syscall 170 has been skipped */
 #if !defined(_LP64)
 #define __sanitizer_syscall_pre_compat_10_oshmsys() \
   __sanitizer_syscall_pre_impl_compat_10_oshmsys()
 #define __sanitizer_syscall_post_compat_10_oshmsys() \
   __sanitizer_syscall_post_impl_compat_10_oshmsys()
 #else
-/* syscall  has been skipped */
+/* syscall 171 has been skipped */
 #endif
 /* syscall 172 has been skipped */
 #define __sanitizer_syscall_pre_pread() \
@@ -681,7 +681,7 @@
 #define __sanitizer_syscall_post_ntp_adjtime() \
   __sanitizer_syscall_post_impl_ntp_adjtime()
 #else
-/* syscall  has been skipped */
+/* syscall 176 has been skipped */
 #endif
 /* syscall 177 has been skipped */
 /* syscall 178 has been skipped */
@@ -1256,7 +1256,7 @@
   __sanitizer_syscall_pre_impl_compat_60_sa_preempt()
 #define __sanitizer_syscall_post_compat_60_sa_preempt() \
   __sanitizer_syscall_post_impl_compat_60_sa_preempt()
-/* syscall  has been skipped */
+/* syscall 336 has been skipped */
 /* syscall 337 has been skipped */
 /* syscall 338 has been skipped */
 /* syscall 339 has been skipped */
@@ -1683,7 +1683,7 @@
 #define __sanitizer_syscall_post___ntp_gettime50() \
   __sanitizer_syscall_post_impl___ntp_gettime50()
 #else
-/* syscall  has been skipped */
+/* syscall 448 has been skipped */
 #endif
 #define __sanitizer_syscall_pre___wait450() \
   __sanitizer_syscall_pre_impl___wait450()
@@ -1697,7 +1697,7 @@
   __sanitizer_syscall_pre_impl___fhstat50()
 #define __sanitizer_syscall_post___fhstat50() \
   __sanitizer_syscall_post_impl___fhstat50()
-/* syscall  has been skipped */
+/* syscall 452 has been skipped */
 #define __sanitizer_syscall_pre_pipe2() \
   __sanitizer_syscall_pre_impl_pipe2()
 #define __sanitizer_syscall_post_pipe2() \
@@ -1846,7 +1846,7 @@ void __sanitizer_syscall_pre_impl_link();
 void __sanitizer_syscall_post_impl_link();
 void __sanitizer_syscall_pre_impl_unlink();
 void __sanitizer_syscall_post_impl_unlink();
-/* syscall  has been skipped */
+/* syscall 11 has been skipped */
 void __sanitizer_syscall_pre_impl_chdir();
 void __sanitizer_syscall_post_impl_chdir();
 void __sanitizer_syscall_pre_impl_fchdir();
@@ -1957,8 +1957,8 @@ void __sanitizer_syscall_pre_impl_compat_12_msync();
 void __sanitizer_syscall_post_impl_compat_12_msync();
 void __sanitizer_syscall_pre_impl_vfork();
 void __sanitizer_syscall_post_impl_vfork();
-/* syscall  has been skipped */
-/* syscall  has been skipped */
+/* syscall 67 has been skipped */
+/* syscall 68 has been skipped */
 void __sanitizer_syscall_pre_impl_sbrk();
 void __sanitizer_syscall_post_impl_sbrk();
 void __sanitizer_syscall_pre_impl_sstk();
@@ -1973,8 +1973,8 @@ void __sanitizer_syscall_pre_impl_mprotect();
 void __sanitizer_syscall_post_impl_mprotect();
 void __sanitizer_syscall_pre_impl_madvise();
 void __sanitizer_syscall_post_impl_madvise();
-/* syscall  has been skipped */
-/* syscall  has been skipped */
+/* syscall 76 has been skipped */
+/* syscall 77 has been skipped */
 void __sanitizer_syscall_pre_impl_mincore();
 void __sanitizer_syscall_post_impl_mincore();
 void __sanitizer_syscall_pre_impl_getgroups();
@@ -2001,12 +2001,12 @@ void __sanitizer_syscall_pre_impl_compat_43_ogetdtablesize();
 void __sanitizer_syscall_post_impl_compat_43_ogetdtablesize();
 void __sanitizer_syscall_pre_impl_dup2();
 void __sanitizer_syscall_post_impl_dup2();
-/* syscall getdopt has been skipped */
+/* syscall 91 has been skipped */
 void __sanitizer_syscall_pre_impl_fcntl();
 void __sanitizer_syscall_post_impl_fcntl();
 void __sanitizer_syscall_pre_impl_compat_50_select();
 void __sanitizer_syscall_post_impl_compat_50_select();
-/* syscall setdopt has been skipped */
+/* syscall 94 has been skipped */
 void __sanitizer_syscall_pre_impl_fsync();
 void __sanitizer_syscall_post_impl_fsync();
 void __sanitizer_syscall_pre_impl_setpriority();
@@ -2031,7 +2031,7 @@ void __sanitizer_syscall_pre_impl_setsockopt();
 void __sanitizer_syscall_post_impl_setsockopt();
 void __sanitizer_syscall_pre_impl_listen();
 void __sanitizer_syscall_post_impl_listen();
-/* syscall  has been skipped */
+/* syscall 107 has been skipped */
 void __sanitizer_syscall_pre_impl_compat_43_osigvec();
 void __sanitizer_syscall_post_impl_compat_43_osigvec();
 void __sanitizer_syscall_pre_impl_compat_43_osigblock();
@@ -2046,14 +2046,14 @@ void __sanitizer_syscall_pre_impl_compat_43_orecvmsg();
 void __sanitizer_syscall_post_impl_compat_43_orecvmsg();
 void __sanitizer_syscall_pre_impl_compat_43_osendmsg();
 void __sanitizer_syscall_post_impl_compat_43_osendmsg();
-/* syscall  has been skipped */
+/* syscall 115 has been skipped */
 void __sanitizer_syscall_pre_impl_compat_50_gettimeofday();
 void __sanitizer_syscall_post_impl_compat_50_gettimeofday();
 void __sanitizer_syscall_pre_impl_compat_50_getrusage();
 void __sanitizer_syscall_post_impl_compat_50_getrusage();
 void __sanitizer_syscall_pre_impl_getsockopt();
 void __sanitizer_syscall_post_impl_getsockopt();
-/* syscall  has been skipped */
+/* syscall 119 has been skipped */
 void __sanitizer_syscall_pre_impl_readv();
 void __sanitizer_syscall_post_impl_readv();
 void __sanitizer_syscall_pre_impl_writev();
@@ -2092,7 +2092,7 @@ void __sanitizer_syscall_pre_impl_rmdir();
 void __sanitizer_syscall_post_impl_rmdir();
 void __sanitizer_syscall_pre_impl_compat_50_utimes();
 void __sanitizer_syscall_post_impl_compat_50_utimes();
-/* syscall  has been skipped */
+/* syscall 139 has been skipped */
 void __sanitizer_syscall_pre_impl_compat_50_adjtime();
 void __sanitizer_syscall_post_impl_compat_50_adjtime();
 void __sanitizer_syscall_pre_impl_compat_43_ogetpeername();
@@ -2144,13 +2144,13 @@ void __sanitizer_syscall_post_impl_sysarch();
 /* syscall 168 has been skipped */
 void __sanitizer_syscall_pre_impl_compat_10_osemsys();
 void __sanitizer_syscall_post_impl_compat_10_osemsys();
-/* syscall  has been skipped */
+/* syscall 169 has been skipped */
 void __sanitizer_syscall_pre_impl_compat_10_omsgsys();
 void __sanitizer_syscall_post_impl_compat_10_omsgsys();
-/* syscall  has been skipped */
+/* syscall 170 has been skipped */
 void __sanitizer_syscall_pre_impl_compat_10_oshmsys();
 void __sanitizer_syscall_post_impl_compat_10_oshmsys();
-/* syscall  has been skipped */
+/* syscall 171 has been skipped */
 /* syscall 172 has been skipped */
 void __sanitizer_syscall_pre_impl_pread();
 void __sanitizer_syscall_post_impl_pread();
@@ -2160,7 +2160,7 @@ void __sanitizer_syscall_pre_impl_compat_30_ntp_gettime();
 void __sanitizer_syscall_post_impl_compat_30_ntp_gettime();
 void __sanitizer_syscall_pre_impl_ntp_adjtime();
 void __sanitizer_syscall_post_impl_ntp_adjtime();
-/* syscall  has been skipped */
+/* syscall 176 has been skipped */
 /* syscall 177 has been skipped */
 /* syscall 178 has been skipped */
 /* syscall 179 has been skipped */
@@ -2458,7 +2458,7 @@ void __sanitizer_syscall_pre_impl_compat_60_sa_yield();
 void __sanitizer_syscall_post_impl_compat_60_sa_yield();
 void __sanitizer_syscall_pre_impl_compat_60_sa_preempt();
 void __sanitizer_syscall_post_impl_compat_60_sa_preempt();
-/* syscall  has been skipped */
+/* syscall 336 has been skipped */
 /* syscall 337 has been skipped */
 /* syscall 338 has been skipped */
 /* syscall 339 has been skipped */
@@ -2675,14 +2675,14 @@ void __sanitizer_syscall_pre_impl___timer_gettime50();
 void __sanitizer_syscall_post_impl___timer_gettime50();
 void __sanitizer_syscall_pre_impl___ntp_gettime50();
 void __sanitizer_syscall_post_impl___ntp_gettime50();
-/* syscall  has been skipped */
+/* syscall 448 has been skipped */
 void __sanitizer_syscall_pre_impl___wait450();
 void __sanitizer_syscall_post_impl___wait450();
 void __sanitizer_syscall_pre_impl___mknod50();
 void __sanitizer_syscall_post_impl___mknod50();
 void __sanitizer_syscall_pre_impl___fhstat50();
 void __sanitizer_syscall_post_impl___fhstat50();
-/* syscall  has been skipped */
+/* syscall 452 has been skipped */
 void __sanitizer_syscall_pre_impl_pipe2();
 void __sanitizer_syscall_post_impl_pipe2();
 void __sanitizer_syscall_pre_impl_dup3();

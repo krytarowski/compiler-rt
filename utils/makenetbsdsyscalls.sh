@@ -100,6 +100,7 @@ parsingheader == 0 && $0 ~ /^#/ {
   next
 }
 
+# parsing of syscall definitions
 parsingheader == 0 && $1 ~ /^[0-9]+$/ {
   # first join multiple lines into single one
   while (sub(/\\$/, "")) {
@@ -131,12 +132,8 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
   }
   # - basename?
   basename=""
-  if ($0 ~ /UNIMPL/) {
-    if (NF >= 3) {
-      basename = $3
-    } else {
-      basename = $1
-    }
+  if (skip) {
+    basename = $1
   } else {
     if (match($0, /\|[_a-z0-9]+\(/)) {
       basename = tolower(substr($0, RSTART + 1, RLENGTH - 2))
