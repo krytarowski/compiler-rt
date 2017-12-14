@@ -142,7 +142,7 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
 
   # Extract syscall arguments
   if (match($0, /\([^)]+\)/)) {
-    print substr($0, RSTART + 1, RLENGTH - 2)
+#    print substr($0, RSTART + 1, RLENGTH - 2)
   }
 
   parsedsyscalls++;
@@ -161,78 +161,77 @@ END {
   # open pipe
   cmd = clangformat " > " output
 
-  print "hello world" | cmd
-  print "//===-- netbsd_syscall_hooks.h --------------------------------------------===//" | cmd
-  print "//" | cmd
-  print "//                     The LLVM Compiler Infrastructure" | cmd
-  print "//" | cmd
-  print "// This file is distributed under the University of Illinois Open Source" | cmd
-  print "// License. See LICENSE.TXT for details." | cmd
-  print "//" | cmd
-  print "//===----------------------------------------------------------------------===//" | cmd
-  print "//" | cmd
-  print "// This file is a part of public sanitizer interface." | cmd
-  print "//" | cmd
-  print "// System call handlers." | cmd
-  print "//" | cmd
-  print "// Interface methods declared in this header implement pre- and post- syscall" | cmd
-  print "// actions for the active sanitizer." | cmd
-  print "// Usage:" | cmd
-  print "//   __sanitizer_syscall_pre_getfoo(...args...);" | cmd
-  print "//   long res = syscall(SYS_getfoo, ...args...);" | cmd
-  print "//   __sanitizer_syscall_post_getfoo(res, ...args...);" | cmd
-  print "//" | cmd
-  print "// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED" | cmd
-  print "//" | cmd
-  print "//===----------------------------------------------------------------------===//" | cmd
-  print "#ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H" | cmd
-  print "#define SANITIZER_NETBSD_SYSCALL_HOOKS_H" | cmd
-  print "" | cmd
+  pcmd("//===-- netbsd_syscall_hooks.h --------------------------------------------===//")
+  pcmd("//")
+  pcmd("//                     The LLVM Compiler Infrastructure")
+  pcmd("//")
+  pcmd("// This file is distributed under the University of Illinois Open Source")
+  pcmd("// License. See LICENSE.TXT for details.")
+  pcmd("//")
+  pcmd("//===----------------------------------------------------------------------===//")
+  pcmd("//")
+  pcmd("// This file is a part of public sanitizer interface.")
+  pcmd("//")
+  pcmd("// System call handlers.")
+  pcmd("//")
+  pcmd("// Interface methods declared in this header implement pre- and post- syscall")
+  pcmd("// actions for the active sanitizer.")
+  pcmd("// Usage:")
+  pcmd("//   __sanitizer_syscall_pre_getfoo(...args...);")
+  pcmd("//   long res = syscall(SYS_getfoo, ...args...);")
+  pcmd("//   __sanitizer_syscall_post_getfoo(res, ...args...);")
+  pcmd("//")
+  pcmd("// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED")
+  pcmd("//")
+  pcmd("//===----------------------------------------------------------------------===//")
+  pcmd("#ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H")
+  pcmd("#define SANITIZER_NETBSD_SYSCALL_HOOKS_H")
+  pcmd("")
 
   for (i = 0; i < parsedsyscalls; i++) {
 
     if (i in ifelifelseendif) { 
-      print ifelifelseendif[i]
+      pcmd(ifelifelseendif[i])
     } 
 
     sn = syscalls[i];
    
     if (sn ~ /^\$/) {
-      print "/* syscall " substr(sn,2) " has been skipped */" | cmd
+      pcmd("/* syscall " substr(sn,2) " has been skipped */")
       continue
     }
 
-    print "#define __sanitizer_syscall_pre_" sn "() \\" | cmd
-    print "  __sanitizer_syscall_pre_impl_" sn "()" | cmd
-    print "#define __sanitizer_syscall_post_" sn "() \\" | cmd
-    print "  __sanitizer_syscall_post_impl_" sn "()" | cmd
+    pcmd("#define __sanitizer_syscall_pre_" sn "() \\")
+    pcmd("  __sanitizer_syscall_pre_impl_" sn "()")
+    pcmd("#define __sanitizer_syscall_post_" sn "() \\")
+    pcmd("  __sanitizer_syscall_post_impl_" sn "()")
   }
 
-  print "" | cmd
-  print "#ifdef __cplusplus" | cmd
-  print "extern \"C\" {" | cmd
-  print "#endif" | cmd
-  print "" | cmd
-  print "// Private declarations. Do not call directly from user code. Use macros above." | cmd
+  pcmd("")
+  pcmd("#ifdef __cplusplus")
+  pcmd("extern \"C\" {")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("// Private declarations. Do not call directly from user code. Use macros above.")
 
   for (i = 0; i < parsedsyscalls; i++) {
     sn = syscalls[i];
    
     if (sn ~ /^\$/) {
-      print "/* syscall " substr(sn,2) " has been skipped */" | cmd
+      pcmd("/* syscall " substr(sn,2) " has been skipped */")
       continue
     }
 
-    print "void __sanitizer_syscall_pre_impl_" sn "();" | cmd
-    print "void __sanitizer_syscall_post_impl_" sn "();" | cmd
+    pcmd("void __sanitizer_syscall_pre_impl_" sn "();")
+    pcmd("void __sanitizer_syscall_post_impl_" sn "();")
   }
 
-  print "" | cmd
-  print "#ifdef __cplusplus" | cmd
-  print "} // extern \"C\"" | cmd
-  print "#endif" | cmd
-  print "" | cmd
-  print "#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H" | cmd
+  pcmd("")
+  pcmd("#ifdef __cplusplus")
+  pcmd("} // extern \"C\"")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H")
 
   close(cmd)
 }
@@ -242,4 +241,9 @@ function usage()
   print "Usage: " script_name " syscalls.master"
   abnormal_exit = 1
   exit 1
+}
+
+function pcmd(string)
+{
+	print string | cmd
 }
