@@ -168,6 +168,10 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
 	gsub(".+[ *]", "", a[i])
         syscallargs[parsedsyscalls] = syscallargs[parsedsyscalls] "$" a[i]
       }
+
+      # Handle array arguments for syscall(2) and __syscall(2)
+      nargs = "arg0$arg1$arg2$arg3$arg4$arg5$arg6$arg7"
+      gsub(/args\[SYS_MAXSYSARGS\]/, nargs, syscallargs[parsedsyscalls])
     }
   }
 

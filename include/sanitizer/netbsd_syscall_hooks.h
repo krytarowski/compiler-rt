@@ -28,12 +28,16 @@
 #ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H
 #define SANITIZER_NETBSD_SYSCALL_HOOKS_H
 
-#define __sanitizer_syscall_pre_syscall(code, args[SYS_MAXSYSARGS])            \
-  __sanitizer_syscall_pre_impl_syscall((long)(code),                           \
-                                       (long)(args[SYS_MAXSYSARGS]))
-#define __sanitizer_syscall_post_syscall(res, code, args[SYS_MAXSYSARGS])      \
-  __sanitizer_syscall_post_impl_syscall(res, (long)(code),                     \
-                                        (long)(args[SYS_MAXSYSARGS]))
+#define __sanitizer_syscall_pre_syscall(code, arg0, arg1, arg2, arg3, arg4,    \
+                                        arg5, arg6, arg7)                      \
+  __sanitizer_syscall_pre_impl_syscall(                                        \
+      (long)(code), (long)(arg0), (long)(arg1), (long)(arg2), (long)(arg3),    \
+      (long)(arg4), (long)(arg5), (long)(arg6), (long)(arg7))
+#define __sanitizer_syscall_post_syscall(res, code, arg0, arg1, arg2, arg3,    \
+                                         arg4, arg5, arg6, arg7)               \
+  __sanitizer_syscall_post_impl_syscall(                                       \
+      res, (long)(code), (long)(arg0), (long)(arg1), (long)(arg2),             \
+      (long)(arg3), (long)(arg4), (long)(arg5), (long)(arg6), (long)(arg7))
 #define __sanitizer_syscall_pre_exit(rval)                                     \
   __sanitizer_syscall_pre_impl_exit((long)(rval))
 #define __sanitizer_syscall_post_exit(res, rval)                               \
@@ -911,12 +915,16 @@
   __sanitizer_syscall_post_impl_mmap(res, (long)(addr), (long)(len),           \
                                      (long)(prot), (long)(flags), (long)(fd),  \
                                      (long)(PAD), (long)(pos))
-#define __sanitizer_syscall_pre___syscall(code, args[SYS_MAXSYSARGS])          \
-  __sanitizer_syscall_pre_impl___syscall((long)(code),                         \
-                                         (long)(args[SYS_MAXSYSARGS]))
-#define __sanitizer_syscall_post___syscall(res, code, args[SYS_MAXSYSARGS])    \
-  __sanitizer_syscall_post_impl___syscall(res, (long)(code),                   \
-                                          (long)(args[SYS_MAXSYSARGS]))
+#define __sanitizer_syscall_pre___syscall(code, arg0, arg1, arg2, arg3, arg4,  \
+                                          arg5, arg6, arg7)                    \
+  __sanitizer_syscall_pre_impl___syscall(                                      \
+      (long)(code), (long)(arg0), (long)(arg1), (long)(arg2), (long)(arg3),    \
+      (long)(arg4), (long)(arg5), (long)(arg6), (long)(arg7))
+#define __sanitizer_syscall_post___syscall(res, code, arg0, arg1, arg2, arg3,  \
+                                           arg4, arg5, arg6, arg7)             \
+  __sanitizer_syscall_post_impl___syscall(                                     \
+      res, (long)(code), (long)(arg0), (long)(arg1), (long)(arg2),             \
+      (long)(arg3), (long)(arg4), (long)(arg5), (long)(arg6), (long)(arg7))
 #define __sanitizer_syscall_pre_lseek(fd, PAD, offset, whence)                 \
   __sanitizer_syscall_pre_impl_lseek((long)(fd), (long)(PAD), (long)(offset),  \
                                      (long)(whence))
