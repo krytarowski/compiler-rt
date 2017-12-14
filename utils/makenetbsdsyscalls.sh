@@ -49,6 +49,7 @@ BEGIN {
   parsingheader=1
 
   parsedsyscalls=0
+  SYS_MAXSYSARGS=8
 
   print "//===-- netbsd_syscall_hooks.h --------------------------------------------===//"
   print "//"
@@ -161,6 +162,12 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
 
   # Store the syscallname
   syscalls[parsedsyscalls]=syscallname;
+
+  # Extract syscall arguments
+  if (match($0, /\([^)]+\)/)) {
+    print substr($0, RSTART + 1, RLENGTH - 2)
+  }
+
   parsedsyscalls++;
 
   # Done with this line
