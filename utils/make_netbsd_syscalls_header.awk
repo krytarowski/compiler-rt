@@ -53,7 +53,9 @@ BEGIN {
   parsingheader=1
 
   parsedsyscalls=0
-  SYS_MAXSYSARGS=8
+
+  # Hardcoded in algorithm
+#  SYS_MAXSYSARGS=8
 }
 
 # Parse the RCS ID from syscall.master
