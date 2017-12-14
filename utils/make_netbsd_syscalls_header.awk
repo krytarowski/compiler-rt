@@ -61,6 +61,9 @@ parsingheader == 1 && NR == 1 {
   if (match($0, /\$[^$]+\$/)) {
     # trim initial '$NetBSD: ' and trailing ' $'
     syscallmasterversion = substr($0, RSTART + 9, RLENGTH - 11)
+  } else {
+    # wrong file?
+    usage()
   }
 }
 
@@ -133,27 +136,27 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
   }
 
   if (length(compat) > 0) {
-    syscallname = syscallname "" compat "_";
+    syscallname = syscallname "" compat "_"
   }
   if (length(alias) > 0) {
-    syscallname = syscallname "" alias;
+    syscallname = syscallname "" alias
   } else {
     if (length(compatver) > 0) {
-      syscallname = syscallname "__" basename "" compatver;
+      syscallname = syscallname "__" basename "" compatver
     } else {
-      syscallname = syscallname "" basename;
+      syscallname = syscallname "" basename
     }
   }
 
   # Store the syscallname
-  syscalls[parsedsyscalls]=syscallname;
+  syscalls[parsedsyscalls]=syscallname
 
   # Extract syscall arguments
   if (match($0, /\([^)]+\)/)) {
 #    print substr($0, RSTART + 1, RLENGTH - 2)
   }
 
-  parsedsyscalls++;
+  parsedsyscalls++
 
   # Done with this line
   next
@@ -161,6 +164,11 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
 
 
 END {
+  # empty file?
+  if (NR < 1 && !abnormal_exit) {
+    usage()
+  }
+
   # Handle abnormal exit
   if (abnormal_exit) {
     exit(abnormal_exit)
@@ -206,7 +214,7 @@ END {
       pcmd(ifelifelseendif[i])
     } 
 
-    sn = syscalls[i];
+    sn = syscalls[i]
    
     if (sn ~ /^\$/) {
       pcmd("/* syscall " substr(sn,2) " has been skipped */")
@@ -235,8 +243,8 @@ END {
       pcmd(ifelifelseendif[i])
     }
 
-    sn = syscalls[i];
-   
+    sn = syscalls[i]
+
     if (sn ~ /^\$/) {
       pcmd("/* syscall " substr(sn,2) " has been skipped */")
       continue
