@@ -164,11 +164,10 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
       syscallargs[parsedsyscalls] = a[1]
 
       # Handle the rest of arguments
-      for (i = 1; i <= n; i++) {
+      for (i = 2; i <= n; i++) {
 	gsub(".+[ *]", "", a[i])
-        syscallargs[parsedsyscalls] = syscallargs[parsedsyscalls] "," a[i]
+        syscallargs[parsedsyscalls] = syscallargs[parsedsyscalls] "$" a[i]
       }
-      syscallargs[parsedsyscalls] = "void"
     }
   }
 
@@ -237,19 +236,37 @@ END {
       continue
     }
 
-    preargs = ""
+    inargs = ""
 
     if (syscallargs[i] != "void") {
-      preargs = syscallargs[i]
-      gsub(/,/, /, /, preargs)
+      inargs = syscallargs[i]
+      gsub(/\$/, ", ", inargs)
     }
 
-    postargs = "res"
+    outargs = ""
 
-    pcmd("#define __sanitizer_syscall_pre_" sn "(" preargs ") \\")
-    pcmd("  __sanitizer_syscall_pre_impl_" sn "()")
-    pcmd("#define __sanitizer_syscall_post_" sn "(res) \\")
-    pcmd("  __sanitizer_syscall_post_impl_" sn "(res, )")
+    if (syscallargs[i] != "void") {
+      outargs = "(long)(" syscallargs[i] ")"
+      gsub(/\$/, "), (long)(", outargs)
+    }
+
+    pcmd("#define __sanitizer_syscall_pre_" sn "(" inargs ") \\")
+    pcmd("  __sanitizer_syscall_pre_impl_" sn "(" outargs ")")
+
+    if (inargs == "") {
+      inargs = "res"
+    } else {
+      inargs = "res, " inargs
+    }
+
+    if (outargs == "") {
+      outargs = "res"
+    } else {
+      outargs = "res, " outargs
+    }
+
+    pcmd("#define __sanitizer_syscall_post_" sn "(" inargs ") \\")
+    pcmd("  __sanitizer_syscall_post_impl_" sn "(" outargs ")")
   }
 
   pcmd("")
