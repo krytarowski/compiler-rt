@@ -56,11 +56,11 @@ END {
     exit(abnormal_exit)
   }
 
-  print "hello world" > output
-  fflush(output)
-  close(output)
-  system("cat " output " | " clangformat " > " output ".tmp")
-  system("mv " output ".tmp " output)
+  # open pipe
+  cmd = clangformat " > " output
+
+  print "hello world" | cmd
+  close(cmd)
 }
 
 function usage()
