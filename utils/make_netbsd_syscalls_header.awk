@@ -298,7 +298,20 @@ END {
       continue
     }
 
-    pcmd("void __sanitizer_syscall_pre_impl_" sn "();")
+    preargs = syscallargs[i]
+
+    if (preargs != "void") {
+      preargs = "long " preargs
+      gsub(/\$/, ", long ", preargs)
+    }
+
+    if (preargs == "void") {
+      postargs = "long res"
+    } else {
+      postargs = "long res, " preargs
+    }
+
+    pcmd("void __sanitizer_syscall_pre_impl_" sn "(" preargs ");")
     pcmd("void __sanitizer_syscall_post_impl_" sn "();")
   }
 
