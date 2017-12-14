@@ -52,9 +52,10 @@ BEGIN {
 
 END {
   # Handle abnormal exit
-  if (rv) {
-    exit(rv)
+  if (abnormal_exit) {
+    exit(abnormal_exit)
   }
+
   print "hello world" > output
   fflush(output)
   close(output)
@@ -65,6 +66,6 @@ END {
 function usage()
 {
   print "Usage: " script_name " syscalls.master"
-  rv=1
+  abnormal_exit = 1
   exit 1
 }
