@@ -153,7 +153,23 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
 
   # Extract syscall arguments
   if (match($0, /\([^)]+\)/)) {
-#    print substr($0, RSTART + 1, RLENGTH - 2)
+    args = substr($0, RSTART + 1, RLENGTH - 2)
+    if (args == "void") {
+      syscallargs[parsedsyscalls] = "void"
+    } else {
+      n = split(args, a, ",")
+
+      # Handle the first argument
+      gsub(".+[ *]", "", a[1])
+      syscallargs[parsedsyscalls] = a[1]
+
+      # Handle the rest of arguments
+      for (i = 1; i <= n; i++) {
+	gsub(".+[ *]", "", a[i])
+        syscallargs[parsedsyscalls] = syscallargs[parsedsyscalls] "," a[i]
+      }
+      syscallargs[parsedsyscalls] = "void"
+    }
   }
 
   parsedsyscalls++
