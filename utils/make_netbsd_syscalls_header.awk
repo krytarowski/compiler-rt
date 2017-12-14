@@ -450,7 +450,7 @@ END {
       continue
     }
 
-    preargs = syscallfullargs[parsedsyscalls]
+    preargs = syscallfullargs[i]
 
     if (preargs == "void") {
       postargs = "register_t res"
