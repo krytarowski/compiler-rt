@@ -17,7 +17,6 @@
 #
 #===------------------------------------------------------------------------===#
 
-
 BEGIN {
   # harcode the script name
   script_name = "make_netbsd_syscalls_header.awk"
@@ -52,11 +51,20 @@ BEGIN {
 }
 
 END {
+  # Handle abnormal exit
+  if (rv) {
+    exit(rv)
+  }
   print "hello world" > output
+  fflush(output)
+  close(output)
+  system("cat " output " > " clangformat " > " output ".tmp")
+  system("mv " output ".tmp " output)
 }
 
 function usage()
 {
   print "Usage: " script_name " syscalls.master"
+  rv=1
   exit 1
 }
