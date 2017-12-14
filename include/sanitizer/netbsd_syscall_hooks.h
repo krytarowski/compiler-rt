@@ -18,7 +18,11 @@
 //   long res = syscall(SYS_getfoo, ...args...);
 //   __sanitizer_syscall_post_getfoo(res, ...args...);
 //
-// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED
+// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
+//
+// Generated with: make_netbsd_syscalls_header.awk
+// Generated date: 2017-12-14
+// Generated from: syscalls.master,v 1.287 2017/12/08 01:19:29 christos Exp
 //
 //===----------------------------------------------------------------------===//
 #ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H
@@ -1622,6 +1626,9 @@ extern "C" {
 #endif
 
 // Private declarations. Do not call directly from user code. Use macros above.
+
+// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
+
 void __sanitizer_syscall_pre_impl_syscall();
 void __sanitizer_syscall_post_impl_syscall();
 void __sanitizer_syscall_pre_impl_exit();
@@ -1940,15 +1947,22 @@ void __sanitizer_syscall_post_impl_sysarch();
 /* syscall 166 has been skipped */
 /* syscall 167 has been skipped */
 /* syscall 168 has been skipped */
+#if !defined(_LP64)
 void __sanitizer_syscall_pre_impl_compat_10_osemsys();
 void __sanitizer_syscall_post_impl_compat_10_osemsys();
+#else
 /* syscall 169 has been skipped */
+#if !defined(_LP64)
 void __sanitizer_syscall_pre_impl_compat_10_omsgsys();
 void __sanitizer_syscall_post_impl_compat_10_omsgsys();
+#else
 /* syscall 170 has been skipped */
+#if !defined(_LP64)
 void __sanitizer_syscall_pre_impl_compat_10_oshmsys();
 void __sanitizer_syscall_post_impl_compat_10_oshmsys();
+#else
 /* syscall 171 has been skipped */
+#endif
 /* syscall 172 has been skipped */
 void __sanitizer_syscall_pre_impl_pread();
 void __sanitizer_syscall_post_impl_pread();
@@ -1956,9 +1970,12 @@ void __sanitizer_syscall_pre_impl_pwrite();
 void __sanitizer_syscall_post_impl_pwrite();
 void __sanitizer_syscall_pre_impl_compat_30_ntp_gettime();
 void __sanitizer_syscall_post_impl_compat_30_ntp_gettime();
+#if defined(NTP) || !defined(_KERNEL_OPT)
 void __sanitizer_syscall_pre_impl_ntp_adjtime();
 void __sanitizer_syscall_post_impl_ntp_adjtime();
+#else
 /* syscall 176 has been skipped */
+#endif
 /* syscall 177 has been skipped */
 /* syscall 178 has been skipped */
 /* syscall 179 has been skipped */
@@ -2471,9 +2488,12 @@ void __sanitizer_syscall_pre_impl___timer_settime50();
 void __sanitizer_syscall_post_impl___timer_settime50();
 void __sanitizer_syscall_pre_impl___timer_gettime50();
 void __sanitizer_syscall_post_impl___timer_gettime50();
+#if defined(NTP) || !defined(_KERNEL_OPT)
 void __sanitizer_syscall_pre_impl___ntp_gettime50();
 void __sanitizer_syscall_post_impl___ntp_gettime50();
+#else
 /* syscall 448 has been skipped */
+#endif
 void __sanitizer_syscall_pre_impl___wait450();
 void __sanitizer_syscall_post_impl___wait450();
 void __sanitizer_syscall_pre_impl___mknod50();
@@ -2545,5 +2565,7 @@ void __sanitizer_syscall_post_impl_clock_getcpuclockid2();
 #ifdef __cplusplus
 } // extern "C"
 #endif
+
+// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
 
 #endif // SANITIZER_NETBSD_SYSCALL_HOOKS_H

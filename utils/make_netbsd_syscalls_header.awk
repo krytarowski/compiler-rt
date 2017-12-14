@@ -56,6 +56,14 @@ BEGIN {
   SYS_MAXSYSARGS=8
 }
 
+# Parse the RCS ID from syscall.master
+parsingheader == 1 && NR == 1 {
+  if (match($0, /\$[^$]+\$/)) {
+    # trim initial '$NetBSD: ' and trailing ' $'
+    syscallmasterversion = substr($0, RSTART + 9, RLENGTH - 11)
+  }
+}
+
 # skip the following lines
 #  - empty
 NF == 0 {   
@@ -181,7 +189,11 @@ END {
   pcmd("//   long res = syscall(SYS_getfoo, ...args...);")
   pcmd("//   __sanitizer_syscall_post_getfoo(res, ...args...);")
   pcmd("//")
-  pcmd("// DO NOT EDIT! THIS FILE HAS BEEN AUTOMATICALLY GENERATED")
+  pcmd("// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!")
+  pcmd("//")
+  pcmd("// Generated with: " script_name)
+  pcmd("// Generated date: " strftime("%F"))
+  pcmd("// Generated from: " syscallmasterversion)
   pcmd("//")
   pcmd("//===----------------------------------------------------------------------===//")
   pcmd("#ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H")
@@ -213,8 +225,16 @@ END {
   pcmd("#endif")
   pcmd("")
   pcmd("// Private declarations. Do not call directly from user code. Use macros above.")
+  pcmd("")
+  pcmd("// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!")
+  pcmd("")
 
   for (i = 0; i < parsedsyscalls; i++) {
+
+    if (i in ifelifelseendif) {
+      pcmd(ifelifelseendif[i])
+    }
+
     sn = syscalls[i];
    
     if (sn ~ /^\$/) {
@@ -230,7 +250,11 @@ END {
   pcmd("#ifdef __cplusplus")
   pcmd("} // extern \"C\"")
   pcmd("#endif")
+
   pcmd("")
+  pcmd("// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!")
+  pcmd("")
+
   pcmd("#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H")
 
   close(cmd)
