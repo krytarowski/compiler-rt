@@ -237,10 +237,19 @@ END {
       continue
     }
 
-    pcmd("#define __sanitizer_syscall_pre_" sn "() \\")
+    preargs = ""
+
+    if (syscallargs[i] != "void") {
+      preargs = syscallargs[i]
+      gsub(/,/, /, /, preargs)
+    }
+
+    postargs = "res"
+
+    pcmd("#define __sanitizer_syscall_pre_" sn "(" preargs ") \\")
     pcmd("  __sanitizer_syscall_pre_impl_" sn "()")
-    pcmd("#define __sanitizer_syscall_post_" sn "() \\")
-    pcmd("  __sanitizer_syscall_post_impl_" sn "()")
+    pcmd("#define __sanitizer_syscall_post_" sn "(res) \\")
+    pcmd("  __sanitizer_syscall_post_impl_" sn "(res, )")
   }
 
   pcmd("")
