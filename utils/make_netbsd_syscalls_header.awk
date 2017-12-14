@@ -430,6 +430,19 @@ END {
   pcmd("#endif")
   pcmd("")
   pcmd("// FIXME: do some kind of PRE_READ for all syscall arguments (int(s) and such).")
+  pcmd("")
+  pcmd("extern \"C\" {")
+
+  pcmd("}  // extern \"C\"")
+  pcmd("")
+  pcmd("#undef PRE_SYSCALL")
+  pcmd("#undef PRE_READ")
+  pcmd("#undef PRE_WRITE")
+  pcmd("#undef POST_SYSCALL")
+  pcmd("#undef POST_READ")
+  pcmd("#undef POST_WRITE")
+  pcmd("")
+  pcmd("#endif  // SANITIZER_NETBSD")
 
   close(cmd)
 }

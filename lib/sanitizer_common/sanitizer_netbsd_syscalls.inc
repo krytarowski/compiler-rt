@@ -94,3 +94,14 @@
 #endif
 
 // FIXME: do some kind of PRE_READ for all syscall arguments (int(s) and such).
+
+extern "C" {} // extern "C"
+
+#undef PRE_SYSCALL
+#undef PRE_READ
+#undef PRE_WRITE
+#undef POST_SYSCALL
+#undef POST_READ
+#undef POST_WRITE
+
+#endif // SANITIZER_NETBSD
