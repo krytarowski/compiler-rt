@@ -20,7 +20,8 @@
 BEGIN {
   # harcode the script name
   script_name = "make_netbsd_syscalls_header.awk"
-  output = "../include/sanitizer/netbsd_syscall_hooks.h"
+  outputh = "../include/sanitizer/netbsd_syscall_hooks.h"
+  outputinc = "../lib/sanitizer_common/sanitizer_netbsd_syscalls.inc"
 
   # assert that we are in the directory with scripts
   in_utils = system("test -f " script_name " && exit 1 || exit 0")
@@ -195,8 +196,10 @@ END {
     exit(abnormal_exit)
   }
 
+  # Generate sanitizer_common_syscalls.inc
+
   # open pipe
-  cmd = clangformat " > " output
+  cmd = clangformat " > " outputh
 
   pcmd("//===-- netbsd_syscall_hooks.h --------------------------------------------===//")
   pcmd("//")
@@ -325,6 +328,101 @@ END {
   pcmd("")
 
   pcmd("#endif  // SANITIZER_NETBSD_SYSCALL_HOOKS_H")
+
+  close(cmd)
+
+  # Generate sanitizer_common_syscalls.inc
+
+  # open pipe
+  cmd = clangformat " > " outputinc
+
+  pcmd("//===-- sanitizer_common_syscalls.inc ---------------------------*- C++ -*-===//")
+  pcmd("//")
+  pcmd("//                     The LLVM Compiler Infrastructure")
+  pcmd("//")
+  pcmd("// This file is distributed under the University of Illinois Open Source")
+  pcmd("// License. See LICENSE.TXT for details.")
+  pcmd("//")
+  pcmd("//===----------------------------------------------------------------------===//")
+  pcmd("//")
+  pcmd("// Common syscalls handlers for tools like AddressSanitizer,")
+  pcmd("// ThreadSanitizer, MemorySanitizer, etc.")
+  pcmd("//")
+  pcmd("// This file should be included into the tool's interceptor file,")
+  pcmd("// which has to define it's own macros:")
+  pcmd("//   COMMON_SYSCALL_PRE_READ_RANGE")
+  pcmd("//          Called in prehook for regions that will be read by the kernel and")
+  pcmd("//          must be initialized.")
+  pcmd("//   COMMON_SYSCALL_PRE_WRITE_RANGE")
+  pcmd("//          Called in prehook for regions that will be written to by the kernel")
+  pcmd("//          and must be addressable. The actual write range may be smaller than")
+  pcmd("//          reported in the prehook. See POST_WRITE_RANGE.")
+  pcmd("//   COMMON_SYSCALL_POST_READ_RANGE")
+  pcmd("//          Called in posthook for regions that were read by the kernel. Does")
+  pcmd("//          not make much sense.")
+  pcmd("//   COMMON_SYSCALL_POST_WRITE_RANGE")
+  pcmd("//          Called in posthook for regions that were written to by the kernel")
+  pcmd("//          and are now initialized.")
+  pcmd("//   COMMON_SYSCALL_ACQUIRE(addr)")
+  pcmd("//          Acquire memory visibility from addr.")
+  pcmd("//   COMMON_SYSCALL_RELEASE(addr)")
+  pcmd("//          Release memory visibility to addr.")
+  pcmd("//   COMMON_SYSCALL_FD_CLOSE(fd)")
+  pcmd("//          Called before closing file descriptor fd.")
+  pcmd("//   COMMON_SYSCALL_FD_ACQUIRE(fd)")
+  pcmd("//          Acquire memory visibility from fd.")
+  pcmd("//   COMMON_SYSCALL_FD_RELEASE(fd)")
+  pcmd("//          Release memory visibility to fd.")
+  pcmd("//   COMMON_SYSCALL_PRE_FORK()")
+  pcmd("//          Called before fork syscall.")
+  pcmd("//   COMMON_SYSCALL_POST_FORK(long res)")
+  pcmd("//          Called after fork syscall.")
+  pcmd("//===----------------------------------------------------------------------===//")
+  pcmd("")
+  pcmd("#include \"sanitizer_platform.h\"")
+  pcmd("#if SANITIZER_NETBSD")
+  pcmd("")
+  pcmd("#include \"sanitizer_libc.h\"")
+  pcmd("")
+  pcmd("#define PRE_SYSCALL(name)                                                      \\")
+  pcmd("  SANITIZER_INTERFACE_ATTRIBUTE void __sanitizer_syscall_pre_impl_##name")
+  pcmd("#define PRE_READ(p, s) COMMON_SYSCALL_PRE_READ_RANGE(p, s)")
+  pcmd("#define PRE_WRITE(p, s) COMMON_SYSCALL_PRE_WRITE_RANGE(p, s)")
+  pcmd("")
+  pcmd("#define POST_SYSCALL(name)                                                     \\")
+  pcmd("  SANITIZER_INTERFACE_ATTRIBUTE void __sanitizer_syscall_post_impl_##name")
+  pcmd("#define POST_READ(p, s) COMMON_SYSCALL_POST_READ_RANGE(p, s)")
+  pcmd("#define POST_WRITE(p, s) COMMON_SYSCALL_POST_WRITE_RANGE(p, s)")
+  pcmd("")
+  pcmd("#ifndef COMMON_SYSCALL_ACQUIRE")
+  pcmd("# define COMMON_SYSCALL_ACQUIRE(addr) ((void)(addr))")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("#ifndef COMMON_SYSCALL_RELEASE")
+  pcmd("# define COMMON_SYSCALL_RELEASE(addr) ((void)(addr))")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("#ifndef COMMON_SYSCALL_FD_CLOSE")
+  pcmd("# define COMMON_SYSCALL_FD_CLOSE(fd) ((void)(fd))")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("#ifndef COMMON_SYSCALL_FD_ACQUIRE")
+  pcmd("# define COMMON_SYSCALL_FD_ACQUIRE(fd) ((void)(fd))")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("#ifndef COMMON_SYSCALL_FD_RELEASE")
+  pcmd("# define COMMON_SYSCALL_FD_RELEASE(fd) ((void)(fd))")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("#ifndef COMMON_SYSCALL_PRE_FORK")
+  pcmd("# define COMMON_SYSCALL_PRE_FORK() {}")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("#ifndef COMMON_SYSCALL_POST_FORK")
+  pcmd("# define COMMON_SYSCALL_POST_FORK(res) {}")
+  pcmd("#endif")
+  pcmd("")
+  pcmd("// FIXME: do some kind of PRE_READ for all syscall arguments (int(s) and such).")
 
   close(cmd)
 }
