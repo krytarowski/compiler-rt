@@ -312,7 +312,7 @@ END {
     }
 
     pcmd("void __sanitizer_syscall_pre_impl_" sn "(" preargs ");")
-    pcmd("void __sanitizer_syscall_post_impl_" sn "();")
+    pcmd("void __sanitizer_syscall_post_impl_" sn "(" postargs ");")
   }
 
   pcmd("")
