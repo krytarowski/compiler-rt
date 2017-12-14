@@ -157,6 +157,10 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
   # Extract syscall arguments
   if (match($0, /\([^)]+\)/)) {
     args = substr($0, RSTART + 1, RLENGTH - 2)
+
+    syscallfullargs[parsedsyscalls] = args
+    gsub(/\.\.\./, "", syscallfullargs[parsedsyscalls])
+
     if (args == "void") {
       syscallargs[parsedsyscalls] = "void"
     } else {
@@ -432,6 +436,31 @@ END {
   pcmd("// FIXME: do some kind of PRE_READ for all syscall arguments (int(s) and such).")
   pcmd("")
   pcmd("extern \"C\" {")
+
+  for (i = 0; i < parsedsyscalls; i++) {
+
+    if (i in ifelifelseendif) {
+      pcmd(ifelifelseendif[i])
+    }
+
+    sn = syscalls[i]
+
+    if (sn ~ /^\$/) {
+      pcmd("/* syscall " substr(sn,2) " has been skipped */")
+      continue
+    }
+
+    preargs = syscallfullargs[parsedsyscalls]
+
+    if (preargs == "void") {
+      postargs = "register_t res"
+    } else {
+      postargs = "register_t res, " preargs
+    }
+
+    pcmd("PRE_SYSCALL(" sn ")(" preargs ") {}")
+    pcmd("POST_SYSCALL(" sn ")(" postargs ") {}")
+  }
 
   pcmd("}  // extern \"C\"")
   pcmd("")
