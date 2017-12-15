@@ -56,7 +56,7 @@ BEGIN {
   parsedsyscalls=0
 
   # Hardcoded in algorithm
-#  SYS_MAXSYSARGS=8
+  SYS_MAXSYSARGS=8
 }
 
 # Parse the RCS ID from syscall.master
@@ -158,20 +158,23 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
   if (match($0, /\([^)]+\)/)) {
     args = substr($0, RSTART + 1, RLENGTH - 2)
 
-    syscallfullargs[parsedsyscalls] = args
-    gsub(/\.\.\./, "", syscallfullargs[parsedsyscalls])
-
     if (args == "void") {
       syscallargs[parsedsyscalls] = "void"
+      syscallfullargs[parsedsyscalls] = "void"
     } else {
       n = split(args, a, ",")
 
       # Handle the first argument
+      match(a[1], /[*_a-z0-9\[\]]+$/)
+      syscallfullargs[parsedsyscalls] = substr(a[1], RSTART)
+
       gsub(".+[ *]", "", a[1])
       syscallargs[parsedsyscalls] = a[1]
 
       # Handle the rest of arguments
       for (i = 2; i <= n; i++) {
+        match(a[i], /[*_a-zA-Z0-9\[\]]+$/)
+        syscallfullargs[parsedsyscalls] = syscallfullargs[parsedsyscalls] "$" substr(a[i], RSTART)
 	gsub(".+[ *]", "", a[i])
         syscallargs[parsedsyscalls] = syscallargs[parsedsyscalls] "$" a[i]
       }
@@ -436,6 +439,8 @@ END {
   pcmd("// FIXME: do some kind of PRE_READ for all syscall arguments (int(s) and such).")
   pcmd("")
   pcmd("extern \"C\" {")
+  pcmd("")
+  pcmd("#define SYS_MAXSYSARGS " SYS_MAXSYSARGS)
 
   for (i = 0; i < parsedsyscalls; i++) {
 
@@ -452,16 +457,24 @@ END {
 
     preargs = syscallfullargs[i]
 
+    if (preargs != "void") {
+      preargs = "long " preargs
+      gsub(/\$/, ", long ", preargs)
+      gsub(/long \*/, "void *", preargs)
+    }
+
     if (preargs == "void") {
-      postargs = "register_t res"
+      postargs = "long res"
     } else {
-      postargs = "register_t res, " preargs
+      postargs = "long res, " preargs
     }
 
     pcmd("PRE_SYSCALL(" sn ")(" preargs ") {}")
     pcmd("POST_SYSCALL(" sn ")(" postargs ") {}")
   }
 
+  pcmd("#undef SYS_MAXSYSARGS")
+  pcmd("")
   pcmd("}  // extern \"C\"")
   pcmd("")
   pcmd("#undef PRE_SYSCALL")
