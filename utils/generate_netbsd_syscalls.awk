@@ -519,13 +519,8 @@ function pcmd(string)
 
 function pre_syscall(syscall)
 {
-# Hardcode sanitizing rules here
-#
-# Help macro
-#
-# cat ./lib/sanitizer_common/sanitizer_netbsd_syscalls.inc \
-# awk '/^PRE_SYSCALL/ {if (match($0, /^PRE_SYSCALL\([a-z_0-9]+\)/)) {print "  if (syscall
-# == \"" substr($0, RSTART + 12, RLENGTH - 13) "\") {"; print "    return"; print "  }"}}'
+  # Hardcode sanitizing rules here
+  # These syscalls don't change often so they are hand coded
   if (syscall == "syscall") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "exit") {
@@ -545,6 +540,7 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
   } else if (syscall == "close") {
+    pcmd("COMMON_SYSCALL_FD_CLOSE((int)fd);")
   } else if (syscall == "compat_50_wait4") {
   } else if (syscall == "compat_43_ocreat") {
   } else if (syscall == "link") {
@@ -978,6 +974,8 @@ function pre_syscall(syscall)
 
 function post_syscall(syscall)
 {
+  # Hardcode sanitizing rules here
+  # These syscalls don't change often so they are hand coded
   if (syscall == "syscall") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "exit") {
