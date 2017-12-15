@@ -19,7 +19,7 @@
 
 BEGIN {
   # harcode the script name
-  script_name = "make_netbsd_syscalls_header.awk"
+  script_name = "generate_netbsd_syscalls.awk"
   outputh = "../include/sanitizer/netbsd_syscall_hooks.h"
   outputinc = "../lib/sanitizer_common/sanitizer_netbsd_syscalls.inc"
 
@@ -443,7 +443,6 @@ END {
   pcmd("// FIXME: do some kind of PRE_READ for all syscall arguments (int(s) and such).")
   pcmd("")
   pcmd("extern \"C\" {")
-  pcmd("")
   pcmd("#define SYS_MAXSYSARGS " SYS_MAXSYSARGS)
 
   for (i = 0; i < parsedsyscalls; i++) {
