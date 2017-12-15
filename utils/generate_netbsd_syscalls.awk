@@ -477,7 +477,6 @@ END {
   }
 
   pcmd("#undef SYS_MAXSYSARGS")
-  pcmd("")
   pcmd("}  // extern \"C\"")
   pcmd("")
   pcmd("#undef PRE_SYSCALL")

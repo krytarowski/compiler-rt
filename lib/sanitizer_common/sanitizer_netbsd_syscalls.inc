@@ -1228,7 +1228,6 @@ PRE_SYSCALL(clock_getcpuclockid2)(long idtype, long id, void *clock_id) {}
 POST_SYSCALL(clock_getcpuclockid2)
 (long res, long idtype, long id, void *clock_id) {}
 #undef SYS_MAXSYSARGS
-
 } // extern "C"
 
 #undef PRE_SYSCALL
