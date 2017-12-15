@@ -161,6 +161,7 @@ DECLARE_REAL_AND_INTERCEPTOR(void, free, void *)
   } while (false)
 
 #include "sanitizer_common/sanitizer_common_interceptors.inc"
+#include "sanitizer_common/sanitizer_netbsd_interceptors.inc"
 #include "sanitizer_common/sanitizer_signal_interceptors.inc"
 
 // Syscall interceptors don't have contexts, we don't support suppressions

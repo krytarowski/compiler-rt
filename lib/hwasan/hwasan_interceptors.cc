@@ -429,6 +429,7 @@ int OnExit() {
 
 #include "sanitizer_common/sanitizer_platform_interceptors.h"
 #include "sanitizer_common/sanitizer_common_interceptors.inc"
+#include "sanitizer_common/sanitizer_netbsd_interceptors.inc"
 #include "sanitizer_common/sanitizer_signal_interceptors.inc"
 
 #define COMMON_SYSCALL_PRE_READ_RANGE(p, s) CHECK_UNPOISONED(p, s)

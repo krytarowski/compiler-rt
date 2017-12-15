@@ -176,6 +176,7 @@ DECLARE_REAL_AND_INTERCEPTOR(void *, malloc, uptr)
   } while (false)
 
 #include "sanitizer_common/sanitizer_common_interceptors.inc"
+#include "sanitizer_common/sanitizer_netbsd_interceptors.inc"
 
 //===----------------------------------------------------------------------===//
 // Syscall interception
