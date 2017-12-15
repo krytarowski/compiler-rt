@@ -88,7 +88,11 @@ $0 == "%%" {
 
 # preserve 'if/elif/else/endif' C preprocessor as-is
 parsingheader == 0 && $0 ~ /^#/ {
-  ifelifelseendif[parsedsyscalls] = $0
+  if (parsedsyscalls in ifelifelseendif) {
+    ifelifelseendif[parsedsyscalls] = ifelifelseendif[parsedsyscalls] "\n" $0
+  } else {
+    ifelifelseendif[parsedsyscalls] = $0
+  }
   next
 }
 
