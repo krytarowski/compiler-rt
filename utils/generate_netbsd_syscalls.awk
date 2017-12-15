@@ -523,890 +523,898 @@ function pre_syscall(syscall)
 #
 # Help macro
 #
-# cat cat ./lib/sanitizer_common/sanitizer_netbsd_syscalls.inc \
-# awk '/^PRE_SYSCALL/ {if (match($0, /^PRE_SYSCALL\([a-z_0-9]+\)/)) {print "  } elif (syscall == \"" substr($0, RSTART + 12, RLENGTH - 13) "\") {"}}'
+# cat ./lib/sanitizer_common/sanitizer_netbsd_syscalls.inc \
+# awk '/^PRE_SYSCALL/ {if (match($0, /^PRE_SYSCALL\([a-z_0-9]+\)/)) {print "  if (syscall
+# == \"" substr($0, RSTART + 12, RLENGTH - 13) "\") {"; print "    return"; print "  }"}}'
   if (syscall == "syscall") {
     pcmd("/* Nothing to do */")
-  } elif (syscall == "exit") {
+  } else if (syscall == "exit") {
     pcmd("/* Nothing to do */")
-  } elif (syscall == "fork") {
+  } else if (syscall == "fork") {
     pcmd("COMMON_SYSCALL_PRE_FORK();")
-  } elif (syscall == "read") {
+  } else if (syscall == "read") {
     pcmd("if (buf) {")
     pcmd("  PRE_WRITE(buf, nbyte);")
     pcmd("}")
-  } elif (syscall == "write") {
+  } else if (syscall == "write") {
     pcmd("if (buf) {")
     pcmd("  PRE_READ(buf, nbyte);")
     pcmd("}")
-  } elif (syscall == "open") {
+  } else if (syscall == "open") {
     pcmd("if (path) {")
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
-  } elif (syscall == "close") {
-  } elif (syscall == "compat_50_wait4") {
-  } elif (syscall == "compat_43_ocreat") {
-  } elif (syscall == "link") {
-  } elif (syscall == "unlink") {
-  } elif (syscall == "chdir") {
-  } elif (syscall == "fchdir") {
-  } elif (syscall == "compat_50_mknod") {
-  } elif (syscall == "chmod") {
-  } elif (syscall == "chown") {
-  } elif (syscall == "break") {
-  } elif (syscall == "compat_20_getfsstat") {
-  } elif (syscall == "compat_43_olseek") {
-  } elif (syscall == "getpid") {
-  } elif (syscall == "compat_40_mount") {
-  } elif (syscall == "unmount") {
-  } elif (syscall == "setuid") {
-  } elif (syscall == "getuid") {
-  } elif (syscall == "geteuid") {
-  } elif (syscall == "ptrace") {
-  } elif (syscall == "recvmsg") {
-  } elif (syscall == "sendmsg") {
-  } elif (syscall == "recvfrom") {
-  } elif (syscall == "accept") {
-  } elif (syscall == "getpeername") {
-  } elif (syscall == "getsockname") {
-  } elif (syscall == "access") {
-  } elif (syscall == "chflags") {
-  } elif (syscall == "fchflags") {
-  } elif (syscall == "sync") {
-  } elif (syscall == "kill") {
-  } elif (syscall == "compat_43_stat43") {
-  } elif (syscall == "getppid") {
-  } elif (syscall == "compat_43_lstat43") {
-  } elif (syscall == "dup") {
-  } elif (syscall == "pipe") {
-  } elif (syscall == "getegid") {
-  } elif (syscall == "profil") {
-  } elif (syscall == "ktrace") {
-  } elif (syscall == "compat_13_sigaction13") {
-  } elif (syscall == "getgid") {
-  } elif (syscall == "compat_13_sigprocmask13") {
-  } elif (syscall == "__getlogin") {
-  } elif (syscall == "__setlogin") {
-  } elif (syscall == "acct") {
-  } elif (syscall == "compat_13_sigpending13") {
-  } elif (syscall == "compat_13_sigaltstack13") {
-  } elif (syscall == "ioctl") {
-  } elif (syscall == "compat_12_oreboot") {
-  } elif (syscall == "revoke") {
-  } elif (syscall == "symlink") {
-  } elif (syscall == "readlink") {
-  } elif (syscall == "execve") {
-  } elif (syscall == "umask") {
-  } elif (syscall == "chroot") {
-  } elif (syscall == "compat_43_fstat43") {
-  } elif (syscall == "compat_43_ogetkerninfo") {
-  } elif (syscall == "compat_43_ogetpagesize") {
-  } elif (syscall == "compat_12_msync") {
-  } elif (syscall == "vfork") {
-  } elif (syscall == "sbrk") {
-  } elif (syscall == "sstk") {
-  } elif (syscall == "compat_43_ommap") {
-  } elif (syscall == "vadvise") {
-  } elif (syscall == "munmap") {
-  } elif (syscall == "mprotect") {
-  } elif (syscall == "madvise") {
-  } elif (syscall == "mincore") {
-  } elif (syscall == "getgroups") {
-  } elif (syscall == "setgroups") {
-  } elif (syscall == "getpgrp") {
-  } elif (syscall == "setpgid") {
-  } elif (syscall == "compat_50_setitimer") {
-  } elif (syscall == "compat_43_owait") {
-  } elif (syscall == "compat_12_oswapon") {
-  } elif (syscall == "compat_50_getitimer") {
-  } elif (syscall == "compat_43_ogethostname") {
-  } elif (syscall == "compat_43_osethostname") {
-  } elif (syscall == "compat_43_ogetdtablesize") {
-  } elif (syscall == "dup2") {
-  } elif (syscall == "fcntl") {
-  } elif (syscall == "compat_50_select") {
-  } elif (syscall == "fsync") {
-  } elif (syscall == "setpriority") {
-  } elif (syscall == "compat_30_socket") {
-  } elif (syscall == "connect") {
-  } elif (syscall == "compat_43_oaccept") {
-  } elif (syscall == "getpriority") {
-  } elif (syscall == "compat_43_osend") {
-  } elif (syscall == "compat_43_orecv") {
-  } elif (syscall == "compat_13_sigreturn13") {
-  } elif (syscall == "bind") {
-  } elif (syscall == "setsockopt") {
-  } elif (syscall == "listen") {
-  } elif (syscall == "compat_43_osigvec") {
-  } elif (syscall == "compat_43_osigblock") {
-  } elif (syscall == "compat_43_osigsetmask") {
-  } elif (syscall == "compat_13_sigsuspend13") {
-  } elif (syscall == "compat_43_osigstack") {
-  } elif (syscall == "compat_43_orecvmsg") {
-  } elif (syscall == "compat_43_osendmsg") {
-  } elif (syscall == "compat_50_gettimeofday") {
-  } elif (syscall == "compat_50_getrusage") {
-  } elif (syscall == "getsockopt") {
-  } elif (syscall == "readv") {
-  } elif (syscall == "writev") {
-  } elif (syscall == "compat_50_settimeofday") {
-  } elif (syscall == "fchown") {
-  } elif (syscall == "fchmod") {
-  } elif (syscall == "compat_43_orecvfrom") {
-  } elif (syscall == "setreuid") {
-  } elif (syscall == "setregid") {
-  } elif (syscall == "rename") {
-  } elif (syscall == "compat_43_otruncate") {
-  } elif (syscall == "compat_43_oftruncate") {
-  } elif (syscall == "flock") {
-  } elif (syscall == "mkfifo") {
-  } elif (syscall == "sendto") {
-  } elif (syscall == "shutdown") {
-  } elif (syscall == "socketpair") {
-  } elif (syscall == "mkdir") {
-  } elif (syscall == "rmdir") {
-  } elif (syscall == "compat_50_utimes") {
-  } elif (syscall == "compat_50_adjtime") {
-  } elif (syscall == "compat_43_ogetpeername") {
-  } elif (syscall == "compat_43_ogethostid") {
-  } elif (syscall == "compat_43_osethostid") {
-  } elif (syscall == "compat_43_ogetrlimit") {
-  } elif (syscall == "compat_43_osetrlimit") {
-  } elif (syscall == "compat_43_okillpg") {
-  } elif (syscall == "setsid") {
-  } elif (syscall == "compat_50_quotactl") {
-  } elif (syscall == "compat_43_oquota") {
-  } elif (syscall == "compat_43_ogetsockname") {
-  } elif (syscall == "nfssvc") {
-  } elif (syscall == "compat_43_ogetdirentries") {
-  } elif (syscall == "compat_20_statfs") {
-  } elif (syscall == "compat_20_fstatfs") {
-  } elif (syscall == "compat_30_getfh") {
-  } elif (syscall == "compat_09_ogetdomainname") {
-  } elif (syscall == "compat_09_osetdomainname") {
-  } elif (syscall == "compat_09_ouname") {
-  } elif (syscall == "sysarch") {
-  } elif (syscall == "compat_10_osemsys") {
-  } elif (syscall == "compat_10_omsgsys") {
-  } elif (syscall == "compat_10_oshmsys") {
-  } elif (syscall == "pread") {
-  } elif (syscall == "pwrite") {
-  } elif (syscall == "compat_30_ntp_gettime") {
-  } elif (syscall == "ntp_adjtime") {
-  } elif (syscall == "setgid") {
-  } elif (syscall == "setegid") {
-  } elif (syscall == "seteuid") {
-  } elif (syscall == "lfs_bmapv") {
-  } elif (syscall == "lfs_markv") {
-  } elif (syscall == "lfs_segclean") {
-  } elif (syscall == "compat_50_lfs_segwait") {
-  } elif (syscall == "compat_12_stat12") {
-  } elif (syscall == "compat_12_fstat12") {
-  } elif (syscall == "compat_12_lstat12") {
-  } elif (syscall == "pathconf") {
-  } elif (syscall == "fpathconf") {
-  } elif (syscall == "getrlimit") {
-  } elif (syscall == "setrlimit") {
-  } elif (syscall == "compat_12_getdirentries") {
-  } elif (syscall == "mmap") {
-  } elif (syscall == "__syscall") {
-  } elif (syscall == "lseek") {
-  } elif (syscall == "truncate") {
-  } elif (syscall == "ftruncate") {
-  } elif (syscall == "__sysctl") {
-  } elif (syscall == "mlock") {
-  } elif (syscall == "munlock") {
-  } elif (syscall == "undelete") {
-  } elif (syscall == "compat_50_futimes") {
-  } elif (syscall == "getpgid") {
-  } elif (syscall == "reboot") {
-  } elif (syscall == "poll") {
-  } elif (syscall == "afssys") {
-  } elif (syscall == "compat_14___semctl") {
-  } elif (syscall == "semget") {
-  } elif (syscall == "semop") {
-  } elif (syscall == "semconfig") {
-  } elif (syscall == "compat_14_msgctl") {
-  } elif (syscall == "msgget") {
-  } elif (syscall == "msgsnd") {
-  } elif (syscall == "msgrcv") {
-  } elif (syscall == "shmat") {
-  } elif (syscall == "compat_14_shmctl") {
-  } elif (syscall == "shmdt") {
-  } elif (syscall == "shmget") {
-  } elif (syscall == "compat_50_clock_gettime") {
-  } elif (syscall == "compat_50_clock_settime") {
-  } elif (syscall == "compat_50_clock_getres") {
-  } elif (syscall == "timer_create") {
-  } elif (syscall == "timer_delete") {
-  } elif (syscall == "compat_50_timer_settime") {
-  } elif (syscall == "compat_50_timer_gettime") {
-  } elif (syscall == "timer_getoverrun") {
-  } elif (syscall == "compat_50_nanosleep") {
-  } elif (syscall == "fdatasync") {
-  } elif (syscall == "mlockall") {
-  } elif (syscall == "munlockall") {
-  } elif (syscall == "compat_50___sigtimedwait") {
-  } elif (syscall == "sigqueueinfo") {
-  } elif (syscall == "modctl") {
-  } elif (syscall == "_ksem_init") {
-  } elif (syscall == "_ksem_open") {
-  } elif (syscall == "_ksem_unlink") {
-  } elif (syscall == "_ksem_close") {
-  } elif (syscall == "_ksem_post") {
-  } elif (syscall == "_ksem_wait") {
-  } elif (syscall == "_ksem_trywait") {
-  } elif (syscall == "_ksem_getvalue") {
-  } elif (syscall == "_ksem_destroy") {
-  } elif (syscall == "_ksem_timedwait") {
-  } elif (syscall == "mq_open") {
-  } elif (syscall == "mq_close") {
-  } elif (syscall == "mq_unlink") {
-  } elif (syscall == "mq_getattr") {
-  } elif (syscall == "mq_setattr") {
-  } elif (syscall == "mq_notify") {
-  } elif (syscall == "mq_send") {
-  } elif (syscall == "mq_receive") {
-  } elif (syscall == "compat_50_mq_timedsend") {
-  } elif (syscall == "compat_50_mq_timedreceive") {
-  } elif (syscall == "__posix_rename") {
-  } elif (syscall == "swapctl") {
-  } elif (syscall == "compat_30_getdents") {
-  } elif (syscall == "minherit") {
-  } elif (syscall == "lchmod") {
-  } elif (syscall == "lchown") {
-  } elif (syscall == "compat_50_lutimes") {
-  } elif (syscall == "__msync13") {
-  } elif (syscall == "compat_30___stat13") {
-  } elif (syscall == "compat_30___fstat13") {
-  } elif (syscall == "compat_30___lstat13") {
-  } elif (syscall == "__sigaltstack14") {
-  } elif (syscall == "__vfork14") {
-  } elif (syscall == "__posix_chown") {
-  } elif (syscall == "__posix_fchown") {
-  } elif (syscall == "__posix_lchown") {
-  } elif (syscall == "getsid") {
-  } elif (syscall == "__clone") {
-  } elif (syscall == "fktrace") {
-  } elif (syscall == "preadv") {
-  } elif (syscall == "pwritev") {
-  } elif (syscall == "compat_16___sigaction14") {
-  } elif (syscall == "__sigpending14") {
-  } elif (syscall == "__sigprocmask14") {
-  } elif (syscall == "__sigsuspend14") {
-  } elif (syscall == "compat_16___sigreturn14") {
-  } elif (syscall == "__getcwd") {
-  } elif (syscall == "fchroot") {
-  } elif (syscall == "compat_30_fhopen") {
-  } elif (syscall == "compat_30_fhstat") {
-  } elif (syscall == "compat_20_fhstatfs") {
-  } elif (syscall == "compat_50_____semctl13") {
-  } elif (syscall == "compat_50___msgctl13") {
-  } elif (syscall == "compat_50___shmctl13") {
-  } elif (syscall == "lchflags") {
-  } elif (syscall == "issetugid") {
-  } elif (syscall == "utrace") {
-  } elif (syscall == "getcontext") {
-  } elif (syscall == "setcontext") {
-  } elif (syscall == "_lwp_create") {
-  } elif (syscall == "_lwp_exit") {
-  } elif (syscall == "_lwp_self") {
-  } elif (syscall == "_lwp_wait") {
-  } elif (syscall == "_lwp_suspend") {
-  } elif (syscall == "_lwp_continue") {
-  } elif (syscall == "_lwp_wakeup") {
-  } elif (syscall == "_lwp_getprivate") {
-  } elif (syscall == "_lwp_setprivate") {
-  } elif (syscall == "_lwp_kill") {
-  } elif (syscall == "_lwp_detach") {
-  } elif (syscall == "compat_50__lwp_park") {
-  } elif (syscall == "_lwp_unpark") {
-  } elif (syscall == "_lwp_unpark_all") {
-  } elif (syscall == "_lwp_setname") {
-  } elif (syscall == "_lwp_getname") {
-  } elif (syscall == "_lwp_ctl") {
-  } elif (syscall == "compat_60_sa_register") {
-  } elif (syscall == "compat_60_sa_stacks") {
-  } elif (syscall == "compat_60_sa_enable") {
-  } elif (syscall == "compat_60_sa_setconcurrency") {
-  } elif (syscall == "compat_60_sa_yield") {
-  } elif (syscall == "compat_60_sa_preempt") {
-  } elif (syscall == "__sigaction_sigtramp") {
-  } elif (syscall == "pmc_get_info") {
-  } elif (syscall == "pmc_control") {
-  } elif (syscall == "rasctl") {
-  } elif (syscall == "kqueue") {
-  } elif (syscall == "compat_50_kevent") {
-  } elif (syscall == "_sched_setparam") {
-  } elif (syscall == "_sched_getparam") {
-  } elif (syscall == "_sched_setaffinity") {
-  } elif (syscall == "_sched_getaffinity") {
-  } elif (syscall == "sched_yield") {
-  } elif (syscall == "_sched_protect") {
-  } elif (syscall == "fsync_range") {
-  } elif (syscall == "uuidgen") {
-  } elif (syscall == "getvfsstat") {
-  } elif (syscall == "statvfs1") {
-  } elif (syscall == "fstatvfs1") {
-  } elif (syscall == "compat_30_fhstatvfs1") {
-  } elif (syscall == "extattrctl") {
-  } elif (syscall == "extattr_set_file") {
-  } elif (syscall == "extattr_get_file") {
-  } elif (syscall == "extattr_delete_file") {
-  } elif (syscall == "extattr_set_fd") {
-  } elif (syscall == "extattr_get_fd") {
-  } elif (syscall == "extattr_delete_fd") {
-  } elif (syscall == "extattr_set_link") {
-  } elif (syscall == "extattr_get_link") {
-  } elif (syscall == "extattr_delete_link") {
-  } elif (syscall == "extattr_list_fd") {
-  } elif (syscall == "extattr_list_file") {
-  } elif (syscall == "extattr_list_link") {
-  } elif (syscall == "compat_50_pselect") {
-  } elif (syscall == "compat_50_pollts") {
-  } elif (syscall == "setxattr") {
-  } elif (syscall == "lsetxattr") {
-  } elif (syscall == "fsetxattr") {
-  } elif (syscall == "getxattr") {
-  } elif (syscall == "lgetxattr") {
-  } elif (syscall == "fgetxattr") {
-  } elif (syscall == "listxattr") {
-  } elif (syscall == "llistxattr") {
-  } elif (syscall == "flistxattr") {
-  } elif (syscall == "removexattr") {
-  } elif (syscall == "lremovexattr") {
-  } elif (syscall == "fremovexattr") {
-  } elif (syscall == "compat_50___stat30") {
-  } elif (syscall == "compat_50___fstat30") {
-  } elif (syscall == "compat_50___lstat30") {
-  } elif (syscall == "__getdents30") {
-  } elif (syscall == "posix_fadvise") {
-  } elif (syscall == "compat_30___fhstat30") {
-  } elif (syscall == "compat_50___ntp_gettime30") {
-  } elif (syscall == "__socket30") {
-  } elif (syscall == "__getfh30") {
-  } elif (syscall == "__fhopen40") {
-  } elif (syscall == "__fhstatvfs140") {
-  } elif (syscall == "compat_50___fhstat40") {
-  } elif (syscall == "aio_cancel") {
-  } elif (syscall == "aio_error") {
-  } elif (syscall == "aio_fsync") {
-  } elif (syscall == "aio_read") {
-  } elif (syscall == "aio_return") {
-  } elif (syscall == "compat_50_aio_suspend") {
-  } elif (syscall == "aio_write") {
-  } elif (syscall == "lio_listio") {
-  } elif (syscall == "__mount50") {
-  } elif (syscall == "mremap") {
-  } elif (syscall == "pset_create") {
-  } elif (syscall == "pset_destroy") {
-  } elif (syscall == "pset_assign") {
-  } elif (syscall == "_pset_bind") {
-  } elif (syscall == "__posix_fadvise50") {
-  } elif (syscall == "__select50") {
-  } elif (syscall == "__gettimeofday50") {
-  } elif (syscall == "__settimeofday50") {
-  } elif (syscall == "__utimes50") {
-  } elif (syscall == "__adjtime50") {
-  } elif (syscall == "__lfs_segwait50") {
-  } elif (syscall == "__futimes50") {
-  } elif (syscall == "__lutimes50") {
-  } elif (syscall == "__setitimer50") {
-  } elif (syscall == "__getitimer50") {
-  } elif (syscall == "__clock_gettime50") {
-  } elif (syscall == "__clock_settime50") {
-  } elif (syscall == "__clock_getres50") {
-  } elif (syscall == "__nanosleep50") {
-  } elif (syscall == "____sigtimedwait50") {
-  } elif (syscall == "__mq_timedsend50") {
-  } elif (syscall == "__mq_timedreceive50") {
-  } elif (syscall == "compat_60__lwp_park") {
-  } elif (syscall == "__kevent50") {
-  } elif (syscall == "__pselect50") {
-  } elif (syscall == "__pollts50") {
-  } elif (syscall == "__aio_suspend50") {
-  } elif (syscall == "__stat50") {
-  } elif (syscall == "__fstat50") {
-  } elif (syscall == "__lstat50") {
-  } elif (syscall == "____semctl50") {
-  } elif (syscall == "__shmctl50") {
-  } elif (syscall == "__msgctl50") {
-  } elif (syscall == "__getrusage50") {
-  } elif (syscall == "__timer_settime50") {
-  } elif (syscall == "__timer_gettime50") {
-  } elif (syscall == "__ntp_gettime50") {
-  } elif (syscall == "__wait450") {
-  } elif (syscall == "__mknod50") {
-  } elif (syscall == "__fhstat50") {
-  } elif (syscall == "pipe2") {
-  } elif (syscall == "dup3") {
-  } elif (syscall == "kqueue1") {
-  } elif (syscall == "paccept") {
-  } elif (syscall == "linkat") {
-  } elif (syscall == "renameat") {
-  } elif (syscall == "mkfifoat") {
-  } elif (syscall == "mknodat") {
-  } elif (syscall == "mkdirat") {
-  } elif (syscall == "faccessat") {
-  } elif (syscall == "fchmodat") {
-  } elif (syscall == "fchownat") {
-  } elif (syscall == "fexecve") {
-  } elif (syscall == "fstatat") {
-  } elif (syscall == "utimensat") {
-  } elif (syscall == "openat") {
-  } elif (syscall == "readlinkat") {
-  } elif (syscall == "symlinkat") {
-  } elif (syscall == "unlinkat") {
-  } elif (syscall == "futimens") {
-  } elif (syscall == "__quotactl") {
-  } elif (syscall == "posix_spawn") {
-  } elif (syscall == "recvmmsg") {
-  } elif (syscall == "sendmmsg") {
-  } elif (syscall == "clock_nanosleep") {
-  } elif (syscall == "___lwp_park60") {
-  } elif (syscall == "posix_fallocate") {
-  } elif (syscall == "fdiscard") {
-  } elif (syscall == "wait6") {
-  } elif (syscall == "clock_getcpuclockid2") {
+  } else if (syscall == "close") {
+  } else if (syscall == "compat_50_wait4") {
+  } else if (syscall == "compat_43_ocreat") {
+  } else if (syscall == "link") {
+  } else if (syscall == "unlink") {
+  } else if (syscall == "chdir") {
+  } else if (syscall == "fchdir") {
+  } else if (syscall == "compat_50_mknod") {
+  } else if (syscall == "chmod") {
+  } else if (syscall == "chown") {
+  } else if (syscall == "break") {
+  } else if (syscall == "compat_20_getfsstat") {
+  } else if (syscall == "compat_43_olseek") {
+  } else if (syscall == "getpid") {
+  } else if (syscall == "compat_40_mount") {
+  } else if (syscall == "unmount") {
+  } else if (syscall == "setuid") {
+  } else if (syscall == "getuid") {
+  } else if (syscall == "geteuid") {
+  } else if (syscall == "ptrace") {
+  } else if (syscall == "recvmsg") {
+  } else if (syscall == "sendmsg") {
+  } else if (syscall == "recvfrom") {
+  } else if (syscall == "accept") {
+  } else if (syscall == "getpeername") {
+  } else if (syscall == "getsockname") {
+  } else if (syscall == "access") {
+  } else if (syscall == "chflags") {
+  } else if (syscall == "fchflags") {
+  } else if (syscall == "sync") {
+  } else if (syscall == "kill") {
+  } else if (syscall == "compat_43_stat43") {
+  } else if (syscall == "getppid") {
+  } else if (syscall == "compat_43_lstat43") {
+  } else if (syscall == "dup") {
+  } else if (syscall == "pipe") {
+  } else if (syscall == "getegid") {
+  } else if (syscall == "profil") {
+  } else if (syscall == "ktrace") {
+  } else if (syscall == "compat_13_sigaction13") {
+  } else if (syscall == "getgid") {
+  } else if (syscall == "compat_13_sigprocmask13") {
+  } else if (syscall == "__getlogin") {
+  } else if (syscall == "__setlogin") {
+  } else if (syscall == "acct") {
+  } else if (syscall == "compat_13_sigpending13") {
+  } else if (syscall == "compat_13_sigaltstack13") {
+  } else if (syscall == "ioctl") {
+  } else if (syscall == "compat_12_oreboot") {
+  } else if (syscall == "revoke") {
+  } else if (syscall == "symlink") {
+  } else if (syscall == "readlink") {
+  } else if (syscall == "execve") {
+  } else if (syscall == "umask") {
+  } else if (syscall == "chroot") {
+  } else if (syscall == "compat_43_fstat43") {
+  } else if (syscall == "compat_43_ogetkerninfo") {
+  } else if (syscall == "compat_43_ogetpagesize") {
+  } else if (syscall == "compat_12_msync") {
+  } else if (syscall == "vfork") {
+  } else if (syscall == "sbrk") {
+  } else if (syscall == "sstk") {
+  } else if (syscall == "compat_43_ommap") {
+  } else if (syscall == "vadvise") {
+  } else if (syscall == "munmap") {
+  } else if (syscall == "mprotect") {
+  } else if (syscall == "madvise") {
+  } else if (syscall == "mincore") {
+  } else if (syscall == "getgroups") {
+  } else if (syscall == "setgroups") {
+  } else if (syscall == "getpgrp") {
+  } else if (syscall == "setpgid") {
+  } else if (syscall == "compat_50_setitimer") {
+  } else if (syscall == "compat_43_owait") {
+  } else if (syscall == "compat_12_oswapon") {
+  } else if (syscall == "compat_50_getitimer") {
+  } else if (syscall == "compat_43_ogethostname") {
+  } else if (syscall == "compat_43_osethostname") {
+  } else if (syscall == "compat_43_ogetdtablesize") {
+  } else if (syscall == "dup2") {
+  } else if (syscall == "fcntl") {
+  } else if (syscall == "compat_50_select") {
+  } else if (syscall == "fsync") {
+  } else if (syscall == "setpriority") {
+  } else if (syscall == "compat_30_socket") {
+  } else if (syscall == "connect") {
+  } else if (syscall == "compat_43_oaccept") {
+  } else if (syscall == "getpriority") {
+  } else if (syscall == "compat_43_osend") {
+  } else if (syscall == "compat_43_orecv") {
+  } else if (syscall == "compat_13_sigreturn13") {
+  } else if (syscall == "bind") {
+  } else if (syscall == "setsockopt") {
+  } else if (syscall == "listen") {
+  } else if (syscall == "compat_43_osigvec") {
+  } else if (syscall == "compat_43_osigblock") {
+  } else if (syscall == "compat_43_osigsetmask") {
+  } else if (syscall == "compat_13_sigsuspend13") {
+  } else if (syscall == "compat_43_osigstack") {
+  } else if (syscall == "compat_43_orecvmsg") {
+  } else if (syscall == "compat_43_osendmsg") {
+  } else if (syscall == "compat_50_gettimeofday") {
+  } else if (syscall == "compat_50_getrusage") {
+  } else if (syscall == "getsockopt") {
+  } else if (syscall == "readv") {
+  } else if (syscall == "writev") {
+  } else if (syscall == "compat_50_settimeofday") {
+  } else if (syscall == "fchown") {
+  } else if (syscall == "fchmod") {
+  } else if (syscall == "compat_43_orecvfrom") {
+  } else if (syscall == "setreuid") {
+  } else if (syscall == "setregid") {
+  } else if (syscall == "rename") {
+  } else if (syscall == "compat_43_otruncate") {
+  } else if (syscall == "compat_43_oftruncate") {
+  } else if (syscall == "flock") {
+  } else if (syscall == "mkfifo") {
+  } else if (syscall == "sendto") {
+  } else if (syscall == "shutdown") {
+  } else if (syscall == "socketpair") {
+  } else if (syscall == "mkdir") {
+  } else if (syscall == "rmdir") {
+  } else if (syscall == "compat_50_utimes") {
+  } else if (syscall == "compat_50_adjtime") {
+  } else if (syscall == "compat_43_ogetpeername") {
+  } else if (syscall == "compat_43_ogethostid") {
+  } else if (syscall == "compat_43_osethostid") {
+  } else if (syscall == "compat_43_ogetrlimit") {
+  } else if (syscall == "compat_43_osetrlimit") {
+  } else if (syscall == "compat_43_okillpg") {
+  } else if (syscall == "setsid") {
+  } else if (syscall == "compat_50_quotactl") {
+  } else if (syscall == "compat_43_oquota") {
+  } else if (syscall == "compat_43_ogetsockname") {
+  } else if (syscall == "nfssvc") {
+  } else if (syscall == "compat_43_ogetdirentries") {
+  } else if (syscall == "compat_20_statfs") {
+  } else if (syscall == "compat_20_fstatfs") {
+  } else if (syscall == "compat_30_getfh") {
+  } else if (syscall == "compat_09_ogetdomainname") {
+  } else if (syscall == "compat_09_osetdomainname") {
+  } else if (syscall == "compat_09_ouname") {
+  } else if (syscall == "sysarch") {
+  } else if (syscall == "compat_10_osemsys") {
+  } else if (syscall == "compat_10_omsgsys") {
+  } else if (syscall == "compat_10_oshmsys") {
+  } else if (syscall == "pread") {
+  } else if (syscall == "pwrite") {
+  } else if (syscall == "compat_30_ntp_gettime") {
+  } else if (syscall == "ntp_adjtime") {
+  } else if (syscall == "setgid") {
+  } else if (syscall == "setegid") {
+  } else if (syscall == "seteuid") {
+  } else if (syscall == "lfs_bmapv") {
+  } else if (syscall == "lfs_markv") {
+  } else if (syscall == "lfs_segclean") {
+  } else if (syscall == "compat_50_lfs_segwait") {
+  } else if (syscall == "compat_12_stat12") {
+  } else if (syscall == "compat_12_fstat12") {
+  } else if (syscall == "compat_12_lstat12") {
+  } else if (syscall == "pathconf") {
+  } else if (syscall == "fpathconf") {
+  } else if (syscall == "getrlimit") {
+  } else if (syscall == "setrlimit") {
+  } else if (syscall == "compat_12_getdirentries") {
+  } else if (syscall == "mmap") {
+  } else if (syscall == "__syscall") {
+  } else if (syscall == "lseek") {
+  } else if (syscall == "truncate") {
+  } else if (syscall == "ftruncate") {
+  } else if (syscall == "__sysctl") {
+  } else if (syscall == "mlock") {
+  } else if (syscall == "munlock") {
+  } else if (syscall == "undelete") {
+  } else if (syscall == "compat_50_futimes") {
+  } else if (syscall == "getpgid") {
+  } else if (syscall == "reboot") {
+  } else if (syscall == "poll") {
+  } else if (syscall == "afssys") {
+  } else if (syscall == "compat_14___semctl") {
+  } else if (syscall == "semget") {
+  } else if (syscall == "semop") {
+  } else if (syscall == "semconfig") {
+  } else if (syscall == "compat_14_msgctl") {
+  } else if (syscall == "msgget") {
+  } else if (syscall == "msgsnd") {
+  } else if (syscall == "msgrcv") {
+  } else if (syscall == "shmat") {
+  } else if (syscall == "compat_14_shmctl") {
+  } else if (syscall == "shmdt") {
+  } else if (syscall == "shmget") {
+  } else if (syscall == "compat_50_clock_gettime") {
+  } else if (syscall == "compat_50_clock_settime") {
+  } else if (syscall == "compat_50_clock_getres") {
+  } else if (syscall == "timer_create") {
+  } else if (syscall == "timer_delete") {
+  } else if (syscall == "compat_50_timer_settime") {
+  } else if (syscall == "compat_50_timer_gettime") {
+  } else if (syscall == "timer_getoverrun") {
+  } else if (syscall == "compat_50_nanosleep") {
+  } else if (syscall == "fdatasync") {
+  } else if (syscall == "mlockall") {
+  } else if (syscall == "munlockall") {
+  } else if (syscall == "compat_50___sigtimedwait") {
+  } else if (syscall == "sigqueueinfo") {
+  } else if (syscall == "modctl") {
+  } else if (syscall == "_ksem_init") {
+  } else if (syscall == "_ksem_open") {
+  } else if (syscall == "_ksem_unlink") {
+  } else if (syscall == "_ksem_close") {
+  } else if (syscall == "_ksem_post") {
+  } else if (syscall == "_ksem_wait") {
+  } else if (syscall == "_ksem_trywait") {
+  } else if (syscall == "_ksem_getvalue") {
+  } else if (syscall == "_ksem_destroy") {
+  } else if (syscall == "_ksem_timedwait") {
+  } else if (syscall == "mq_open") {
+  } else if (syscall == "mq_close") {
+  } else if (syscall == "mq_unlink") {
+  } else if (syscall == "mq_getattr") {
+  } else if (syscall == "mq_setattr") {
+  } else if (syscall == "mq_notify") {
+  } else if (syscall == "mq_send") {
+  } else if (syscall == "mq_receive") {
+  } else if (syscall == "compat_50_mq_timedsend") {
+  } else if (syscall == "compat_50_mq_timedreceive") {
+  } else if (syscall == "__posix_rename") {
+  } else if (syscall == "swapctl") {
+  } else if (syscall == "compat_30_getdents") {
+  } else if (syscall == "minherit") {
+  } else if (syscall == "lchmod") {
+  } else if (syscall == "lchown") {
+  } else if (syscall == "compat_50_lutimes") {
+  } else if (syscall == "__msync13") {
+  } else if (syscall == "compat_30___stat13") {
+  } else if (syscall == "compat_30___fstat13") {
+  } else if (syscall == "compat_30___lstat13") {
+  } else if (syscall == "__sigaltstack14") {
+  } else if (syscall == "__vfork14") {
+  } else if (syscall == "__posix_chown") {
+  } else if (syscall == "__posix_fchown") {
+  } else if (syscall == "__posix_lchown") {
+  } else if (syscall == "getsid") {
+  } else if (syscall == "__clone") {
+  } else if (syscall == "fktrace") {
+  } else if (syscall == "preadv") {
+  } else if (syscall == "pwritev") {
+  } else if (syscall == "compat_16___sigaction14") {
+  } else if (syscall == "__sigpending14") {
+  } else if (syscall == "__sigprocmask14") {
+  } else if (syscall == "__sigsuspend14") {
+  } else if (syscall == "compat_16___sigreturn14") {
+  } else if (syscall == "__getcwd") {
+  } else if (syscall == "fchroot") {
+  } else if (syscall == "compat_30_fhopen") {
+  } else if (syscall == "compat_30_fhstat") {
+  } else if (syscall == "compat_20_fhstatfs") {
+  } else if (syscall == "compat_50_____semctl13") {
+  } else if (syscall == "compat_50___msgctl13") {
+  } else if (syscall == "compat_50___shmctl13") {
+  } else if (syscall == "lchflags") {
+  } else if (syscall == "issetugid") {
+  } else if (syscall == "utrace") {
+  } else if (syscall == "getcontext") {
+  } else if (syscall == "setcontext") {
+  } else if (syscall == "_lwp_create") {
+  } else if (syscall == "_lwp_exit") {
+  } else if (syscall == "_lwp_self") {
+  } else if (syscall == "_lwp_wait") {
+  } else if (syscall == "_lwp_suspend") {
+  } else if (syscall == "_lwp_continue") {
+  } else if (syscall == "_lwp_wakeup") {
+  } else if (syscall == "_lwp_getprivate") {
+  } else if (syscall == "_lwp_setprivate") {
+  } else if (syscall == "_lwp_kill") {
+  } else if (syscall == "_lwp_detach") {
+  } else if (syscall == "compat_50__lwp_park") {
+  } else if (syscall == "_lwp_unpark") {
+  } else if (syscall == "_lwp_unpark_all") {
+  } else if (syscall == "_lwp_setname") {
+  } else if (syscall == "_lwp_getname") {
+  } else if (syscall == "_lwp_ctl") {
+  } else if (syscall == "compat_60_sa_register") {
+  } else if (syscall == "compat_60_sa_stacks") {
+  } else if (syscall == "compat_60_sa_enable") {
+  } else if (syscall == "compat_60_sa_setconcurrency") {
+  } else if (syscall == "compat_60_sa_yield") {
+  } else if (syscall == "compat_60_sa_preempt") {
+  } else if (syscall == "__sigaction_sigtramp") {
+  } else if (syscall == "pmc_get_info") {
+  } else if (syscall == "pmc_control") {
+  } else if (syscall == "rasctl") {
+  } else if (syscall == "kqueue") {
+  } else if (syscall == "compat_50_kevent") {
+  } else if (syscall == "_sched_setparam") {
+  } else if (syscall == "_sched_getparam") {
+  } else if (syscall == "_sched_setaffinity") {
+  } else if (syscall == "_sched_getaffinity") {
+  } else if (syscall == "sched_yield") {
+  } else if (syscall == "_sched_protect") {
+  } else if (syscall == "fsync_range") {
+  } else if (syscall == "uuidgen") {
+  } else if (syscall == "getvfsstat") {
+  } else if (syscall == "statvfs1") {
+  } else if (syscall == "fstatvfs1") {
+  } else if (syscall == "compat_30_fhstatvfs1") {
+  } else if (syscall == "extattrctl") {
+  } else if (syscall == "extattr_set_file") {
+  } else if (syscall == "extattr_get_file") {
+  } else if (syscall == "extattr_delete_file") {
+  } else if (syscall == "extattr_set_fd") {
+  } else if (syscall == "extattr_get_fd") {
+  } else if (syscall == "extattr_delete_fd") {
+  } else if (syscall == "extattr_set_link") {
+  } else if (syscall == "extattr_get_link") {
+  } else if (syscall == "extattr_delete_link") {
+  } else if (syscall == "extattr_list_fd") {
+  } else if (syscall == "extattr_list_file") {
+  } else if (syscall == "extattr_list_link") {
+  } else if (syscall == "compat_50_pselect") {
+  } else if (syscall == "compat_50_pollts") {
+  } else if (syscall == "setxattr") {
+  } else if (syscall == "lsetxattr") {
+  } else if (syscall == "fsetxattr") {
+  } else if (syscall == "getxattr") {
+  } else if (syscall == "lgetxattr") {
+  } else if (syscall == "fgetxattr") {
+  } else if (syscall == "listxattr") {
+  } else if (syscall == "llistxattr") {
+  } else if (syscall == "flistxattr") {
+  } else if (syscall == "removexattr") {
+  } else if (syscall == "lremovexattr") {
+  } else if (syscall == "fremovexattr") {
+  } else if (syscall == "compat_50___stat30") {
+  } else if (syscall == "compat_50___fstat30") {
+  } else if (syscall == "compat_50___lstat30") {
+  } else if (syscall == "__getdents30") {
+  } else if (syscall == "posix_fadvise") {
+  } else if (syscall == "compat_30___fhstat30") {
+  } else if (syscall == "compat_50___ntp_gettime30") {
+  } else if (syscall == "__socket30") {
+  } else if (syscall == "__getfh30") {
+  } else if (syscall == "__fhopen40") {
+  } else if (syscall == "__fhstatvfs140") {
+  } else if (syscall == "compat_50___fhstat40") {
+  } else if (syscall == "aio_cancel") {
+  } else if (syscall == "aio_error") {
+  } else if (syscall == "aio_fsync") {
+  } else if (syscall == "aio_read") {
+  } else if (syscall == "aio_return") {
+  } else if (syscall == "compat_50_aio_suspend") {
+  } else if (syscall == "aio_write") {
+  } else if (syscall == "lio_listio") {
+  } else if (syscall == "__mount50") {
+  } else if (syscall == "mremap") {
+  } else if (syscall == "pset_create") {
+  } else if (syscall == "pset_destroy") {
+  } else if (syscall == "pset_assign") {
+  } else if (syscall == "_pset_bind") {
+  } else if (syscall == "__posix_fadvise50") {
+  } else if (syscall == "__select50") {
+  } else if (syscall == "__gettimeofday50") {
+  } else if (syscall == "__settimeofday50") {
+  } else if (syscall == "__utimes50") {
+  } else if (syscall == "__adjtime50") {
+  } else if (syscall == "__lfs_segwait50") {
+  } else if (syscall == "__futimes50") {
+  } else if (syscall == "__lutimes50") {
+  } else if (syscall == "__setitimer50") {
+  } else if (syscall == "__getitimer50") {
+  } else if (syscall == "__clock_gettime50") {
+  } else if (syscall == "__clock_settime50") {
+  } else if (syscall == "__clock_getres50") {
+  } else if (syscall == "__nanosleep50") {
+  } else if (syscall == "____sigtimedwait50") {
+  } else if (syscall == "__mq_timedsend50") {
+  } else if (syscall == "__mq_timedreceive50") {
+  } else if (syscall == "compat_60__lwp_park") {
+  } else if (syscall == "__kevent50") {
+  } else if (syscall == "__pselect50") {
+  } else if (syscall == "__pollts50") {
+  } else if (syscall == "__aio_suspend50") {
+  } else if (syscall == "__stat50") {
+  } else if (syscall == "__fstat50") {
+  } else if (syscall == "__lstat50") {
+  } else if (syscall == "____semctl50") {
+  } else if (syscall == "__shmctl50") {
+  } else if (syscall == "__msgctl50") {
+  } else if (syscall == "__getrusage50") {
+  } else if (syscall == "__timer_settime50") {
+  } else if (syscall == "__timer_gettime50") {
+  } else if (syscall == "__ntp_gettime50") {
+  } else if (syscall == "__wait450") {
+  } else if (syscall == "__mknod50") {
+  } else if (syscall == "__fhstat50") {
+  } else if (syscall == "pipe2") {
+  } else if (syscall == "dup3") {
+  } else if (syscall == "kqueue1") {
+  } else if (syscall == "paccept") {
+  } else if (syscall == "linkat") {
+  } else if (syscall == "renameat") {
+  } else if (syscall == "mkfifoat") {
+  } else if (syscall == "mknodat") {
+  } else if (syscall == "mkdirat") {
+  } else if (syscall == "faccessat") {
+  } else if (syscall == "fchmodat") {
+  } else if (syscall == "fchownat") {
+  } else if (syscall == "fexecve") {
+  } else if (syscall == "fstatat") {
+  } else if (syscall == "utimensat") {
+  } else if (syscall == "openat") {
+  } else if (syscall == "readlinkat") {
+  } else if (syscall == "symlinkat") {
+  } else if (syscall == "unlinkat") {
+  } else if (syscall == "futimens") {
+  } else if (syscall == "__quotactl") {
+  } else if (syscall == "posix_spawn") {
+  } else if (syscall == "recvmmsg") {
+  } else if (syscall == "sendmmsg") {
+  } else if (syscall == "clock_nanosleep") {
+  } else if (syscall == "___lwp_park60") {
+  } else if (syscall == "posix_fallocate") {
+  } else if (syscall == "fdiscard") {
+  } else if (syscall == "wait6") {
+  } else if (syscall == "clock_getcpuclockid2") {
+  } else {
+    print "Unrecognized syscall: " syscall
+    abnormal_exit = 1
+    exit 1
+  }
 }
 
 function post_syscall(syscall)
 {
   if (syscall == "syscall") {
     pcmd("/* Nothing to do */")
-  } elif (syscall == "exit") {
-  }
-  } elif (syscall == "syscall") {
-  } elif (syscall == "exit") {
-  } elif (syscall == "fork") {
+  } else if (syscall == "exit") {
+    pcmd("/* Nothing to do */")
+  } else if (syscall == "fork") {
     pcmd("COMMON_SYSCALL_POST_FORK(res);")
-  } elif (syscall == "read") {
-  } elif (syscall == "write") {
-  } elif (syscall == "open") {
-  } elif (syscall == "close") {
-  } elif (syscall == "compat_50_wait4") {
-  } elif (syscall == "compat_43_ocreat") {
-  } elif (syscall == "link") {
-  } elif (syscall == "unlink") {
-  } elif (syscall == "chdir") {
-  } elif (syscall == "fchdir") {
-  } elif (syscall == "compat_50_mknod") {
-  } elif (syscall == "chmod") {
-  } elif (syscall == "chown") {
-  } elif (syscall == "break") {
-  } elif (syscall == "compat_20_getfsstat") {
-  } elif (syscall == "compat_43_olseek") {
-  } elif (syscall == "getpid") {
-  } elif (syscall == "compat_40_mount") {
-  } elif (syscall == "unmount") {
-  } elif (syscall == "setuid") {
-  } elif (syscall == "getuid") {
-  } elif (syscall == "geteuid") {
-  } elif (syscall == "ptrace") {
-  } elif (syscall == "recvmsg") {
-  } elif (syscall == "sendmsg") {
-  } elif (syscall == "recvfrom") {
-  } elif (syscall == "accept") {
-  } elif (syscall == "getpeername") {
-  } elif (syscall == "getsockname") {
-  } elif (syscall == "access") {
-  } elif (syscall == "chflags") {
-  } elif (syscall == "fchflags") {
-  } elif (syscall == "sync") {
-  } elif (syscall == "kill") {
-  } elif (syscall == "compat_43_stat43") {
-  } elif (syscall == "getppid") {
-  } elif (syscall == "compat_43_lstat43") {
-  } elif (syscall == "dup") {
-  } elif (syscall == "pipe") {
-  } elif (syscall == "getegid") {
-  } elif (syscall == "profil") {
-  } elif (syscall == "ktrace") {
-  } elif (syscall == "compat_13_sigaction13") {
-  } elif (syscall == "getgid") {
-  } elif (syscall == "compat_13_sigprocmask13") {
-  } elif (syscall == "__getlogin") {
-  } elif (syscall == "__setlogin") {
-  } elif (syscall == "acct") {
-  } elif (syscall == "compat_13_sigpending13") {
-  } elif (syscall == "compat_13_sigaltstack13") {
-  } elif (syscall == "ioctl") {
-  } elif (syscall == "compat_12_oreboot") {
-  } elif (syscall == "revoke") {
-  } elif (syscall == "symlink") {
-  } elif (syscall == "readlink") {
-  } elif (syscall == "execve") {
-  } elif (syscall == "umask") {
-  } elif (syscall == "chroot") {
-  } elif (syscall == "compat_43_fstat43") {
-  } elif (syscall == "compat_43_ogetkerninfo") {
-  } elif (syscall == "compat_43_ogetpagesize") {
-  } elif (syscall == "compat_12_msync") {
-  } elif (syscall == "vfork") {
-  } elif (syscall == "sbrk") {
-  } elif (syscall == "sstk") {
-  } elif (syscall == "compat_43_ommap") {
-  } elif (syscall == "vadvise") {
-  } elif (syscall == "munmap") {
-  } elif (syscall == "mprotect") {
-  } elif (syscall == "madvise") {
-  } elif (syscall == "mincore") {
-  } elif (syscall == "getgroups") {
-  } elif (syscall == "setgroups") {
-  } elif (syscall == "getpgrp") {
-  } elif (syscall == "setpgid") {
-  } elif (syscall == "compat_50_setitimer") {
-  } elif (syscall == "compat_43_owait") {
-  } elif (syscall == "compat_12_oswapon") {
-  } elif (syscall == "compat_50_getitimer") {
-  } elif (syscall == "compat_43_ogethostname") {
-  } elif (syscall == "compat_43_osethostname") {
-  } elif (syscall == "compat_43_ogetdtablesize") {
-  } elif (syscall == "dup2") {
-  } elif (syscall == "fcntl") {
-  } elif (syscall == "compat_50_select") {
-  } elif (syscall == "fsync") {
-  } elif (syscall == "setpriority") {
-  } elif (syscall == "compat_30_socket") {
-  } elif (syscall == "connect") {
-  } elif (syscall == "compat_43_oaccept") {
-  } elif (syscall == "getpriority") {
-  } elif (syscall == "compat_43_osend") {
-  } elif (syscall == "compat_43_orecv") {
-  } elif (syscall == "compat_13_sigreturn13") {
-  } elif (syscall == "bind") {
-  } elif (syscall == "setsockopt") {
-  } elif (syscall == "listen") {
-  } elif (syscall == "compat_43_osigvec") {
-  } elif (syscall == "compat_43_osigblock") {
-  } elif (syscall == "compat_43_osigsetmask") {
-  } elif (syscall == "compat_13_sigsuspend13") {
-  } elif (syscall == "compat_43_osigstack") {
-  } elif (syscall == "compat_43_orecvmsg") {
-  } elif (syscall == "compat_43_osendmsg") {
-  } elif (syscall == "compat_50_gettimeofday") {
-  } elif (syscall == "compat_50_getrusage") {
-  } elif (syscall == "getsockopt") {
-  } elif (syscall == "readv") {
-  } elif (syscall == "writev") {
-  } elif (syscall == "compat_50_settimeofday") {
-  } elif (syscall == "fchown") {
-  } elif (syscall == "fchmod") {
-  } elif (syscall == "compat_43_orecvfrom") {
-  } elif (syscall == "setreuid") {
-  } elif (syscall == "setregid") {
-  } elif (syscall == "rename") {
-  } elif (syscall == "compat_43_otruncate") {
-  } elif (syscall == "compat_43_oftruncate") {
-  } elif (syscall == "flock") {
-  } elif (syscall == "mkfifo") {
-  } elif (syscall == "sendto") {
-  } elif (syscall == "shutdown") {
-  } elif (syscall == "socketpair") {
-  } elif (syscall == "mkdir") {
-  } elif (syscall == "rmdir") {
-  } elif (syscall == "compat_50_utimes") {
-  } elif (syscall == "compat_50_adjtime") {
-  } elif (syscall == "compat_43_ogetpeername") {
-  } elif (syscall == "compat_43_ogethostid") {
-  } elif (syscall == "compat_43_osethostid") {
-  } elif (syscall == "compat_43_ogetrlimit") {
-  } elif (syscall == "compat_43_osetrlimit") {
-  } elif (syscall == "compat_43_okillpg") {
-  } elif (syscall == "setsid") {
-  } elif (syscall == "compat_50_quotactl") {
-  } elif (syscall == "compat_43_oquota") {
-  } elif (syscall == "compat_43_ogetsockname") {
-  } elif (syscall == "nfssvc") {
-  } elif (syscall == "compat_43_ogetdirentries") {
-  } elif (syscall == "compat_20_statfs") {
-  } elif (syscall == "compat_20_fstatfs") {
-  } elif (syscall == "compat_30_getfh") {
-  } elif (syscall == "compat_09_ogetdomainname") {
-  } elif (syscall == "compat_09_osetdomainname") {
-  } elif (syscall == "compat_09_ouname") {
-  } elif (syscall == "sysarch") {
-  } elif (syscall == "compat_10_osemsys") {
-  } elif (syscall == "compat_10_omsgsys") {
-  } elif (syscall == "compat_10_oshmsys") {
-  } elif (syscall == "pread") {
-  } elif (syscall == "pwrite") {
-  } elif (syscall == "compat_30_ntp_gettime") {
-  } elif (syscall == "ntp_adjtime") {
-  } elif (syscall == "setgid") {
-  } elif (syscall == "setegid") {
-  } elif (syscall == "seteuid") {
-  } elif (syscall == "lfs_bmapv") {
-  } elif (syscall == "lfs_markv") {
-  } elif (syscall == "lfs_segclean") {
-  } elif (syscall == "compat_50_lfs_segwait") {
-  } elif (syscall == "compat_12_stat12") {
-  } elif (syscall == "compat_12_fstat12") {
-  } elif (syscall == "compat_12_lstat12") {
-  } elif (syscall == "pathconf") {
-  } elif (syscall == "fpathconf") {
-  } elif (syscall == "getrlimit") {
-  } elif (syscall == "setrlimit") {
-  } elif (syscall == "compat_12_getdirentries") {
-  } elif (syscall == "mmap") {
-  } elif (syscall == "__syscall") {
-  } elif (syscall == "lseek") {
-  } elif (syscall == "truncate") {
-  } elif (syscall == "ftruncate") {
-  } elif (syscall == "__sysctl") {
-  } elif (syscall == "mlock") {
-  } elif (syscall == "munlock") {
-  } elif (syscall == "undelete") {
-  } elif (syscall == "compat_50_futimes") {
-  } elif (syscall == "getpgid") {
-  } elif (syscall == "reboot") {
-  } elif (syscall == "poll") {
-  } elif (syscall == "afssys") {
-  } elif (syscall == "compat_14___semctl") {
-  } elif (syscall == "semget") {
-  } elif (syscall == "semop") {
-  } elif (syscall == "semconfig") {
-  } elif (syscall == "compat_14_msgctl") {
-  } elif (syscall == "msgget") {
-  } elif (syscall == "msgsnd") {
-  } elif (syscall == "msgrcv") {
-  } elif (syscall == "shmat") {
-  } elif (syscall == "compat_14_shmctl") {
-  } elif (syscall == "shmdt") {
-  } elif (syscall == "shmget") {
-  } elif (syscall == "compat_50_clock_gettime") {
-  } elif (syscall == "compat_50_clock_settime") {
-  } elif (syscall == "compat_50_clock_getres") {
-  } elif (syscall == "timer_create") {
-  } elif (syscall == "timer_delete") {
-  } elif (syscall == "compat_50_timer_settime") {
-  } elif (syscall == "compat_50_timer_gettime") {
-  } elif (syscall == "timer_getoverrun") {
-  } elif (syscall == "compat_50_nanosleep") {
-  } elif (syscall == "fdatasync") {
-  } elif (syscall == "mlockall") {
-  } elif (syscall == "munlockall") {
-  } elif (syscall == "compat_50___sigtimedwait") {
-  } elif (syscall == "sigqueueinfo") {
-  } elif (syscall == "modctl") {
-  } elif (syscall == "_ksem_init") {
-  } elif (syscall == "_ksem_open") {
-  } elif (syscall == "_ksem_unlink") {
-  } elif (syscall == "_ksem_close") {
-  } elif (syscall == "_ksem_post") {
-  } elif (syscall == "_ksem_wait") {
-  } elif (syscall == "_ksem_trywait") {
-  } elif (syscall == "_ksem_getvalue") {
-  } elif (syscall == "_ksem_destroy") {
-  } elif (syscall == "_ksem_timedwait") {
-  } elif (syscall == "mq_open") {
-  } elif (syscall == "mq_close") {
-  } elif (syscall == "mq_unlink") {
-  } elif (syscall == "mq_getattr") {
-  } elif (syscall == "mq_setattr") {
-  } elif (syscall == "mq_notify") {
-  } elif (syscall == "mq_send") {
-  } elif (syscall == "mq_receive") {
-  } elif (syscall == "compat_50_mq_timedsend") {
-  } elif (syscall == "compat_50_mq_timedreceive") {
-  } elif (syscall == "__posix_rename") {
-  } elif (syscall == "swapctl") {
-  } elif (syscall == "compat_30_getdents") {
-  } elif (syscall == "minherit") {
-  } elif (syscall == "lchmod") {
-  } elif (syscall == "lchown") {
-  } elif (syscall == "compat_50_lutimes") {
-  } elif (syscall == "__msync13") {
-  } elif (syscall == "compat_30___stat13") {
-  } elif (syscall == "compat_30___fstat13") {
-  } elif (syscall == "compat_30___lstat13") {
-  } elif (syscall == "__sigaltstack14") {
-  } elif (syscall == "__vfork14") {
-  } elif (syscall == "__posix_chown") {
-  } elif (syscall == "__posix_fchown") {
-  } elif (syscall == "__posix_lchown") {
-  } elif (syscall == "getsid") {
-  } elif (syscall == "__clone") {
-  } elif (syscall == "fktrace") {
-  } elif (syscall == "preadv") {
-  } elif (syscall == "pwritev") {
-  } elif (syscall == "compat_16___sigaction14") {
-  } elif (syscall == "__sigpending14") {
-  } elif (syscall == "__sigprocmask14") {
-  } elif (syscall == "__sigsuspend14") {
-  } elif (syscall == "compat_16___sigreturn14") {
-  } elif (syscall == "__getcwd") {
-  } elif (syscall == "fchroot") {
-  } elif (syscall == "compat_30_fhopen") {
-  } elif (syscall == "compat_30_fhstat") {
-  } elif (syscall == "compat_20_fhstatfs") {
-  } elif (syscall == "compat_50_____semctl13") {
-  } elif (syscall == "compat_50___msgctl13") {
-  } elif (syscall == "compat_50___shmctl13") {
-  } elif (syscall == "lchflags") {
-  } elif (syscall == "issetugid") {
-  } elif (syscall == "utrace") {
-  } elif (syscall == "getcontext") {
-  } elif (syscall == "setcontext") {
-  } elif (syscall == "_lwp_create") {
-  } elif (syscall == "_lwp_exit") {
-  } elif (syscall == "_lwp_self") {
-  } elif (syscall == "_lwp_wait") {
-  } elif (syscall == "_lwp_suspend") {
-  } elif (syscall == "_lwp_continue") {
-  } elif (syscall == "_lwp_wakeup") {
-  } elif (syscall == "_lwp_getprivate") {
-  } elif (syscall == "_lwp_setprivate") {
-  } elif (syscall == "_lwp_kill") {
-  } elif (syscall == "_lwp_detach") {
-  } elif (syscall == "compat_50__lwp_park") {
-  } elif (syscall == "_lwp_unpark") {
-  } elif (syscall == "_lwp_unpark_all") {
-  } elif (syscall == "_lwp_setname") {
-  } elif (syscall == "_lwp_getname") {
-  } elif (syscall == "_lwp_ctl") {
-  } elif (syscall == "compat_60_sa_register") {
-  } elif (syscall == "compat_60_sa_stacks") {
-  } elif (syscall == "compat_60_sa_enable") {
-  } elif (syscall == "compat_60_sa_setconcurrency") {
-  } elif (syscall == "compat_60_sa_yield") {
-  } elif (syscall == "compat_60_sa_preempt") {
-  } elif (syscall == "__sigaction_sigtramp") {
-  } elif (syscall == "pmc_get_info") {
-  } elif (syscall == "pmc_control") {
-  } elif (syscall == "rasctl") {
-  } elif (syscall == "kqueue") {
-  } elif (syscall == "compat_50_kevent") {
-  } elif (syscall == "_sched_setparam") {
-  } elif (syscall == "_sched_getparam") {
-  } elif (syscall == "_sched_setaffinity") {
-  } elif (syscall == "_sched_getaffinity") {
-  } elif (syscall == "sched_yield") {
-  } elif (syscall == "_sched_protect") {
-  } elif (syscall == "fsync_range") {
-  } elif (syscall == "uuidgen") {
-  } elif (syscall == "getvfsstat") {
-  } elif (syscall == "statvfs1") {
-  } elif (syscall == "fstatvfs1") {
-  } elif (syscall == "compat_30_fhstatvfs1") {
-  } elif (syscall == "extattrctl") {
-  } elif (syscall == "extattr_set_file") {
-  } elif (syscall == "extattr_get_file") {
-  } elif (syscall == "extattr_delete_file") {
-  } elif (syscall == "extattr_set_fd") {
-  } elif (syscall == "extattr_get_fd") {
-  } elif (syscall == "extattr_delete_fd") {
-  } elif (syscall == "extattr_set_link") {
-  } elif (syscall == "extattr_get_link") {
-  } elif (syscall == "extattr_delete_link") {
-  } elif (syscall == "extattr_list_fd") {
-  } elif (syscall == "extattr_list_file") {
-  } elif (syscall == "extattr_list_link") {
-  } elif (syscall == "compat_50_pselect") {
-  } elif (syscall == "compat_50_pollts") {
-  } elif (syscall == "setxattr") {
-  } elif (syscall == "lsetxattr") {
-  } elif (syscall == "fsetxattr") {
-  } elif (syscall == "getxattr") {
-  } elif (syscall == "lgetxattr") {
-  } elif (syscall == "fgetxattr") {
-  } elif (syscall == "listxattr") {
-  } elif (syscall == "llistxattr") {
-  } elif (syscall == "flistxattr") {
-  } elif (syscall == "removexattr") {
-  } elif (syscall == "lremovexattr") {
-  } elif (syscall == "fremovexattr") {
-  } elif (syscall == "compat_50___stat30") {
-  } elif (syscall == "compat_50___fstat30") {
-  } elif (syscall == "compat_50___lstat30") {
-  } elif (syscall == "__getdents30") {
-  } elif (syscall == "posix_fadvise") {
-  } elif (syscall == "compat_30___fhstat30") {
-  } elif (syscall == "compat_50___ntp_gettime30") {
-  } elif (syscall == "__socket30") {
-  } elif (syscall == "__getfh30") {
-  } elif (syscall == "__fhopen40") {
-  } elif (syscall == "__fhstatvfs140") {
-  } elif (syscall == "compat_50___fhstat40") {
-  } elif (syscall == "aio_cancel") {
-  } elif (syscall == "aio_error") {
-  } elif (syscall == "aio_fsync") {
-  } elif (syscall == "aio_read") {
-  } elif (syscall == "aio_return") {
-  } elif (syscall == "compat_50_aio_suspend") {
-  } elif (syscall == "aio_write") {
-  } elif (syscall == "lio_listio") {
-  } elif (syscall == "__mount50") {
-  } elif (syscall == "mremap") {
-  } elif (syscall == "pset_create") {
-  } elif (syscall == "pset_destroy") {
-  } elif (syscall == "pset_assign") {
-  } elif (syscall == "_pset_bind") {
-  } elif (syscall == "__posix_fadvise50") {
-  } elif (syscall == "__select50") {
-  } elif (syscall == "__gettimeofday50") {
-  } elif (syscall == "__settimeofday50") {
-  } elif (syscall == "__utimes50") {
-  } elif (syscall == "__adjtime50") {
-  } elif (syscall == "__lfs_segwait50") {
-  } elif (syscall == "__futimes50") {
-  } elif (syscall == "__lutimes50") {
-  } elif (syscall == "__setitimer50") {
-  } elif (syscall == "__getitimer50") {
-  } elif (syscall == "__clock_gettime50") {
-  } elif (syscall == "__clock_settime50") {
-  } elif (syscall == "__clock_getres50") {
-  } elif (syscall == "__nanosleep50") {
-  } elif (syscall == "____sigtimedwait50") {
-  } elif (syscall == "__mq_timedsend50") {
-  } elif (syscall == "__mq_timedreceive50") {
-  } elif (syscall == "compat_60__lwp_park") {
-  } elif (syscall == "__kevent50") {
-  } elif (syscall == "__pselect50") {
-  } elif (syscall == "__pollts50") {
-  } elif (syscall == "__aio_suspend50") {
-  } elif (syscall == "__stat50") {
-  } elif (syscall == "__fstat50") {
-  } elif (syscall == "__lstat50") {
-  } elif (syscall == "____semctl50") {
-  } elif (syscall == "__shmctl50") {
-  } elif (syscall == "__msgctl50") {
-  } elif (syscall == "__getrusage50") {
-  } elif (syscall == "__timer_settime50") {
-  } elif (syscall == "__timer_gettime50") {
-  } elif (syscall == "__ntp_gettime50") {
-  } elif (syscall == "__wait450") {
-  } elif (syscall == "__mknod50") {
-  } elif (syscall == "__fhstat50") {
-  } elif (syscall == "pipe2") {
-  } elif (syscall == "dup3") {
-  } elif (syscall == "kqueue1") {
-  } elif (syscall == "paccept") {
-  } elif (syscall == "linkat") {
-  } elif (syscall == "renameat") {
-  } elif (syscall == "mkfifoat") {
-  } elif (syscall == "mknodat") {
-  } elif (syscall == "mkdirat") {
-  } elif (syscall == "faccessat") {
-  } elif (syscall == "fchmodat") {
-  } elif (syscall == "fchownat") {
-  } elif (syscall == "fexecve") {
-  } elif (syscall == "fstatat") {
-  } elif (syscall == "utimensat") {
-  } elif (syscall == "openat") {
-  } elif (syscall == "readlinkat") {
-  } elif (syscall == "symlinkat") {
-  } elif (syscall == "unlinkat") {
-  } elif (syscall == "futimens") {
-  } elif (syscall == "__quotactl") {
-  } elif (syscall == "posix_spawn") {
-  } elif (syscall == "recvmmsg") {
-  } elif (syscall == "sendmmsg") {
-  } elif (syscall == "clock_nanosleep") {
-  } elif (syscall == "___lwp_park60") {
-  } elif (syscall == "posix_fallocate") {
-  } elif (syscall == "fdiscard") {
-  } elif (syscall == "wait6") {
-  } elif (syscall == "clock_getcpuclockid2") {
+  } else if (syscall == "read") {
+  } else if (syscall == "write") {
+  } else if (syscall == "open") {
+  } else if (syscall == "close") {
+  } else if (syscall == "compat_50_wait4") {
+  } else if (syscall == "compat_43_ocreat") {
+  } else if (syscall == "link") {
+  } else if (syscall == "unlink") {
+  } else if (syscall == "chdir") {
+  } else if (syscall == "fchdir") {
+  } else if (syscall == "compat_50_mknod") {
+  } else if (syscall == "chmod") {
+  } else if (syscall == "chown") {
+  } else if (syscall == "break") {
+  } else if (syscall == "compat_20_getfsstat") {
+  } else if (syscall == "compat_43_olseek") {
+  } else if (syscall == "getpid") {
+  } else if (syscall == "compat_40_mount") {
+  } else if (syscall == "unmount") {
+  } else if (syscall == "setuid") {
+  } else if (syscall == "getuid") {
+  } else if (syscall == "geteuid") {
+  } else if (syscall == "ptrace") {
+  } else if (syscall == "recvmsg") {
+  } else if (syscall == "sendmsg") {
+  } else if (syscall == "recvfrom") {
+  } else if (syscall == "accept") {
+  } else if (syscall == "getpeername") {
+  } else if (syscall == "getsockname") {
+  } else if (syscall == "access") {
+  } else if (syscall == "chflags") {
+  } else if (syscall == "fchflags") {
+  } else if (syscall == "sync") {
+  } else if (syscall == "kill") {
+  } else if (syscall == "compat_43_stat43") {
+  } else if (syscall == "getppid") {
+  } else if (syscall == "compat_43_lstat43") {
+  } else if (syscall == "dup") {
+  } else if (syscall == "pipe") {
+  } else if (syscall == "getegid") {
+  } else if (syscall == "profil") {
+  } else if (syscall == "ktrace") {
+  } else if (syscall == "compat_13_sigaction13") {
+  } else if (syscall == "getgid") {
+  } else if (syscall == "compat_13_sigprocmask13") {
+  } else if (syscall == "__getlogin") {
+  } else if (syscall == "__setlogin") {
+  } else if (syscall == "acct") {
+  } else if (syscall == "compat_13_sigpending13") {
+  } else if (syscall == "compat_13_sigaltstack13") {
+  } else if (syscall == "ioctl") {
+  } else if (syscall == "compat_12_oreboot") {
+  } else if (syscall == "revoke") {
+  } else if (syscall == "symlink") {
+  } else if (syscall == "readlink") {
+  } else if (syscall == "execve") {
+  } else if (syscall == "umask") {
+  } else if (syscall == "chroot") {
+  } else if (syscall == "compat_43_fstat43") {
+  } else if (syscall == "compat_43_ogetkerninfo") {
+  } else if (syscall == "compat_43_ogetpagesize") {
+  } else if (syscall == "compat_12_msync") {
+  } else if (syscall == "vfork") {
+  } else if (syscall == "sbrk") {
+  } else if (syscall == "sstk") {
+  } else if (syscall == "compat_43_ommap") {
+  } else if (syscall == "vadvise") {
+  } else if (syscall == "munmap") {
+  } else if (syscall == "mprotect") {
+  } else if (syscall == "madvise") {
+  } else if (syscall == "mincore") {
+  } else if (syscall == "getgroups") {
+  } else if (syscall == "setgroups") {
+  } else if (syscall == "getpgrp") {
+  } else if (syscall == "setpgid") {
+  } else if (syscall == "compat_50_setitimer") {
+  } else if (syscall == "compat_43_owait") {
+  } else if (syscall == "compat_12_oswapon") {
+  } else if (syscall == "compat_50_getitimer") {
+  } else if (syscall == "compat_43_ogethostname") {
+  } else if (syscall == "compat_43_osethostname") {
+  } else if (syscall == "compat_43_ogetdtablesize") {
+  } else if (syscall == "dup2") {
+  } else if (syscall == "fcntl") {
+  } else if (syscall == "compat_50_select") {
+  } else if (syscall == "fsync") {
+  } else if (syscall == "setpriority") {
+  } else if (syscall == "compat_30_socket") {
+  } else if (syscall == "connect") {
+  } else if (syscall == "compat_43_oaccept") {
+  } else if (syscall == "getpriority") {
+  } else if (syscall == "compat_43_osend") {
+  } else if (syscall == "compat_43_orecv") {
+  } else if (syscall == "compat_13_sigreturn13") {
+  } else if (syscall == "bind") {
+  } else if (syscall == "setsockopt") {
+  } else if (syscall == "listen") {
+  } else if (syscall == "compat_43_osigvec") {
+  } else if (syscall == "compat_43_osigblock") {
+  } else if (syscall == "compat_43_osigsetmask") {
+  } else if (syscall == "compat_13_sigsuspend13") {
+  } else if (syscall == "compat_43_osigstack") {
+  } else if (syscall == "compat_43_orecvmsg") {
+  } else if (syscall == "compat_43_osendmsg") {
+  } else if (syscall == "compat_50_gettimeofday") {
+  } else if (syscall == "compat_50_getrusage") {
+  } else if (syscall == "getsockopt") {
+  } else if (syscall == "readv") {
+  } else if (syscall == "writev") {
+  } else if (syscall == "compat_50_settimeofday") {
+  } else if (syscall == "fchown") {
+  } else if (syscall == "fchmod") {
+  } else if (syscall == "compat_43_orecvfrom") {
+  } else if (syscall == "setreuid") {
+  } else if (syscall == "setregid") {
+  } else if (syscall == "rename") {
+  } else if (syscall == "compat_43_otruncate") {
+  } else if (syscall == "compat_43_oftruncate") {
+  } else if (syscall == "flock") {
+  } else if (syscall == "mkfifo") {
+  } else if (syscall == "sendto") {
+  } else if (syscall == "shutdown") {
+  } else if (syscall == "socketpair") {
+  } else if (syscall == "mkdir") {
+  } else if (syscall == "rmdir") {
+  } else if (syscall == "compat_50_utimes") {
+  } else if (syscall == "compat_50_adjtime") {
+  } else if (syscall == "compat_43_ogetpeername") {
+  } else if (syscall == "compat_43_ogethostid") {
+  } else if (syscall == "compat_43_osethostid") {
+  } else if (syscall == "compat_43_ogetrlimit") {
+  } else if (syscall == "compat_43_osetrlimit") {
+  } else if (syscall == "compat_43_okillpg") {
+  } else if (syscall == "setsid") {
+  } else if (syscall == "compat_50_quotactl") {
+  } else if (syscall == "compat_43_oquota") {
+  } else if (syscall == "compat_43_ogetsockname") {
+  } else if (syscall == "nfssvc") {
+  } else if (syscall == "compat_43_ogetdirentries") {
+  } else if (syscall == "compat_20_statfs") {
+  } else if (syscall == "compat_20_fstatfs") {
+  } else if (syscall == "compat_30_getfh") {
+  } else if (syscall == "compat_09_ogetdomainname") {
+  } else if (syscall == "compat_09_osetdomainname") {
+  } else if (syscall == "compat_09_ouname") {
+  } else if (syscall == "sysarch") {
+  } else if (syscall == "compat_10_osemsys") {
+  } else if (syscall == "compat_10_omsgsys") {
+  } else if (syscall == "compat_10_oshmsys") {
+  } else if (syscall == "pread") {
+  } else if (syscall == "pwrite") {
+  } else if (syscall == "compat_30_ntp_gettime") {
+  } else if (syscall == "ntp_adjtime") {
+  } else if (syscall == "setgid") {
+  } else if (syscall == "setegid") {
+  } else if (syscall == "seteuid") {
+  } else if (syscall == "lfs_bmapv") {
+  } else if (syscall == "lfs_markv") {
+  } else if (syscall == "lfs_segclean") {
+  } else if (syscall == "compat_50_lfs_segwait") {
+  } else if (syscall == "compat_12_stat12") {
+  } else if (syscall == "compat_12_fstat12") {
+  } else if (syscall == "compat_12_lstat12") {
+  } else if (syscall == "pathconf") {
+  } else if (syscall == "fpathconf") {
+  } else if (syscall == "getrlimit") {
+  } else if (syscall == "setrlimit") {
+  } else if (syscall == "compat_12_getdirentries") {
+  } else if (syscall == "mmap") {
+  } else if (syscall == "__syscall") {
+  } else if (syscall == "lseek") {
+  } else if (syscall == "truncate") {
+  } else if (syscall == "ftruncate") {
+  } else if (syscall == "__sysctl") {
+  } else if (syscall == "mlock") {
+  } else if (syscall == "munlock") {
+  } else if (syscall == "undelete") {
+  } else if (syscall == "compat_50_futimes") {
+  } else if (syscall == "getpgid") {
+  } else if (syscall == "reboot") {
+  } else if (syscall == "poll") {
+  } else if (syscall == "afssys") {
+  } else if (syscall == "compat_14___semctl") {
+  } else if (syscall == "semget") {
+  } else if (syscall == "semop") {
+  } else if (syscall == "semconfig") {
+  } else if (syscall == "compat_14_msgctl") {
+  } else if (syscall == "msgget") {
+  } else if (syscall == "msgsnd") {
+  } else if (syscall == "msgrcv") {
+  } else if (syscall == "shmat") {
+  } else if (syscall == "compat_14_shmctl") {
+  } else if (syscall == "shmdt") {
+  } else if (syscall == "shmget") {
+  } else if (syscall == "compat_50_clock_gettime") {
+  } else if (syscall == "compat_50_clock_settime") {
+  } else if (syscall == "compat_50_clock_getres") {
+  } else if (syscall == "timer_create") {
+  } else if (syscall == "timer_delete") {
+  } else if (syscall == "compat_50_timer_settime") {
+  } else if (syscall == "compat_50_timer_gettime") {
+  } else if (syscall == "timer_getoverrun") {
+  } else if (syscall == "compat_50_nanosleep") {
+  } else if (syscall == "fdatasync") {
+  } else if (syscall == "mlockall") {
+  } else if (syscall == "munlockall") {
+  } else if (syscall == "compat_50___sigtimedwait") {
+  } else if (syscall == "sigqueueinfo") {
+  } else if (syscall == "modctl") {
+  } else if (syscall == "_ksem_init") {
+  } else if (syscall == "_ksem_open") {
+  } else if (syscall == "_ksem_unlink") {
+  } else if (syscall == "_ksem_close") {
+  } else if (syscall == "_ksem_post") {
+  } else if (syscall == "_ksem_wait") {
+  } else if (syscall == "_ksem_trywait") {
+  } else if (syscall == "_ksem_getvalue") {
+  } else if (syscall == "_ksem_destroy") {
+  } else if (syscall == "_ksem_timedwait") {
+  } else if (syscall == "mq_open") {
+  } else if (syscall == "mq_close") {
+  } else if (syscall == "mq_unlink") {
+  } else if (syscall == "mq_getattr") {
+  } else if (syscall == "mq_setattr") {
+  } else if (syscall == "mq_notify") {
+  } else if (syscall == "mq_send") {
+  } else if (syscall == "mq_receive") {
+  } else if (syscall == "compat_50_mq_timedsend") {
+  } else if (syscall == "compat_50_mq_timedreceive") {
+  } else if (syscall == "__posix_rename") {
+  } else if (syscall == "swapctl") {
+  } else if (syscall == "compat_30_getdents") {
+  } else if (syscall == "minherit") {
+  } else if (syscall == "lchmod") {
+  } else if (syscall == "lchown") {
+  } else if (syscall == "compat_50_lutimes") {
+  } else if (syscall == "__msync13") {
+  } else if (syscall == "compat_30___stat13") {
+  } else if (syscall == "compat_30___fstat13") {
+  } else if (syscall == "compat_30___lstat13") {
+  } else if (syscall == "__sigaltstack14") {
+  } else if (syscall == "__vfork14") {
+  } else if (syscall == "__posix_chown") {
+  } else if (syscall == "__posix_fchown") {
+  } else if (syscall == "__posix_lchown") {
+  } else if (syscall == "getsid") {
+  } else if (syscall == "__clone") {
+  } else if (syscall == "fktrace") {
+  } else if (syscall == "preadv") {
+  } else if (syscall == "pwritev") {
+  } else if (syscall == "compat_16___sigaction14") {
+  } else if (syscall == "__sigpending14") {
+  } else if (syscall == "__sigprocmask14") {
+  } else if (syscall == "__sigsuspend14") {
+  } else if (syscall == "compat_16___sigreturn14") {
+  } else if (syscall == "__getcwd") {
+  } else if (syscall == "fchroot") {
+  } else if (syscall == "compat_30_fhopen") {
+  } else if (syscall == "compat_30_fhstat") {
+  } else if (syscall == "compat_20_fhstatfs") {
+  } else if (syscall == "compat_50_____semctl13") {
+  } else if (syscall == "compat_50___msgctl13") {
+  } else if (syscall == "compat_50___shmctl13") {
+  } else if (syscall == "lchflags") {
+  } else if (syscall == "issetugid") {
+  } else if (syscall == "utrace") {
+  } else if (syscall == "getcontext") {
+  } else if (syscall == "setcontext") {
+  } else if (syscall == "_lwp_create") {
+  } else if (syscall == "_lwp_exit") {
+  } else if (syscall == "_lwp_self") {
+  } else if (syscall == "_lwp_wait") {
+  } else if (syscall == "_lwp_suspend") {
+  } else if (syscall == "_lwp_continue") {
+  } else if (syscall == "_lwp_wakeup") {
+  } else if (syscall == "_lwp_getprivate") {
+  } else if (syscall == "_lwp_setprivate") {
+  } else if (syscall == "_lwp_kill") {
+  } else if (syscall == "_lwp_detach") {
+  } else if (syscall == "compat_50__lwp_park") {
+  } else if (syscall == "_lwp_unpark") {
+  } else if (syscall == "_lwp_unpark_all") {
+  } else if (syscall == "_lwp_setname") {
+  } else if (syscall == "_lwp_getname") {
+  } else if (syscall == "_lwp_ctl") {
+  } else if (syscall == "compat_60_sa_register") {
+  } else if (syscall == "compat_60_sa_stacks") {
+  } else if (syscall == "compat_60_sa_enable") {
+  } else if (syscall == "compat_60_sa_setconcurrency") {
+  } else if (syscall == "compat_60_sa_yield") {
+  } else if (syscall == "compat_60_sa_preempt") {
+  } else if (syscall == "__sigaction_sigtramp") {
+  } else if (syscall == "pmc_get_info") {
+  } else if (syscall == "pmc_control") {
+  } else if (syscall == "rasctl") {
+  } else if (syscall == "kqueue") {
+  } else if (syscall == "compat_50_kevent") {
+  } else if (syscall == "_sched_setparam") {
+  } else if (syscall == "_sched_getparam") {
+  } else if (syscall == "_sched_setaffinity") {
+  } else if (syscall == "_sched_getaffinity") {
+  } else if (syscall == "sched_yield") {
+  } else if (syscall == "_sched_protect") {
+  } else if (syscall == "fsync_range") {
+  } else if (syscall == "uuidgen") {
+  } else if (syscall == "getvfsstat") {
+  } else if (syscall == "statvfs1") {
+  } else if (syscall == "fstatvfs1") {
+  } else if (syscall == "compat_30_fhstatvfs1") {
+  } else if (syscall == "extattrctl") {
+  } else if (syscall == "extattr_set_file") {
+  } else if (syscall == "extattr_get_file") {
+  } else if (syscall == "extattr_delete_file") {
+  } else if (syscall == "extattr_set_fd") {
+  } else if (syscall == "extattr_get_fd") {
+  } else if (syscall == "extattr_delete_fd") {
+  } else if (syscall == "extattr_set_link") {
+  } else if (syscall == "extattr_get_link") {
+  } else if (syscall == "extattr_delete_link") {
+  } else if (syscall == "extattr_list_fd") {
+  } else if (syscall == "extattr_list_file") {
+  } else if (syscall == "extattr_list_link") {
+  } else if (syscall == "compat_50_pselect") {
+  } else if (syscall == "compat_50_pollts") {
+  } else if (syscall == "setxattr") {
+  } else if (syscall == "lsetxattr") {
+  } else if (syscall == "fsetxattr") {
+  } else if (syscall == "getxattr") {
+  } else if (syscall == "lgetxattr") {
+  } else if (syscall == "fgetxattr") {
+  } else if (syscall == "listxattr") {
+  } else if (syscall == "llistxattr") {
+  } else if (syscall == "flistxattr") {
+  } else if (syscall == "removexattr") {
+  } else if (syscall == "lremovexattr") {
+  } else if (syscall == "fremovexattr") {
+  } else if (syscall == "compat_50___stat30") {
+  } else if (syscall == "compat_50___fstat30") {
+  } else if (syscall == "compat_50___lstat30") {
+  } else if (syscall == "__getdents30") {
+  } else if (syscall == "posix_fadvise") {
+  } else if (syscall == "compat_30___fhstat30") {
+  } else if (syscall == "compat_50___ntp_gettime30") {
+  } else if (syscall == "__socket30") {
+  } else if (syscall == "__getfh30") {
+  } else if (syscall == "__fhopen40") {
+  } else if (syscall == "__fhstatvfs140") {
+  } else if (syscall == "compat_50___fhstat40") {
+  } else if (syscall == "aio_cancel") {
+  } else if (syscall == "aio_error") {
+  } else if (syscall == "aio_fsync") {
+  } else if (syscall == "aio_read") {
+  } else if (syscall == "aio_return") {
+  } else if (syscall == "compat_50_aio_suspend") {
+  } else if (syscall == "aio_write") {
+  } else if (syscall == "lio_listio") {
+  } else if (syscall == "__mount50") {
+  } else if (syscall == "mremap") {
+  } else if (syscall == "pset_create") {
+  } else if (syscall == "pset_destroy") {
+  } else if (syscall == "pset_assign") {
+  } else if (syscall == "_pset_bind") {
+  } else if (syscall == "__posix_fadvise50") {
+  } else if (syscall == "__select50") {
+  } else if (syscall == "__gettimeofday50") {
+  } else if (syscall == "__settimeofday50") {
+  } else if (syscall == "__utimes50") {
+  } else if (syscall == "__adjtime50") {
+  } else if (syscall == "__lfs_segwait50") {
+  } else if (syscall == "__futimes50") {
+  } else if (syscall == "__lutimes50") {
+  } else if (syscall == "__setitimer50") {
+  } else if (syscall == "__getitimer50") {
+  } else if (syscall == "__clock_gettime50") {
+  } else if (syscall == "__clock_settime50") {
+  } else if (syscall == "__clock_getres50") {
+  } else if (syscall == "__nanosleep50") {
+  } else if (syscall == "____sigtimedwait50") {
+  } else if (syscall == "__mq_timedsend50") {
+  } else if (syscall == "__mq_timedreceive50") {
+  } else if (syscall == "compat_60__lwp_park") {
+  } else if (syscall == "__kevent50") {
+  } else if (syscall == "__pselect50") {
+  } else if (syscall == "__pollts50") {
+  } else if (syscall == "__aio_suspend50") {
+  } else if (syscall == "__stat50") {
+  } else if (syscall == "__fstat50") {
+  } else if (syscall == "__lstat50") {
+  } else if (syscall == "____semctl50") {
+  } else if (syscall == "__shmctl50") {
+  } else if (syscall == "__msgctl50") {
+  } else if (syscall == "__getrusage50") {
+  } else if (syscall == "__timer_settime50") {
+  } else if (syscall == "__timer_gettime50") {
+  } else if (syscall == "__ntp_gettime50") {
+  } else if (syscall == "__wait450") {
+  } else if (syscall == "__mknod50") {
+  } else if (syscall == "__fhstat50") {
+  } else if (syscall == "pipe2") {
+  } else if (syscall == "dup3") {
+  } else if (syscall == "kqueue1") {
+  } else if (syscall == "paccept") {
+  } else if (syscall == "linkat") {
+  } else if (syscall == "renameat") {
+  } else if (syscall == "mkfifoat") {
+  } else if (syscall == "mknodat") {
+  } else if (syscall == "mkdirat") {
+  } else if (syscall == "faccessat") {
+  } else if (syscall == "fchmodat") {
+  } else if (syscall == "fchownat") {
+  } else if (syscall == "fexecve") {
+  } else if (syscall == "fstatat") {
+  } else if (syscall == "utimensat") {
+  } else if (syscall == "openat") {
+  } else if (syscall == "readlinkat") {
+  } else if (syscall == "symlinkat") {
+  } else if (syscall == "unlinkat") {
+  } else if (syscall == "futimens") {
+  } else if (syscall == "__quotactl") {
+  } else if (syscall == "posix_spawn") {
+  } else if (syscall == "recvmmsg") {
+  } else if (syscall == "sendmmsg") {
+  } else if (syscall == "clock_nanosleep") {
+  } else if (syscall == "___lwp_park60") {
+  } else if (syscall == "posix_fallocate") {
+  } else if (syscall == "fdiscard") {
+  } else if (syscall == "wait6") {
+  } else if (syscall == "clock_getcpuclockid2") {
+  } else {
+    print "Unrecognized syscall: " syscall
+    abnormal_exit = 1
+    exit 1
   }
 }
