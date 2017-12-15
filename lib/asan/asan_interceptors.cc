@@ -161,7 +161,6 @@ DECLARE_REAL_AND_INTERCEPTOR(void, free, void *)
   } while (false)
 
 #include "sanitizer_common/sanitizer_common_interceptors.inc"
-#include "sanitizer_common/sanitizer_netbsd_interceptors.inc"
 #include "sanitizer_common/sanitizer_signal_interceptors.inc"
 
 // Syscall interceptors don't have contexts, we don't support suppressions
@@ -179,6 +178,7 @@ DECLARE_REAL_AND_INTERCEPTOR(void, free, void *)
     (void)(s);                                \
   } while (false)
 #include "sanitizer_common/sanitizer_common_syscalls.inc"
+#include "sanitizer_common/sanitizer_netbsd_syscalls.inc"
 
 struct ThreadStartParam {
   atomic_uintptr_t t;
