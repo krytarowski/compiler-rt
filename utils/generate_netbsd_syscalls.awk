@@ -542,7 +542,11 @@ function pre_syscall(syscall)
   } else if (syscall == "close") {
     pcmd("COMMON_SYSCALL_FD_CLOSE((int)fd);")
   } else if (syscall == "compat_50_wait4") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ocreat") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "link") {
   } else if (syscall == "unlink") {
   } else if (syscall == "chdir") {
