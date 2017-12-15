@@ -96,7 +96,6 @@
 // FIXME: do some kind of PRE_READ for all syscall arguments (int(s) and such).
 
 extern "C" {
-
 #define SYS_MAXSYSARGS 8
 PRE_SYSCALL(syscall)(long code, long args[SYS_MAXSYSARGS]) {}
 POST_SYSCALL(syscall)(long res, long code, long args[SYS_MAXSYSARGS]) {}
