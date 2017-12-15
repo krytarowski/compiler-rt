@@ -489,6 +489,9 @@ END {
   pcmd("#endif  // SANITIZER_NETBSD")
 
   close(cmd)
+
+  # Hack for preprocessed code
+  system("sed -i 's,^ \\([^ ]\\),  \\1,' " outputinc)
 }
 
 function usage()

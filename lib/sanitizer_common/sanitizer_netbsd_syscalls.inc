@@ -162,7 +162,7 @@ PRE_SYSCALL(recvfrom)
 (long s, void *buf, long len, long flags, void *from, void *fromlenaddr) {}
 POST_SYSCALL(recvfrom)
 (long res, long s, void *buf, long len, long flags, void *from,
- void *fromlenaddr) {}
+  void *fromlenaddr) {}
 PRE_SYSCALL(accept)(long s, void *name, void *anamelen) {}
 POST_SYSCALL(accept)(long res, long s, void *name, void *anamelen) {}
 PRE_SYSCALL(getpeername)(long fdes, void *asa, void *alen) {}
@@ -364,7 +364,7 @@ PRE_SYSCALL(compat_43_orecvfrom)
 (long s, void *buf, long len, long flags, void *from, void *fromlenaddr) {}
 POST_SYSCALL(compat_43_orecvfrom)
 (long res, long s, void *buf, long len, long flags, void *from,
- void *fromlenaddr) {}
+  void *fromlenaddr) {}
 PRE_SYSCALL(setreuid)(long ruid, long euid) {}
 POST_SYSCALL(setreuid)(long res, long ruid, long euid) {}
 PRE_SYSCALL(setregid)(long rgid, long egid) {}
@@ -528,7 +528,7 @@ PRE_SYSCALL(mmap)
 (void *addr, long len, long prot, long flags, long fd, long PAD, long pos) {}
 POST_SYSCALL(mmap)
 (long res, void *addr, long len, long prot, long flags, long fd, long PAD,
- long pos) {}
+  long pos) {}
 PRE_SYSCALL(__syscall)(long code, long args[SYS_MAXSYSARGS]) {}
 POST_SYSCALL(__syscall)(long res, long code, long args[SYS_MAXSYSARGS]) {}
 PRE_SYSCALL(lseek)(long fd, long PAD, long offset, long whence) {}
@@ -542,7 +542,7 @@ PRE_SYSCALL(__sysctl)
 }
 POST_SYSCALL(__sysctl)
 (long res, void *name, long namelen, void *oldv, void *oldlenp, void *newv,
- long newlen) {}
+  long newlen) {}
 PRE_SYSCALL(mlock)(void *addr, long len) {}
 POST_SYSCALL(mlock)(long res, void *addr, long len) {}
 PRE_SYSCALL(munlock)(void *addr, long len) {}
@@ -676,12 +676,12 @@ PRE_SYSCALL(compat_50_mq_timedsend)
 (long mqdes, void *msg_ptr, long msg_len, long msg_prio, void *abs_timeout) {}
 POST_SYSCALL(compat_50_mq_timedsend)
 (long res, long mqdes, void *msg_ptr, long msg_len, long msg_prio,
- void *abs_timeout) {}
+  void *abs_timeout) {}
 PRE_SYSCALL(compat_50_mq_timedreceive)
 (long mqdes, void *msg_ptr, long msg_len, void *msg_prio, void *abs_timeout) {}
 POST_SYSCALL(compat_50_mq_timedreceive)
 (long res, long mqdes, void *msg_ptr, long msg_len, void *msg_prio,
- void *abs_timeout) {}
+  void *abs_timeout) {}
 /* syscall 267 has been skipped */
 /* syscall 268 has been skipped */
 /* syscall 269 has been skipped */
@@ -841,10 +841,10 @@ PRE_SYSCALL(kqueue)(void) {}
 POST_SYSCALL(kqueue)(long res) {}
 PRE_SYSCALL(compat_50_kevent)
 (long fd, void *changelist, long nchanges, void *eventlist, long nevents,
- void *timeout) {}
+  void *timeout) {}
 POST_SYSCALL(compat_50_kevent)
 (long res, long fd, void *changelist, long nchanges, void *eventlist,
- long nevents, void *timeout) {}
+  long nevents, void *timeout) {}
 PRE_SYSCALL(_sched_setparam)(long pid, long lid, long policy, void *params) {}
 POST_SYSCALL(_sched_setparam)
 (long res, long pid, long lid, long policy, void *params) {}
@@ -881,17 +881,17 @@ PRE_SYSCALL(extattrctl)
 (void *path, long cmd, void *filename, long attrnamespace, void *attrname) {}
 POST_SYSCALL(extattrctl)
 (long res, void *path, long cmd, void *filename, long attrnamespace,
- void *attrname) {}
+  void *attrname) {}
 PRE_SYSCALL(extattr_set_file)
 (void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
 POST_SYSCALL(extattr_set_file)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
- long nbytes) {}
+  long nbytes) {}
 PRE_SYSCALL(extattr_get_file)
 (void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
 POST_SYSCALL(extattr_get_file)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
- long nbytes) {}
+  long nbytes) {}
 PRE_SYSCALL(extattr_delete_file)
 (void *path, long attrnamespace, void *attrname) {}
 POST_SYSCALL(extattr_delete_file)
@@ -900,12 +900,12 @@ PRE_SYSCALL(extattr_set_fd)
 (long fd, long attrnamespace, void *attrname, void *data, long nbytes) {}
 POST_SYSCALL(extattr_set_fd)
 (long res, long fd, long attrnamespace, void *attrname, void *data,
- long nbytes) {}
+  long nbytes) {}
 PRE_SYSCALL(extattr_get_fd)
 (long fd, long attrnamespace, void *attrname, void *data, long nbytes) {}
 POST_SYSCALL(extattr_get_fd)
 (long res, long fd, long attrnamespace, void *attrname, void *data,
- long nbytes) {}
+  long nbytes) {}
 PRE_SYSCALL(extattr_delete_fd)(long fd, long attrnamespace, void *attrname) {}
 POST_SYSCALL(extattr_delete_fd)
 (long res, long fd, long attrnamespace, void *attrname) {}
@@ -913,12 +913,12 @@ PRE_SYSCALL(extattr_set_link)
 (void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
 POST_SYSCALL(extattr_set_link)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
- long nbytes) {}
+  long nbytes) {}
 PRE_SYSCALL(extattr_get_link)
 (void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
 POST_SYSCALL(extattr_get_link)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
- long nbytes) {}
+  long nbytes) {}
 PRE_SYSCALL(extattr_delete_link)
 (void *path, long attrnamespace, void *attrname) {}
 POST_SYSCALL(extattr_delete_link)
@@ -1028,10 +1028,10 @@ POST_SYSCALL(__mount50)
 (long res, void *type, void *path, long flags, void *data, long data_len) {}
 PRE_SYSCALL(mremap)
 (void *old_address, long old_size, void *new_address, long new_size,
- long flags) {}
+  long flags) {}
 POST_SYSCALL(mremap)
 (long res, void *old_address, long old_size, void *new_address, long new_size,
- long flags) {}
+  long flags) {}
 PRE_SYSCALL(pset_create)(void *psid) {}
 POST_SYSCALL(pset_create)(long res, void *psid) {}
 PRE_SYSCALL(pset_destroy)(long psid) {}
@@ -1083,22 +1083,22 @@ PRE_SYSCALL(__mq_timedsend50)
 (long mqdes, void *msg_ptr, long msg_len, long msg_prio, void *abs_timeout) {}
 POST_SYSCALL(__mq_timedsend50)
 (long res, long mqdes, void *msg_ptr, long msg_len, long msg_prio,
- void *abs_timeout) {}
+  void *abs_timeout) {}
 PRE_SYSCALL(__mq_timedreceive50)
 (long mqdes, void *msg_ptr, long msg_len, void *msg_prio, void *abs_timeout) {}
 POST_SYSCALL(__mq_timedreceive50)
 (long res, long mqdes, void *msg_ptr, long msg_len, void *msg_prio,
- void *abs_timeout) {}
+  void *abs_timeout) {}
 PRE_SYSCALL(compat_60__lwp_park)
 (void *ts, long unpark, void *hint, void *unparkhint) {}
 POST_SYSCALL(compat_60__lwp_park)
 (long res, void *ts, long unpark, void *hint, void *unparkhint) {}
 PRE_SYSCALL(__kevent50)
 (long fd, void *changelist, long nchanges, void *eventlist, long nevents,
- void *timeout) {}
+  void *timeout) {}
 POST_SYSCALL(__kevent50)
 (long res, long fd, void *changelist, long nchanges, void *eventlist,
- long nevents, void *timeout) {}
+  long nevents, void *timeout) {}
 PRE_SYSCALL(__pselect50)
 (long nd, void *in, void *ou, void *ex, void *ts, void *mask) {}
 POST_SYSCALL(__pselect50)
@@ -1194,10 +1194,10 @@ PRE_SYSCALL(__quotactl)(void *path, void *args) {}
 POST_SYSCALL(__quotactl)(long res, void *path, void *args) {}
 PRE_SYSCALL(posix_spawn)
 (void *pid, void *path, void *file_actions, void *attrp, void *argv,
- void *envp) {}
+  void *envp) {}
 POST_SYSCALL(posix_spawn)
 (long res, void *pid, void *path, void *file_actions, void *attrp, void *argv,
- void *envp) {}
+  void *envp) {}
 PRE_SYSCALL(recvmmsg)
 (long s, void *mmsg, long vlen, long flags, void *timeout) {}
 POST_SYSCALL(recvmmsg)
@@ -1210,10 +1210,10 @@ POST_SYSCALL(clock_nanosleep)
 (long res, long clock_id, long flags, void *rqtp, void *rmtp) {}
 PRE_SYSCALL(___lwp_park60)
 (long clock_id, long flags, void *ts, long unpark, void *hint,
- void *unparkhint) {}
+  void *unparkhint) {}
 POST_SYSCALL(___lwp_park60)
 (long res, long clock_id, long flags, void *ts, long unpark, void *hint,
- void *unparkhint) {}
+  void *unparkhint) {}
 PRE_SYSCALL(posix_fallocate)(long fd, long PAD, long pos, long len) {}
 POST_SYSCALL(posix_fallocate)
 (long res, long fd, long PAD, long pos, long len) {}
@@ -1223,7 +1223,7 @@ PRE_SYSCALL(wait6)
 (long idtype, long id, void *status, long options, void *wru, void *info) {}
 POST_SYSCALL(wait6)
 (long res, long idtype, long id, void *status, long options, void *wru,
- void *info) {}
+  void *info) {}
 PRE_SYSCALL(clock_getcpuclockid2)(long idtype, long id, void *clock_id) {}
 POST_SYSCALL(clock_getcpuclockid2)
 (long res, long idtype, long id, void *clock_id) {}
