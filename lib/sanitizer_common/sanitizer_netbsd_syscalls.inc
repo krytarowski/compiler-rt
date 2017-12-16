@@ -410,176 +410,239 @@ POST_SYSCALL(sbrk)(long res, long incr) {}
 PRE_SYSCALL(sstk)(long incr) { /* Nothing to do */ }
 POST_SYSCALL(sstk)(long res, long incr) {}
 PRE_SYSCALL(compat_43_ommap)
-(void *addr, long len, long prot, long flags, long fd, long pos) {}
+(void *addr, long len, long prot, long flags, long fd, long pos) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_43_ommap)
 (long res, void *addr, long len, long prot, long flags, long fd, long pos) {}
-PRE_SYSCALL(vadvise)(long anom) {}
+PRE_SYSCALL(vadvise)(long anom) { /* Nothing to do */ }
 POST_SYSCALL(vadvise)(long res, long anom) {}
-PRE_SYSCALL(munmap)(void *addr, long len) {}
+PRE_SYSCALL(munmap)(void *addr, long len) { /* Nothing to do */ }
 POST_SYSCALL(munmap)(long res, void *addr, long len) {}
-PRE_SYSCALL(mprotect)(void *addr, long len, long prot) {}
+PRE_SYSCALL(mprotect)(void *addr, long len, long prot) { /* Nothing to do */ }
 POST_SYSCALL(mprotect)(long res, void *addr, long len, long prot) {}
-PRE_SYSCALL(madvise)(void *addr, long len, long behav) {}
+PRE_SYSCALL(madvise)(void *addr, long len, long behav) { /* Nothing to do */ }
 POST_SYSCALL(madvise)(long res, void *addr, long len, long behav) {}
 /* syscall 76 has been skipped */
 /* syscall 77 has been skipped */
-PRE_SYSCALL(mincore)(void *addr, long len, void *vec) {}
+PRE_SYSCALL(mincore)(void *addr, long len, void *vec) { /* Nothing to do */ }
 POST_SYSCALL(mincore)(long res, void *addr, long len, void *vec) {}
-PRE_SYSCALL(getgroups)(long gidsetsize, void *gidset) {}
+PRE_SYSCALL(getgroups)(long gidsetsize, void *gidset) { /* Nothing to do */ }
 POST_SYSCALL(getgroups)(long res, long gidsetsize, void *gidset) {}
-PRE_SYSCALL(setgroups)(long gidsetsize, void *gidset) {}
+PRE_SYSCALL(setgroups)(long gidsetsize, void *gidset) {
+  unsigned int *gset = (unsigned int *)gidset;
+  if (gset) {
+    PRE_READ(gset, sizeof(*gset) * gidsetsize);
+  }
+}
 POST_SYSCALL(setgroups)(long res, long gidsetsize, void *gidset) {}
-PRE_SYSCALL(getpgrp)(void) {}
+PRE_SYSCALL(getpgrp)(void) { /* Nothing to do */ }
 POST_SYSCALL(getpgrp)(long res) {}
-PRE_SYSCALL(setpgid)(long pid, long pgid) {}
+PRE_SYSCALL(setpgid)(long pid, long pgid) { /* Nothing to do */ }
 POST_SYSCALL(setpgid)(long res, long pid, long pgid) {}
-PRE_SYSCALL(compat_50_setitimer)(long which, void *itv, void *oitv) {}
+PRE_SYSCALL(compat_50_setitimer)(long which, void *itv, void *oitv) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_50_setitimer)
 (long res, long which, void *itv, void *oitv) {}
-PRE_SYSCALL(compat_43_owait)(void) {}
+PRE_SYSCALL(compat_43_owait)(void) { /* Nothing to do */ }
 POST_SYSCALL(compat_43_owait)(long res) {}
-PRE_SYSCALL(compat_12_oswapon)(void *name) {}
+PRE_SYSCALL(compat_12_oswapon)(void *name) {
+  if (name) {
+    PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);
+  }
+}
 POST_SYSCALL(compat_12_oswapon)(long res, void *name) {}
-PRE_SYSCALL(compat_50_getitimer)(long which, void *itv) {}
+PRE_SYSCALL(compat_50_getitimer)(long which, void *itv) { /* Nothing to do */ }
 POST_SYSCALL(compat_50_getitimer)(long res, long which, void *itv) {}
-PRE_SYSCALL(compat_43_ogethostname)(void *hostname, long len) {}
+PRE_SYSCALL(compat_43_ogethostname)(void *hostname, long len) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_43_ogethostname)(long res, void *hostname, long len) {}
-PRE_SYSCALL(compat_43_osethostname)(void *hostname, long len) {}
+PRE_SYSCALL(compat_43_osethostname)(void *hostname, long len) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_43_osethostname)(long res, void *hostname, long len) {}
-PRE_SYSCALL(compat_43_ogetdtablesize)(void) {}
+PRE_SYSCALL(compat_43_ogetdtablesize)(void) { /* Nothing to do */ }
 POST_SYSCALL(compat_43_ogetdtablesize)(long res) {}
-PRE_SYSCALL(dup2)(long from, long to) {}
+PRE_SYSCALL(dup2)(long from, long to) { /* Nothing to do */ }
 POST_SYSCALL(dup2)(long res, long from, long to) {}
 /* syscall 91 has been skipped */
-PRE_SYSCALL(fcntl)(long fd, long cmd, void *arg) {}
+PRE_SYSCALL(fcntl)(long fd, long cmd, void *arg) { /* Nothing to do */ }
 POST_SYSCALL(fcntl)(long res, long fd, long cmd, void *arg) {}
-PRE_SYSCALL(compat_50_select)
-(long nd, void *in, void *ou, void *ex, void *tv) {}
+PRE_SYSCALL(compat_50_select)(long nd, void *in, void *ou, void *ex, void *tv) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_50_select)
 (long res, long nd, void *in, void *ou, void *ex, void *tv) {}
 /* syscall 94 has been skipped */
-PRE_SYSCALL(fsync)(long fd) {}
+PRE_SYSCALL(fsync)(long fd) { /* Nothing to do */ }
 POST_SYSCALL(fsync)(long res, long fd) {}
-PRE_SYSCALL(setpriority)(long which, long who, long prio) {}
+PRE_SYSCALL(setpriority)(long which, long who, long prio) {
+  /* Nothing to do */
+}
 POST_SYSCALL(setpriority)(long res, long which, long who, long prio) {}
-PRE_SYSCALL(compat_30_socket)(long domain, long type, long protocol) {}
+PRE_SYSCALL(compat_30_socket)(long domain, long type, long protocol) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_30_socket)
 (long res, long domain, long type, long protocol) {}
-PRE_SYSCALL(connect)(long s, void *name, long namelen) {}
+PRE_SYSCALL(connect)(long s, void *name, long namelen) { /* Nothing to do */ }
 POST_SYSCALL(connect)(long res, long s, void *name, long namelen) {}
-PRE_SYSCALL(compat_43_oaccept)(long s, void *name, void *anamelen) {}
+PRE_SYSCALL(compat_43_oaccept)(long s, void *name, void *anamelen) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_43_oaccept)(long res, long s, void *name, void *anamelen) {}
-PRE_SYSCALL(getpriority)(long which, long who) {}
+PRE_SYSCALL(getpriority)(long which, long who) { /* Nothing to do */ }
 POST_SYSCALL(getpriority)(long res, long which, long who) {}
-PRE_SYSCALL(compat_43_osend)(long s, void *buf, long len, long flags) {}
+PRE_SYSCALL(compat_43_osend)(long s, void *buf, long len, long flags) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_43_osend)
 (long res, long s, void *buf, long len, long flags) {}
-PRE_SYSCALL(compat_43_orecv)(long s, void *buf, long len, long flags) {}
+PRE_SYSCALL(compat_43_orecv)(long s, void *buf, long len, long flags) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_43_orecv)
 (long res, long s, void *buf, long len, long flags) {}
-PRE_SYSCALL(compat_13_sigreturn13)(void *sigcntxp) {}
+PRE_SYSCALL(compat_13_sigreturn13)(void *sigcntxp) { /* Missing on amd64? */ }
 POST_SYSCALL(compat_13_sigreturn13)(long res, void *sigcntxp) {}
-PRE_SYSCALL(bind)(long s, void *name, long namelen) {}
+PRE_SYSCALL(bind)(long s, void *name, long namelen) { /* Nothing to do */ }
 POST_SYSCALL(bind)(long res, long s, void *name, long namelen) {}
 PRE_SYSCALL(setsockopt)
-(long s, long level, long name, void *val, long valsize) {}
+(long s, long level, long name, void *val, long valsize) {
+  /* Nothing to do */
+}
 POST_SYSCALL(setsockopt)
 (long res, long s, long level, long name, void *val, long valsize) {}
-PRE_SYSCALL(listen)(long s, long backlog) {}
+PRE_SYSCALL(listen)(long s, long backlog) { /* Nothing to do */ }
 POST_SYSCALL(listen)(long res, long s, long backlog) {}
 /* syscall 107 has been skipped */
-PRE_SYSCALL(compat_43_osigvec)(long signum, void *nsv, void *osv) {}
+PRE_SYSCALL(compat_43_osigvec)(long signum, void *nsv, void *osv) { /* TODO */ }
 POST_SYSCALL(compat_43_osigvec)(long res, long signum, void *nsv, void *osv) {}
-PRE_SYSCALL(compat_43_osigblock)(long mask) {}
+PRE_SYSCALL(compat_43_osigblock)(long mask) { /* TODO */ }
 POST_SYSCALL(compat_43_osigblock)(long res, long mask) {}
-PRE_SYSCALL(compat_43_osigsetmask)(long mask) {}
+PRE_SYSCALL(compat_43_osigsetmask)(long mask) { /* TODO */ }
 POST_SYSCALL(compat_43_osigsetmask)(long res, long mask) {}
-PRE_SYSCALL(compat_13_sigsuspend13)(long mask) {}
+PRE_SYSCALL(compat_13_sigsuspend13)(long mask) { /* TODO */ }
 POST_SYSCALL(compat_13_sigsuspend13)(long res, long mask) {}
-PRE_SYSCALL(compat_43_osigstack)(void *nss, void *oss) {}
+PRE_SYSCALL(compat_43_osigstack)(void *nss, void *oss) { /* TODO */ }
 POST_SYSCALL(compat_43_osigstack)(long res, void *nss, void *oss) {}
-PRE_SYSCALL(compat_43_orecvmsg)(long s, void *msg, long flags) {}
+PRE_SYSCALL(compat_43_orecvmsg)(long s, void *msg, long flags) { /* TODO */ }
 POST_SYSCALL(compat_43_orecvmsg)(long res, long s, void *msg, long flags) {}
-PRE_SYSCALL(compat_43_osendmsg)(long s, void *msg, long flags) {}
+PRE_SYSCALL(compat_43_osendmsg)(long s, void *msg, long flags) { /* TODO */ }
 POST_SYSCALL(compat_43_osendmsg)(long res, long s, void *msg, long flags) {}
 /* syscall 115 has been skipped */
-PRE_SYSCALL(compat_50_gettimeofday)(void *tp, void *tzp) {}
+PRE_SYSCALL(compat_50_gettimeofday)(void *tp, void *tzp) { /* TODO */ }
 POST_SYSCALL(compat_50_gettimeofday)(long res, void *tp, void *tzp) {}
-PRE_SYSCALL(compat_50_getrusage)(long who, void *rusage) {}
+PRE_SYSCALL(compat_50_getrusage)(long who, void *rusage) { /* TODO */ }
 POST_SYSCALL(compat_50_getrusage)(long res, long who, void *rusage) {}
 PRE_SYSCALL(getsockopt)
-(long s, long level, long name, void *val, void *avalsize) {}
+(long s, long level, long name, void *val, void *avalsize) {
+  /* Nothing to do */
+}
 POST_SYSCALL(getsockopt)
 (long res, long s, long level, long name, void *val, void *avalsize) {}
 /* syscall 119 has been skipped */
-PRE_SYSCALL(readv)(long fd, void *iovp, long iovcnt) {}
+PRE_SYSCALL(readv)(long fd, void *iovp, long iovcnt) { /* Nothing to do */ }
 POST_SYSCALL(readv)(long res, long fd, void *iovp, long iovcnt) {}
-PRE_SYSCALL(writev)(long fd, void *iovp, long iovcnt) {}
+PRE_SYSCALL(writev)(long fd, void *iovp, long iovcnt) { /* Nothing to do */ }
 POST_SYSCALL(writev)(long res, long fd, void *iovp, long iovcnt) {}
-PRE_SYSCALL(compat_50_settimeofday)(void *tv, void *tzp) {}
+PRE_SYSCALL(compat_50_settimeofday)(void *tv, void *tzp) { /* TODO */ }
 POST_SYSCALL(compat_50_settimeofday)(long res, void *tv, void *tzp) {}
-PRE_SYSCALL(fchown)(long fd, long uid, long gid) {}
+PRE_SYSCALL(fchown)(long fd, long uid, long gid) { /* Nothing to do */ }
 POST_SYSCALL(fchown)(long res, long fd, long uid, long gid) {}
-PRE_SYSCALL(fchmod)(long fd, long mode) {}
+PRE_SYSCALL(fchmod)(long fd, long mode) { /* Nothing to do */ }
 POST_SYSCALL(fchmod)(long res, long fd, long mode) {}
 PRE_SYSCALL(compat_43_orecvfrom)
-(long s, void *buf, long len, long flags, void *from, void *fromlenaddr) {}
+(long s, void *buf, long len, long flags, void *from, void *fromlenaddr) {
+  /* TODO */
+}
 POST_SYSCALL(compat_43_orecvfrom)
 (long res, long s, void *buf, long len, long flags, void *from,
   void *fromlenaddr) {}
-PRE_SYSCALL(setreuid)(long ruid, long euid) {}
+PRE_SYSCALL(setreuid)(long ruid, long euid) { /* Nothing to do */ }
 POST_SYSCALL(setreuid)(long res, long ruid, long euid) {}
-PRE_SYSCALL(setregid)(long rgid, long egid) {}
+PRE_SYSCALL(setregid)(long rgid, long egid) { /* Nothing to do */ }
 POST_SYSCALL(setregid)(long res, long rgid, long egid) {}
-PRE_SYSCALL(rename)(void *from, void *to) {}
+PRE_SYSCALL(rename)(void *from, void *to) {
+  if (from) {
+    PRE_READ(from, __sanitizer::internal_strlen((const char *)to) + 1);
+  }
+  if (to) {
+    PRE_READ(to, __sanitizer::internal_strlen((const char *)to) + 1);
+  }
+}
 POST_SYSCALL(rename)(long res, void *from, void *to) {}
-PRE_SYSCALL(compat_43_otruncate)(void *path, long length) {}
+PRE_SYSCALL(compat_43_otruncate)(void *path, long length) { /* TODO */ }
 POST_SYSCALL(compat_43_otruncate)(long res, void *path, long length) {}
-PRE_SYSCALL(compat_43_oftruncate)(long fd, long length) {}
+PRE_SYSCALL(compat_43_oftruncate)(long fd, long length) { /* TODO */ }
 POST_SYSCALL(compat_43_oftruncate)(long res, long fd, long length) {}
-PRE_SYSCALL(flock)(long fd, long how) {}
+PRE_SYSCALL(flock)(long fd, long how) { /* Nothing to do */ }
 POST_SYSCALL(flock)(long res, long fd, long how) {}
-PRE_SYSCALL(mkfifo)(void *path, long mode) {}
+PRE_SYSCALL(mkfifo)(void *path, long mode) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(mkfifo)(long res, void *path, long mode) {}
 PRE_SYSCALL(sendto)
-(long s, void *buf, long len, long flags, void *to, long tolen) {}
+(long s, void *buf, long len, long flags, void *to, long tolen) {
+  /* Nothing to do */
+}
 POST_SYSCALL(sendto)
 (long res, long s, void *buf, long len, long flags, void *to, long tolen) {}
-PRE_SYSCALL(shutdown)(long s, long how) {}
+PRE_SYSCALL(shutdown)(long s, long how) { /* Nothing to do */ }
 POST_SYSCALL(shutdown)(long res, long s, long how) {}
-PRE_SYSCALL(socketpair)(long domain, long type, long protocol, void *rsv) {}
+PRE_SYSCALL(socketpair)(long domain, long type, long protocol, void *rsv) {
+  /* Nothing to do */
+}
 POST_SYSCALL(socketpair)
 (long res, long domain, long type, long protocol, void *rsv) {}
-PRE_SYSCALL(mkdir)(void *path, long mode) {}
+PRE_SYSCALL(mkdir)(void *path, long mode) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(mkdir)(long res, void *path, long mode) {}
-PRE_SYSCALL(rmdir)(void *path) {}
+PRE_SYSCALL(rmdir)(void *path) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(rmdir)(long res, void *path) {}
-PRE_SYSCALL(compat_50_utimes)(void *path, void *tptr) {}
+PRE_SYSCALL(compat_50_utimes)(void *path, void *tptr) { /* TODO */ }
 POST_SYSCALL(compat_50_utimes)(long res, void *path, void *tptr) {}
 /* syscall 139 has been skipped */
-PRE_SYSCALL(compat_50_adjtime)(void *delta, void *olddelta) {}
+PRE_SYSCALL(compat_50_adjtime)(void *delta, void *olddelta) { /* TODO */ }
 POST_SYSCALL(compat_50_adjtime)(long res, void *delta, void *olddelta) {}
-PRE_SYSCALL(compat_43_ogetpeername)(long fdes, void *asa, void *alen) {}
+PRE_SYSCALL(compat_43_ogetpeername)(long fdes, void *asa, void *alen) {
+  /* TODO */
+}
 POST_SYSCALL(compat_43_ogetpeername)
 (long res, long fdes, void *asa, void *alen) {}
-PRE_SYSCALL(compat_43_ogethostid)(void) {}
+PRE_SYSCALL(compat_43_ogethostid)(void) { /* TODO */ }
 POST_SYSCALL(compat_43_ogethostid)(long res) {}
-PRE_SYSCALL(compat_43_osethostid)(long hostid) {}
+PRE_SYSCALL(compat_43_osethostid)(long hostid) { /* TODO */ }
 POST_SYSCALL(compat_43_osethostid)(long res, long hostid) {}
-PRE_SYSCALL(compat_43_ogetrlimit)(long which, void *rlp) {}
+PRE_SYSCALL(compat_43_ogetrlimit)(long which, void *rlp) { /* TODO */ }
 POST_SYSCALL(compat_43_ogetrlimit)(long res, long which, void *rlp) {}
-PRE_SYSCALL(compat_43_osetrlimit)(long which, void *rlp) {}
+PRE_SYSCALL(compat_43_osetrlimit)(long which, void *rlp) { /* TODO */ }
 POST_SYSCALL(compat_43_osetrlimit)(long res, long which, void *rlp) {}
-PRE_SYSCALL(compat_43_okillpg)(long pgid, long signum) {}
+PRE_SYSCALL(compat_43_okillpg)(long pgid, long signum) { /* TODO */ }
 POST_SYSCALL(compat_43_okillpg)(long res, long pgid, long signum) {}
-PRE_SYSCALL(setsid)(void) {}
+PRE_SYSCALL(setsid)(void) { /* Nothing to do */ }
 POST_SYSCALL(setsid)(long res) {}
-PRE_SYSCALL(compat_50_quotactl)(void *path, long cmd, long uid, void *arg) {}
+PRE_SYSCALL(compat_50_quotactl)(void *path, long cmd, long uid, void *arg) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50_quotactl)
 (long res, void *path, long cmd, long uid, void *arg) {}
-PRE_SYSCALL(compat_43_oquota)(void) {}
+PRE_SYSCALL(compat_43_oquota)(void) { /* TODO */ }
 POST_SYSCALL(compat_43_oquota)(long res) {}
-PRE_SYSCALL(compat_43_ogetsockname)(long fdec, void *asa, void *alen) {}
+PRE_SYSCALL(compat_43_ogetsockname)(long fdec, void *asa, void *alen) {
+  /* TODO */
+}
 POST_SYSCALL(compat_43_ogetsockname)
 (long res, long fdec, void *asa, void *alen) {}
 /* syscall 151 has been skipped */

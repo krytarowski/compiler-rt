@@ -742,78 +742,167 @@ function pre_syscall(syscall)
   } else if (syscall == "sstk") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ommap") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "vadvise") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "munmap") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "mprotect") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "madvise") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "mincore") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getgroups") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setgroups") {
+    pcmd("unsigned int *gset = (unsigned int *)gidset;")
+    pcmd("if (gset) {")
+    pcmd("  PRE_READ(gset, sizeof(*gset) * gidsetsize);")
+    pcmd("}")
   } else if (syscall == "getpgrp") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setpgid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_setitimer") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_owait") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_12_oswapon") {
+    pcmd("if (name) {")
+    pcmd("  PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_50_getitimer") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ogethostname") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_osethostname") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ogetdtablesize") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "dup2") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fcntl") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_select") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fsync") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setpriority") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_30_socket") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "connect") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_oaccept") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getpriority") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_osend") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_orecv") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigreturn13") {
+    pcmd("/* Missing on amd64? */")
   } else if (syscall == "bind") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setsockopt") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "listen") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_osigvec") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_osigblock") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_osigsetmask") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_13_sigsuspend13") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_osigstack") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_orecvmsg") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_osendmsg") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_gettimeofday") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_getrusage") {
+    pcmd("/* TODO */")
   } else if (syscall == "getsockopt") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "readv") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "writev") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_settimeofday") {
+    pcmd("/* TODO */")
   } else if (syscall == "fchown") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fchmod") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_orecvfrom") {
+    pcmd("/* TODO */")
   } else if (syscall == "setreuid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setregid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "rename") {
+    pcmd("if (from) {")
+    pcmd("  PRE_READ(from, __sanitizer::internal_strlen((const char *)to) + 1);")
+    pcmd("}")
+    pcmd("if (to) {")
+    pcmd("  PRE_READ(to, __sanitizer::internal_strlen((const char *)to) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_43_otruncate") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_oftruncate") {
+    pcmd("/* TODO */")
   } else if (syscall == "flock") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "mkfifo") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "sendto") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "shutdown") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "socketpair") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "mkdir") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "rmdir") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_50_utimes") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_adjtime") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogetpeername") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogethostid") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_osethostid") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogetrlimit") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_osetrlimit") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_okillpg") {
+    pcmd("/* TODO */")
   } else if (syscall == "setsid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_quotactl") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_oquota") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogetsockname") {
+    pcmd("/* TODO */")
   } else if (syscall == "nfssvc") {
+
   } else if (syscall == "compat_43_ogetdirentries") {
   } else if (syscall == "compat_20_statfs") {
   } else if (syscall == "compat_20_fstatfs") {
