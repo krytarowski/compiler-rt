@@ -483,7 +483,7 @@ END {
 
     pcmd("POST_SYSCALL(" sn ")(" postargs ")")
     pcmd("{")
-    pre_syscall(sn)
+    post_syscall(sn)
     pcmd("}")
   }
 

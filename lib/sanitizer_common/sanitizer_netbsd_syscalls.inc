@@ -106,57 +106,39 @@ POST_SYSCALL(syscall)(long res, long code, long args[SYS_MAXSYSARGS]) {
 PRE_SYSCALL(exit)(long rval) { /* Nothing to do */ }
 POST_SYSCALL(exit)(long res, long rval) { /* Nothing to do */ }
 PRE_SYSCALL(fork)(void) { COMMON_SYSCALL_PRE_FORK(); }
-POST_SYSCALL(fork)(long res) { COMMON_SYSCALL_PRE_FORK(); }
+POST_SYSCALL(fork)(long res) { COMMON_SYSCALL_POST_FORK(res); }
 PRE_SYSCALL(read)(long fd, void *buf, long nbyte) {
   if (buf) {
     PRE_WRITE(buf, nbyte);
   }
 }
-POST_SYSCALL(read)(long res, long fd, void *buf, long nbyte) {
-  if (buf) {
-    PRE_WRITE(buf, nbyte);
-  }
-}
+POST_SYSCALL(read)(long res, long fd, void *buf, long nbyte) {}
 PRE_SYSCALL(write)(long fd, void *buf, long nbyte) {
   if (buf) {
     PRE_READ(buf, nbyte);
   }
 }
-POST_SYSCALL(write)(long res, long fd, void *buf, long nbyte) {
-  if (buf) {
-    PRE_READ(buf, nbyte);
-  }
-}
+POST_SYSCALL(write)(long res, long fd, void *buf, long nbyte) {}
 PRE_SYSCALL(open)(void *path, long flags, long mode) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
   }
 }
-POST_SYSCALL(open)(long res, void *path, long flags, long mode) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-}
+POST_SYSCALL(open)(long res, void *path, long flags, long mode) {}
 PRE_SYSCALL(close)(long fd) { COMMON_SYSCALL_FD_CLOSE((int)fd); }
-POST_SYSCALL(close)(long res, long fd) { COMMON_SYSCALL_FD_CLOSE((int)fd); }
+POST_SYSCALL(close)(long res, long fd) {}
 PRE_SYSCALL(compat_50_wait4)
 (long pid, void *status, long options, void *rusage) {
   /* Nothing to do */
 }
 POST_SYSCALL(compat_50_wait4)
-(long res, long pid, void *status, long options, void *rusage) {
-  /* Nothing to do */
-}
+(long res, long pid, void *status, long options, void *rusage) {}
 PRE_SYSCALL(compat_43_ocreat)(void *path, long mode) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
   }
 }
-POST_SYSCALL(compat_43_ocreat)(long res, void *path, long mode) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-}
+POST_SYSCALL(compat_43_ocreat)(long res, void *path, long mode) {}
 PRE_SYSCALL(link)(void *path, void *link) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
@@ -165,99 +147,66 @@ PRE_SYSCALL(link)(void *path, void *link) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)link) + 1);
   }
 }
-POST_SYSCALL(link)(long res, void *path, void *link) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-  if (link) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)link) + 1);
-  }
-}
+POST_SYSCALL(link)(long res, void *path, void *link) {}
 PRE_SYSCALL(unlink)(void *path) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
   }
 }
-POST_SYSCALL(unlink)(long res, void *path) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-}
+POST_SYSCALL(unlink)(long res, void *path) {}
 /* syscall 11 has been skipped */
 PRE_SYSCALL(chdir)(void *path) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
   }
 }
-POST_SYSCALL(chdir)(long res, void *path) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-}
+POST_SYSCALL(chdir)(long res, void *path) {}
 PRE_SYSCALL(fchdir)(long fd) { /* Nothing to do */ }
-POST_SYSCALL(fchdir)(long res, long fd) { /* Nothing to do */ }
+POST_SYSCALL(fchdir)(long res, long fd) {}
 PRE_SYSCALL(compat_50_mknod)(void *path, long mode, long dev) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
   }
 }
-POST_SYSCALL(compat_50_mknod)(long res, void *path, long mode, long dev) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-}
+POST_SYSCALL(compat_50_mknod)(long res, void *path, long mode, long dev) {}
 PRE_SYSCALL(chmod)(void *path, long mode) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
   }
 }
-POST_SYSCALL(chmod)(long res, void *path, long mode) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-}
+POST_SYSCALL(chmod)(long res, void *path, long mode) {}
 PRE_SYSCALL(chown)(void *path, long uid, long gid) {
   if (path) {
     PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
   }
 }
-POST_SYSCALL(chown)(long res, void *path, long uid, long gid) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
-}
+POST_SYSCALL(chown)(long res, void *path, long uid, long gid) {}
 PRE_SYSCALL(break)(void *nsize) { /* Nothing to do */ }
-POST_SYSCALL(break)(long res, void *nsize) { /* Nothing to do */ }
+POST_SYSCALL(break)(long res, void *nsize) {}
 PRE_SYSCALL(compat_20_getfsstat)(void *buf, long bufsize, long flags) {
   /* Nothing to do */
 }
 POST_SYSCALL(compat_20_getfsstat)
-(long res, void *buf, long bufsize, long flags) {
-  /* Nothing to do */
-}
+(long res, void *buf, long bufsize, long flags) {}
 PRE_SYSCALL(compat_43_olseek)(long fd, long offset, long whence) {
   /* Nothing to do */
 }
-POST_SYSCALL(compat_43_olseek)(long res, long fd, long offset, long whence) {
-  /* Nothing to do */
-}
+POST_SYSCALL(compat_43_olseek)(long res, long fd, long offset, long whence) {}
 PRE_SYSCALL(getpid)(void) { /* Nothing to do */ }
-POST_SYSCALL(getpid)(long res) { /* Nothing to do */ }
+POST_SYSCALL(getpid)(long res) {}
 PRE_SYSCALL(compat_40_mount)(void *type, void *path, long flags, void *data) {
   /* Nothing to do */
 }
 POST_SYSCALL(compat_40_mount)
-(long res, void *type, void *path, long flags, void *data) {
-  /* Nothing to do */
-}
+(long res, void *type, void *path, long flags, void *data) {}
 PRE_SYSCALL(unmount)(void *path, long flags) { /* Nothing to do */ }
-POST_SYSCALL(unmount)(long res, void *path, long flags) { /* Nothing to do */ }
+POST_SYSCALL(unmount)(long res, void *path, long flags) {}
 PRE_SYSCALL(setuid)(long uid) { /* Nothing to do */ }
-POST_SYSCALL(setuid)(long res, long uid) { /* Nothing to do */ }
+POST_SYSCALL(setuid)(long res, long uid) {}
 PRE_SYSCALL(getuid)(void) { /* Nothing to do */ }
-POST_SYSCALL(getuid)(long res) { /* Nothing to do */ }
+POST_SYSCALL(getuid)(long res) {}
 PRE_SYSCALL(geteuid)(void) { /* Nothing to do */ }
-POST_SYSCALL(geteuid)(long res) { /* Nothing to do */ }
+POST_SYSCALL(geteuid)(long res) {}
 PRE_SYSCALL(ptrace)(long req, long pid, void *addr, long data) {
   if (req == pt_io) {
     struct __sanitizer_ptrace_io_desc *piod = addr;
@@ -273,21 +222,7 @@ PRE_SYSCALL(ptrace)(long req, long pid, void *addr, long data) {
     PRE_READ(addr, struct_ptrace_dbreg_struct_sz);
   }
 }
-POST_SYSCALL(ptrace)(long res, long req, long pid, void *addr, long data) {
-  if (req == pt_io) {
-    struct __sanitizer_ptrace_io_desc *piod = addr;
-    if (piod->piod_op == ptrace_piod_write_d ||
-        piod->piod_op == ptrace_piod_write_i) {
-      PRE_READ(piod->piod_addr, piod->piod_len);
-    }
-  } else if (req == ptrace_pt_setregs) {
-    PRE_READ(addr, struct_ptrace_reg_struct_sz);
-  } else if (req == ptrace_pt_setfpregs) {
-    PRE_READ(addr, struct_ptrace_fpreg_struct_sz);
-  } else if (req == ptrace_pt_setdbregs) {
-    PRE_READ(addr, struct_ptrace_dbreg_struct_sz);
-  }
-}
+POST_SYSCALL(ptrace)(long res, long req, long pid, void *addr, long data) {}
 PRE_SYSCALL(recvmsg)(long s, void *msg, long flags) {}
 POST_SYSCALL(recvmsg)(long res, long s, void *msg, long flags) {}
 PRE_SYSCALL(sendmsg)(long s, void *msg, long flags) {}
