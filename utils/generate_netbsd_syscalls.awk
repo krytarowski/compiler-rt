@@ -683,21 +683,64 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_13_sigpending13") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigaltstack13") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "ioctl") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_12_oreboot") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "revoke") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "symlink") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
+    pcmd("if (link) {")
+    pcmd("  PRE_READ(link, __sanitizer::internal_strlen((const char *)link) + 1);")
+    pcmd("}")
   } else if (syscall == "readlink") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "execve") {
+    pcmd("char **arg = (char **)argp;")
+    pcmd("char **env = (char **)envp;")
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
+    pcmd("if (arg && arg[0]) {")
+    pcmd("  char *a = arg[0];")
+    pcmd("  while (a++) {")
+    pcmd("    PRE_READ(a, __sanitizer::internal_strlen((const char *)a) + 1);")
+    pcmd("  }")
+    pcmd("}")
+    pcmd("if (env && env[0]) {")
+    pcmd("  char *e = env[0];")
+    pcmd("  while (e++) {")
+    pcmd("    PRE_READ(e, __sanitizer::internal_strlen((const char *)e) + 1);")
+    pcmd("  }")
+    pcmd("}")
   } else if (syscall == "umask") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "chroot") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_43_fstat43") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ogetkerninfo") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ogetpagesize") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_12_msync") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "vfork") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "sbrk") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "sstk") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ommap") {
   } else if (syscall == "vadvise") {
   } else if (syscall == "munmap") {

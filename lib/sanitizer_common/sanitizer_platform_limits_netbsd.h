@@ -249,6 +249,12 @@ struct __sanitizer_sigaction13 {
   int osa_flags;
 };
 
+struct __sanitizer_sigaltstack13 {
+  char *ss_sp;
+  int ss_size;
+  int ss_flags;
+};
+
 typedef __sanitizer_sigset_t __sanitizer_kernel_sigset_t;
 
 struct __sanitizer_kernel_sigaction_t {

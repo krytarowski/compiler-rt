@@ -332,19 +332,54 @@ PRE_SYSCALL(acct)(void *path) {
 POST_SYSCALL(acct)(long res, void *path) {}
 PRE_SYSCALL(compat_13_sigpending13)(void) { /* Nothing to do */ }
 POST_SYSCALL(compat_13_sigpending13)(long res) {}
-PRE_SYSCALL(compat_13_sigaltstack13)(void *nss, void *oss) {}
+PRE_SYSCALL(compat_13_sigaltstack13)(void *nss, void *oss) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_13_sigaltstack13)(long res, void *nss, void *oss) {}
-PRE_SYSCALL(ioctl)(long fd, long com, void *data) {}
+PRE_SYSCALL(ioctl)(long fd, long com, void *data) { /* Nothing to do */ }
 POST_SYSCALL(ioctl)(long res, long fd, long com, void *data) {}
-PRE_SYSCALL(compat_12_oreboot)(long opt) {}
+PRE_SYSCALL(compat_12_oreboot)(long opt) { /* Nothing to do */ }
 POST_SYSCALL(compat_12_oreboot)(long res, long opt) {}
-PRE_SYSCALL(revoke)(void *path) {}
+PRE_SYSCALL(revoke)(void *path) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(revoke)(long res, void *path) {}
-PRE_SYSCALL(symlink)(void *path, void *link) {}
+PRE_SYSCALL(symlink)(void *path, void *link) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+  if (link) {
+    PRE_READ(link, __sanitizer::internal_strlen((const char *)link) + 1);
+  }
+}
 POST_SYSCALL(symlink)(long res, void *path, void *link) {}
-PRE_SYSCALL(readlink)(void *path, void *buf, long count) {}
+PRE_SYSCALL(readlink)(void *path, void *buf, long count) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(readlink)(long res, void *path, void *buf, long count) {}
-PRE_SYSCALL(execve)(void *path, void *argp, void *envp) {}
+PRE_SYSCALL(execve)(void *path, void *argp, void *envp) {
+  char **arg = (char **)argp;
+  char **env = (char **)envp;
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+  if (arg && arg[0]) {
+    char *a = arg[0];
+    while (a++) {
+      PRE_READ(a, __sanitizer::internal_strlen((const char *)a) + 1);
+    }
+  }
+  if (env && env[0]) {
+    char *e = env[0];
+    while (e++) {
+      PRE_READ(e, __sanitizer::internal_strlen((const char *)e) + 1);
+    }
+  }
+}
 POST_SYSCALL(execve)(long res, void *path, void *argp, void *envp) {}
 PRE_SYSCALL(umask)(long newmask) {}
 POST_SYSCALL(umask)(long res, long newmask) {}
