@@ -230,47 +230,75 @@ PRE_SYSCALL(ptrace)(long req, long pid, void *addr, long data) {
   }
 }
 POST_SYSCALL(ptrace)(long res, long req, long pid, void *addr, long data) {}
-PRE_SYSCALL(recvmsg)(long s, void *msg, long flags) {}
+PRE_SYSCALL(recvmsg)(long s, void *msg, long flags) {
+  PRE_READ(msg, sizeof(__sanitizer_msghdr));
+}
 POST_SYSCALL(recvmsg)(long res, long s, void *msg, long flags) {}
-PRE_SYSCALL(sendmsg)(long s, void *msg, long flags) {}
+PRE_SYSCALL(sendmsg)(long s, void *msg, long flags) { /* Nothing to do */ }
 POST_SYSCALL(sendmsg)(long res, long s, void *msg, long flags) {}
 PRE_SYSCALL(recvfrom)
-(long s, void *buf, long len, long flags, void *from, void *fromlenaddr) {}
+(long s, void *buf, long len, long flags, void *from, void *fromlenaddr) {
+  /* Nothing to do */
+}
 POST_SYSCALL(recvfrom)
 (long res, long s, void *buf, long len, long flags, void *from,
   void *fromlenaddr) {}
-PRE_SYSCALL(accept)(long s, void *name, void *anamelen) {}
+PRE_SYSCALL(accept)(long s, void *name, void *anamelen) { /* Nothing to do */ }
 POST_SYSCALL(accept)(long res, long s, void *name, void *anamelen) {}
-PRE_SYSCALL(getpeername)(long fdes, void *asa, void *alen) {}
+PRE_SYSCALL(getpeername)(long fdes, void *asa, void *alen) {
+  /* Nothing to do */
+}
 POST_SYSCALL(getpeername)(long res, long fdes, void *asa, void *alen) {}
-PRE_SYSCALL(getsockname)(long fdes, void *asa, void *alen) {}
+PRE_SYSCALL(getsockname)(long fdes, void *asa, void *alen) {
+  /* Nothing to do */
+}
 POST_SYSCALL(getsockname)(long res, long fdes, void *asa, void *alen) {}
-PRE_SYSCALL(access)(void *path, long flags) {}
+PRE_SYSCALL(access)(void *path, long flags) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(access)(long res, void *path, long flags) {}
-PRE_SYSCALL(chflags)(void *path, long flags) {}
+PRE_SYSCALL(chflags)(void *path, long flags) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(chflags)(long res, void *path, long flags) {}
-PRE_SYSCALL(fchflags)(long fd, long flags) {}
+PRE_SYSCALL(fchflags)(long fd, long flags) { /* Nothing to do */ }
 POST_SYSCALL(fchflags)(long res, long fd, long flags) {}
-PRE_SYSCALL(sync)(void) {}
+PRE_SYSCALL(sync)(void) { /* Nothing to do */ }
 POST_SYSCALL(sync)(long res) {}
-PRE_SYSCALL(kill)(long pid, long signum) {}
+PRE_SYSCALL(kill)(long pid, long signum) { /* Nothing to do */ }
 POST_SYSCALL(kill)(long res, long pid, long signum) {}
-PRE_SYSCALL(compat_43_stat43)(void *path, void *ub) {}
+PRE_SYSCALL(compat_43_stat43)(void *path, void *ub) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(compat_43_stat43)(long res, void *path, void *ub) {}
-PRE_SYSCALL(getppid)(void) {}
+PRE_SYSCALL(getppid)(void) { /* Nothing to do */ }
 POST_SYSCALL(getppid)(long res) {}
-PRE_SYSCALL(compat_43_lstat43)(void *path, void *ub) {}
+PRE_SYSCALL(compat_43_lstat43)(void *path, void *ub) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(compat_43_lstat43)(long res, void *path, void *ub) {}
-PRE_SYSCALL(dup)(long fd) {}
+PRE_SYSCALL(dup)(long fd) { /* Nothing to do */ }
 POST_SYSCALL(dup)(long res, long fd) {}
-PRE_SYSCALL(pipe)(void) {}
+PRE_SYSCALL(pipe)(void) { /* Nothing to do */ }
 POST_SYSCALL(pipe)(long res) {}
-PRE_SYSCALL(getegid)(void) {}
+PRE_SYSCALL(getegid)(void) { /* Nothing to do */ }
 POST_SYSCALL(getegid)(long res) {}
-PRE_SYSCALL(profil)(void *samples, long size, long offset, long scale) {}
+PRE_SYSCALL(profil)(void *samples, long size, long offset, long scale) {
+  /* Nothing to do */
+}
 POST_SYSCALL(profil)
 (long res, void *samples, long size, long offset, long scale) {}
-PRE_SYSCALL(ktrace)(void *fname, long ops, long facs, long pid) {}
+PRE_SYSCALL(ktrace)(void *fname, long ops, long facs, long pid) {
+  /* Nothing to do */
+}
 POST_SYSCALL(ktrace)(long res, void *fname, long ops, long facs, long pid) {}
 PRE_SYSCALL(compat_13_sigaction13)(long signum, void *nsa, void *osa) {}
 POST_SYSCALL(compat_13_sigaction13)

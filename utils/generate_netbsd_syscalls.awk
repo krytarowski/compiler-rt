@@ -614,24 +614,51 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(addr, struct_ptrace_dbreg_struct_sz);")
     pcmd("}")
   } else if (syscall == "recvmsg") {
+    pcmd("PRE_READ(msg, sizeof(__sanitizer_msghdr));")
   } else if (syscall == "sendmsg") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "recvfrom") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "accept") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getpeername") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getsockname") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "access") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "chflags") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "fchflags") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "sync") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "kill") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_stat43") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "getppid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_lstat43") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "dup") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "pipe") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getegid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "profil") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "ktrace") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigaction13") {
   } else if (syscall == "getgid") {
   } else if (syscall == "compat_13_sigprocmask13") {
