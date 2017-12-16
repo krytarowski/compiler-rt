@@ -223,7 +223,7 @@ struct __sanitizer_sigset_t {
 };
 
 struct __sanitizer_siginfo {
-  // The size is determined by looking at sizeof of real siginfo_t on linux.
+  // The size is determined by looking at sizeof of real siginfo_t on NetBSD.
   u64 opaque[128 / sizeof(u64)];
 };
 
@@ -320,7 +320,7 @@ extern unsigned path_max;
 extern int ptrace_pt_io;
 extern int ptrace_pt_set_event_mask;
 extern int ptrace_pt_set_siginfo;
-extern int ptrace_pt_set_sigmask
+extern int ptrace_pt_set_sigmask;
 extern int ptrace_piod_write_d;
 extern int ptrace_piod_write_i;
 extern int ptrace_pt_setregs;
@@ -333,6 +333,9 @@ struct __sanitizer_ptrace_io_desc {
   void *piod_addr;
   uptr piod_len;
 };
+
+extern unsigned struct_ptrace_ptrace_event_struct_sz;
+extern unsigned struct_ptrace_ptrace_siginfo_struct_sz;
 
 extern unsigned struct_ptrace_reg_struct_sz;
 extern unsigned struct_ptrace_fpreg_struct_sz;

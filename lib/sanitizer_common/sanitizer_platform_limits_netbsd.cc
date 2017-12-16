@@ -136,6 +136,9 @@ int ptrace_pt_setdbregs = PT_SETDBREGS;
 int ptrace_pt_setdbregs = -1;
 #endif
 
+unsigned struct_ptrace_ptrace_event_struct_sz = sizeof(ptrace_event_t);
+unsigned struct_ptrace_ptrace_siginfo_struct_sz = sizeof(ptrace_siginfo_t);
+
 #if defined(PT_SETREGS)
 unsigned struct_ptrace_reg_struct_sz = sizeof(struct reg);
 #else
