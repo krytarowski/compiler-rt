@@ -43,7 +43,7 @@
 // DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
 //
 // Generated with: generate_netbsd_syscalls.awk
-// Generated date: 2017-12-16
+// Generated date: 2017-12-17
 // Generated from: syscalls.master,v 1.287 2017/12/08 01:19:29 christos Exp
 //
 //===----------------------------------------------------------------------===//
@@ -649,34 +649,37 @@ POST_SYSCALL(compat_43_ogetsockname)
 /* syscall 152 has been skipped */
 /* syscall 153 has been skipped */
 /* syscall 154 has been skipped */
-PRE_SYSCALL(nfssvc)(long flag, void *argp) {}
+PRE_SYSCALL(nfssvc)(long flag, void *argp) { /* Nothing to do */ }
 POST_SYSCALL(nfssvc)(long res, long flag, void *argp) {}
 PRE_SYSCALL(compat_43_ogetdirentries)
-(long fd, void *buf, long count, void *basep) {}
+(long fd, void *buf, long count, void *basep) {
+  /* TODO */
+}
 POST_SYSCALL(compat_43_ogetdirentries)
 (long res, long fd, void *buf, long count, void *basep) {}
-PRE_SYSCALL(compat_20_statfs)(void *path, void *buf) {}
+PRE_SYSCALL(compat_20_statfs)(void *path, void *buf) { /* TODO */ }
 POST_SYSCALL(compat_20_statfs)(long res, void *path, void *buf) {}
-PRE_SYSCALL(compat_20_fstatfs)(long fd, void *buf) {}
+PRE_SYSCALL(compat_20_fstatfs)(long fd, void *buf) { /* TODO */ }
 POST_SYSCALL(compat_20_fstatfs)(long res, long fd, void *buf) {}
 /* syscall 159 has been skipped */
 /* syscall 160 has been skipped */
-PRE_SYSCALL(compat_30_getfh)(void *fname, void *fhp) {}
+PRE_SYSCALL(compat_30_getfh)(void *fname, void *fhp) { /* TODO */ }
 POST_SYSCALL(compat_30_getfh)(long res, void *fname, void *fhp) {}
-PRE_SYSCALL(compat_09_ogetdomainname)(void *domainname, long len) {}
+PRE_SYSCALL(compat_09_ogetdomainname)(void *domainname, long len) { /* TODO */ }
 POST_SYSCALL(compat_09_ogetdomainname)(long res, void *domainname, long len) {}
-PRE_SYSCALL(compat_09_osetdomainname)(void *domainname, long len) {}
+PRE_SYSCALL(compat_09_osetdomainname)(void *domainname, long len) { /* TODO */ }
 POST_SYSCALL(compat_09_osetdomainname)(long res, void *domainname, long len) {}
-PRE_SYSCALL(compat_09_ouname)(void *name) {}
+PRE_SYSCALL(compat_09_ouname)(void *name) { /* TODO */ }
 POST_SYSCALL(compat_09_ouname)(long res, void *name) {}
-PRE_SYSCALL(sysarch)(long op, void *parms) {}
+PRE_SYSCALL(sysarch)(long op, void *parms) { /* TODO */ }
 POST_SYSCALL(sysarch)(long res, long op, void *parms) {}
 /* syscall 166 has been skipped */
 /* syscall 167 has been skipped */
 /* syscall 168 has been skipped */
 #if !defined(_LP64)
-PRE_SYSCALL(compat_10_osemsys)
-(long which, long a2, long a3, long a4, long a5) {}
+PRE_SYSCALL(compat_10_osemsys)(long which, long a2, long a3, long a4, long a5) {
+  /* TODO */
+}
 POST_SYSCALL(compat_10_osemsys)
 (long res, long which, long a2, long a3, long a4, long a5) {}
 #else
@@ -684,30 +687,40 @@ POST_SYSCALL(compat_10_osemsys)
 #endif
 #if !defined(_LP64)
 PRE_SYSCALL(compat_10_omsgsys)
-(long which, long a2, long a3, long a4, long a5, long a6) {}
+(long which, long a2, long a3, long a4, long a5, long a6) {
+  /* TODO */
+}
 POST_SYSCALL(compat_10_omsgsys)
 (long res, long which, long a2, long a3, long a4, long a5, long a6) {}
 #else
 /* syscall 170 has been skipped */
 #endif
 #if !defined(_LP64)
-PRE_SYSCALL(compat_10_oshmsys)(long which, long a2, long a3, long a4) {}
+PRE_SYSCALL(compat_10_oshmsys)(long which, long a2, long a3, long a4) {
+  /* TODO */
+}
 POST_SYSCALL(compat_10_oshmsys)
 (long res, long which, long a2, long a3, long a4) {}
 #else
 /* syscall 171 has been skipped */
 #endif
 /* syscall 172 has been skipped */
-PRE_SYSCALL(pread)(long fd, void *buf, long nbyte, long PAD, long offset) {}
+PRE_SYSCALL(pread)(long fd, void *buf, long nbyte, long PAD, long offset) {
+  /* Nothing to do */
+}
 POST_SYSCALL(pread)
 (long res, long fd, void *buf, long nbyte, long PAD, long offset) {}
-PRE_SYSCALL(pwrite)(long fd, void *buf, long nbyte, long PAD, long offset) {}
+PRE_SYSCALL(pwrite)(long fd, void *buf, long nbyte, long PAD, long offset) {
+  if (buf) {
+    PRE_READ(buf, nbyte);
+  }
+}
 POST_SYSCALL(pwrite)
 (long res, long fd, void *buf, long nbyte, long PAD, long offset) {}
-PRE_SYSCALL(compat_30_ntp_gettime)(void *ntvp) {}
+PRE_SYSCALL(compat_30_ntp_gettime)(void *ntvp) { /* TODO */ }
 POST_SYSCALL(compat_30_ntp_gettime)(long res, void *ntvp) {}
 #if defined(NTP) || !defined(_KERNEL_OPT)
-PRE_SYSCALL(ntp_adjtime)(void *tp) {}
+PRE_SYSCALL(ntp_adjtime)(void *tp) { /* Nothing to do */ }
 POST_SYSCALL(ntp_adjtime)(long res, void *tp) {}
 #else
 /* syscall 176 has been skipped */
@@ -716,25 +729,33 @@ POST_SYSCALL(ntp_adjtime)(long res, void *tp) {}
 /* syscall 178 has been skipped */
 /* syscall 179 has been skipped */
 /* syscall 180 has been skipped */
-PRE_SYSCALL(setgid)(long gid) {}
+PRE_SYSCALL(setgid)(long gid) { /* Nothing to do */ }
 POST_SYSCALL(setgid)(long res, long gid) {}
-PRE_SYSCALL(setegid)(long egid) {}
+PRE_SYSCALL(setegid)(long egid) { /* Nothing to do */ }
 POST_SYSCALL(setegid)(long res, long egid) {}
-PRE_SYSCALL(seteuid)(long euid) {}
+PRE_SYSCALL(seteuid)(long euid) { /* Nothing to do */ }
 POST_SYSCALL(seteuid)(long res, long euid) {}
-PRE_SYSCALL(lfs_bmapv)(void *fsidp, void *blkiov, long blkcnt) {}
+PRE_SYSCALL(lfs_bmapv)(void *fsidp, void *blkiov, long blkcnt) { /* TODO */ }
 POST_SYSCALL(lfs_bmapv)(long res, void *fsidp, void *blkiov, long blkcnt) {}
-PRE_SYSCALL(lfs_markv)(void *fsidp, void *blkiov, long blkcnt) {}
+PRE_SYSCALL(lfs_markv)(void *fsidp, void *blkiov, long blkcnt) { /* TODO */ }
 POST_SYSCALL(lfs_markv)(long res, void *fsidp, void *blkiov, long blkcnt) {}
-PRE_SYSCALL(lfs_segclean)(void *fsidp, long segment) {}
+PRE_SYSCALL(lfs_segclean)(void *fsidp, long segment) { /* TODO */ }
 POST_SYSCALL(lfs_segclean)(long res, void *fsidp, long segment) {}
-PRE_SYSCALL(compat_50_lfs_segwait)(void *fsidp, void *tv) {}
+PRE_SYSCALL(compat_50_lfs_segwait)(void *fsidp, void *tv) { /* TODO */ }
 POST_SYSCALL(compat_50_lfs_segwait)(long res, void *fsidp, void *tv) {}
-PRE_SYSCALL(compat_12_stat12)(void *path, void *ub) {}
+PRE_SYSCALL(compat_12_stat12)(void *path, void *ub) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(compat_12_stat12)(long res, void *path, void *ub) {}
-PRE_SYSCALL(compat_12_fstat12)(long fd, void *sb) {}
+PRE_SYSCALL(compat_12_fstat12)(long fd, void *sb) { /* Nothing to do */ }
 POST_SYSCALL(compat_12_fstat12)(long res, long fd, void *sb) {}
-PRE_SYSCALL(compat_12_lstat12)(void *path, void *ub) {}
+PRE_SYSCALL(compat_12_lstat12)(void *path, void *ub) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(compat_12_lstat12)(long res, void *path, void *ub) {}
 PRE_SYSCALL(pathconf)(void *path, long name) {}
 POST_SYSCALL(pathconf)(long res, void *path, long name) {}

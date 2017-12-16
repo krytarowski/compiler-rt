@@ -902,32 +902,63 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_43_ogetsockname") {
     pcmd("/* TODO */")
   } else if (syscall == "nfssvc") {
-
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ogetdirentries") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_20_statfs") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_20_fstatfs") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_30_getfh") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_09_ogetdomainname") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_09_osetdomainname") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_09_ouname") {
+    pcmd("/* TODO */")
   } else if (syscall == "sysarch") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_10_osemsys") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_10_omsgsys") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_10_oshmsys") {
+    pcmd("/* TODO */")
   } else if (syscall == "pread") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "pwrite") {
+    pcmd("if (buf) {")
+    pcmd("  PRE_READ(buf, nbyte);")
+    pcmd("}")
   } else if (syscall == "compat_30_ntp_gettime") {
+    pcmd("/* TODO */")
   } else if (syscall == "ntp_adjtime") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setgid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setegid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "seteuid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "lfs_bmapv") {
+    pcmd("/* TODO */")
   } else if (syscall == "lfs_markv") {
+    pcmd("/* TODO */")
   } else if (syscall == "lfs_segclean") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_lfs_segwait") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_12_stat12") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_12_fstat12") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_12_lstat12") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "pathconf") {
   } else if (syscall == "fpathconf") {
   } else if (syscall == "getrlimit") {
