@@ -300,20 +300,37 @@ PRE_SYSCALL(ktrace)(void *fname, long ops, long facs, long pid) {
   /* Nothing to do */
 }
 POST_SYSCALL(ktrace)(long res, void *fname, long ops, long facs, long pid) {}
-PRE_SYSCALL(compat_13_sigaction13)(long signum, void *nsa, void *osa) {}
+PRE_SYSCALL(compat_13_sigaction13)(long signum, void *nsa, void *osa) {
+  struct __sanitizer_sigaction13 *nsa13 = (struct __sanitizer_sigaction13 *)nsa;
+  if (nsa13) {
+    PRE_READ(&nsa13->osa_handler, sizeof(nsa13->osa_handler));
+    PRE_READ(&nsa13->osa_flags, sizeof(nsa13->osa_flags));
+    PRE_READ(&nsa13->osa_mask, sizeof(nsa13->osa_mask));
+  }
+}
 POST_SYSCALL(compat_13_sigaction13)
 (long res, long signum, void *nsa, void *osa) {}
-PRE_SYSCALL(getgid)(void) {}
+PRE_SYSCALL(getgid)(void) { /* Nothing to do */ }
 POST_SYSCALL(getgid)(long res) {}
-PRE_SYSCALL(compat_13_sigprocmask13)(long how, long mask) {}
+PRE_SYSCALL(compat_13_sigprocmask13)(long how, long mask) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_13_sigprocmask13)(long res, long how, long mask) {}
-PRE_SYSCALL(__getlogin)(void *namebuf, long namelen) {}
+PRE_SYSCALL(__getlogin)(void *namebuf, long namelen) { /* Nothing to do */ }
 POST_SYSCALL(__getlogin)(long res, void *namebuf, long namelen) {}
-PRE_SYSCALL(__setlogin)(void *namebuf) {}
+PRE_SYSCALL(__setlogin)(void *namebuf) {
+  if (namebuf) {
+    PRE_READ(namebuf, __sanitizer::internal_strlen((const char *)namebuf) + 1);
+  }
+}
 POST_SYSCALL(__setlogin)(long res, void *namebuf) {}
-PRE_SYSCALL(acct)(void *path) {}
+PRE_SYSCALL(acct)(void *path) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(acct)(long res, void *path) {}
-PRE_SYSCALL(compat_13_sigpending13)(void) {}
+PRE_SYSCALL(compat_13_sigpending13)(void) { /* Nothing to do */ }
 POST_SYSCALL(compat_13_sigpending13)(long res) {}
 PRE_SYSCALL(compat_13_sigaltstack13)(void *nss, void *oss) {}
 POST_SYSCALL(compat_13_sigaltstack13)(long res, void *nss, void *oss) {}

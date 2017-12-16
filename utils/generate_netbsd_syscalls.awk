@@ -660,12 +660,28 @@ function pre_syscall(syscall)
   } else if (syscall == "ktrace") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigaction13") {
+    pcmd("struct __sanitizer_sigaction13 *nsa13 = (struct __sanitizer_sigaction13 *)nsa;")
+    pcmd("if (nsa13) {")
+    pcmd("  PRE_READ(&nsa13->osa_handler, sizeof(nsa13->osa_handler));")
+    pcmd("  PRE_READ(&nsa13->osa_flags, sizeof(nsa13->osa_flags));")
+    pcmd("  PRE_READ(&nsa13->osa_mask, sizeof(nsa13->osa_mask));")
+    pcmd("}")
   } else if (syscall == "getgid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigprocmask13") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__getlogin") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__setlogin") {
+    pcmd("if (namebuf) {")
+    pcmd("  PRE_READ(namebuf, __sanitizer::internal_strlen((const char *)namebuf) + 1);")
+    pcmd("}")
   } else if (syscall == "acct") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_13_sigpending13") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigaltstack13") {
   } else if (syscall == "ioctl") {
   } else if (syscall == "compat_12_oreboot") {

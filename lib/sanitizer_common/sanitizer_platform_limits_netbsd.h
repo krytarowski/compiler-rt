@@ -241,6 +241,14 @@ struct __sanitizer_sigaction {
   int sa_flags;
 };
 
+typedef unsigned int __sanitizer_sigset13_t;
+
+struct __sanitizer_sigaction13 {
+  __sanitizer_sighandler_ptr osa_handler;
+  __sanitizer_sigset13_t osa_mask;
+  int osa_flags;
+};
+
 typedef __sanitizer_sigset_t __sanitizer_kernel_sigset_t;
 
 struct __sanitizer_kernel_sigaction_t {
