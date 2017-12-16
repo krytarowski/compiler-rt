@@ -111,6 +111,32 @@ const uptr sig_dfl = (uptr)SIG_DFL;
 const uptr sig_err = (uptr)SIG_ERR;
 const uptr sa_siginfo = (uptr)SA_SIGINFO;
 
+int ptrace_pt_io = PT_IO;
+int ptrace_pt_set_event_mask = PT_SET_EVENT_MASK;
+int ptrace_pt_set_siginfo = PT_SET_SIGINFO;
+int ptrace_pt_set_sigmask = PT_SET_SIGMASK;
+int ptrace_piod_write_d = PIOD_WRITE_D;
+int ptrace_piod_write_i = PIOD_WRITE_I;
+
+#if defined(PT_SETREGS)
+int ptrace_pt_setregs = PT_SETREGS;
+#else
+int ptrace_pt_setregs = -1;
+#endif
+
+#if defined(PT_SETFPREGS)
+int ptrace_pt_setfpregs = PT_SETFPREGS;
+#else
+int ptrace_pt_setfpregs = -1;
+#endif
+
+#if defined(PT_SETDBREGS)
+int ptrace_pt_setdbregs = PT_SETDBREGS;
+#else
+int ptrace_pt_setdbregs = -1;
+#endif
+
+
 int shmctl_ipc_stat = (int)IPC_STAT;
 
 unsigned struct_utmp_sz = sizeof(struct utmp);

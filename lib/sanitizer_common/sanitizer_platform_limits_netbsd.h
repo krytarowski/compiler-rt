@@ -317,6 +317,24 @@ extern int glob_altdirfunc;
 
 extern unsigned path_max;
 
+extern int ptrace_pt_io;
+extern int ptrace_pt_set_event_mask;
+extern int ptrace_pt_set_siginfo;
+extern int ptrace_pt_set_sigmask
+extern int ptrace_piod_write_d;
+extern int ptrace_piod_write_i;
+extern int ptrace_pt_setregs;
+extern int ptrace_pt_setfpregs;
+extern int ptrace_pt_setdbregs;
+
+struct __sanitizer_ptrace_io_desc {
+  int piod_op;
+  void *piod_offs;
+  void *piod_addr;
+  uptr piod_len;
+};
+
+
 struct __sanitizer_wordexp_t {
   uptr we_wordc;
   char **we_wordv;

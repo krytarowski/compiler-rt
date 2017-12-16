@@ -548,22 +548,61 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
   } else if (syscall == "link") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
+    pcmd("if (link) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)link) + 1);")
+    pcmd("}")
   } else if (syscall == "unlink") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "chdir") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "fchdir") {
-  } else if (syscall == "compat_50_mknod") {
+    pcmd("/* Nothing to do */")
+  } else if (syscall == "compat_50_mknod") {\
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "chmod") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "chown") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "break") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_20_getfsstat") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_olseek") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getpid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_40_mount") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "unmount") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setuid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getuid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "geteuid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "ptrace") {
+    pcmd("if (req == pt_io) {")
+    pcmd("  if (data == pt_io) {")
+    pcmd("    struct __sanitizer_ptrace_io_desc *piod = addr;")
+    pcmd("    if (piod->piod_op == ptrace_piod_write_d || piod->piod_op == ptrace_piod_write_i) {")
+    pcmd("      PRE_READ(piod->piod_addr, piod->piod_len);")
+    pcmd("    }")
+    pcmd("  }")
+    pcmd("}")
   } else if (syscall == "recvmsg") {
   } else if (syscall == "sendmsg") {
   } else if (syscall == "recvfrom") {
