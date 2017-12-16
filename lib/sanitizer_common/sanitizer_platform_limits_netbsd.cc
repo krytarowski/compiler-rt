@@ -136,6 +136,23 @@ int ptrace_pt_setdbregs = PT_SETDBREGS;
 int ptrace_pt_setdbregs = -1;
 #endif
 
+#if defined(PT_SETREGS)
+unsigned struct_ptrace_reg_struct_sz = sizeof(struct reg);
+#else
+unsigned struct_ptrace_reg_struct_sz = -1;
+#endif
+
+#if defined(PT_SETFPREGS)
+unsigned struct_ptrace_fpreg_struct_sz = sizeof(struct fpreg);
+#else
+unsigned struct_ptrace_fpreg_struct_sz = -1;
+#endif
+
+#if defined(PT_SETDBREGS)
+unsigned struct_ptrace_dbreg_struct_sz = sizeof(struct dbreg);
+#else
+unsigned struct_ptrace_dbreg_struct_sz = -1;
+#endif
 
 int shmctl_ipc_stat = (int)IPC_STAT;
 

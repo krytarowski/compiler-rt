@@ -334,6 +334,9 @@ struct __sanitizer_ptrace_io_desc {
   uptr piod_len;
 };
 
+extern unsigned struct_ptrace_reg_struct_sz;
+extern unsigned struct_ptrace_fpreg_struct_sz;
+extern unsigned struct_ptrace_dbreg_struct_sz;
 
 struct __sanitizer_wordexp_t {
   uptr we_wordc;
