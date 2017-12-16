@@ -381,27 +381,33 @@ PRE_SYSCALL(execve)(void *path, void *argp, void *envp) {
   }
 }
 POST_SYSCALL(execve)(long res, void *path, void *argp, void *envp) {}
-PRE_SYSCALL(umask)(long newmask) {}
+PRE_SYSCALL(umask)(long newmask) { /* Nothing to do */ }
 POST_SYSCALL(umask)(long res, long newmask) {}
-PRE_SYSCALL(chroot)(void *path) {}
+PRE_SYSCALL(chroot)(void *path) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(chroot)(long res, void *path) {}
-PRE_SYSCALL(compat_43_fstat43)(long fd, void *sb) {}
+PRE_SYSCALL(compat_43_fstat43)(long fd, void *sb) { /* Nothing to do */ }
 POST_SYSCALL(compat_43_fstat43)(long res, long fd, void *sb) {}
 PRE_SYSCALL(compat_43_ogetkerninfo)
-(long op, void *where, void *size, long arg) {}
+(long op, void *where, void *size, long arg) {
+  /* Nothing to do */
+}
 POST_SYSCALL(compat_43_ogetkerninfo)
 (long res, long op, void *where, void *size, long arg) {}
-PRE_SYSCALL(compat_43_ogetpagesize)(void) {}
+PRE_SYSCALL(compat_43_ogetpagesize)(void) { /* Nothing to do */ }
 POST_SYSCALL(compat_43_ogetpagesize)(long res) {}
-PRE_SYSCALL(compat_12_msync)(void *addr, long len) {}
+PRE_SYSCALL(compat_12_msync)(void *addr, long len) { /* Nothing to do */ }
 POST_SYSCALL(compat_12_msync)(long res, void *addr, long len) {}
-PRE_SYSCALL(vfork)(void) {}
+PRE_SYSCALL(vfork)(void) { /* Nothing to do */ }
 POST_SYSCALL(vfork)(long res) {}
 /* syscall 67 has been skipped */
 /* syscall 68 has been skipped */
-PRE_SYSCALL(sbrk)(long incr) {}
+PRE_SYSCALL(sbrk)(long incr) { /* Nothing to do */ }
 POST_SYSCALL(sbrk)(long res, long incr) {}
-PRE_SYSCALL(sstk)(long incr) {}
+PRE_SYSCALL(sstk)(long incr) { /* Nothing to do */ }
 POST_SYSCALL(sstk)(long res, long incr) {}
 PRE_SYSCALL(compat_43_ommap)
 (void *addr, long len, long prot, long flags, long fd, long pos) {}
