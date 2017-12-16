@@ -595,8 +595,8 @@ function pre_syscall(syscall)
   } else if (syscall == "geteuid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "ptrace") {
-    pcmd("if (req == pt_io) {")
-    pcmd("  struct __sanitizer_ptrace_io_desc *piod = addr;")
+    pcmd("if (req == ptrace_pt_io) {")
+    pcmd("  struct __sanitizer_ptrace_io_desc *piod = (struct __sanitizer_ptrace_io_desc *)addr;")
     pcmd("  if (piod->piod_op == ptrace_piod_write_d || piod->piod_op == ptrace_piod_write_i) {")
     pcmd("    PRE_READ(piod->piod_addr, piod->piod_len);")
     pcmd("  }")

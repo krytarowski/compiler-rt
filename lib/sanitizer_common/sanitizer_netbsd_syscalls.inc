@@ -208,12 +208,19 @@ POST_SYSCALL(getuid)(long res) {}
 PRE_SYSCALL(geteuid)(void) { /* Nothing to do */ }
 POST_SYSCALL(geteuid)(long res) {}
 PRE_SYSCALL(ptrace)(long req, long pid, void *addr, long data) {
-  if (req == pt_io) {
-    struct __sanitizer_ptrace_io_desc *piod = addr;
+  if (req == ptrace_pt_io) {
+    struct __sanitizer_ptrace_io_desc *piod =
+        (struct __sanitizer_ptrace_io_desc *)addr;
     if (piod->piod_op == ptrace_piod_write_d ||
         piod->piod_op == ptrace_piod_write_i) {
       PRE_READ(piod->piod_addr, piod->piod_len);
     }
+  } else if (req == ptrace_pt_set_event_mask) {
+    PRE_READ(addr, struct_ptrace_ptrace_event_struct_sz);
+  } else if (req == ptrace_pt_set_siginfo) {
+    PRE_READ(addr, struct_ptrace_ptrace_siginfo_struct_sz);
+  } else if (req == ptrace_pt_set_sigmask) {
+    PRE_READ(addr, sizeof(__sanitizer_sigset_t));
   } else if (req == ptrace_pt_setregs) {
     PRE_READ(addr, struct_ptrace_reg_struct_sz);
   } else if (req == ptrace_pt_setfpregs) {
