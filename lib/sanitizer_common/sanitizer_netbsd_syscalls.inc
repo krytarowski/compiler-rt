@@ -963,12 +963,13 @@ PRE_SYSCALL(_ksem_timedwait)(long id, void *abstime) {
   }
 }
 POST_SYSCALL(_ksem_timedwait)(long res, long id, void *abstime) {}
-PRE_SYSCALL(mq_open)(long name, long oflag, long mode, void *attr) {
+PRE_SYSCALL(mq_open)(void *name, long oflag, long mode, void *attr) {
   if (name) {
     PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);
   }
 }
-POST_SYSCALL(mq_open)(long res, long name, long oflag, long mode, void *attr) {}
+POST_SYSCALL(mq_open)
+(long res, void *name, long oflag, long mode, void *attr) {}
 PRE_SYSCALL(mq_close)(long mqdes) { /* Nothing to do */ }
 POST_SYSCALL(mq_close)(long res, long mqdes) {}
 PRE_SYSCALL(mq_unlink)(void *name) {

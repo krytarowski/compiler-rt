@@ -170,6 +170,9 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
       syscallargs[parsedsyscalls] = "void"
       syscallfullargs[parsedsyscalls] = "void"
     } else {
+      # Normalize 'type * argument' to 'type *argument'
+      gsub("\\*[ \t]+", "*", args)
+
       n = split(args, a, ",")
 
       # Handle the first argument
