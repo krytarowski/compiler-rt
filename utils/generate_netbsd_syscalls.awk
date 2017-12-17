@@ -960,52 +960,116 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
   } else if (syscall == "pathconf") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "fpathconf") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getrlimit") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setrlimit") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_12_getdirentries") {
+    pcmd("/* TODO */")
   } else if (syscall == "mmap") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__syscall") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "lseek") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "truncate") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "ftruncate") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__sysctl") {
+    pcmd("if (name) {")
+    pcmd("  PRE_READ(name, namelen * sizeof(int));")
+    pcmd("}")
+    pcmd("if (newval) {")
+    pcmd("  PRE_READ(name, newlen);")
+    pcmd("}")
   } else if (syscall == "mlock") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "munlock") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "undelete") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_50_futimes") {
+    pcmd("/* TODO */")
   } else if (syscall == "getpgid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "reboot") {
+    pcmd("if (bootstr) {")
+    pcmd("  PRE_READ(bootstr, __sanitizer::internal_strlen((const char *)bootstr) + 1);")
+    pcmd("}")
   } else if (syscall == "poll") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "afssys") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_14___semctl") {
+    pcmd("/* TODO */")
   } else if (syscall == "semget") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "semop") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "semconfig") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_14_msgctl") {
+    pcmd("/* TODO */")
   } else if (syscall == "msgget") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "msgsnd") {
+    pcmd("if (msgp) {")
+    pcmd("  PRE_READ(msgp, msgsz);")
+    pcmd("}")
   } else if (syscall == "msgrcv") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "shmat") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_14_shmctl") {
+    pcmd("/* TODO */")
   } else if (syscall == "shmdt") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "shmget") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_clock_gettime") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_clock_settime") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_clock_getres") {
+    pcmd("/* TODO */")
   } else if (syscall == "timer_create") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "timer_delete") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_timer_settime") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_timer_gettime") {
+    pcmd("/* TODO */")
   } else if (syscall == "timer_getoverrun") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_nanosleep") {
+    pcmd("/* TODO */")
   } else if (syscall == "fdatasync") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "mlockall") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "munlockall") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50___sigtimedwait") {
+    pcmd("/* TODO */")
   } else if (syscall == "sigqueueinfo") {
+    pcmd("if (info) {")
+    pcmd("  PRE_READ(info, siginfo_t_sz);")
+    pcmd("}")
   } else if (syscall == "modctl") {
+    pcmd("/* TODO */")
   } else if (syscall == "_ksem_init") {
+
   } else if (syscall == "_ksem_open") {
   } else if (syscall == "_ksem_unlink") {
   } else if (syscall == "_ksem_close") {

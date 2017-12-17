@@ -757,54 +757,86 @@ PRE_SYSCALL(compat_12_lstat12)(void *path, void *ub) {
   }
 }
 POST_SYSCALL(compat_12_lstat12)(long res, void *path, void *ub) {}
-PRE_SYSCALL(pathconf)(void *path, long name) {}
+PRE_SYSCALL(pathconf)(void *path, long name) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(pathconf)(long res, void *path, long name) {}
-PRE_SYSCALL(fpathconf)(long fd, long name) {}
+PRE_SYSCALL(fpathconf)(long fd, long name) { /* Nothing to do */ }
 POST_SYSCALL(fpathconf)(long res, long fd, long name) {}
 /* syscall 193 has been skipped */
-PRE_SYSCALL(getrlimit)(long which, void *rlp) {}
+PRE_SYSCALL(getrlimit)(long which, void *rlp) { /* Nothing to do */ }
 POST_SYSCALL(getrlimit)(long res, long which, void *rlp) {}
-PRE_SYSCALL(setrlimit)(long which, void *rlp) {}
+PRE_SYSCALL(setrlimit)(long which, void *rlp) { /* Nothing to do */ }
 POST_SYSCALL(setrlimit)(long res, long which, void *rlp) {}
 PRE_SYSCALL(compat_12_getdirentries)
-(long fd, void *buf, long count, void *basep) {}
+(long fd, void *buf, long count, void *basep) {
+  /* TODO */
+}
 POST_SYSCALL(compat_12_getdirentries)
 (long res, long fd, void *buf, long count, void *basep) {}
 PRE_SYSCALL(mmap)
-(void *addr, long len, long prot, long flags, long fd, long PAD, long pos) {}
+(void *addr, long len, long prot, long flags, long fd, long PAD, long pos) {
+  /* Nothing to do */
+}
 POST_SYSCALL(mmap)
 (long res, void *addr, long len, long prot, long flags, long fd, long PAD,
   long pos) {}
-PRE_SYSCALL(__syscall)(long code, long args[SYS_MAXSYSARGS]) {}
+PRE_SYSCALL(__syscall)(long code, long args[SYS_MAXSYSARGS]) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__syscall)(long res, long code, long args[SYS_MAXSYSARGS]) {}
-PRE_SYSCALL(lseek)(long fd, long PAD, long offset, long whence) {}
+PRE_SYSCALL(lseek)(long fd, long PAD, long offset, long whence) {
+  /* Nothing to do */
+}
 POST_SYSCALL(lseek)(long res, long fd, long PAD, long offset, long whence) {}
-PRE_SYSCALL(truncate)(void *path, long PAD, long length) {}
+PRE_SYSCALL(truncate)(void *path, long PAD, long length) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(truncate)(long res, void *path, long PAD, long length) {}
-PRE_SYSCALL(ftruncate)(long fd, long PAD, long length) {}
+PRE_SYSCALL(ftruncate)(long fd, long PAD, long length) { /* Nothing to do */ }
 POST_SYSCALL(ftruncate)(long res, long fd, long PAD, long length) {}
 PRE_SYSCALL(__sysctl)
 (void *name, long namelen, void *oldv, void *oldlenp, void *newv, long newlen) {
+  if (name) {
+    PRE_READ(name, namelen * sizeof(int));
+  }
+  if (newval) {
+    PRE_READ(name, newlen);
+  }
 }
 POST_SYSCALL(__sysctl)
 (long res, void *name, long namelen, void *oldv, void *oldlenp, void *newv,
   long newlen) {}
-PRE_SYSCALL(mlock)(void *addr, long len) {}
+PRE_SYSCALL(mlock)(void *addr, long len) { /* Nothing to do */ }
 POST_SYSCALL(mlock)(long res, void *addr, long len) {}
-PRE_SYSCALL(munlock)(void *addr, long len) {}
+PRE_SYSCALL(munlock)(void *addr, long len) { /* Nothing to do */ }
 POST_SYSCALL(munlock)(long res, void *addr, long len) {}
-PRE_SYSCALL(undelete)(void *path) {}
+PRE_SYSCALL(undelete)(void *path) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(undelete)(long res, void *path) {}
-PRE_SYSCALL(compat_50_futimes)(long fd, void *tptr) {}
+PRE_SYSCALL(compat_50_futimes)(long fd, void *tptr) { /* TODO */ }
 POST_SYSCALL(compat_50_futimes)(long res, long fd, void *tptr) {}
-PRE_SYSCALL(getpgid)(long pid) {}
+PRE_SYSCALL(getpgid)(long pid) { /* Nothing to do */ }
 POST_SYSCALL(getpgid)(long res, long pid) {}
-PRE_SYSCALL(reboot)(long opt, void *bootstr) {}
+PRE_SYSCALL(reboot)(long opt, void *bootstr) {
+  if (bootstr) {
+    PRE_READ(bootstr, __sanitizer::internal_strlen((const char *)bootstr) + 1);
+  }
+}
 POST_SYSCALL(reboot)(long res, long opt, void *bootstr) {}
-PRE_SYSCALL(poll)(void *fds, long nfds, long timeout) {}
+PRE_SYSCALL(poll)(void *fds, long nfds, long timeout) { /* Nothing to do */ }
 POST_SYSCALL(poll)(long res, void *fds, long nfds, long timeout) {}
 PRE_SYSCALL(afssys)
-(long id, long a1, long a2, long a3, long a4, long a5, long a6) {}
+(long id, long a1, long a2, long a3, long a4, long a5, long a6) {
+  /* TODO */
+}
 POST_SYSCALL(afssys)
 (long res, long id, long a1, long a2, long a3, long a4, long a5, long a6) {}
 /* syscall 211 has been skipped */
@@ -816,66 +848,86 @@ POST_SYSCALL(afssys)
 /* syscall 217 has been skipped */
 /* syscall 218 has been skipped */
 /* syscall 219 has been skipped */
-PRE_SYSCALL(compat_14___semctl)(long semid, long semnum, long cmd, void *arg) {}
+PRE_SYSCALL(compat_14___semctl)(long semid, long semnum, long cmd, void *arg) {
+  /* TODO */
+}
 POST_SYSCALL(compat_14___semctl)
 (long res, long semid, long semnum, long cmd, void *arg) {}
-PRE_SYSCALL(semget)(long key, long nsems, long semflg) {}
+PRE_SYSCALL(semget)(long key, long nsems, long semflg) { /* Nothing to do */ }
 POST_SYSCALL(semget)(long res, long key, long nsems, long semflg) {}
-PRE_SYSCALL(semop)(long semid, void *sops, long nsops) {}
+PRE_SYSCALL(semop)(long semid, void *sops, long nsops) { /* Nothing to do */ }
 POST_SYSCALL(semop)(long res, long semid, void *sops, long nsops) {}
-PRE_SYSCALL(semconfig)(long flag) {}
+PRE_SYSCALL(semconfig)(long flag) { /* Nothing to do */ }
 POST_SYSCALL(semconfig)(long res, long flag) {}
-PRE_SYSCALL(compat_14_msgctl)(long msqid, long cmd, void *buf) {}
+PRE_SYSCALL(compat_14_msgctl)(long msqid, long cmd, void *buf) { /* TODO */ }
 POST_SYSCALL(compat_14_msgctl)(long res, long msqid, long cmd, void *buf) {}
-PRE_SYSCALL(msgget)(long key, long msgflg) {}
+PRE_SYSCALL(msgget)(long key, long msgflg) { /* Nothing to do */ }
 POST_SYSCALL(msgget)(long res, long key, long msgflg) {}
-PRE_SYSCALL(msgsnd)(long msqid, void *msgp, long msgsz, long msgflg) {}
+PRE_SYSCALL(msgsnd)(long msqid, void *msgp, long msgsz, long msgflg) {
+  if (msgp) {
+    PRE_READ(msgp, msgsz);
+  }
+}
 POST_SYSCALL(msgsnd)
 (long res, long msqid, void *msgp, long msgsz, long msgflg) {}
 PRE_SYSCALL(msgrcv)
-(long msqid, void *msgp, long msgsz, long msgtyp, long msgflg) {}
+(long msqid, void *msgp, long msgsz, long msgtyp, long msgflg) {
+  /* Nothing to do */
+}
 POST_SYSCALL(msgrcv)
 (long res, long msqid, void *msgp, long msgsz, long msgtyp, long msgflg) {}
-PRE_SYSCALL(shmat)(long shmid, void *shmaddr, long shmflg) {}
+PRE_SYSCALL(shmat)(long shmid, void *shmaddr, long shmflg) {
+  /* Nothing to do */
+}
 POST_SYSCALL(shmat)(long res, long shmid, void *shmaddr, long shmflg) {}
-PRE_SYSCALL(compat_14_shmctl)(long shmid, long cmd, void *buf) {}
+PRE_SYSCALL(compat_14_shmctl)(long shmid, long cmd, void *buf) { /* TODO */ }
 POST_SYSCALL(compat_14_shmctl)(long res, long shmid, long cmd, void *buf) {}
-PRE_SYSCALL(shmdt)(void *shmaddr) {}
+PRE_SYSCALL(shmdt)(void *shmaddr) { /* Nothing to do */ }
 POST_SYSCALL(shmdt)(long res, void *shmaddr) {}
-PRE_SYSCALL(shmget)(long key, long size, long shmflg) {}
+PRE_SYSCALL(shmget)(long key, long size, long shmflg) { /* Nothing to do */ }
 POST_SYSCALL(shmget)(long res, long key, long size, long shmflg) {}
-PRE_SYSCALL(compat_50_clock_gettime)(long clock_id, void *tp) {}
+PRE_SYSCALL(compat_50_clock_gettime)(long clock_id, void *tp) { /* TODO */ }
 POST_SYSCALL(compat_50_clock_gettime)(long res, long clock_id, void *tp) {}
-PRE_SYSCALL(compat_50_clock_settime)(long clock_id, void *tp) {}
+PRE_SYSCALL(compat_50_clock_settime)(long clock_id, void *tp) { /* TODO */ }
 POST_SYSCALL(compat_50_clock_settime)(long res, long clock_id, void *tp) {}
-PRE_SYSCALL(compat_50_clock_getres)(long clock_id, void *tp) {}
+PRE_SYSCALL(compat_50_clock_getres)(long clock_id, void *tp) { /* TODO */ }
 POST_SYSCALL(compat_50_clock_getres)(long res, long clock_id, void *tp) {}
-PRE_SYSCALL(timer_create)(long clock_id, void *evp, void *timerid) {}
+PRE_SYSCALL(timer_create)(long clock_id, void *evp, void *timerid) {
+  /* Nothing to do */
+}
 POST_SYSCALL(timer_create)(long res, long clock_id, void *evp, void *timerid) {}
-PRE_SYSCALL(timer_delete)(long timerid) {}
+PRE_SYSCALL(timer_delete)(long timerid) { /* Nothing to do */ }
 POST_SYSCALL(timer_delete)(long res, long timerid) {}
 PRE_SYSCALL(compat_50_timer_settime)
-(long timerid, long flags, void *value, void *ovalue) {}
+(long timerid, long flags, void *value, void *ovalue) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50_timer_settime)
 (long res, long timerid, long flags, void *value, void *ovalue) {}
-PRE_SYSCALL(compat_50_timer_gettime)(long timerid, void *value) {}
+PRE_SYSCALL(compat_50_timer_gettime)(long timerid, void *value) { /* TODO */ }
 POST_SYSCALL(compat_50_timer_gettime)(long res, long timerid, void *value) {}
-PRE_SYSCALL(timer_getoverrun)(long timerid) {}
+PRE_SYSCALL(timer_getoverrun)(long timerid) { /* Nothing to do */ }
 POST_SYSCALL(timer_getoverrun)(long res, long timerid) {}
-PRE_SYSCALL(compat_50_nanosleep)(void *rqtp, void *rmtp) {}
+PRE_SYSCALL(compat_50_nanosleep)(void *rqtp, void *rmtp) { /* TODO */ }
 POST_SYSCALL(compat_50_nanosleep)(long res, void *rqtp, void *rmtp) {}
-PRE_SYSCALL(fdatasync)(long fd) {}
+PRE_SYSCALL(fdatasync)(long fd) { /* Nothing to do */ }
 POST_SYSCALL(fdatasync)(long res, long fd) {}
-PRE_SYSCALL(mlockall)(long flags) {}
+PRE_SYSCALL(mlockall)(long flags) { /* Nothing to do */ }
 POST_SYSCALL(mlockall)(long res, long flags) {}
-PRE_SYSCALL(munlockall)(void) {}
+PRE_SYSCALL(munlockall)(void) { /* Nothing to do */ }
 POST_SYSCALL(munlockall)(long res) {}
-PRE_SYSCALL(compat_50___sigtimedwait)(void *set, void *info, void *timeout) {}
+PRE_SYSCALL(compat_50___sigtimedwait)(void *set, void *info, void *timeout) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50___sigtimedwait)
 (long res, void *set, void *info, void *timeout) {}
-PRE_SYSCALL(sigqueueinfo)(long pid, void *info) {}
+PRE_SYSCALL(sigqueueinfo)(long pid, void *info) {
+  if (info) {
+    PRE_READ(info, siginfo_t_sz);
+  }
+}
 POST_SYSCALL(sigqueueinfo)(long res, long pid, void *info) {}
-PRE_SYSCALL(modctl)(long cmd, void *arg) {}
+PRE_SYSCALL(modctl)(long cmd, void *arg) { /* TODO */ }
 POST_SYSCALL(modctl)(long res, long cmd, void *arg) {}
 PRE_SYSCALL(_ksem_init)(long value, void *idp) {}
 POST_SYSCALL(_ksem_init)(long res, long value, void *idp) {}

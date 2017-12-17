@@ -75,15 +75,6 @@ struct __sanitizer_iocb {
   long _retval;
 };
 
-struct __sanitizer___sysctl_args {
-  int *name;
-  int nlen;
-  void *oldval;
-  uptr *oldlenp;
-  void *newval;
-  uptr newlen;
-};
-
 struct __sanitizer_sem_t {
   uptr data[5];
 };
