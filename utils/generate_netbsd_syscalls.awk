@@ -987,7 +987,7 @@ function pre_syscall(syscall)
     pcmd("if (name) {")
     pcmd("  PRE_READ(name, namelen * sizeof(int));")
     pcmd("}")
-    pcmd("if (newval) {")
+    pcmd("if (newv) {")
     pcmd("  PRE_READ(name, newlen);")
     pcmd("}")
   } else if (syscall == "mlock") {
@@ -1069,33 +1069,78 @@ function pre_syscall(syscall)
   } else if (syscall == "modctl") {
     pcmd("/* TODO */")
   } else if (syscall == "_ksem_init") {
-
+#    pcmd("if (idp) {")
+#    pcmd("  PRE_READ(idp, sizeof(intptr_t));")
+#    pcmd("}")
   } else if (syscall == "_ksem_open") {
+    pcmd("if (name) {")
+    pcmd("  PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);")
+    pcmd("}")
   } else if (syscall == "_ksem_unlink") {
+    pcmd("if (name) {")
+    pcmd("  PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);")
+    pcmd("}")
   } else if (syscall == "_ksem_close") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_ksem_post") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_ksem_wait") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_ksem_trywait") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_ksem_getvalue") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_ksem_destroy") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_ksem_timedwait") {
+    pcmd("if (abstime) {")
+    pcmd("  PRE_READ(abstime, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "mq_open") {
+    pcmd("if (name) {")
+    pcmd("  PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);")
+    pcmd("}")
   } else if (syscall == "mq_close") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "mq_unlink") {
+    pcmd("if (name) {")
+    pcmd("  PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);")
+    pcmd("}")
   } else if (syscall == "mq_getattr") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "mq_setattr") {
+    pcmd("if (mqstat) {")
+    pcmd("  PRE_READ(mqstat, struct_mq_attr_sz);")
+    pcmd("}")
   } else if (syscall == "mq_notify") {
+    pcmd("if (notification) {")
+    pcmd("  PRE_READ(notification, struct_sigevent_sz);")
+    pcmd("}")
   } else if (syscall == "mq_send") {
+    pcmd("if (msg_ptr) {")
+    pcmd("  PRE_READ(msg_ptr, msg_len);")
+    pcmd("}")
   } else if (syscall == "mq_receive") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_mq_timedsend") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_mq_timedreceive") {
+    pcmd("/* TODO */")
   } else if (syscall == "__posix_rename") {
+    pcmd("if (from) {")
+    pcmd("  PRE_READ(from, __sanitizer::internal_strlen((const char *)to) + 1);")
+    pcmd("}")
+    pcmd("if (to) {")
+    pcmd("  PRE_READ(to, __sanitizer::internal_strlen((const char *)to) + 1);")
+    pcmd("}")
   } else if (syscall == "swapctl") {
   } else if (syscall == "compat_30_getdents") {
+    pcmd("/* TODO */")
   } else if (syscall == "minherit") {
   } else if (syscall == "lchmod") {
   } else if (syscall == "lchown") {
   } else if (syscall == "compat_50_lutimes") {
+    pcmd("/* TODO */")
   } else if (syscall == "__msync13") {
   } else if (syscall == "compat_30___stat13") {
   } else if (syscall == "compat_30___fstat13") {
