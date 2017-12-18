@@ -1109,17 +1109,23 @@ PRE_SYSCALL(compat_16___sigaction14)(long signum, void *nsa, void *osa) {
 }
 POST_SYSCALL(compat_16___sigaction14)
 (long res, long signum, void *nsa, void *osa) {}
-PRE_SYSCALL(__sigpending14)(void *set) {}
+PRE_SYSCALL(__sigpending14)(void *set) { /* Nothing to do */ }
 POST_SYSCALL(__sigpending14)(long res, void *set) {}
-PRE_SYSCALL(__sigprocmask14)(long how, void *set, void *oset) {}
+PRE_SYSCALL(__sigprocmask14)(long how, void *set, void *oset) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__sigprocmask14)(long res, long how, void *set, void *oset) {}
-PRE_SYSCALL(__sigsuspend14)(void *set) {}
+PRE_SYSCALL(__sigsuspend14)(void *set) {
+  if (set) {
+    PRE_READ(set, sizeof(__sanitizer_sigset_t));
+  }
+}
 POST_SYSCALL(__sigsuspend14)(long res, void *set) {}
 PRE_SYSCALL(compat_16___sigreturn14)(void *sigcntxp) { /* TODO */ }
 POST_SYSCALL(compat_16___sigreturn14)(long res, void *sigcntxp) {}
-PRE_SYSCALL(__getcwd)(void *bufp, long length) {}
+PRE_SYSCALL(__getcwd)(void *bufp, long length) { /* Nothing to do */ }
 POST_SYSCALL(__getcwd)(long res, void *bufp, long length) {}
-PRE_SYSCALL(fchroot)(long fd) {}
+PRE_SYSCALL(fchroot)(long fd) { /* Nothing to do */ }
 POST_SYSCALL(fchroot)(long res, long fd) {}
 PRE_SYSCALL(compat_30_fhopen)(void *fhp, long flags) { /* TODO */ }
 POST_SYSCALL(compat_30_fhopen)(long res, void *fhp, long flags) {}
@@ -1141,70 +1147,103 @@ PRE_SYSCALL(compat_50___shmctl13)(long shmid, long cmd, void *buf) {
   /* TODO */
 }
 POST_SYSCALL(compat_50___shmctl13)(long res, long shmid, long cmd, void *buf) {}
-PRE_SYSCALL(lchflags)(void *path, long flags) {}
+PRE_SYSCALL(lchflags)(void *path, long flags) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(lchflags)(long res, void *path, long flags) {}
-PRE_SYSCALL(issetugid)(void) {}
+PRE_SYSCALL(issetugid)(void) { /* Nothing to do */ }
 POST_SYSCALL(issetugid)(long res) {}
-PRE_SYSCALL(utrace)(void *label, void *addr, long len) {}
+PRE_SYSCALL(utrace)(void *label, void *addr, long len) {
+  if (label) {
+    PRE_READ(label, __sanitizer::internal_strlen((const char *)label) + 1);
+  }
+  if (addr) {
+    PRE_READ(addr, len);
+  }
+}
 POST_SYSCALL(utrace)(long res, void *label, void *addr, long len) {}
-PRE_SYSCALL(getcontext)(void *ucp) {}
+PRE_SYSCALL(getcontext)(void *ucp) { /* Nothing to do */ }
 POST_SYSCALL(getcontext)(long res, void *ucp) {}
-PRE_SYSCALL(setcontext)(void *ucp) {}
+PRE_SYSCALL(setcontext)(void *ucp) {
+  if (ucp) {
+    PRE_READ(ucp, ucontext_t_sz);
+  }
+}
 POST_SYSCALL(setcontext)(long res, void *ucp) {}
-PRE_SYSCALL(_lwp_create)(void *ucp, long flags, void *new_lwp) {}
+PRE_SYSCALL(_lwp_create)(void *ucp, long flags, void *new_lwp) {
+  if (ucp) {
+    PRE_READ(ucp, ucontext_t_sz);
+  }
+}
 POST_SYSCALL(_lwp_create)(long res, void *ucp, long flags, void *new_lwp) {}
-PRE_SYSCALL(_lwp_exit)(void) {}
+PRE_SYSCALL(_lwp_exit)(void) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_exit)(long res) {}
-PRE_SYSCALL(_lwp_self)(void) {}
+PRE_SYSCALL(_lwp_self)(void) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_self)(long res) {}
-PRE_SYSCALL(_lwp_wait)(long wait_for, void *departed) {}
+PRE_SYSCALL(_lwp_wait)(long wait_for, void *departed) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_wait)(long res, long wait_for, void *departed) {}
-PRE_SYSCALL(_lwp_suspend)(long target) {}
+PRE_SYSCALL(_lwp_suspend)(long target) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_suspend)(long res, long target) {}
-PRE_SYSCALL(_lwp_continue)(long target) {}
+PRE_SYSCALL(_lwp_continue)(long target) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_continue)(long res, long target) {}
-PRE_SYSCALL(_lwp_wakeup)(long target) {}
+PRE_SYSCALL(_lwp_wakeup)(long target) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_wakeup)(long res, long target) {}
-PRE_SYSCALL(_lwp_getprivate)(void) {}
+PRE_SYSCALL(_lwp_getprivate)(void) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_getprivate)(long res) {}
-PRE_SYSCALL(_lwp_setprivate)(void *ptr) {}
+PRE_SYSCALL(_lwp_setprivate)(void *ptr) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_setprivate)(long res, void *ptr) {}
-PRE_SYSCALL(_lwp_kill)(long target, long signo) {}
+PRE_SYSCALL(_lwp_kill)(long target, long signo) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_kill)(long res, long target, long signo) {}
-PRE_SYSCALL(_lwp_detach)(long target) {}
+PRE_SYSCALL(_lwp_detach)(long target) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_detach)(long res, long target) {}
 PRE_SYSCALL(compat_50__lwp_park)
-(void *ts, long unpark, void *hint, void *unparkhint) {}
+(void *ts, long unpark, void *hint, void *unparkhint) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50__lwp_park)
 (long res, void *ts, long unpark, void *hint, void *unparkhint) {}
-PRE_SYSCALL(_lwp_unpark)(long target, void *hint) {}
+PRE_SYSCALL(_lwp_unpark)(long target, void *hint) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_unpark)(long res, long target, void *hint) {}
-PRE_SYSCALL(_lwp_unpark_all)(void *targets, long ntargets, void *hint) {}
+PRE_SYSCALL(_lwp_unpark_all)(void *targets, long ntargets, void *hint) {
+  if (targets) {
+    PRE_READ(targets, ntargets * sizeof(__sanitizer_lwpid_t));
+  }
+}
 POST_SYSCALL(_lwp_unpark_all)
 (long res, void *targets, long ntargets, void *hint) {}
-PRE_SYSCALL(_lwp_setname)(long target, void *name) {}
+PRE_SYSCALL(_lwp_setname)(long target, void *name) {
+  if (name) {
+    PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);
+  }
+}
 POST_SYSCALL(_lwp_setname)(long res, long target, void *name) {}
-PRE_SYSCALL(_lwp_getname)(long target, void *name, long len) {}
+PRE_SYSCALL(_lwp_getname)(long target, void *name, long len) {
+  /* Nothing to do */
+}
 POST_SYSCALL(_lwp_getname)(long res, long target, void *name, long len) {}
-PRE_SYSCALL(_lwp_ctl)(long features, void **address) {}
+PRE_SYSCALL(_lwp_ctl)(long features, void **address) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_ctl)(long res, long features, void **address) {}
 /* syscall 326 has been skipped */
 /* syscall 327 has been skipped */
 /* syscall 328 has been skipped */
 /* syscall 329 has been skipped */
 PRE_SYSCALL(compat_60_sa_register)
-(void *newv, void **oldv, long flags, long stackinfo_offset) {}
+(void *newv, void **oldv, long flags, long stackinfo_offset) {
+  /* TODO */
+}
 POST_SYSCALL(compat_60_sa_register)
 (long res, void *newv, void **oldv, long flags, long stackinfo_offset) {}
-PRE_SYSCALL(compat_60_sa_stacks)(long num, void *stacks) {}
+PRE_SYSCALL(compat_60_sa_stacks)(long num, void *stacks) { /* TODO */ }
 POST_SYSCALL(compat_60_sa_stacks)(long res, long num, void *stacks) {}
-PRE_SYSCALL(compat_60_sa_enable)(void) {}
+PRE_SYSCALL(compat_60_sa_enable)(void) { /* TODO */ }
 POST_SYSCALL(compat_60_sa_enable)(long res) {}
-PRE_SYSCALL(compat_60_sa_setconcurrency)(long concurrency) {}
+PRE_SYSCALL(compat_60_sa_setconcurrency)(long concurrency) { /* TODO */ }
 POST_SYSCALL(compat_60_sa_setconcurrency)(long res, long concurrency) {}
-PRE_SYSCALL(compat_60_sa_yield)(void) {}
+PRE_SYSCALL(compat_60_sa_yield)(void) { /* TODO */ }
 POST_SYSCALL(compat_60_sa_yield)(long res) {}
-PRE_SYSCALL(compat_60_sa_preempt)(long sa_id) {}
+PRE_SYSCALL(compat_60_sa_preempt)(long sa_id) { /* TODO */ }
 POST_SYSCALL(compat_60_sa_preempt)(long res, long sa_id) {}
 /* syscall 336 has been skipped */
 /* syscall 337 has been skipped */

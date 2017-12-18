@@ -1224,8 +1224,8 @@ function pre_syscall(syscall)
   } else if (syscall == "issetugid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "utrace") {
-    pcmd("if (utrace) {")
-    pcmd("  PRE_READ(utrace, __sanitizer::internal_strlen((const char *)utrace) + 1);")
+    pcmd("if (label) {")
+    pcmd("  PRE_READ(label, __sanitizer::internal_strlen((const char *)label) + 1);")
     pcmd("}")
     pcmd("if (addr) {")
     pcmd("  PRE_READ(addr, len);")
