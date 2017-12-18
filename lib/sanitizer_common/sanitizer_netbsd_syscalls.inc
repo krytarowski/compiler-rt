@@ -43,7 +43,7 @@
 // DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
 //
 // Generated with: generate_netbsd_syscalls.awk
-// Generated date: 2017-12-17
+// Generated date: 2017-12-18
 // Generated from: syscalls.master,v 1.287 2017/12/08 01:19:29 christos Exp
 //
 //===----------------------------------------------------------------------===//
@@ -567,7 +567,7 @@ PRE_SYSCALL(setregid)(long rgid, long egid) { /* Nothing to do */ }
 POST_SYSCALL(setregid)(long res, long rgid, long egid) {}
 PRE_SYSCALL(rename)(void *from, void *to) {
   if (from) {
-    PRE_READ(from, __sanitizer::internal_strlen((const char *)to) + 1);
+    PRE_READ(from, __sanitizer::internal_strlen((const char *)from) + 1);
   }
   if (to) {
     PRE_READ(to, __sanitizer::internal_strlen((const char *)to) + 1);
@@ -1024,56 +1024,89 @@ POST_SYSCALL(compat_50_mq_timedreceive)
 /* syscall 269 has been skipped */
 PRE_SYSCALL(__posix_rename)(void *from, void *to) {
   if (from) {
-    PRE_READ(from, __sanitizer::internal_strlen((const char *)to) + 1);
+    PRE_READ(from, __sanitizer::internal_strlen((const char *)from) + 1);
   }
   if (to) {
     PRE_READ(to, __sanitizer::internal_strlen((const char *)to) + 1);
   }
 }
 POST_SYSCALL(__posix_rename)(long res, void *from, void *to) {}
-PRE_SYSCALL(swapctl)(long cmd, void *arg, long misc) {}
+PRE_SYSCALL(swapctl)(long cmd, void *arg, long misc) { /* TODO */ }
 POST_SYSCALL(swapctl)(long res, long cmd, void *arg, long misc) {}
 PRE_SYSCALL(compat_30_getdents)(long fd, void *buf, long count) { /* TODO */ }
 POST_SYSCALL(compat_30_getdents)(long res, long fd, void *buf, long count) {}
-PRE_SYSCALL(minherit)(void *addr, long len, long inherit) {}
+PRE_SYSCALL(minherit)(void *addr, long len, long inherit) {
+  /* Nothing to do */
+}
 POST_SYSCALL(minherit)(long res, void *addr, long len, long inherit) {}
-PRE_SYSCALL(lchmod)(void *path, long mode) {}
+PRE_SYSCALL(lchmod)(void *path, long mode) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(lchmod)(long res, void *path, long mode) {}
-PRE_SYSCALL(lchown)(void *path, long uid, long gid) {}
+PRE_SYSCALL(lchown)(void *path, long uid, long gid) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(lchown)(long res, void *path, long uid, long gid) {}
 PRE_SYSCALL(compat_50_lutimes)(void *path, void *tptr) { /* TODO */ }
 POST_SYSCALL(compat_50_lutimes)(long res, void *path, void *tptr) {}
-PRE_SYSCALL(__msync13)(void *addr, long len, long flags) {}
+PRE_SYSCALL(__msync13)(void *addr, long len, long flags) { /* Nothing to do */ }
 POST_SYSCALL(__msync13)(long res, void *addr, long len, long flags) {}
-PRE_SYSCALL(compat_30___stat13)(void *path, void *ub) {}
+PRE_SYSCALL(compat_30___stat13)(void *path, void *ub) { /* TODO */ }
 POST_SYSCALL(compat_30___stat13)(long res, void *path, void *ub) {}
-PRE_SYSCALL(compat_30___fstat13)(long fd, void *sb) {}
+PRE_SYSCALL(compat_30___fstat13)(long fd, void *sb) { /* TODO */ }
 POST_SYSCALL(compat_30___fstat13)(long res, long fd, void *sb) {}
-PRE_SYSCALL(compat_30___lstat13)(void *path, void *ub) {}
+PRE_SYSCALL(compat_30___lstat13)(void *path, void *ub) { /* TODO */ }
 POST_SYSCALL(compat_30___lstat13)(long res, void *path, void *ub) {}
-PRE_SYSCALL(__sigaltstack14)(void *nss, void *oss) {}
+PRE_SYSCALL(__sigaltstack14)(void *nss, void *oss) {
+  if (nss) {
+    PRE_READ(nss, struct_sigaltstack_sz);
+  }
+  if (oss) {
+    PRE_READ(oss, struct_sigaltstack_sz);
+  }
+}
 POST_SYSCALL(__sigaltstack14)(long res, void *nss, void *oss) {}
-PRE_SYSCALL(__vfork14)(void) {}
+PRE_SYSCALL(__vfork14)(void) { /* Nothing to do */ }
 POST_SYSCALL(__vfork14)(long res) {}
-PRE_SYSCALL(__posix_chown)(void *path, long uid, long gid) {}
+PRE_SYSCALL(__posix_chown)(void *path, long uid, long gid) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(__posix_chown)(long res, void *path, long uid, long gid) {}
-PRE_SYSCALL(__posix_fchown)(long fd, long uid, long gid) {}
+PRE_SYSCALL(__posix_fchown)(long fd, long uid, long gid) { /* Nothing to do */ }
 POST_SYSCALL(__posix_fchown)(long res, long fd, long uid, long gid) {}
-PRE_SYSCALL(__posix_lchown)(void *path, long uid, long gid) {}
+PRE_SYSCALL(__posix_lchown)(void *path, long uid, long gid) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(__posix_lchown)(long res, void *path, long uid, long gid) {}
-PRE_SYSCALL(getsid)(long pid) {}
+PRE_SYSCALL(getsid)(long pid) { /* Nothing to do */ }
 POST_SYSCALL(getsid)(long res, long pid) {}
-PRE_SYSCALL(__clone)(long flags, void *stack) {}
+PRE_SYSCALL(__clone)(long flags, void *stack) { /* Nothing to do */ }
 POST_SYSCALL(__clone)(long res, long flags, void *stack) {}
-PRE_SYSCALL(fktrace)(long fd, long ops, long facs, long pid) {}
+PRE_SYSCALL(fktrace)(long fd, long ops, long facs, long pid) {
+  /* Nothing to do */
+}
 POST_SYSCALL(fktrace)(long res, long fd, long ops, long facs, long pid) {}
-PRE_SYSCALL(preadv)(long fd, void *iovp, long iovcnt, long PAD, long offset) {}
+PRE_SYSCALL(preadv)(long fd, void *iovp, long iovcnt, long PAD, long offset) {
+  /* Nothing to do */
+}
 POST_SYSCALL(preadv)
 (long res, long fd, void *iovp, long iovcnt, long PAD, long offset) {}
-PRE_SYSCALL(pwritev)(long fd, void *iovp, long iovcnt, long PAD, long offset) {}
+PRE_SYSCALL(pwritev)(long fd, void *iovp, long iovcnt, long PAD, long offset) {
+  /* Nothing to do */
+}
 POST_SYSCALL(pwritev)
 (long res, long fd, void *iovp, long iovcnt, long PAD, long offset) {}
-PRE_SYSCALL(compat_16___sigaction14)(long signum, void *nsa, void *osa) {}
+PRE_SYSCALL(compat_16___sigaction14)(long signum, void *nsa, void *osa) {
+  /* TODO */
+}
 POST_SYSCALL(compat_16___sigaction14)
 (long res, long signum, void *nsa, void *osa) {}
 PRE_SYSCALL(__sigpending14)(void *set) {}
@@ -1082,25 +1115,31 @@ PRE_SYSCALL(__sigprocmask14)(long how, void *set, void *oset) {}
 POST_SYSCALL(__sigprocmask14)(long res, long how, void *set, void *oset) {}
 PRE_SYSCALL(__sigsuspend14)(void *set) {}
 POST_SYSCALL(__sigsuspend14)(long res, void *set) {}
-PRE_SYSCALL(compat_16___sigreturn14)(void *sigcntxp) {}
+PRE_SYSCALL(compat_16___sigreturn14)(void *sigcntxp) { /* TODO */ }
 POST_SYSCALL(compat_16___sigreturn14)(long res, void *sigcntxp) {}
 PRE_SYSCALL(__getcwd)(void *bufp, long length) {}
 POST_SYSCALL(__getcwd)(long res, void *bufp, long length) {}
 PRE_SYSCALL(fchroot)(long fd) {}
 POST_SYSCALL(fchroot)(long res, long fd) {}
-PRE_SYSCALL(compat_30_fhopen)(void *fhp, long flags) {}
+PRE_SYSCALL(compat_30_fhopen)(void *fhp, long flags) { /* TODO */ }
 POST_SYSCALL(compat_30_fhopen)(long res, void *fhp, long flags) {}
-PRE_SYSCALL(compat_30_fhstat)(void *fhp, void *sb) {}
+PRE_SYSCALL(compat_30_fhstat)(void *fhp, void *sb) { /* TODO */ }
 POST_SYSCALL(compat_30_fhstat)(long res, void *fhp, void *sb) {}
-PRE_SYSCALL(compat_20_fhstatfs)(void *fhp, void *buf) {}
+PRE_SYSCALL(compat_20_fhstatfs)(void *fhp, void *buf) { /* TODO */ }
 POST_SYSCALL(compat_20_fhstatfs)(long res, void *fhp, void *buf) {}
 PRE_SYSCALL(compat_50_____semctl13)
-(long semid, long semnum, long cmd, void *arg) {}
+(long semid, long semnum, long cmd, void *arg) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50_____semctl13)
 (long res, long semid, long semnum, long cmd, void *arg) {}
-PRE_SYSCALL(compat_50___msgctl13)(long msqid, long cmd, void *buf) {}
+PRE_SYSCALL(compat_50___msgctl13)(long msqid, long cmd, void *buf) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50___msgctl13)(long res, long msqid, long cmd, void *buf) {}
-PRE_SYSCALL(compat_50___shmctl13)(long shmid, long cmd, void *buf) {}
+PRE_SYSCALL(compat_50___shmctl13)(long shmid, long cmd, void *buf) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50___shmctl13)(long res, long shmid, long cmd, void *buf) {}
 PRE_SYSCALL(lchflags)(void *path, long flags) {}
 POST_SYSCALL(lchflags)(long res, void *path, long flags) {}

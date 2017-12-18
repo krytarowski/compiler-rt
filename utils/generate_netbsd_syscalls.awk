@@ -1161,8 +1161,8 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_30___lstat13") {
     pcmd("/* TODO */")
   } else if (syscall == "__sigaltstack14") {
-    pcmd("if (ss) {")
-    pcmd("  PRE_READ(ss, struct_sigaltstack_sz);")
+    pcmd("if (nss) {")
+    pcmd("  PRE_READ(nss, struct_sigaltstack_sz);")
     pcmd("}")
     pcmd("if (oss) {")
     pcmd("  PRE_READ(oss, struct_sigaltstack_sz);")

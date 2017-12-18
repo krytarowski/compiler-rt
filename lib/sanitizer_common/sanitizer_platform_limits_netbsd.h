@@ -244,7 +244,7 @@ struct __sanitizer_sigaction13 {
 
 struct __sanitizer_sigaltstack {
   void *ss_sp;
-  size_t ss_size;
+  uptr ss_size;
   int ss_flags;
 };
 
