@@ -1385,9 +1385,7 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
   } else if (syscall == "lsetxattr") {
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
-    pcmd("}")
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fsetxattr") {
     pcmd("if (path) {")
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")

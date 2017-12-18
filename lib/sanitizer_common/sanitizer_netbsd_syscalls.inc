@@ -1450,9 +1450,7 @@ POST_SYSCALL(setxattr)
 (long res, void *path, void *name, void *value, long size, long flags) {}
 PRE_SYSCALL(lsetxattr)
 (void *path, void *name, void *value, long size, long flags) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
+  /* Nothing to do */
 }
 POST_SYSCALL(lsetxattr)
 (long res, void *path, void *name, void *value, long size, long flags) {}
