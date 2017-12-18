@@ -1453,26 +1453,75 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(fhp, fh_size);")
     pcmd("}")
   } else if (syscall == "aio_cancel") {
-
+    pcmd("if (aiocbp) {")
+    pcmd("  PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));")
+    pcmd("}")
   } else if (syscall == "aio_error") {
+    pcmd("if (aiocbp) {")
+    pcmd("  PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));")
+    pcmd("}")
   } else if (syscall == "aio_fsync") {
+    pcmd("if (aiocbp) {")
+    pcmd("  PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));")
+    pcmd("}")
   } else if (syscall == "aio_read") {
+    pcmd("if (aiocbp) {")
+    pcmd("  PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));")
+    pcmd("}")
   } else if (syscall == "aio_return") {
+    pcmd("if (aiocbp) {")
+    pcmd("  PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));")
+    pcmd("}")
   } else if (syscall == "compat_50_aio_suspend") {
     pcmd("/* TODO */")
   } else if (syscall == "aio_write") {
+    pcmd("if (aiocbp) {")
+    pcmd("  PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));")
+    pcmd("}")
   } else if (syscall == "lio_listio") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__mount50") {
+    pcmd("if (type) {")
+    pcmd("  PRE_READ(type, __sanitizer::internal_strlen((const char *)type) + 1);")
+    pcmd("}")
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
+    pcmd("if (data) {")
+    pcmd("  PRE_READ(data, data_len);")
+    pcmd("}")
   } else if (syscall == "mremap") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "pset_create") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "pset_destroy") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "pset_assign") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_pset_bind") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__posix_fadvise50") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__select50") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__gettimeofday50") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__settimeofday50") {
+    pcmd("if (tv) {")
+    pcmd("  PRE_READ(tv, timeval_sz);")
+    pcmd("}")
+    pcmd("if (tzp) {")
+    pcmd("  PRE_READ(tzp, struct_timezone_sz);")
+    pcmd("}")
   } else if (syscall == "__utimes50") {
+    pcmd("struct __sanitizer_timespec **t = (struct __sanitizer_timespec **)tptr;")
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
+    pcmd("if (t) {")
+    pcmd("  PRE_READ(t[0], struct_timespec_sz);")
+    pcmd("  PRE_READ(t[1], struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "__adjtime50") {
   } else if (syscall == "__lfs_segwait50") {
   } else if (syscall == "__futimes50") {

@@ -1555,62 +1555,124 @@ PRE_SYSCALL(compat_50___fhstat40)(void *fhp, long fh_size, void *sb) {
 }
 POST_SYSCALL(compat_50___fhstat40)
 (long res, void *fhp, long fh_size, void *sb) {}
-PRE_SYSCALL(aio_cancel)(long fildes, void *aiocbp) {}
+PRE_SYSCALL(aio_cancel)(long fildes, void *aiocbp) {
+  if (aiocbp) {
+    PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));
+  }
+}
 POST_SYSCALL(aio_cancel)(long res, long fildes, void *aiocbp) {}
-PRE_SYSCALL(aio_error)(void *aiocbp) {}
+PRE_SYSCALL(aio_error)(void *aiocbp) {
+  if (aiocbp) {
+    PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));
+  }
+}
 POST_SYSCALL(aio_error)(long res, void *aiocbp) {}
-PRE_SYSCALL(aio_fsync)(long op, void *aiocbp) {}
+PRE_SYSCALL(aio_fsync)(long op, void *aiocbp) {
+  if (aiocbp) {
+    PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));
+  }
+}
 POST_SYSCALL(aio_fsync)(long res, long op, void *aiocbp) {}
-PRE_SYSCALL(aio_read)(void *aiocbp) {}
+PRE_SYSCALL(aio_read)(void *aiocbp) {
+  if (aiocbp) {
+    PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));
+  }
+}
 POST_SYSCALL(aio_read)(long res, void *aiocbp) {}
-PRE_SYSCALL(aio_return)(void *aiocbp) {}
+PRE_SYSCALL(aio_return)(void *aiocbp) {
+  if (aiocbp) {
+    PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));
+  }
+}
 POST_SYSCALL(aio_return)(long res, void *aiocbp) {}
 PRE_SYSCALL(compat_50_aio_suspend)(void *list, long nent, void *timeout) {
   /* TODO */
 }
 POST_SYSCALL(compat_50_aio_suspend)
 (long res, void *list, long nent, void *timeout) {}
-PRE_SYSCALL(aio_write)(void *aiocbp) {}
+PRE_SYSCALL(aio_write)(void *aiocbp) {
+  if (aiocbp) {
+    PRE_READ(aiocbp, sizeof(struct __sanitizer_aiocb));
+  }
+}
 POST_SYSCALL(aio_write)(long res, void *aiocbp) {}
-PRE_SYSCALL(lio_listio)(long mode, void *list, long nent, void *sig) {}
+PRE_SYSCALL(lio_listio)(long mode, void *list, long nent, void *sig) {
+  /* Nothing to do */
+}
 POST_SYSCALL(lio_listio)
 (long res, long mode, void *list, long nent, void *sig) {}
 /* syscall 407 has been skipped */
 /* syscall 408 has been skipped */
 /* syscall 409 has been skipped */
 PRE_SYSCALL(__mount50)
-(void *type, void *path, long flags, void *data, long data_len) {}
+(void *type, void *path, long flags, void *data, long data_len) {
+  if (type) {
+    PRE_READ(type, __sanitizer::internal_strlen((const char *)type) + 1);
+  }
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+  if (data) {
+    PRE_READ(data, data_len);
+  }
+}
 POST_SYSCALL(__mount50)
 (long res, void *type, void *path, long flags, void *data, long data_len) {}
 PRE_SYSCALL(mremap)
 (void *old_address, long old_size, void *new_address, long new_size,
-  long flags) {}
+  long flags) {
+  /* Nothing to do */
+}
 POST_SYSCALL(mremap)
 (long res, void *old_address, long old_size, void *new_address, long new_size,
   long flags) {}
-PRE_SYSCALL(pset_create)(void *psid) {}
+PRE_SYSCALL(pset_create)(void *psid) { /* Nothing to do */ }
 POST_SYSCALL(pset_create)(long res, void *psid) {}
-PRE_SYSCALL(pset_destroy)(long psid) {}
+PRE_SYSCALL(pset_destroy)(long psid) { /* Nothing to do */ }
 POST_SYSCALL(pset_destroy)(long res, long psid) {}
-PRE_SYSCALL(pset_assign)(long psid, long cpuid, void *opsid) {}
+PRE_SYSCALL(pset_assign)(long psid, long cpuid, void *opsid) {
+  /* Nothing to do */
+}
 POST_SYSCALL(pset_assign)(long res, long psid, long cpuid, void *opsid) {}
 PRE_SYSCALL(_pset_bind)
-(long idtype, long first_id, long second_id, long psid, void *opsid) {}
+(long idtype, long first_id, long second_id, long psid, void *opsid) {
+  /* Nothing to do */
+}
 POST_SYSCALL(_pset_bind)
 (long res, long idtype, long first_id, long second_id, long psid, void *opsid) {
 }
 PRE_SYSCALL(__posix_fadvise50)
-(long fd, long PAD, long offset, long len, long advice) {}
+(long fd, long PAD, long offset, long len, long advice) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__posix_fadvise50)
 (long res, long fd, long PAD, long offset, long len, long advice) {}
-PRE_SYSCALL(__select50)(long nd, void *in, void *ou, void *ex, void *tv) {}
+PRE_SYSCALL(__select50)(long nd, void *in, void *ou, void *ex, void *tv) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__select50)
 (long res, long nd, void *in, void *ou, void *ex, void *tv) {}
-PRE_SYSCALL(__gettimeofday50)(void *tp, void *tzp) {}
+PRE_SYSCALL(__gettimeofday50)(void *tp, void *tzp) { /* Nothing to do */ }
 POST_SYSCALL(__gettimeofday50)(long res, void *tp, void *tzp) {}
-PRE_SYSCALL(__settimeofday50)(void *tv, void *tzp) {}
+PRE_SYSCALL(__settimeofday50)(void *tv, void *tzp) {
+  if (tv) {
+    PRE_READ(tv, timeval_sz);
+  }
+  if (tzp) {
+    PRE_READ(tzp, struct_timezone_sz);
+  }
+}
 POST_SYSCALL(__settimeofday50)(long res, void *tv, void *tzp) {}
-PRE_SYSCALL(__utimes50)(void *path, void *tptr) {}
+PRE_SYSCALL(__utimes50)(void *path, void *tptr) {
+  struct __sanitizer_timespec **t = (struct __sanitizer_timespec **)tptr;
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+  if (t) {
+    PRE_READ(t[0], struct_timespec_sz);
+    PRE_READ(t[1], struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__utimes50)(long res, void *path, void *tptr) {}
 PRE_SYSCALL(__adjtime50)(void *delta, void *olddelta) {}
 POST_SYSCALL(__adjtime50)(long res, void *delta, void *olddelta) {}

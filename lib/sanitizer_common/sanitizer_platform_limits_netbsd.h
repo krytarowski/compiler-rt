@@ -58,20 +58,29 @@ extern unsigned struct_rlimit_sz;
 extern unsigned struct_utimbuf_sz;
 extern unsigned struct_timespec_sz;
 
-struct __sanitizer_iocb {
+union __sanitizer_sigval {
+  int sival_int;
+  uptr sival_ptr;
+};
+
+struct __sanitizer_sigevent {
+  int sigev_notify;
+  int sigev_signo;
+  union __sanitizer_sigval sigev_value;
+  uptr sigev_notify_function;
+  uptr sigev_notify_attributes;
+};
+
+struct __sanitizer_aiocb {
   u64 aio_offset;
   uptr aio_buf;
-  long aio_nbytes;
-  u32 aio_fildes;
-  u32 aio_lio_opcode;
-  long aio_reqprio;
-#if SANITIZER_WORDSIZE == 64
-  u8 aio_sigevent[32];
-#else
-  u8 aio_sigevent[20];
-#endif
-  u32 _state;
-  u32 _errno;
+  uptr aio_nbytes;
+  int aio_fildes;
+  int aio_lio_opcode;
+  int aio_reqprio;
+  struct __sanitizer_sigevent aio_sigevent;
+  int _state;
+  int _errno;
   long _retval;
 };
 
@@ -125,6 +134,11 @@ struct __sanitizer_ifaddrs {
 typedef unsigned __sanitizer_pthread_key_t;
 
 typedef long long __sanitizer_time_t;
+
+struct __sanitizer_timespec {
+  __sanitizer_time_t tv_sec;
+  long tv_nsec;
+};
 
 struct __sanitizer_passwd {
   char *pw_name;
