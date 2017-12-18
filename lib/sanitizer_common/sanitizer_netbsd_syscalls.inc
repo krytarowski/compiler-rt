@@ -1674,25 +1674,60 @@ PRE_SYSCALL(__utimes50)(void *path, void *tptr) {
   }
 }
 POST_SYSCALL(__utimes50)(long res, void *path, void *tptr) {}
-PRE_SYSCALL(__adjtime50)(void *delta, void *olddelta) {}
+PRE_SYSCALL(__adjtime50)(void *delta, void *olddelta) {
+  if (delta) {
+    PRE_READ(delta, timeval_sz);
+  }
+}
 POST_SYSCALL(__adjtime50)(long res, void *delta, void *olddelta) {}
-PRE_SYSCALL(__lfs_segwait50)(void *fsidp, void *tv) {}
+PRE_SYSCALL(__lfs_segwait50)(void *fsidp, void *tv) { /* TODO */ }
 POST_SYSCALL(__lfs_segwait50)(long res, void *fsidp, void *tv) {}
-PRE_SYSCALL(__futimes50)(long fd, void *tptr) {}
+PRE_SYSCALL(__futimes50)(long fd, void *tptr) {
+  struct __sanitizer_timespec **t = (struct __sanitizer_timespec **)tptr;
+  if (t) {
+    PRE_READ(t[0], struct_timespec_sz);
+    PRE_READ(t[1], struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__futimes50)(long res, long fd, void *tptr) {}
-PRE_SYSCALL(__lutimes50)(void *path, void *tptr) {}
+PRE_SYSCALL(__lutimes50)(void *path, void *tptr) {
+  struct __sanitizer_timespec **t = (struct __sanitizer_timespec **)tptr;
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+  if (t) {
+    PRE_READ(t[0], struct_timespec_sz);
+    PRE_READ(t[1], struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__lutimes50)(long res, void *path, void *tptr) {}
-PRE_SYSCALL(__setitimer50)(long which, void *itv, void *oitv) {}
+PRE_SYSCALL(__setitimer50)(long which, void *itv, void *oitv) {
+  struct __sanitizer_itimerval *i = (struct __sanitizer_itimerval *)itv;
+  if (i) {
+    PRE_READ(&i->it_interval.tv_sec, sizeof(__sanitizer_time_t));
+    PRE_READ(&i->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));
+    PRE_READ(&i->it_value.tv_sec, sizeof(__sanitizer_time_t));
+    PRE_READ(&i->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));
+  }
+}
 POST_SYSCALL(__setitimer50)(long res, long which, void *itv, void *oitv) {}
-PRE_SYSCALL(__getitimer50)(long which, void *itv) {}
+PRE_SYSCALL(__getitimer50)(long which, void *itv) { /* Nothing to do */ }
 POST_SYSCALL(__getitimer50)(long res, long which, void *itv) {}
-PRE_SYSCALL(__clock_gettime50)(long clock_id, void *tp) {}
+PRE_SYSCALL(__clock_gettime50)(long clock_id, void *tp) { /* Nothing to do */ }
 POST_SYSCALL(__clock_gettime50)(long res, long clock_id, void *tp) {}
-PRE_SYSCALL(__clock_settime50)(long clock_id, void *tp) {}
+PRE_SYSCALL(__clock_settime50)(long clock_id, void *tp) {
+  if (tp) {
+    PRE_READ(tp, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__clock_settime50)(long res, long clock_id, void *tp) {}
-PRE_SYSCALL(__clock_getres50)(long clock_id, void *tp) {}
+PRE_SYSCALL(__clock_getres50)(long clock_id, void *tp) { /* Nothing to do */ }
 POST_SYSCALL(__clock_getres50)(long res, long clock_id, void *tp) {}
-PRE_SYSCALL(__nanosleep50)(void *rqtp, void *rmtp) {}
+PRE_SYSCALL(__nanosleep50)(void *rqtp, void *rmtp) {
+  if (rqtp) {
+    PRE_READ(rqtp, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__nanosleep50)(long res, void *rqtp, void *rmtp) {}
 PRE_SYSCALL(____sigtimedwait50)(void *set, void *info, void *timeout) {}
 POST_SYSCALL(____sigtimedwait50)
