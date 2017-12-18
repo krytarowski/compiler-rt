@@ -232,6 +232,8 @@ struct __sanitizer_sigaction {
   int sa_flags;
 };
 
+extern unsigned struct_sigaltstack_sz;
+
 typedef unsigned int __sanitizer_sigset13_t;
 
 struct __sanitizer_sigaction13 {
@@ -240,9 +242,9 @@ struct __sanitizer_sigaction13 {
   int osa_flags;
 };
 
-struct __sanitizer_sigaltstack13 {
-  char *ss_sp;
-  int ss_size;
+struct __sanitizer_sigaltstack {
+  void *ss_sp;
+  size_t ss_size;
   int ss_flags;
 };
 

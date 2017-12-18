@@ -106,6 +106,8 @@ unsigned struct_msqid_ds_sz = sizeof(struct msqid_ds);
 unsigned struct_mq_attr_sz = sizeof(struct mq_attr);
 unsigned struct_statvfs_sz = sizeof(struct statvfs);
 
+unsigned struct_sigaltstack_sz = sizeof(stack_t);
+
 const uptr sig_ign = (uptr)SIG_IGN;
 const uptr sig_dfl = (uptr)SIG_DFL;
 const uptr sig_err = (uptr)SIG_ERR;
