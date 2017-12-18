@@ -305,6 +305,8 @@ struct __sanitizer_pollfd {
 
 typedef unsigned __sanitizer_nfds_t;
 
+typedef int __sanitizer_lwpid_t;
+
 struct __sanitizer_glob_t {
   uptr gl_pathc;
   uptr gl_matchc;

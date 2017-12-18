@@ -1182,7 +1182,7 @@ function pre_syscall(syscall)
   } else if (syscall == "getsid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__clone") {
-      pcmd("/* Nothing to do */")
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fktrace") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "preadv") {
@@ -1192,12 +1192,19 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_16___sigaction14") {
     pcmd("/* TODO */")
   } else if (syscall == "__sigpending14") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__sigprocmask14") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__sigsuspend14") {
+    pcmd("if (set) {")
+    pcmd("  PRE_READ(set, sizeof(__sanitizer_sigset_t));")
+    pcmd("}")
   } else if (syscall == "compat_16___sigreturn14") {
     pcmd("/* TODO */")
   } else if (syscall == "__getcwd") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fchroot") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_30_fhopen") {
     pcmd("/* TODO */")
   } else if (syscall == "compat_30_fhstat") {
@@ -1211,34 +1218,78 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_50___shmctl13") {
     pcmd("/* TODO */")
   } else if (syscall == "lchflags") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "issetugid") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "utrace") {
+    pcmd("if (utrace) {")
+    pcmd("  PRE_READ(utrace, __sanitizer::internal_strlen((const char *)utrace) + 1);")
+    pcmd("}")
+    pcmd("if (addr) {")
+    pcmd("  PRE_READ(addr, len);")
+    pcmd("}")
   } else if (syscall == "getcontext") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "setcontext") {
+    pcmd("if (ucp) {")
+    pcmd("  PRE_READ(ucp, ucontext_t_sz);")
+    pcmd("}")
   } else if (syscall == "_lwp_create") {
+    pcmd("if (ucp) {")
+    pcmd("  PRE_READ(ucp, ucontext_t_sz);")
+    pcmd("}")
   } else if (syscall == "_lwp_exit") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_self") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_wait") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_suspend") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_continue") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_wakeup") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_getprivate") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_setprivate") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_kill") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_detach") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50__lwp_park") {
+    pcmd("/* TODO */")
   } else if (syscall == "_lwp_unpark") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_unpark_all") {
+    pcmd("if (targets) {")
+    pcmd("  PRE_READ(targets, ntargets * sizeof(__sanitizer_lwpid_t));")
+    pcmd("}")
   } else if (syscall == "_lwp_setname") {
+    pcmd("if (name) {")
+    pcmd("  PRE_READ(name, __sanitizer::internal_strlen((const char *)name) + 1);")
+    pcmd("}")
   } else if (syscall == "_lwp_getname") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_ctl") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_60_sa_register") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_60_sa_stacks") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_60_sa_enable") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_60_sa_setconcurrency") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_60_sa_yield") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_60_sa_preempt") {
+    pcmd("/* TODO */")
   } else if (syscall == "__sigaction_sigtramp") {
+
   } else if (syscall == "pmc_get_info") {
   } else if (syscall == "pmc_control") {
   } else if (syscall == "rasctl") {
