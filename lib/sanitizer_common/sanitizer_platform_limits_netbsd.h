@@ -135,6 +135,18 @@ typedef unsigned __sanitizer_pthread_key_t;
 
 typedef long long __sanitizer_time_t;
 
+typedef int __sanitizer_suseconds_t;
+
+struct __sanitizer_timeval {
+  __sanitizer_time_t tv_sec;
+  __sanitizer_suseconds_t tv_usec;
+};
+
+struct __sanitizer_itimerval {
+  struct __sanitizer_timeval it_interval;
+  struct __sanitizer_timeval it_value;
+};
+
 struct __sanitizer_timespec {
   __sanitizer_time_t tv_sec;
   long tv_nsec;

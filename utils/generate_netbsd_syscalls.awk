@@ -1523,15 +1523,48 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(t[1], struct_timespec_sz);")
     pcmd("}")
   } else if (syscall == "__adjtime50") {
+    pcmd("if (delta) {")
+    pcmd("  PRE_READ(delta, timeval_sz);")
+    pcmd("}")
   } else if (syscall == "__lfs_segwait50") {
+    pcmd("/* TODO */")
   } else if (syscall == "__futimes50") {
+    pcmd("struct __sanitizer_timespec **t = (struct __sanitizer_timespec **)tptr;")
+    pcmd("if (t) {")
+    pcmd("  PRE_READ(t[0], struct_timespec_sz);")
+    pcmd("  PRE_READ(t[1], struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "__lutimes50") {
+    pcmd("struct __sanitizer_timespec **t = (struct __sanitizer_timespec **)tptr;")
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
+    pcmd("if (t) {")
+    pcmd("  PRE_READ(t[0], struct_timespec_sz);")
+    pcmd("  PRE_READ(t[1], struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "__setitimer50") {
+    pcmd("struct __sanitizer_itimerval *i = (struct __sanitizer_itimerval *)itv;")
+    pcmd("if (i) {")
+    pcmd("  PRE_READ(i->it_interval.tv_sec, sizeof(__sanitizer_time_t));")
+    pcmd("  PRE_READ(i->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));")
+    pcmd("  PRE_READ(i->it_value.tv_sec, sizeof(__sanitizer_time_t));")
+    pcmd("  PRE_READ(i->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));")
+    pcmd("}")
   } else if (syscall == "__getitimer50") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__clock_gettime50") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__clock_settime50") {
+    pcmd("if (tp) {")
+    pcmd("  PRE_READ(tp, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "__clock_getres50") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__nanosleep50") {
+    pcmd("if (rqtp) {")
+    pcmd("  PRE_READ(rqtp, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "____sigtimedwait50") {
   } else if (syscall == "__mq_timedsend50") {
   } else if (syscall == "__mq_timedreceive50") {
