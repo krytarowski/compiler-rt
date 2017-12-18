@@ -1450,15 +1450,15 @@ POST_SYSCALL(setxattr)
 (long res, void *path, void *name, void *value, long size, long flags) {}
 PRE_SYSCALL(lsetxattr)
 (void *path, void *name, void *value, long size, long flags) {
-  /* Nothing to do */
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
 }
 POST_SYSCALL(lsetxattr)
 (long res, void *path, void *name, void *value, long size, long flags) {}
 PRE_SYSCALL(fsetxattr)
 (long fd, void *name, void *value, long size, long flags) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
+  /* Nothing to do */
 }
 POST_SYSCALL(fsetxattr)
 (long res, long fd, void *name, void *value, long size, long flags) {}
@@ -1477,9 +1477,7 @@ PRE_SYSCALL(lgetxattr)(void *path, void *name, void *value, long size) {
 POST_SYSCALL(lgetxattr)
 (long res, void *path, void *name, void *value, long size) {}
 PRE_SYSCALL(fgetxattr)(long fd, void *name, void *value, long size) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
+  /* Nothing to do */
 }
 POST_SYSCALL(fgetxattr)
 (long res, long fd, void *name, void *value, long size) {}
@@ -1532,8 +1530,8 @@ PRE_SYSCALL(__socket30)(long domain, long type, long protocol) {
 }
 POST_SYSCALL(__socket30)(long res, long domain, long type, long protocol) {}
 PRE_SYSCALL(__getfh30)(void *fname, void *fhp, void *fh_size) {
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  if (fname) {
+    PRE_READ(fname, __sanitizer::internal_strlen((const char *)fname) + 1);
   }
 }
 POST_SYSCALL(__getfh30)(long res, void *fname, void *fhp, void *fh_size) {}

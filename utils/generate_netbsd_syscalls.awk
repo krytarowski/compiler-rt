@@ -1385,11 +1385,11 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
   } else if (syscall == "lsetxattr") {
-    pcmd("/* Nothing to do */")
-  } else if (syscall == "fsetxattr") {
     pcmd("if (path) {")
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
+  } else if (syscall == "fsetxattr") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getxattr") {
     pcmd("if (path) {")
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
@@ -1399,9 +1399,7 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
   } else if (syscall == "fgetxattr") {
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
-    pcmd("}")
+    pcmd("/* Nothing to do */")
   } else if (syscall == "listxattr") {
     pcmd("if (path) {")
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
@@ -1439,8 +1437,8 @@ function pre_syscall(syscall)
   } else if (syscall == "__socket30") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__getfh30") {
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("if (fname) {")
+    pcmd("  PRE_READ(fname, __sanitizer::internal_strlen((const char *)fname) + 1);")
     pcmd("}")
   } else if (syscall == "__fhopen40") {
     pcmd("if (fhp) {")
