@@ -1566,8 +1566,26 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(rqtp, struct_timespec_sz);")
     pcmd("}")
   } else if (syscall == "____sigtimedwait50") {
+    pcmd("if (set) {")
+    pcmd("  PRE_READ(set, sizeof(__sanitizer_sigset_t));")
+    pcmd("}")
+    pcmd("if (timeout) {")
+    pcmd("  PRE_READ(timeout, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "__mq_timedsend50") {
+    pcmd("if (msg_ptr) {")
+    pcmd("  PRE_READ(msg_ptr, msg_len);")
+    pcmd("}")
+    pcmd("if (abs_timeout) {")
+    pcmd("  PRE_READ(abs_timeout, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "__mq_timedreceive50") {
+    pcmd("if (msg_ptr) {")
+    pcmd("  PRE_READ(msg_ptr, msg_len);")
+    pcmd("}")
+    pcmd("if (abs_timeout) {")
+    pcmd("  PRE_READ(abs_timeout, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "compat_60__lwp_park") {
     pcmd("/* TODO */")
   } else if (syscall == "__kevent50") {

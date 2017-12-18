@@ -1729,16 +1729,37 @@ PRE_SYSCALL(__nanosleep50)(void *rqtp, void *rmtp) {
   }
 }
 POST_SYSCALL(__nanosleep50)(long res, void *rqtp, void *rmtp) {}
-PRE_SYSCALL(____sigtimedwait50)(void *set, void *info, void *timeout) {}
+PRE_SYSCALL(____sigtimedwait50)(void *set, void *info, void *timeout) {
+  if (set) {
+    PRE_READ(set, sizeof(__sanitizer_sigset_t));
+  }
+  if (timeout) {
+    PRE_READ(timeout, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(____sigtimedwait50)
 (long res, void *set, void *info, void *timeout) {}
 PRE_SYSCALL(__mq_timedsend50)
-(long mqdes, void *msg_ptr, long msg_len, long msg_prio, void *abs_timeout) {}
+(long mqdes, void *msg_ptr, long msg_len, long msg_prio, void *abs_timeout) {
+  if (msg_ptr) {
+    PRE_READ(msg_ptr, msg_len);
+  }
+  if (abs_timeout) {
+    PRE_READ(abs_timeout, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__mq_timedsend50)
 (long res, long mqdes, void *msg_ptr, long msg_len, long msg_prio,
   void *abs_timeout) {}
 PRE_SYSCALL(__mq_timedreceive50)
-(long mqdes, void *msg_ptr, long msg_len, void *msg_prio, void *abs_timeout) {}
+(long mqdes, void *msg_ptr, long msg_len, void *msg_prio, void *abs_timeout) {
+  if (msg_ptr) {
+    PRE_READ(msg_ptr, msg_len);
+  }
+  if (abs_timeout) {
+    PRE_READ(abs_timeout, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__mq_timedreceive50)
 (long res, long mqdes, void *msg_ptr, long msg_len, void *msg_prio,
   void *abs_timeout) {}
