@@ -1289,12 +1289,19 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_60_sa_preempt") {
     pcmd("/* TODO */")
   } else if (syscall == "__sigaction_sigtramp") {
-
+    pcmd("if (nsa) {")
+    pcmd("  PRE_READ(nsa, sizeof(__sanitizer_sigaction));")
+    pcmd("}")
   } else if (syscall == "pmc_get_info") {
+    pcmd("/* TODO */")
   } else if (syscall == "pmc_control") {
+    pcmd("/* TODO */")
   } else if (syscall == "rasctl") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "kqueue") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_kevent") {
+    pcmd("/* TODO */")
   } else if (syscall == "_sched_setparam") {
   } else if (syscall == "_sched_getparam") {
   } else if (syscall == "_sched_setaffinity") {
@@ -1307,6 +1314,7 @@ function pre_syscall(syscall)
   } else if (syscall == "statvfs1") {
   } else if (syscall == "fstatvfs1") {
   } else if (syscall == "compat_30_fhstatvfs1") {
+    pcmd("/* TODO */")
   } else if (syscall == "extattrctl") {
   } else if (syscall == "extattr_set_file") {
   } else if (syscall == "extattr_get_file") {
@@ -1321,7 +1329,9 @@ function pre_syscall(syscall)
   } else if (syscall == "extattr_list_file") {
   } else if (syscall == "extattr_list_link") {
   } else if (syscall == "compat_50_pselect") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_pollts") {
+    pcmd("/* TODO */")
   } else if (syscall == "setxattr") {
   } else if (syscall == "lsetxattr") {
   } else if (syscall == "fsetxattr") {
@@ -1335,23 +1345,30 @@ function pre_syscall(syscall)
   } else if (syscall == "lremovexattr") {
   } else if (syscall == "fremovexattr") {
   } else if (syscall == "compat_50___stat30") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50___fstat30") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50___lstat30") {
+    pcmd("/* TODO */")
   } else if (syscall == "__getdents30") {
   } else if (syscall == "posix_fadvise") {
   } else if (syscall == "compat_30___fhstat30") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50___ntp_gettime30") {
+    pcmd("/* TODO */")
   } else if (syscall == "__socket30") {
   } else if (syscall == "__getfh30") {
   } else if (syscall == "__fhopen40") {
   } else if (syscall == "__fhstatvfs140") {
   } else if (syscall == "compat_50___fhstat40") {
+    pcmd("/* TODO */")
   } else if (syscall == "aio_cancel") {
   } else if (syscall == "aio_error") {
   } else if (syscall == "aio_fsync") {
   } else if (syscall == "aio_read") {
   } else if (syscall == "aio_return") {
   } else if (syscall == "compat_50_aio_suspend") {
+    pcmd("/* TODO */")
   } else if (syscall == "aio_write") {
   } else if (syscall == "lio_listio") {
   } else if (syscall == "__mount50") {
@@ -1379,6 +1396,7 @@ function pre_syscall(syscall)
   } else if (syscall == "__mq_timedsend50") {
   } else if (syscall == "__mq_timedreceive50") {
   } else if (syscall == "compat_60__lwp_park") {
+    pcmd("/* TODO */")
   } else if (syscall == "__kevent50") {
   } else if (syscall == "__pselect50") {
   } else if (syscall == "__pollts50") {
