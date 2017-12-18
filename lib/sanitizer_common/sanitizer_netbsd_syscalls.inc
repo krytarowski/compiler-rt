@@ -1273,34 +1273,54 @@ PRE_SYSCALL(compat_50_kevent)
 POST_SYSCALL(compat_50_kevent)
 (long res, long fd, void *changelist, long nchanges, void *eventlist,
   long nevents, void *timeout) {}
-PRE_SYSCALL(_sched_setparam)(long pid, long lid, long policy, void *params) {}
+PRE_SYSCALL(_sched_setparam)(long pid, long lid, long policy, void *params) {
+  if (params) {
+    PRE_READ(params, struct_sched_param_sz);
+  }
+}
 POST_SYSCALL(_sched_setparam)
 (long res, long pid, long lid, long policy, void *params) {}
-PRE_SYSCALL(_sched_getparam)(long pid, long lid, void *policy, void *params) {}
+PRE_SYSCALL(_sched_getparam)(long pid, long lid, void *policy, void *params) {
+  /* Nothing to do */
+}
 POST_SYSCALL(_sched_getparam)
 (long res, long pid, long lid, void *policy, void *params) {}
-PRE_SYSCALL(_sched_setaffinity)(long pid, long lid, long size, void *cpuset) {}
+PRE_SYSCALL(_sched_setaffinity)(long pid, long lid, long size, void *cpuset) {
+  if (cpuset) {
+    PRE_READ(cpuset, size);
+  }
+}
 POST_SYSCALL(_sched_setaffinity)
 (long res, long pid, long lid, long size, void *cpuset) {}
-PRE_SYSCALL(_sched_getaffinity)(long pid, long lid, long size, void *cpuset) {}
+PRE_SYSCALL(_sched_getaffinity)(long pid, long lid, long size, void *cpuset) {
+  /* Nothing to do */
+}
 POST_SYSCALL(_sched_getaffinity)
 (long res, long pid, long lid, long size, void *cpuset) {}
-PRE_SYSCALL(sched_yield)(void) {}
+PRE_SYSCALL(sched_yield)(void) { /* Nothing to do */ }
 POST_SYSCALL(sched_yield)(long res) {}
-PRE_SYSCALL(_sched_protect)(long priority) {}
+PRE_SYSCALL(_sched_protect)(long priority) { /* Nothing to do */ }
 POST_SYSCALL(_sched_protect)(long res, long priority) {}
 /* syscall 352 has been skipped */
 /* syscall 353 has been skipped */
-PRE_SYSCALL(fsync_range)(long fd, long flags, long start, long length) {}
+PRE_SYSCALL(fsync_range)(long fd, long flags, long start, long length) {
+  /* Nothing to do */
+}
 POST_SYSCALL(fsync_range)
 (long res, long fd, long flags, long start, long length) {}
-PRE_SYSCALL(uuidgen)(void *store, long count) {}
+PRE_SYSCALL(uuidgen)(void *store, long count) { /* Nothing to do */ }
 POST_SYSCALL(uuidgen)(long res, void *store, long count) {}
-PRE_SYSCALL(getvfsstat)(void *buf, long bufsize, long flags) {}
+PRE_SYSCALL(getvfsstat)(void *buf, long bufsize, long flags) {
+  /* Nothing to do */
+}
 POST_SYSCALL(getvfsstat)(long res, void *buf, long bufsize, long flags) {}
-PRE_SYSCALL(statvfs1)(void *path, void *buf, long flags) {}
+PRE_SYSCALL(statvfs1)(void *path, void *buf, long flags) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(statvfs1)(long res, void *path, void *buf, long flags) {}
-PRE_SYSCALL(fstatvfs1)(long fd, void *buf, long flags) {}
+PRE_SYSCALL(fstatvfs1)(long fd, void *buf, long flags) { /* Nothing to do */ }
 POST_SYSCALL(fstatvfs1)(long res, long fd, void *buf, long flags) {}
 PRE_SYSCALL(compat_30_fhstatvfs1)(void *fhp, void *buf, long flags) {
   /* TODO */
@@ -1308,61 +1328,105 @@ PRE_SYSCALL(compat_30_fhstatvfs1)(void *fhp, void *buf, long flags) {
 POST_SYSCALL(compat_30_fhstatvfs1)
 (long res, void *fhp, void *buf, long flags) {}
 PRE_SYSCALL(extattrctl)
-(void *path, long cmd, void *filename, long attrnamespace, void *attrname) {}
+(void *path, long cmd, void *filename, long attrnamespace, void *attrname) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattrctl)
 (long res, void *path, long cmd, void *filename, long attrnamespace,
   void *attrname) {}
 PRE_SYSCALL(extattr_set_file)
-(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
+(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_set_file)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
   long nbytes) {}
 PRE_SYSCALL(extattr_get_file)
-(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
+(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_get_file)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
   long nbytes) {}
 PRE_SYSCALL(extattr_delete_file)
-(void *path, long attrnamespace, void *attrname) {}
+(void *path, long attrnamespace, void *attrname) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_delete_file)
 (long res, void *path, long attrnamespace, void *attrname) {}
 PRE_SYSCALL(extattr_set_fd)
-(long fd, long attrnamespace, void *attrname, void *data, long nbytes) {}
+(long fd, long attrnamespace, void *attrname, void *data, long nbytes) {
+  /* TODO */
+}
 POST_SYSCALL(extattr_set_fd)
 (long res, long fd, long attrnamespace, void *attrname, void *data,
   long nbytes) {}
 PRE_SYSCALL(extattr_get_fd)
-(long fd, long attrnamespace, void *attrname, void *data, long nbytes) {}
+(long fd, long attrnamespace, void *attrname, void *data, long nbytes) {
+  /* TODO */
+}
 POST_SYSCALL(extattr_get_fd)
 (long res, long fd, long attrnamespace, void *attrname, void *data,
   long nbytes) {}
-PRE_SYSCALL(extattr_delete_fd)(long fd, long attrnamespace, void *attrname) {}
+PRE_SYSCALL(extattr_delete_fd)(long fd, long attrnamespace, void *attrname) {
+  /* TODO */
+}
 POST_SYSCALL(extattr_delete_fd)
 (long res, long fd, long attrnamespace, void *attrname) {}
 PRE_SYSCALL(extattr_set_link)
-(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
+(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_set_link)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
   long nbytes) {}
 PRE_SYSCALL(extattr_get_link)
-(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {}
+(void *path, long attrnamespace, void *attrname, void *data, long nbytes) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_get_link)
 (long res, void *path, long attrnamespace, void *attrname, void *data,
   long nbytes) {}
 PRE_SYSCALL(extattr_delete_link)
-(void *path, long attrnamespace, void *attrname) {}
+(void *path, long attrnamespace, void *attrname) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_delete_link)
 (long res, void *path, long attrnamespace, void *attrname) {}
 PRE_SYSCALL(extattr_list_fd)
-(long fd, long attrnamespace, void *data, long nbytes) {}
+(long fd, long attrnamespace, void *data, long nbytes) {
+  /* TODO */
+}
 POST_SYSCALL(extattr_list_fd)
 (long res, long fd, long attrnamespace, void *data, long nbytes) {}
 PRE_SYSCALL(extattr_list_file)
-(void *path, long attrnamespace, void *data, long nbytes) {}
+(void *path, long attrnamespace, void *data, long nbytes) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_list_file)
 (long res, void *path, long attrnamespace, void *data, long nbytes) {}
 PRE_SYSCALL(extattr_list_link)
-(void *path, long attrnamespace, void *data, long nbytes) {}
+(void *path, long attrnamespace, void *data, long nbytes) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(extattr_list_link)
 (long res, void *path, long attrnamespace, void *data, long nbytes) {}
 PRE_SYSCALL(compat_50_pselect)
@@ -1377,37 +1441,77 @@ PRE_SYSCALL(compat_50_pollts)(void *fds, long nfds, void *ts, void *mask) {
 POST_SYSCALL(compat_50_pollts)
 (long res, void *fds, long nfds, void *ts, void *mask) {}
 PRE_SYSCALL(setxattr)
-(void *path, void *name, void *value, long size, long flags) {}
+(void *path, void *name, void *value, long size, long flags) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(setxattr)
 (long res, void *path, void *name, void *value, long size, long flags) {}
 PRE_SYSCALL(lsetxattr)
-(void *path, void *name, void *value, long size, long flags) {}
+(void *path, void *name, void *value, long size, long flags) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(lsetxattr)
 (long res, void *path, void *name, void *value, long size, long flags) {}
 PRE_SYSCALL(fsetxattr)
-(long fd, void *name, void *value, long size, long flags) {}
+(long fd, void *name, void *value, long size, long flags) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(fsetxattr)
 (long res, long fd, void *name, void *value, long size, long flags) {}
-PRE_SYSCALL(getxattr)(void *path, void *name, void *value, long size) {}
+PRE_SYSCALL(getxattr)(void *path, void *name, void *value, long size) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(getxattr)
 (long res, void *path, void *name, void *value, long size) {}
-PRE_SYSCALL(lgetxattr)(void *path, void *name, void *value, long size) {}
+PRE_SYSCALL(lgetxattr)(void *path, void *name, void *value, long size) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(lgetxattr)
 (long res, void *path, void *name, void *value, long size) {}
-PRE_SYSCALL(fgetxattr)(long fd, void *name, void *value, long size) {}
+PRE_SYSCALL(fgetxattr)(long fd, void *name, void *value, long size) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(fgetxattr)
 (long res, long fd, void *name, void *value, long size) {}
-PRE_SYSCALL(listxattr)(void *path, void *list, long size) {}
+PRE_SYSCALL(listxattr)(void *path, void *list, long size) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(listxattr)(long res, void *path, void *list, long size) {}
-PRE_SYSCALL(llistxattr)(void *path, void *list, long size) {}
+PRE_SYSCALL(llistxattr)(void *path, void *list, long size) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(llistxattr)(long res, void *path, void *list, long size) {}
-PRE_SYSCALL(flistxattr)(long fd, void *list, long size) {}
+PRE_SYSCALL(flistxattr)(long fd, void *list, long size) { /* TODO */ }
 POST_SYSCALL(flistxattr)(long res, long fd, void *list, long size) {}
-PRE_SYSCALL(removexattr)(void *path, void *name) {}
+PRE_SYSCALL(removexattr)(void *path, void *name) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(removexattr)(long res, void *path, void *name) {}
-PRE_SYSCALL(lremovexattr)(void *path, void *name) {}
+PRE_SYSCALL(lremovexattr)(void *path, void *name) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(lremovexattr)(long res, void *path, void *name) {}
-PRE_SYSCALL(fremovexattr)(long fd, void *name) {}
+PRE_SYSCALL(fremovexattr)(long fd, void *name) { /* TODO */ }
 POST_SYSCALL(fremovexattr)(long res, long fd, void *name) {}
 PRE_SYSCALL(compat_50___stat30)(void *path, void *ub) { /* TODO */ }
 POST_SYSCALL(compat_50___stat30)(long res, void *path, void *ub) {}
@@ -1415,25 +1519,43 @@ PRE_SYSCALL(compat_50___fstat30)(long fd, void *sb) { /* TODO */ }
 POST_SYSCALL(compat_50___fstat30)(long res, long fd, void *sb) {}
 PRE_SYSCALL(compat_50___lstat30)(void *path, void *ub) { /* TODO */ }
 POST_SYSCALL(compat_50___lstat30)(long res, void *path, void *ub) {}
-PRE_SYSCALL(__getdents30)(long fd, void *buf, long count) {}
+PRE_SYSCALL(__getdents30)(long fd, void *buf, long count) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__getdents30)(long res, long fd, void *buf, long count) {}
-PRE_SYSCALL(posix_fadvise)(long) {}
+PRE_SYSCALL(posix_fadvise)(long) { /* Nothing to do */ }
 POST_SYSCALL(posix_fadvise)(long res, long) {}
 PRE_SYSCALL(compat_30___fhstat30)(void *fhp, void *sb) { /* TODO */ }
 POST_SYSCALL(compat_30___fhstat30)(long res, void *fhp, void *sb) {}
 PRE_SYSCALL(compat_50___ntp_gettime30)(void *ntvp) { /* TODO */ }
 POST_SYSCALL(compat_50___ntp_gettime30)(long res, void *ntvp) {}
-PRE_SYSCALL(__socket30)(long domain, long type, long protocol) {}
+PRE_SYSCALL(__socket30)(long domain, long type, long protocol) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__socket30)(long res, long domain, long type, long protocol) {}
-PRE_SYSCALL(__getfh30)(void *fname, void *fhp, void *fh_size) {}
+PRE_SYSCALL(__getfh30)(void *fname, void *fhp, void *fh_size) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(__getfh30)(long res, void *fname, void *fhp, void *fh_size) {}
-PRE_SYSCALL(__fhopen40)(void *fhp, long fh_size, long flags) {}
+PRE_SYSCALL(__fhopen40)(void *fhp, long fh_size, long flags) {
+  if (fhp) {
+    PRE_READ(fhp, fh_size);
+  }
+}
 POST_SYSCALL(__fhopen40)(long res, void *fhp, long fh_size, long flags) {}
-PRE_SYSCALL(__fhstatvfs140)(void *fhp, long fh_size, void *buf, long flags) {}
+PRE_SYSCALL(__fhstatvfs140)(void *fhp, long fh_size, void *buf, long flags) {
+  if (fhp) {
+    PRE_READ(fhp, fh_size);
+  }
+}
 POST_SYSCALL(__fhstatvfs140)
 (long res, void *fhp, long fh_size, void *buf, long flags) {}
 PRE_SYSCALL(compat_50___fhstat40)(void *fhp, long fh_size, void *sb) {
-  /* TODO */
+  if (fhp) {
+    PRE_READ(fhp, fh_size);
+  }
 }
 POST_SYSCALL(compat_50___fhstat40)
 (long res, void *fhp, long fh_size, void *sb) {}

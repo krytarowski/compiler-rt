@@ -1303,47 +1303,127 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_50_kevent") {
     pcmd("/* TODO */")
   } else if (syscall == "_sched_setparam") {
+    pcmd("if (params) {")
+    pcmd("  PRE_READ(params, struct_sched_param_sz);")
+    pcmd("}")
   } else if (syscall == "_sched_getparam") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_sched_setaffinity") {
+    pcmd("if (cpuset) {")
+    pcmd("  PRE_READ(cpuset, size);")
+    pcmd("}")
   } else if (syscall == "_sched_getaffinity") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "sched_yield") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "_sched_protect") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fsync_range") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "uuidgen") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "getvfsstat") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "statvfs1") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "fstatvfs1") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_30_fhstatvfs1") {
     pcmd("/* TODO */")
   } else if (syscall == "extattrctl") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_set_file") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_get_file") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_delete_file") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_set_fd") {
+    pcmd("/* TODO */")
   } else if (syscall == "extattr_get_fd") {
+    pcmd("/* TODO */")
   } else if (syscall == "extattr_delete_fd") {
+    pcmd("/* TODO */")
   } else if (syscall == "extattr_set_link") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_get_link") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_delete_link") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_list_fd") {
+    pcmd("/* TODO */")
   } else if (syscall == "extattr_list_file") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "extattr_list_link") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "compat_50_pselect") {
     pcmd("/* TODO */")
   } else if (syscall == "compat_50_pollts") {
     pcmd("/* TODO */")
   } else if (syscall == "setxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "lsetxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "fsetxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "getxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "lgetxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "fgetxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "listxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "llistxattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "flistxattr") {
+    pcmd("/* TODO */")
   } else if (syscall == "removexattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "lremovexattr") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "fremovexattr") {
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50___stat30") {
     pcmd("/* TODO */")
   } else if (syscall == "compat_50___fstat30") {
@@ -1351,18 +1431,33 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_50___lstat30") {
     pcmd("/* TODO */")
   } else if (syscall == "__getdents30") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "posix_fadvise") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_30___fhstat30") {
     pcmd("/* TODO */")
   } else if (syscall == "compat_50___ntp_gettime30") {
     pcmd("/* TODO */")
   } else if (syscall == "__socket30") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__getfh30") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "__fhopen40") {
+    pcmd("if (fhp) {")
+    pcmd("  PRE_READ(fhp, fh_size);")
+    pcmd("}")
   } else if (syscall == "__fhstatvfs140") {
+    pcmd("if (fhp) {")
+    pcmd("  PRE_READ(fhp, fh_size);")
+    pcmd("}")
   } else if (syscall == "compat_50___fhstat40") {
-    pcmd("/* TODO */")
+    pcmd("if (fhp) {")
+    pcmd("  PRE_READ(fhp, fh_size);")
+    pcmd("}")
   } else if (syscall == "aio_cancel") {
+
   } else if (syscall == "aio_error") {
   } else if (syscall == "aio_fsync") {
   } else if (syscall == "aio_read") {
