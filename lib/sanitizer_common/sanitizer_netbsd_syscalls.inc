@@ -1250,20 +1250,26 @@ POST_SYSCALL(compat_60_sa_preempt)(long res, long sa_id) {}
 /* syscall 338 has been skipped */
 /* syscall 339 has been skipped */
 PRE_SYSCALL(__sigaction_sigtramp)
-(long signum, void *nsa, void *osa, void *tramp, long vers) {}
+(long signum, void *nsa, void *osa, void *tramp, long vers) {
+  if (nsa) {
+    PRE_READ(nsa, sizeof(__sanitizer_sigaction));
+  }
+}
 POST_SYSCALL(__sigaction_sigtramp)
 (long res, long signum, void *nsa, void *osa, void *tramp, long vers) {}
-PRE_SYSCALL(pmc_get_info)(long ctr, long op, void *args) {}
+PRE_SYSCALL(pmc_get_info)(long ctr, long op, void *args) { /* TODO */ }
 POST_SYSCALL(pmc_get_info)(long res, long ctr, long op, void *args) {}
-PRE_SYSCALL(pmc_control)(long ctr, long op, void *args) {}
+PRE_SYSCALL(pmc_control)(long ctr, long op, void *args) { /* TODO */ }
 POST_SYSCALL(pmc_control)(long res, long ctr, long op, void *args) {}
-PRE_SYSCALL(rasctl)(void *addr, long len, long op) {}
+PRE_SYSCALL(rasctl)(void *addr, long len, long op) { /* Nothing to do */ }
 POST_SYSCALL(rasctl)(long res, void *addr, long len, long op) {}
-PRE_SYSCALL(kqueue)(void) {}
+PRE_SYSCALL(kqueue)(void) { /* Nothing to do */ }
 POST_SYSCALL(kqueue)(long res) {}
 PRE_SYSCALL(compat_50_kevent)
 (long fd, void *changelist, long nchanges, void *eventlist, long nevents,
-  void *timeout) {}
+  void *timeout) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50_kevent)
 (long res, long fd, void *changelist, long nchanges, void *eventlist,
   long nevents, void *timeout) {}
@@ -1296,7 +1302,9 @@ PRE_SYSCALL(statvfs1)(void *path, void *buf, long flags) {}
 POST_SYSCALL(statvfs1)(long res, void *path, void *buf, long flags) {}
 PRE_SYSCALL(fstatvfs1)(long fd, void *buf, long flags) {}
 POST_SYSCALL(fstatvfs1)(long res, long fd, void *buf, long flags) {}
-PRE_SYSCALL(compat_30_fhstatvfs1)(void *fhp, void *buf, long flags) {}
+PRE_SYSCALL(compat_30_fhstatvfs1)(void *fhp, void *buf, long flags) {
+  /* TODO */
+}
 POST_SYSCALL(compat_30_fhstatvfs1)
 (long res, void *fhp, void *buf, long flags) {}
 PRE_SYSCALL(extattrctl)
@@ -1358,10 +1366,14 @@ PRE_SYSCALL(extattr_list_link)
 POST_SYSCALL(extattr_list_link)
 (long res, void *path, long attrnamespace, void *data, long nbytes) {}
 PRE_SYSCALL(compat_50_pselect)
-(long nd, void *in, void *ou, void *ex, void *ts, void *mask) {}
+(long nd, void *in, void *ou, void *ex, void *ts, void *mask) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50_pselect)
 (long res, long nd, void *in, void *ou, void *ex, void *ts, void *mask) {}
-PRE_SYSCALL(compat_50_pollts)(void *fds, long nfds, void *ts, void *mask) {}
+PRE_SYSCALL(compat_50_pollts)(void *fds, long nfds, void *ts, void *mask) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50_pollts)
 (long res, void *fds, long nfds, void *ts, void *mask) {}
 PRE_SYSCALL(setxattr)
@@ -1397,19 +1409,19 @@ PRE_SYSCALL(lremovexattr)(void *path, void *name) {}
 POST_SYSCALL(lremovexattr)(long res, void *path, void *name) {}
 PRE_SYSCALL(fremovexattr)(long fd, void *name) {}
 POST_SYSCALL(fremovexattr)(long res, long fd, void *name) {}
-PRE_SYSCALL(compat_50___stat30)(void *path, void *ub) {}
+PRE_SYSCALL(compat_50___stat30)(void *path, void *ub) { /* TODO */ }
 POST_SYSCALL(compat_50___stat30)(long res, void *path, void *ub) {}
-PRE_SYSCALL(compat_50___fstat30)(long fd, void *sb) {}
+PRE_SYSCALL(compat_50___fstat30)(long fd, void *sb) { /* TODO */ }
 POST_SYSCALL(compat_50___fstat30)(long res, long fd, void *sb) {}
-PRE_SYSCALL(compat_50___lstat30)(void *path, void *ub) {}
+PRE_SYSCALL(compat_50___lstat30)(void *path, void *ub) { /* TODO */ }
 POST_SYSCALL(compat_50___lstat30)(long res, void *path, void *ub) {}
 PRE_SYSCALL(__getdents30)(long fd, void *buf, long count) {}
 POST_SYSCALL(__getdents30)(long res, long fd, void *buf, long count) {}
 PRE_SYSCALL(posix_fadvise)(long) {}
 POST_SYSCALL(posix_fadvise)(long res, long) {}
-PRE_SYSCALL(compat_30___fhstat30)(void *fhp, void *sb) {}
+PRE_SYSCALL(compat_30___fhstat30)(void *fhp, void *sb) { /* TODO */ }
 POST_SYSCALL(compat_30___fhstat30)(long res, void *fhp, void *sb) {}
-PRE_SYSCALL(compat_50___ntp_gettime30)(void *ntvp) {}
+PRE_SYSCALL(compat_50___ntp_gettime30)(void *ntvp) { /* TODO */ }
 POST_SYSCALL(compat_50___ntp_gettime30)(long res, void *ntvp) {}
 PRE_SYSCALL(__socket30)(long domain, long type, long protocol) {}
 POST_SYSCALL(__socket30)(long res, long domain, long type, long protocol) {}
@@ -1420,7 +1432,9 @@ POST_SYSCALL(__fhopen40)(long res, void *fhp, long fh_size, long flags) {}
 PRE_SYSCALL(__fhstatvfs140)(void *fhp, long fh_size, void *buf, long flags) {}
 POST_SYSCALL(__fhstatvfs140)
 (long res, void *fhp, long fh_size, void *buf, long flags) {}
-PRE_SYSCALL(compat_50___fhstat40)(void *fhp, long fh_size, void *sb) {}
+PRE_SYSCALL(compat_50___fhstat40)(void *fhp, long fh_size, void *sb) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50___fhstat40)
 (long res, void *fhp, long fh_size, void *sb) {}
 PRE_SYSCALL(aio_cancel)(long fildes, void *aiocbp) {}
@@ -1433,7 +1447,9 @@ PRE_SYSCALL(aio_read)(void *aiocbp) {}
 POST_SYSCALL(aio_read)(long res, void *aiocbp) {}
 PRE_SYSCALL(aio_return)(void *aiocbp) {}
 POST_SYSCALL(aio_return)(long res, void *aiocbp) {}
-PRE_SYSCALL(compat_50_aio_suspend)(void *list, long nent, void *timeout) {}
+PRE_SYSCALL(compat_50_aio_suspend)(void *list, long nent, void *timeout) {
+  /* TODO */
+}
 POST_SYSCALL(compat_50_aio_suspend)
 (long res, void *list, long nent, void *timeout) {}
 PRE_SYSCALL(aio_write)(void *aiocbp) {}
@@ -1512,7 +1528,9 @@ POST_SYSCALL(__mq_timedreceive50)
 (long res, long mqdes, void *msg_ptr, long msg_len, void *msg_prio,
   void *abs_timeout) {}
 PRE_SYSCALL(compat_60__lwp_park)
-(void *ts, long unpark, void *hint, void *unparkhint) {}
+(void *ts, long unpark, void *hint, void *unparkhint) {
+  /* TODO */
+}
 POST_SYSCALL(compat_60__lwp_park)
 (long res, void *ts, long unpark, void *hint, void *unparkhint) {}
 PRE_SYSCALL(__kevent50)
