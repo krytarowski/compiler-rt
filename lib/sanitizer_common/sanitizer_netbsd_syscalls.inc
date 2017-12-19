@@ -43,8 +43,8 @@
 // DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
 //
 // Generated with: generate_netbsd_syscalls.awk
-// Generated date: 2017-12-18
-// Generated from: syscalls.master,v 1.287 2017/12/08 01:19:29 christos Exp
+// Generated date: 2017-12-20
+// Generated from: syscalls.master,v 1.290 2017/12/19 19:40:03 kamil Exp
 //
 //===----------------------------------------------------------------------===//
 
@@ -405,18 +405,15 @@ PRE_SYSCALL(vfork)(void) { /* Nothing to do */ }
 POST_SYSCALL(vfork)(long res) {}
 /* syscall 67 has been skipped */
 /* syscall 68 has been skipped */
-PRE_SYSCALL(sbrk)(long incr) { /* Nothing to do */ }
-POST_SYSCALL(sbrk)(long res, long incr) {}
-PRE_SYSCALL(sstk)(long incr) { /* Nothing to do */ }
-POST_SYSCALL(sstk)(long res, long incr) {}
+/* syscall 69 has been skipped */
+/* syscall 70 has been skipped */
 PRE_SYSCALL(compat_43_ommap)
 (void *addr, long len, long prot, long flags, long fd, long pos) {
   /* Nothing to do */
 }
 POST_SYSCALL(compat_43_ommap)
 (long res, void *addr, long len, long prot, long flags, long fd, long pos) {}
-PRE_SYSCALL(vadvise)(long anom) { /* Nothing to do */ }
-POST_SYSCALL(vadvise)(long res, long anom) {}
+/* syscall 72 has been skipped */
 PRE_SYSCALL(munmap)(void *addr, long len) { /* Nothing to do */ }
 POST_SYSCALL(munmap)(long res, void *addr, long len) {}
 PRE_SYSCALL(mprotect)(void *addr, long len, long prot) { /* Nothing to do */ }
@@ -1771,7 +1768,11 @@ POST_SYSCALL(compat_60__lwp_park)
 (long res, void *ts, long unpark, void *hint, void *unparkhint) {}
 PRE_SYSCALL(__kevent50)
 (long fd, void *changelist, long nchanges, void *eventlist, long nevents,
-  void *timeout) {}
+  void *timeout) {
+  if (timeout) {
+    PRE_READ(timeout, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__kevent50)
 (long res, long fd, void *changelist, long nchanges, void *eventlist,
   long nevents, void *timeout) {}
@@ -1784,11 +1785,19 @@ POST_SYSCALL(__pollts50)
 (long res, void *fds, long nfds, void *ts, void *mask) {}
 PRE_SYSCALL(__aio_suspend50)(void *list, long nent, void *timeout) {}
 POST_SYSCALL(__aio_suspend50)(long res, void *list, long nent, void *timeout) {}
-PRE_SYSCALL(__stat50)(void *path, void *ub) {}
+PRE_SYSCALL(__stat50)(void *path, void *ub) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(__stat50)(long res, void *path, void *ub) {}
-PRE_SYSCALL(__fstat50)(long fd, void *sb) {}
+PRE_SYSCALL(__fstat50)(long fd, void *sb) { /* Nothing to do */ }
 POST_SYSCALL(__fstat50)(long res, long fd, void *sb) {}
-PRE_SYSCALL(__lstat50)(void *path, void *ub) {}
+PRE_SYSCALL(__lstat50)(void *path, void *ub) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(__lstat50)(long res, void *path, void *ub) {}
 PRE_SYSCALL(____semctl50)(long semid, long semnum, long cmd, void *arg) {}
 POST_SYSCALL(____semctl50)

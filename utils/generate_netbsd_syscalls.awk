@@ -740,13 +740,7 @@ function pre_syscall(syscall)
     pcmd("/* Nothing to do */")
   } else if (syscall == "vfork") {
     pcmd("/* Nothing to do */")
-  } else if (syscall == "sbrk") {
-    pcmd("/* Nothing to do */")
-  } else if (syscall == "sstk") {
-    pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ommap") {
-    pcmd("/* Nothing to do */")
-  } else if (syscall == "vadvise") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "munmap") {
     pcmd("/* Nothing to do */")
@@ -1725,10 +1719,7 @@ function post_syscall(syscall)
   } else if (syscall == "compat_43_ogetpagesize") {
   } else if (syscall == "compat_12_msync") {
   } else if (syscall == "vfork") {
-  } else if (syscall == "sbrk") {
-  } else if (syscall == "sstk") {
   } else if (syscall == "compat_43_ommap") {
-  } else if (syscall == "vadvise") {
   } else if (syscall == "munmap") {
   } else if (syscall == "mprotect") {
   } else if (syscall == "madvise") {

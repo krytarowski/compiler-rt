@@ -21,8 +21,8 @@
 // DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
 //
 // Generated with: generate_netbsd_syscalls.awk
-// Generated date: 2017-12-18
-// Generated from: syscalls.master,v 1.287 2017/12/08 01:19:29 christos Exp
+// Generated date: 2017-12-20
+// Generated from: syscalls.master,v 1.290 2017/12/19 19:40:03 kamil Exp
 //
 //===----------------------------------------------------------------------===//
 #ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H
@@ -339,14 +339,8 @@
   __sanitizer_syscall_post_impl_vfork(res)
 /* syscall 67 has been skipped */
 /* syscall 68 has been skipped */
-#define __sanitizer_syscall_pre_sbrk(incr)                                     \
-  __sanitizer_syscall_pre_impl_sbrk((long)(incr))
-#define __sanitizer_syscall_post_sbrk(res, incr)                               \
-  __sanitizer_syscall_post_impl_sbrk(res, (long)(incr))
-#define __sanitizer_syscall_pre_sstk(incr)                                     \
-  __sanitizer_syscall_pre_impl_sstk((long)(incr))
-#define __sanitizer_syscall_post_sstk(res, incr)                               \
-  __sanitizer_syscall_post_impl_sstk(res, (long)(incr))
+/* syscall 69 has been skipped */
+/* syscall 70 has been skipped */
 #define __sanitizer_syscall_pre_compat_43_ommap(addr, len, prot, flags, fd,    \
                                                 pos)                           \
   __sanitizer_syscall_pre_impl_compat_43_ommap((long)(addr), (long)(len),      \
@@ -357,10 +351,7 @@
   __sanitizer_syscall_post_impl_compat_43_ommap(                               \
       res, (long)(addr), (long)(len), (long)(prot), (long)(flags), (long)(fd), \
       (long)(pos))
-#define __sanitizer_syscall_pre_vadvise(anom)                                  \
-  __sanitizer_syscall_pre_impl_vadvise((long)(anom))
-#define __sanitizer_syscall_post_vadvise(res, anom)                            \
-  __sanitizer_syscall_post_impl_vadvise(res, (long)(anom))
+/* syscall 72 has been skipped */
 #define __sanitizer_syscall_pre_munmap(addr, len)                              \
   __sanitizer_syscall_pre_impl_munmap((long)(addr), (long)(len))
 #define __sanitizer_syscall_post_munmap(res, addr, len)                        \
@@ -2623,10 +2614,8 @@ void __sanitizer_syscall_pre_impl_vfork(void);
 void __sanitizer_syscall_post_impl_vfork(long res);
 /* syscall 67 has been skipped */
 /* syscall 68 has been skipped */
-void __sanitizer_syscall_pre_impl_sbrk(long incr);
-void __sanitizer_syscall_post_impl_sbrk(long res, long incr);
-void __sanitizer_syscall_pre_impl_sstk(long incr);
-void __sanitizer_syscall_post_impl_sstk(long res, long incr);
+/* syscall 69 has been skipped */
+/* syscall 70 has been skipped */
 void __sanitizer_syscall_pre_impl_compat_43_ommap(long addr, long len,
                                                   long prot, long flags,
                                                   long fd, long pos);
@@ -2634,8 +2623,7 @@ void __sanitizer_syscall_post_impl_compat_43_ommap(long res, long addr,
                                                    long len, long prot,
                                                    long flags, long fd,
                                                    long pos);
-void __sanitizer_syscall_pre_impl_vadvise(long anom);
-void __sanitizer_syscall_post_impl_vadvise(long res, long anom);
+/* syscall 72 has been skipped */
 void __sanitizer_syscall_pre_impl_munmap(long addr, long len);
 void __sanitizer_syscall_post_impl_munmap(long res, long addr, long len);
 void __sanitizer_syscall_pre_impl_mprotect(long addr, long len, long prot);
