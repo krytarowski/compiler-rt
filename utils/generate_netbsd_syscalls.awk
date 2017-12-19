@@ -1589,12 +1589,22 @@ function pre_syscall(syscall)
   } else if (syscall == "compat_60__lwp_park") {
     pcmd("/* TODO */")
   } else if (syscall == "__kevent50") {
+    pcmd("if (timeout) {")
+    pcmd("  PRE_READ(timeout, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "__pselect50") {
   } else if (syscall == "__pollts50") {
   } else if (syscall == "__aio_suspend50") {
   } else if (syscall == "__stat50") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "__fstat50") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "__lstat50") {
+    pcmd("if (path) {")
+    pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
+    pcmd("}")
   } else if (syscall == "____semctl50") {
   } else if (syscall == "__shmctl50") {
   } else if (syscall == "__msgctl50") {
