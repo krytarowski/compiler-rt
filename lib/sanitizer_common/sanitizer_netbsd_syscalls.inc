@@ -2038,21 +2038,26 @@ POST_SYSCALL(posix_spawn)
   void *envp) {}
 PRE_SYSCALL(recvmmsg)
 (long s, void *mmsg, long vlen, long flags, void *timeout) {
-  struct __sanitizer_mmsghdr *mmsg_ = (struct __sanitizer_mmsghdr *)mmsg;
-  if (mmsg_) {
-    PRE_READ(mmsg_, sizeof(struct __sanitizer_mmsghdr));
-    PRE_READ(&mmsg_->msg_hdr,
-             sizeof(struct __sanitizer_msghdr) * mmsg_->msg_len);
+  if (timeout) {
+    PRE_READ(timeout, struct_timespec_sz);
   }
 }
 POST_SYSCALL(recvmmsg)
 (long res, long s, void *mmsg, long vlen, long flags, void *timeout) {}
 PRE_SYSCALL(sendmmsg)(long s, void *mmsg, long vlen, long flags) {
-  /* Nothing to do */
+  struct __sanitizer_mmsghdr *mmsg_ = (struct __sanitizer_mmsghdr *)mmsg;
+  if (mmsg_) {
+    PRE_READ(mmsg_,
+             sizeof(struct __sanitizer_mmsghdr) * (vlen > 1024 ? 1024 : vlen));
+  }
 }
 POST_SYSCALL(sendmmsg)(long res, long s, void *mmsg, long vlen, long flags) {}
 PRE_SYSCALL(clock_nanosleep)
-(long clock_id, long flags, void *rqtp, void *rmtp) {}
+(long clock_id, long flags, void *rqtp, void *rmtp) {
+  if (rqtp) {
+    PRE_READ(rqtp, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(clock_nanosleep)
 (long res, long clock_id, long flags, void *rqtp, void *rmtp) {}
 PRE_SYSCALL(___lwp_park60)

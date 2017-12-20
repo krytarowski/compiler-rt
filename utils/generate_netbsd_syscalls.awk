@@ -1764,15 +1764,18 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);")
     pcmd("}")
   } else if (syscall == "recvmmsg") {
-    pcmd("struct __sanitizer_mmsghdr *mmsg_ = (struct __sanitizer_mmsghdr *)mmsg;")
-    pcmd("if (mmsg_) {")
-    pcmd("  PRE_READ(mmsg_, sizeof(struct __sanitizer_mmsghdr));")
-    pcmd("  PRE_READ(&mmsg_->msg_hdr, sizeof(struct __sanitizer_msghdr) * mmsg_->msg_len);")
+    pcmd("if (timeout) {")
+    pcmd("  PRE_READ(timeout, struct_timespec_sz);")
     pcmd("}")
   } else if (syscall == "sendmmsg") {
-    pcmd("/* Nothing to do */")
+    pcmd("struct __sanitizer_mmsghdr *mmsg_ = (struct __sanitizer_mmsghdr *)mmsg;")
+    pcmd("if (mmsg_) {")
+    pcmd("  PRE_READ(mmsg_, sizeof(struct __sanitizer_mmsghdr) * (vlen > 1024 ? 1024 : vlen));")
+    pcmd("}")
   } else if (syscall == "clock_nanosleep") {
-
+    pcmd("if (rqtp) {")
+    pcmd("  PRE_READ(rqtp, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "___lwp_park60") {
   } else if (syscall == "posix_fallocate") {
   } else if (syscall == "fdiscard") {
