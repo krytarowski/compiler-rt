@@ -1777,10 +1777,17 @@ function pre_syscall(syscall)
     pcmd("  PRE_READ(rqtp, struct_timespec_sz);")
     pcmd("}")
   } else if (syscall == "___lwp_park60") {
+    pcmd("if (ts) {")
+    pcmd("  PRE_READ(ts, struct_timespec_sz);")
+    pcmd("}")
   } else if (syscall == "posix_fallocate") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "fdiscard") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "wait6") {
+    pcmd("/* Nothing to do */")
   } else if (syscall == "clock_getcpuclockid2") {
+    pcmd("/* Nothing to do */")
   } else {
     print "Unrecognized syscall: " syscall
     abnormal_exit = 1

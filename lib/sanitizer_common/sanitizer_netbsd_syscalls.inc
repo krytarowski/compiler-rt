@@ -2062,21 +2062,33 @@ POST_SYSCALL(clock_nanosleep)
 (long res, long clock_id, long flags, void *rqtp, void *rmtp) {}
 PRE_SYSCALL(___lwp_park60)
 (long clock_id, long flags, void *ts, long unpark, void *hint,
-  void *unparkhint) {}
+  void *unparkhint) {
+  if (ts) {
+    PRE_READ(ts, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(___lwp_park60)
 (long res, long clock_id, long flags, void *ts, long unpark, void *hint,
   void *unparkhint) {}
-PRE_SYSCALL(posix_fallocate)(long fd, long PAD, long pos, long len) {}
+PRE_SYSCALL(posix_fallocate)(long fd, long PAD, long pos, long len) {
+  /* Nothing to do */
+}
 POST_SYSCALL(posix_fallocate)
 (long res, long fd, long PAD, long pos, long len) {}
-PRE_SYSCALL(fdiscard)(long fd, long PAD, long pos, long len) {}
+PRE_SYSCALL(fdiscard)(long fd, long PAD, long pos, long len) {
+  /* Nothing to do */
+}
 POST_SYSCALL(fdiscard)(long res, long fd, long PAD, long pos, long len) {}
 PRE_SYSCALL(wait6)
-(long idtype, long id, void *status, long options, void *wru, void *info) {}
+(long idtype, long id, void *status, long options, void *wru, void *info) {
+  /* Nothing to do */
+}
 POST_SYSCALL(wait6)
 (long res, long idtype, long id, void *status, long options, void *wru,
   void *info) {}
-PRE_SYSCALL(clock_getcpuclockid2)(long idtype, long id, void *clock_id) {}
+PRE_SYSCALL(clock_getcpuclockid2)(long idtype, long id, void *clock_id) {
+  /* Nothing to do */
+}
 POST_SYSCALL(clock_getcpuclockid2)
 (long res, long idtype, long id, void *clock_id) {}
 #undef SYS_MAXSYSARGS
