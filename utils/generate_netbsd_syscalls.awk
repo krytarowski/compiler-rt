@@ -1663,8 +1663,8 @@ function pre_syscall(syscall)
   } else if (syscall == "kqueue1") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "paccept") {
-    pcmd("if (sigmask) {")
-    pcmd("  PRE_READ(sigmask, sizeof(__sanitizer_sigset_t));")
+    pcmd("if (mask) {")
+    pcmd("  PRE_READ(mask, sizeof(__sanitizer_sigset_t));")
     pcmd("}")
   } else if (syscall == "linkat") {
     pcmd("if (name1) {")

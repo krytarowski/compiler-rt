@@ -1888,8 +1888,8 @@ PRE_SYSCALL(kqueue1)(long flags) { /* Nothing to do */ }
 POST_SYSCALL(kqueue1)(long res, long flags) {}
 PRE_SYSCALL(paccept)
 (long s, void *name, void *anamelen, void *mask, long flags) {
-  if (sigmask) {
-    PRE_READ(sigmask, sizeof(__sanitizer_sigset_t));
+  if (mask) {
+    PRE_READ(mask, sizeof(__sanitizer_sigset_t));
   }
 }
 POST_SYSCALL(paccept)

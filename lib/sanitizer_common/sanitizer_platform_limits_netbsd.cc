@@ -35,6 +35,7 @@
 #include <semaphore.h>
 #include <signal.h>
 #include <stddef.h>
+#include <sys/event.h>
 #include <sys/filio.h>
 #include <sys/ipc.h>
 #include <sys/mman.h>
