@@ -58,6 +58,8 @@ extern unsigned struct_rlimit_sz;
 extern unsigned struct_utimbuf_sz;
 extern unsigned struct_timespec_sz;
 
+extern unsigned struct_kevent_sz;
+
 union __sanitizer_sigval {
   int sival_int;
   uptr sival_ptr;
@@ -206,6 +208,12 @@ struct __sanitizer_msghdr {
   unsigned msg_controllen;
   int msg_flags;
 };
+
+struct __sanitizer_mmsghdr {
+  struct __sanitizer_msghdr msg_hdr;
+  unsigned int msg_len;
+};
+
 struct __sanitizer_cmsghdr {
   unsigned cmsg_len;
   int cmsg_level;

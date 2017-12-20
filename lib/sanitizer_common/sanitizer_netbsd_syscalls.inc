@@ -1769,6 +1769,9 @@ POST_SYSCALL(compat_60__lwp_park)
 PRE_SYSCALL(__kevent50)
 (long fd, void *changelist, long nchanges, void *eventlist, long nevents,
   void *timeout) {
+  if (changelist) {
+    PRE_READ(changelist, nchanges * struct_kevent_sz);
+  }
   if (timeout) {
     PRE_READ(timeout, struct_timespec_sz);
   }
@@ -1777,13 +1780,40 @@ POST_SYSCALL(__kevent50)
 (long res, long fd, void *changelist, long nchanges, void *eventlist,
   long nevents, void *timeout) {}
 PRE_SYSCALL(__pselect50)
-(long nd, void *in, void *ou, void *ex, void *ts, void *mask) {}
+(long nd, void *in, void *ou, void *ex, void *ts, void *mask) {
+  if (ts) {
+    PRE_READ(ts, struct_timespec_sz);
+  }
+  if (mask) {
+    PRE_READ(mask, sizeof(struct __sanitizer_sigset_t));
+  }
+}
 POST_SYSCALL(__pselect50)
 (long res, long nd, void *in, void *ou, void *ex, void *ts, void *mask) {}
-PRE_SYSCALL(__pollts50)(void *fds, long nfds, void *ts, void *mask) {}
+PRE_SYSCALL(__pollts50)(void *fds, long nfds, void *ts, void *mask) {
+  if (ts) {
+    PRE_READ(ts, struct_timespec_sz);
+  }
+  if (mask) {
+    PRE_READ(mask, sizeof(struct __sanitizer_sigset_t));
+  }
+}
 POST_SYSCALL(__pollts50)
 (long res, void *fds, long nfds, void *ts, void *mask) {}
-PRE_SYSCALL(__aio_suspend50)(void *list, long nent, void *timeout) {}
+PRE_SYSCALL(__aio_suspend50)(void *list, long nent, void *timeout) {
+  int i;
+  const struct aiocb *const *aiolist = (const struct aiocb *const *)list;
+  if (aiolist) {
+    for (i = 0; i < nent; i++) {
+      if (aiolist[i]) {
+        PRE_READ(aiolist[i], sizeof(struct __sanitizer_aiocb));
+      }
+    }
+  }
+  if (timeout) {
+    PRE_READ(timeout, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(__aio_suspend50)(long res, void *list, long nent, void *timeout) {}
 PRE_SYSCALL(__stat50)(void *path, void *ub) {
   if (path) {
@@ -1799,95 +1829,232 @@ PRE_SYSCALL(__lstat50)(void *path, void *ub) {
   }
 }
 POST_SYSCALL(__lstat50)(long res, void *path, void *ub) {}
-PRE_SYSCALL(____semctl50)(long semid, long semnum, long cmd, void *arg) {}
+PRE_SYSCALL(____semctl50)(long semid, long semnum, long cmd, void *arg) {
+  /* Nothing to do */
+}
 POST_SYSCALL(____semctl50)
 (long res, long semid, long semnum, long cmd, void *arg) {}
-PRE_SYSCALL(__shmctl50)(long shmid, long cmd, void *buf) {}
+PRE_SYSCALL(__shmctl50)(long shmid, long cmd, void *buf) { /* Nothing to do */ }
 POST_SYSCALL(__shmctl50)(long res, long shmid, long cmd, void *buf) {}
-PRE_SYSCALL(__msgctl50)(long msqid, long cmd, void *buf) {}
+PRE_SYSCALL(__msgctl50)(long msqid, long cmd, void *buf) { /* Nothing to do */ }
 POST_SYSCALL(__msgctl50)(long res, long msqid, long cmd, void *buf) {}
-PRE_SYSCALL(__getrusage50)(long who, void *rusage) {}
+PRE_SYSCALL(__getrusage50)(long who, void *rusage) { /* Nothing to do */ }
 POST_SYSCALL(__getrusage50)(long res, long who, void *rusage) {}
 PRE_SYSCALL(__timer_settime50)
-(long timerid, long flags, void *value, void *ovalue) {}
+(long timerid, long flags, void *value, void *ovalue) {
+  struct __sanitizer_itimerval *i = (struct __sanitizer_itimerval *)value;
+  if (i) {
+    PRE_READ(&i->it_interval.tv_sec, sizeof(__sanitizer_time_t));
+    PRE_READ(&i->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));
+    PRE_READ(&i->it_value.tv_sec, sizeof(__sanitizer_time_t));
+    PRE_READ(&i->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));
+  }
+}
 POST_SYSCALL(__timer_settime50)
 (long res, long timerid, long flags, void *value, void *ovalue) {}
-PRE_SYSCALL(__timer_gettime50)(long timerid, void *value) {}
+PRE_SYSCALL(__timer_gettime50)(long timerid, void *value) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__timer_gettime50)(long res, long timerid, void *value) {}
 #if defined(NTP) || !defined(_KERNEL_OPT)
-PRE_SYSCALL(__ntp_gettime50)(void *ntvp) {}
+PRE_SYSCALL(__ntp_gettime50)(void *ntvp) { /* Nothing to do */ }
 POST_SYSCALL(__ntp_gettime50)(long res, void *ntvp) {}
 #else
 /* syscall 448 has been skipped */
 #endif
-PRE_SYSCALL(__wait450)(long pid, void *status, long options, void *rusage) {}
+PRE_SYSCALL(__wait450)(long pid, void *status, long options, void *rusage) {
+  /* Nothing to do */
+}
 POST_SYSCALL(__wait450)
 (long res, long pid, void *status, long options, void *rusage) {}
-PRE_SYSCALL(__mknod50)(void *path, long mode, long dev) {}
+PRE_SYSCALL(__mknod50)(void *path, long mode, long dev) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(__mknod50)(long res, void *path, long mode, long dev) {}
-PRE_SYSCALL(__fhstat50)(void *fhp, long fh_size, void *sb) {}
+PRE_SYSCALL(__fhstat50)(void *fhp, long fh_size, void *sb) {
+  if (fhp) {
+    PRE_READ(fhp, fh_size);
+  }
+}
 POST_SYSCALL(__fhstat50)(long res, void *fhp, long fh_size, void *sb) {}
 /* syscall 452 has been skipped */
-PRE_SYSCALL(pipe2)(void *fildes, long flags) {}
+PRE_SYSCALL(pipe2)(void *fildes, long flags) { /* Nothing to do */ }
 POST_SYSCALL(pipe2)(long res, void *fildes, long flags) {}
-PRE_SYSCALL(dup3)(long from, long to, long flags) {}
+PRE_SYSCALL(dup3)(long from, long to, long flags) { /* Nothing to do */ }
 POST_SYSCALL(dup3)(long res, long from, long to, long flags) {}
-PRE_SYSCALL(kqueue1)(long flags) {}
+PRE_SYSCALL(kqueue1)(long flags) { /* Nothing to do */ }
 POST_SYSCALL(kqueue1)(long res, long flags) {}
 PRE_SYSCALL(paccept)
-(long s, void *name, void *anamelen, void *mask, long flags) {}
+(long s, void *name, void *anamelen, void *mask, long flags) {
+  if (sigmask) {
+    PRE_READ(sigmask, sizeof(__sanitizer_sigset_t));
+  }
+}
 POST_SYSCALL(paccept)
 (long res, long s, void *name, void *anamelen, void *mask, long flags) {}
-PRE_SYSCALL(linkat)(long fd1, void *name1, long fd2, void *name2, long flags) {}
+PRE_SYSCALL(linkat)(long fd1, void *name1, long fd2, void *name2, long flags) {
+  if (name1) {
+    PRE_READ(name1, __sanitizer::internal_strlen((const char *)name1) + 1);
+  }
+  if (name2) {
+    PRE_READ(name2, __sanitizer::internal_strlen((const char *)name2) + 1);
+  }
+}
 POST_SYSCALL(linkat)
 (long res, long fd1, void *name1, long fd2, void *name2, long flags) {}
-PRE_SYSCALL(renameat)(long fromfd, void *from, long tofd, void *to) {}
+PRE_SYSCALL(renameat)(long fromfd, void *from, long tofd, void *to) {
+  if (from) {
+    PRE_READ(from, __sanitizer::internal_strlen((const char *)from) + 1);
+  }
+  if (to) {
+    PRE_READ(to, __sanitizer::internal_strlen((const char *)to) + 1);
+  }
+}
 POST_SYSCALL(renameat)
 (long res, long fromfd, void *from, long tofd, void *to) {}
-PRE_SYSCALL(mkfifoat)(long fd, void *path, long mode) {}
+PRE_SYSCALL(mkfifoat)(long fd, void *path, long mode) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(mkfifoat)(long res, long fd, void *path, long mode) {}
-PRE_SYSCALL(mknodat)(long fd, void *path, long mode, long PAD, long dev) {}
+PRE_SYSCALL(mknodat)(long fd, void *path, long mode, long PAD, long dev) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(mknodat)
 (long res, long fd, void *path, long mode, long PAD, long dev) {}
-PRE_SYSCALL(mkdirat)(long fd, void *path, long mode) {}
+PRE_SYSCALL(mkdirat)(long fd, void *path, long mode) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(mkdirat)(long res, long fd, void *path, long mode) {}
-PRE_SYSCALL(faccessat)(long fd, void *path, long amode, long flag) {}
+PRE_SYSCALL(faccessat)(long fd, void *path, long amode, long flag) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(faccessat)(long res, long fd, void *path, long amode, long flag) {}
-PRE_SYSCALL(fchmodat)(long fd, void *path, long mode, long flag) {}
+PRE_SYSCALL(fchmodat)(long fd, void *path, long mode, long flag) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(fchmodat)(long res, long fd, void *path, long mode, long flag) {}
-PRE_SYSCALL(fchownat)(long fd, void *path, long owner, long group, long flag) {}
+PRE_SYSCALL(fchownat)(long fd, void *path, long owner, long group, long flag) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(fchownat)
 (long res, long fd, void *path, long owner, long group, long flag) {}
-PRE_SYSCALL(fexecve)(long fd, void *argp, void *envp) {}
+PRE_SYSCALL(fexecve)(long fd, void *argp, void *envp) {
+  char **arg = (char **)argp;
+  char **env = (char **)envp;
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+  if (arg && arg[0]) {
+    char *a = arg[0];
+    while (a++) {
+      PRE_READ(a, __sanitizer::internal_strlen((const char *)a) + 1);
+    }
+  }
+  if (env && env[0]) {
+    char *e = env[0];
+    while (e++) {
+      PRE_READ(e, __sanitizer::internal_strlen((const char *)e) + 1);
+    }
+  }
+}
 POST_SYSCALL(fexecve)(long res, long fd, void *argp, void *envp) {}
-PRE_SYSCALL(fstatat)(long fd, void *path, void *buf, long flag) {}
+PRE_SYSCALL(fstatat)(long fd, void *path, void *buf, long flag) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(fstatat)(long res, long fd, void *path, void *buf, long flag) {}
-PRE_SYSCALL(utimensat)(long fd, void *path, void *tptr, long flag) {}
+PRE_SYSCALL(utimensat)(long fd, void *path, void *tptr, long flag) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+  if (tptr) {
+    PRE_READ(tptr, struct_timespec_sz);
+  }
+}
 POST_SYSCALL(utimensat)(long res, long fd, void *path, void *tptr, long flag) {}
-PRE_SYSCALL(openat)(long fd, void *path, long oflags, long mode) {}
+PRE_SYSCALL(openat)(long fd, void *path, long oflags, long mode) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(openat)(long res, long fd, void *path, long oflags, long mode) {}
-PRE_SYSCALL(readlinkat)(long fd, void *path, void *buf, long bufsize) {}
+PRE_SYSCALL(readlinkat)(long fd, void *path, void *buf, long bufsize) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(readlinkat)
 (long res, long fd, void *path, void *buf, long bufsize) {}
-PRE_SYSCALL(symlinkat)(void *path1, long fd, void *path2) {}
+PRE_SYSCALL(symlinkat)(void *path1, long fd, void *path2) {
+  if (name1) {
+    PRE_READ(name1, __sanitizer::internal_strlen((const char *)name1) + 1);
+  }
+  if (name2) {
+    PRE_READ(name2, __sanitizer::internal_strlen((const char *)name2) + 1);
+  }
+}
 POST_SYSCALL(symlinkat)(long res, void *path1, long fd, void *path2) {}
-PRE_SYSCALL(unlinkat)(long fd, void *path, long flag) {}
+PRE_SYSCALL(unlinkat)(long fd, void *path, long flag) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(unlinkat)(long res, long fd, void *path, long flag) {}
-PRE_SYSCALL(futimens)(long fd, void *tptr) {}
+PRE_SYSCALL(futimens)(long fd, void *tptr) {
+  struct __sanitizer_timespec **t = (struct __sanitizer_timespec **)times;
+  if (t) {
+    PRE_READ(t[0], struct_timespec_sz);
+    PRE_READ(t[1], struct_timespec_sz);
+  }
+}
 POST_SYSCALL(futimens)(long res, long fd, void *tptr) {}
-PRE_SYSCALL(__quotactl)(void *path, void *args) {}
+PRE_SYSCALL(__quotactl)(void *path, void *args) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(__quotactl)(long res, void *path, void *args) {}
 PRE_SYSCALL(posix_spawn)
 (void *pid, void *path, void *file_actions, void *attrp, void *argv,
-  void *envp) {}
+  void *envp) {
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
+  }
+}
 POST_SYSCALL(posix_spawn)
 (long res, void *pid, void *path, void *file_actions, void *attrp, void *argv,
   void *envp) {}
 PRE_SYSCALL(recvmmsg)
-(long s, void *mmsg, long vlen, long flags, void *timeout) {}
+(long s, void *mmsg, long vlen, long flags, void *timeout) {
+  struct __sanitizer_mmsghdr *mmsg_ = (struct __sanitizer_mmsghdr *)mmsg;
+  if (mmsg_) {
+    PRE_READ(mmsg_, sizeof(struct __sanitizer_mmsghdr));
+    if (mmsg_->msg_hdr) {
+      PRE_READ(mmsg_->msg_hdr,
+               sizeof(struct __sanitizer_msghdr) * mmsg_->msg_len);
+    }
+  }
+}
 POST_SYSCALL(recvmmsg)
 (long res, long s, void *mmsg, long vlen, long flags, void *timeout) {}
-PRE_SYSCALL(sendmmsg)(long s, void *mmsg, long vlen, long flags) {}
+PRE_SYSCALL(sendmmsg)(long s, void *mmsg, long vlen, long flags) {
+  /* Nothing to do */
+}
 POST_SYSCALL(sendmmsg)(long res, long s, void *mmsg, long vlen, long flags) {}
 PRE_SYSCALL(clock_nanosleep)
 (long clock_id, long flags, void *rqtp, void *rmtp) {}
