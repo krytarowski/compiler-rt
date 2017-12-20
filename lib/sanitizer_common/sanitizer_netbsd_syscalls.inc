@@ -1955,9 +1955,6 @@ POST_SYSCALL(fchownat)
 PRE_SYSCALL(fexecve)(long fd, void *argp, void *envp) {
   char **arg = (char **)argp;
   char **env = (char **)envp;
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen((const char *)path) + 1);
-  }
   if (arg && arg[0]) {
     char *a = arg[0];
     while (a++) {
@@ -2001,11 +1998,11 @@ PRE_SYSCALL(readlinkat)(long fd, void *path, void *buf, long bufsize) {
 POST_SYSCALL(readlinkat)
 (long res, long fd, void *path, void *buf, long bufsize) {}
 PRE_SYSCALL(symlinkat)(void *path1, long fd, void *path2) {
-  if (name1) {
-    PRE_READ(name1, __sanitizer::internal_strlen((const char *)name1) + 1);
+  if (path1) {
+    PRE_READ(path1, __sanitizer::internal_strlen((const char *)path1) + 1);
   }
-  if (name2) {
-    PRE_READ(name2, __sanitizer::internal_strlen((const char *)name2) + 1);
+  if (path2) {
+    PRE_READ(path2, __sanitizer::internal_strlen((const char *)path2) + 1);
   }
 }
 POST_SYSCALL(symlinkat)(long res, void *path1, long fd, void *path2) {}
@@ -2044,10 +2041,8 @@ PRE_SYSCALL(recvmmsg)
   struct __sanitizer_mmsghdr *mmsg_ = (struct __sanitizer_mmsghdr *)mmsg;
   if (mmsg_) {
     PRE_READ(mmsg_, sizeof(struct __sanitizer_mmsghdr));
-    if (mmsg_->msg_hdr) {
-      PRE_READ(mmsg_->msg_hdr,
-               sizeof(struct __sanitizer_msghdr) * mmsg_->msg_len);
-    }
+    PRE_READ(&mmsg_->msg_hdr,
+             sizeof(struct __sanitizer_msghdr) * mmsg_->msg_len);
   }
 }
 POST_SYSCALL(recvmmsg)
