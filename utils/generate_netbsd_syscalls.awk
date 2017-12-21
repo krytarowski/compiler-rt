@@ -177,7 +177,7 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
 
       # Handle the first argument
       match(a[1], /[*_a-z0-9\[\]]+$/)
-      syscallfullargs[parsedsyscalls] = substr(a[1], RSTART)
+      syscallfullargs[parsedsyscalls] = substr(a[1], RSTART) "_"
 
       gsub(".+[ *]", "", a[1])
       syscallargs[parsedsyscalls] = a[1]
@@ -185,7 +185,13 @@ parsingheader == 0 && $1 ~ /^[0-9]+$/ {
       # Handle the rest of arguments
       for (i = 2; i <= n; i++) {
         match(a[i], /[*_a-zA-Z0-9\[\]]+$/)
-        syscallfullargs[parsedsyscalls] = syscallfullargs[parsedsyscalls] "$" substr(a[i], RSTART)
+        fs = substr(a[i], RSTART)
+        if (fs ~ /\[/) {
+          sub(/\[/, "_[", fs)
+        } else {
+          fs = fs "_"
+        }
+        syscallfullargs[parsedsyscalls] = syscallfullargs[parsedsyscalls] "$" fs
 	gsub(".+[ *]", "", a[i])
         syscallargs[parsedsyscalls] = syscallargs[parsedsyscalls] "$" a[i]
       }

@@ -21,7 +21,7 @@
 // DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
 //
 // Generated with: generate_netbsd_syscalls.awk
-// Generated date: 2017-12-20
+// Generated date: 2017-12-21
 // Generated from: syscalls.master,v 1.290 2017/12/19 19:40:03 kamil Exp
 //
 //===----------------------------------------------------------------------===//
