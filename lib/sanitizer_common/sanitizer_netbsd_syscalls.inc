@@ -115,7 +115,7 @@ PRE_SYSCALL(read)(long fd_, void *buf_, long nbyte_) {
 POST_SYSCALL(read)(long res, long fd_, void *buf_, long nbyte_) {}
 PRE_SYSCALL(write)(long fd_, void *buf_, long nbyte_) {
   if (buf_) {
-    PRE_READ(buf, nbyte_);
+    PRE_READ(buf_, nbyte_);
   }
 }
 POST_SYSCALL(write)(long res, long fd_, void *buf_, long nbyte_) {}
@@ -126,7 +126,7 @@ PRE_SYSCALL(open)(void *path_, long flags_, long mode_) {
   }
 }
 POST_SYSCALL(open)(long res, void *path_, long flags_, long mode_) {}
-PRE_SYSCALL(close)(long fd_) { COMMON_SYSCALL_FD_CLOSE((int)fd); }
+PRE_SYSCALL(close)(long fd_) { COMMON_SYSCALL_FD_CLOSE((int)fd_); }
 POST_SYSCALL(close)(long res, long fd_) {}
 PRE_SYSCALL(compat_50_wait4)
 (long pid_, void *status_, long options_, void *rusage_) {
@@ -862,7 +862,7 @@ POST_SYSCALL(ftruncate)(long res, long fd_, long PAD_, long length_) {}
 PRE_SYSCALL(__sysctl)
 (void *name_, long namelen_, void *oldv_, void *oldlenp_, void *newv_,
   long newlen_) {
-  const int *name = (const char *)name_;
+  const int *name = (const int *)name_;
   if (name) {
     PRE_READ(name, namelen_ * sizeof(*name));
   }
@@ -1812,7 +1812,7 @@ POST_SYSCALL(__adjtime50)(long res, void *delta_, void *olddelta_) {}
 PRE_SYSCALL(__lfs_segwait50)(void *fsidp_, void *tv_) { /* TODO */ }
 POST_SYSCALL(__lfs_segwait50)(long res, void *fsidp_, void *tv_) {}
 PRE_SYSCALL(__futimes50)(long fd_, void *tptr_) {
-  struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr;
+  struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;
   if (tptr) {
     PRE_READ(tptr[0], struct_timespec_sz);
     PRE_READ(tptr[1], struct_timespec_sz);
@@ -1941,7 +1941,7 @@ PRE_SYSCALL(__aio_suspend50)(void *list_, long nent_, void *timeout_) {
   int i;
   const struct aiocb *const *list = (const struct aiocb *const *)list_;
   if (list) {
-    for (i = 0; i < nent; i++) {
+    for (i = 0; i < nent_; i++) {
       if (list[i]) {
         PRE_READ(list[i], sizeof(struct __sanitizer_aiocb));
       }
@@ -2182,10 +2182,10 @@ PRE_SYSCALL(unlinkat)(long fd_, void *path_, long flag_) {
 }
 POST_SYSCALL(unlinkat)(long res, long fd_, void *path_, long flag_) {}
 PRE_SYSCALL(futimens)(long fd_, void *tptr_) {
-  struct __sanitizer_timespec **times = (struct __sanitizer_timespec **)times_;
-  if (times) {
-    PRE_READ(times[0], struct_timespec_sz);
-    PRE_READ(times[1], struct_timespec_sz);
+  struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;
+  if (tptr) {
+    PRE_READ(tptr[0], struct_timespec_sz);
+    PRE_READ(tptr[1], struct_timespec_sz);
   }
 }
 POST_SYSCALL(futimens)(long res, long fd_, void *tptr_) {}
