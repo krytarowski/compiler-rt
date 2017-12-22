@@ -113,8 +113,8 @@ PRE_SYSCALL(read)(long fd_, void *buf_, long nbyte_) {
   }
 }
 POST_SYSCALL(read)(long res, long fd_, void *buf_, long nbyte_) {
-  if (buf_) {
-    POST_WRITE(buf_, nbyte_);
+  if (res > 0) {
+    POST_WRITE(buf_, res);
   }
 }
 PRE_SYSCALL(write)(long fd_, void *buf_, long nbyte_) {
@@ -123,31 +123,28 @@ PRE_SYSCALL(write)(long fd_, void *buf_, long nbyte_) {
   }
 }
 POST_SYSCALL(write)(long res, long fd_, void *buf_, long nbyte_) {
-  if (buf_) {
-    POST_READ(buf_, nbyte_);
+  if (res > 0) {
+    POST_READ(buf_, res);
   }
 }
 PRE_SYSCALL(open)(void *path_, long flags_, long mode_) {
   const char *path = (const char *)path_;
   if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen(path) + 1);
+    pre_READ(path, __sanitizer::internal_strlen(path) + 1);
   }
 }
 POST_SYSCALL(open)(long res, void *path_, long flags_, long mode_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
-  }
+  /* Nothing to do */
 }
 PRE_SYSCALL(close)(long fd_) { COMMON_SYSCALL_FD_CLOSE((int)fd_); }
-POST_SYSCALL(close)(long res, long fd_) {}
+POST_SYSCALL(close)(long res, long fd_) { /* Nothing to do */ }
 PRE_SYSCALL(compat_50_wait4)
 (long pid_, void *status_, long options_, void *rusage_) {
-  /* Nothing to do */
+  /* TODO */
 }
 POST_SYSCALL(compat_50_wait4)
 (long res, long pid_, void *status_, long options_, void *rusage_) {
-  /* Nothing to do */
+  /* TODO */
 }
 PRE_SYSCALL(compat_43_ocreat)(void *path_, long mode_) {
   const char *path = (const char *)path_;

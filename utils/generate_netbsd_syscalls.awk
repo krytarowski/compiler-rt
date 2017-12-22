@@ -483,12 +483,12 @@ END {
 
     pcmd("PRE_SYSCALL(" sn ")(" preargs ")")
     pcmd("{")
-    syscall_body(sn, "PRE")
+    syscall_body(sn, "pre")
     pcmd("}")
 
     pcmd("POST_SYSCALL(" sn ")(" postargs ")")
     pcmd("{")
-    syscall_body(sn, "POST")
+    syscall_body(sn, "post")
     pcmd("}")
   }
 
@@ -531,54 +531,81 @@ function syscall_body(syscall, mode)
   } else if (syscall == "exit") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "fork") {
-    if (mode == "PRE") {
+    if (mode == "pre") {
       pcmd("COMMON_SYSCALL_PRE_FORK();")
     } else {
       pcmd("COMMON_SYSCALL_POST_FORK(res);")
     }
   } else if (syscall == "read") {
-    pcmd("if (buf_) {")
-    pcmd("  " mode "_WRITE(buf_, nbyte_);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (buf_) {")
+      pcmd("  PRE_WRITE(buf_, nbyte_);")
+      pcmd("}")
+    } else {
+      pcmd("if (res > 0) {")
+      pcmd("  POST_WRITE(buf_, res);")
+      pcmd("}")
+    }
   } else if (syscall == "write") {
-    pcmd("if (buf_) {")
-    pcmd("  " mode "_READ(buf_, nbyte_);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (buf_) {")
+      pcmd("  PRE_READ(buf_, nbyte_);")
+      pcmd("}")
+    } else {
+      pcmd("if (res > 0) {")
+      pcmd("  POST_READ(buf_, res);")
+      pcmd("}")
+    }
   } else if (syscall == "open") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  " mode "_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("if (path) {")
+      pcmd("  " mode "_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "close") {
-    if (mode == "PRE") {
+    if (mode == "pre") {
       pcmd("COMMON_SYSCALL_FD_CLOSE((int)fd_);")
+    } else {
+      pcmd("/* Nothing to do */")
     }
   } else if (syscall == "compat_50_wait4") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ocreat") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    pcmd("/* TODO */")
   } else if (syscall == "link") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("const char *link = (const char *)link_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
-    pcmd("if (link) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(link) + 1);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("const char *link = (const char *)link_;")
+      pcmd("if (path) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("}")
+      pcmd("if (link) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(link) + 1);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "unlink") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("if (path) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "chdir") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("if (path) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "fchdir") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_mknod") {
