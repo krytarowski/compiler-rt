@@ -483,12 +483,12 @@ END {
 
     pcmd("PRE_SYSCALL(" sn ")(" preargs ")")
     pcmd("{")
-    pre_syscall(sn)
+    syscall_body(sn, "PRE")
     pcmd("}")
 
     pcmd("POST_SYSCALL(" sn ")(" postargs ")")
     pcmd("{")
-    post_syscall(sn)
+    syscall_body(sn, "POST")
     pcmd("}")
   }
 
@@ -522,7 +522,7 @@ function pcmd(string)
   print string | cmd
 }
 
-function pre_syscall(syscall)
+function syscall_body(syscall, mode)
 {
   # Hardcode sanitizing rules here
   # These syscalls don't change often so they are hand coded
@@ -531,22 +531,28 @@ function pre_syscall(syscall)
   } else if (syscall == "exit") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "fork") {
-    pcmd("COMMON_SYSCALL_PRE_FORK();")
+    if (mode == "PRE") {
+      pcmd("COMMON_SYSCALL_PRE_FORK();")
+    } else {
+      pcmd("COMMON_SYSCALL_POST_FORK(res);")
+    }
   } else if (syscall == "read") {
     pcmd("if (buf_) {")
-    pcmd("  PRE_WRITE(buf_, nbyte_);")
+    pcmd("  " mode "_WRITE(buf_, nbyte_);")
     pcmd("}")
   } else if (syscall == "write") {
     pcmd("if (buf_) {")
-    pcmd("  PRE_READ(buf_, nbyte_);")
+    pcmd("  " mode "_READ(buf_, nbyte_);")
     pcmd("}")
   } else if (syscall == "open") {
     pcmd("const char *path = (const char *)path_;")
     pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
+    pcmd("  " mode "_READ(path, __sanitizer::internal_strlen(path) + 1);")
     pcmd("}")
   } else if (syscall == "close") {
-    pcmd("COMMON_SYSCALL_FD_CLOSE((int)fd_);")
+    if (mode == "PRE") {
+      pcmd("COMMON_SYSCALL_FD_CLOSE((int)fd_);")
+    }
   } else if (syscall == "compat_50_wait4") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ocreat") {
@@ -1883,448 +1889,6 @@ function pre_syscall(syscall)
     pcmd("/* Nothing to do */")
   } else if (syscall == "clock_getcpuclockid2") {
     pcmd("/* Nothing to do */")
-  } else {
-    print "Unrecognized syscall: " syscall
-    abnormal_exit = 1
-    exit 1
-  }
-}
-
-function post_syscall(syscall)
-{
-  # Hardcode sanitizing rules here
-  # These syscalls don't change often so they are hand coded
-  if (syscall == "syscall") {
-    pcmd("/* Nothing to do */")
-  } else if (syscall == "exit") {
-    pcmd("/* Nothing to do */")
-  } else if (syscall == "fork") {
-    pcmd("COMMON_SYSCALL_POST_FORK(res);")
-  } else if (syscall == "read") {
-  } else if (syscall == "write") {
-  } else if (syscall == "open") {
-  } else if (syscall == "close") {
-  } else if (syscall == "compat_50_wait4") {
-  } else if (syscall == "compat_43_ocreat") {
-  } else if (syscall == "link") {
-  } else if (syscall == "unlink") {
-  } else if (syscall == "chdir") {
-  } else if (syscall == "fchdir") {
-  } else if (syscall == "compat_50_mknod") {
-  } else if (syscall == "chmod") {
-  } else if (syscall == "chown") {
-  } else if (syscall == "break") {
-  } else if (syscall == "compat_20_getfsstat") {
-  } else if (syscall == "compat_43_olseek") {
-  } else if (syscall == "getpid") {
-  } else if (syscall == "compat_40_mount") {
-  } else if (syscall == "unmount") {
-  } else if (syscall == "setuid") {
-  } else if (syscall == "getuid") {
-  } else if (syscall == "geteuid") {
-  } else if (syscall == "ptrace") {
-  } else if (syscall == "recvmsg") {
-  } else if (syscall == "sendmsg") {
-  } else if (syscall == "recvfrom") {
-  } else if (syscall == "accept") {
-  } else if (syscall == "getpeername") {
-  } else if (syscall == "getsockname") {
-  } else if (syscall == "access") {
-  } else if (syscall == "chflags") {
-  } else if (syscall == "fchflags") {
-  } else if (syscall == "sync") {
-  } else if (syscall == "kill") {
-  } else if (syscall == "compat_43_stat43") {
-  } else if (syscall == "getppid") {
-  } else if (syscall == "compat_43_lstat43") {
-  } else if (syscall == "dup") {
-  } else if (syscall == "pipe") {
-  } else if (syscall == "getegid") {
-  } else if (syscall == "profil") {
-  } else if (syscall == "ktrace") {
-  } else if (syscall == "compat_13_sigaction13") {
-  } else if (syscall == "getgid") {
-  } else if (syscall == "compat_13_sigprocmask13") {
-  } else if (syscall == "__getlogin") {
-  } else if (syscall == "__setlogin") {
-  } else if (syscall == "acct") {
-  } else if (syscall == "compat_13_sigpending13") {
-  } else if (syscall == "compat_13_sigaltstack13") {
-  } else if (syscall == "ioctl") {
-  } else if (syscall == "compat_12_oreboot") {
-  } else if (syscall == "revoke") {
-  } else if (syscall == "symlink") {
-  } else if (syscall == "readlink") {
-  } else if (syscall == "execve") {
-  } else if (syscall == "umask") {
-  } else if (syscall == "chroot") {
-  } else if (syscall == "compat_43_fstat43") {
-  } else if (syscall == "compat_43_ogetkerninfo") {
-  } else if (syscall == "compat_43_ogetpagesize") {
-  } else if (syscall == "compat_12_msync") {
-  } else if (syscall == "vfork") {
-  } else if (syscall == "compat_43_ommap") {
-  } else if (syscall == "munmap") {
-  } else if (syscall == "mprotect") {
-  } else if (syscall == "madvise") {
-  } else if (syscall == "mincore") {
-  } else if (syscall == "getgroups") {
-  } else if (syscall == "setgroups") {
-  } else if (syscall == "getpgrp") {
-  } else if (syscall == "setpgid") {
-  } else if (syscall == "compat_50_setitimer") {
-  } else if (syscall == "compat_43_owait") {
-  } else if (syscall == "compat_12_oswapon") {
-  } else if (syscall == "compat_50_getitimer") {
-  } else if (syscall == "compat_43_ogethostname") {
-  } else if (syscall == "compat_43_osethostname") {
-  } else if (syscall == "compat_43_ogetdtablesize") {
-  } else if (syscall == "dup2") {
-  } else if (syscall == "fcntl") {
-  } else if (syscall == "compat_50_select") {
-  } else if (syscall == "fsync") {
-  } else if (syscall == "setpriority") {
-  } else if (syscall == "compat_30_socket") {
-  } else if (syscall == "connect") {
-  } else if (syscall == "compat_43_oaccept") {
-  } else if (syscall == "getpriority") {
-  } else if (syscall == "compat_43_osend") {
-  } else if (syscall == "compat_43_orecv") {
-  } else if (syscall == "compat_13_sigreturn13") {
-  } else if (syscall == "bind") {
-  } else if (syscall == "setsockopt") {
-  } else if (syscall == "listen") {
-  } else if (syscall == "compat_43_osigvec") {
-  } else if (syscall == "compat_43_osigblock") {
-  } else if (syscall == "compat_43_osigsetmask") {
-  } else if (syscall == "compat_13_sigsuspend13") {
-  } else if (syscall == "compat_43_osigstack") {
-  } else if (syscall == "compat_43_orecvmsg") {
-  } else if (syscall == "compat_43_osendmsg") {
-  } else if (syscall == "compat_50_gettimeofday") {
-  } else if (syscall == "compat_50_getrusage") {
-  } else if (syscall == "getsockopt") {
-  } else if (syscall == "readv") {
-  } else if (syscall == "writev") {
-  } else if (syscall == "compat_50_settimeofday") {
-  } else if (syscall == "fchown") {
-  } else if (syscall == "fchmod") {
-  } else if (syscall == "compat_43_orecvfrom") {
-  } else if (syscall == "setreuid") {
-  } else if (syscall == "setregid") {
-  } else if (syscall == "rename") {
-  } else if (syscall == "compat_43_otruncate") {
-  } else if (syscall == "compat_43_oftruncate") {
-  } else if (syscall == "flock") {
-  } else if (syscall == "mkfifo") {
-  } else if (syscall == "sendto") {
-  } else if (syscall == "shutdown") {
-  } else if (syscall == "socketpair") {
-  } else if (syscall == "mkdir") {
-  } else if (syscall == "rmdir") {
-  } else if (syscall == "compat_50_utimes") {
-  } else if (syscall == "compat_50_adjtime") {
-  } else if (syscall == "compat_43_ogetpeername") {
-  } else if (syscall == "compat_43_ogethostid") {
-  } else if (syscall == "compat_43_osethostid") {
-  } else if (syscall == "compat_43_ogetrlimit") {
-  } else if (syscall == "compat_43_osetrlimit") {
-  } else if (syscall == "compat_43_okillpg") {
-  } else if (syscall == "setsid") {
-  } else if (syscall == "compat_50_quotactl") {
-  } else if (syscall == "compat_43_oquota") {
-  } else if (syscall == "compat_43_ogetsockname") {
-  } else if (syscall == "nfssvc") {
-  } else if (syscall == "compat_43_ogetdirentries") {
-  } else if (syscall == "compat_20_statfs") {
-  } else if (syscall == "compat_20_fstatfs") {
-  } else if (syscall == "compat_30_getfh") {
-  } else if (syscall == "compat_09_ogetdomainname") {
-  } else if (syscall == "compat_09_osetdomainname") {
-  } else if (syscall == "compat_09_ouname") {
-  } else if (syscall == "sysarch") {
-  } else if (syscall == "compat_10_osemsys") {
-  } else if (syscall == "compat_10_omsgsys") {
-  } else if (syscall == "compat_10_oshmsys") {
-  } else if (syscall == "pread") {
-  } else if (syscall == "pwrite") {
-  } else if (syscall == "compat_30_ntp_gettime") {
-  } else if (syscall == "ntp_adjtime") {
-  } else if (syscall == "setgid") {
-  } else if (syscall == "setegid") {
-  } else if (syscall == "seteuid") {
-  } else if (syscall == "lfs_bmapv") {
-  } else if (syscall == "lfs_markv") {
-  } else if (syscall == "lfs_segclean") {
-  } else if (syscall == "compat_50_lfs_segwait") {
-  } else if (syscall == "compat_12_stat12") {
-  } else if (syscall == "compat_12_fstat12") {
-  } else if (syscall == "compat_12_lstat12") {
-  } else if (syscall == "pathconf") {
-  } else if (syscall == "fpathconf") {
-  } else if (syscall == "getrlimit") {
-  } else if (syscall == "setrlimit") {
-  } else if (syscall == "compat_12_getdirentries") {
-  } else if (syscall == "mmap") {
-  } else if (syscall == "__syscall") {
-  } else if (syscall == "lseek") {
-  } else if (syscall == "truncate") {
-  } else if (syscall == "ftruncate") {
-  } else if (syscall == "__sysctl") {
-  } else if (syscall == "mlock") {
-  } else if (syscall == "munlock") {
-  } else if (syscall == "undelete") {
-  } else if (syscall == "compat_50_futimes") {
-  } else if (syscall == "getpgid") {
-  } else if (syscall == "reboot") {
-  } else if (syscall == "poll") {
-  } else if (syscall == "afssys") {
-  } else if (syscall == "compat_14___semctl") {
-  } else if (syscall == "semget") {
-  } else if (syscall == "semop") {
-  } else if (syscall == "semconfig") {
-  } else if (syscall == "compat_14_msgctl") {
-  } else if (syscall == "msgget") {
-  } else if (syscall == "msgsnd") {
-  } else if (syscall == "msgrcv") {
-  } else if (syscall == "shmat") {
-  } else if (syscall == "compat_14_shmctl") {
-  } else if (syscall == "shmdt") {
-  } else if (syscall == "shmget") {
-  } else if (syscall == "compat_50_clock_gettime") {
-  } else if (syscall == "compat_50_clock_settime") {
-  } else if (syscall == "compat_50_clock_getres") {
-  } else if (syscall == "timer_create") {
-  } else if (syscall == "timer_delete") {
-  } else if (syscall == "compat_50_timer_settime") {
-  } else if (syscall == "compat_50_timer_gettime") {
-  } else if (syscall == "timer_getoverrun") {
-  } else if (syscall == "compat_50_nanosleep") {
-  } else if (syscall == "fdatasync") {
-  } else if (syscall == "mlockall") {
-  } else if (syscall == "munlockall") {
-  } else if (syscall == "compat_50___sigtimedwait") {
-  } else if (syscall == "sigqueueinfo") {
-  } else if (syscall == "modctl") {
-  } else if (syscall == "_ksem_init") {
-  } else if (syscall == "_ksem_open") {
-  } else if (syscall == "_ksem_unlink") {
-  } else if (syscall == "_ksem_close") {
-  } else if (syscall == "_ksem_post") {
-  } else if (syscall == "_ksem_wait") {
-  } else if (syscall == "_ksem_trywait") {
-  } else if (syscall == "_ksem_getvalue") {
-  } else if (syscall == "_ksem_destroy") {
-  } else if (syscall == "_ksem_timedwait") {
-  } else if (syscall == "mq_open") {
-  } else if (syscall == "mq_close") {
-  } else if (syscall == "mq_unlink") {
-  } else if (syscall == "mq_getattr") {
-  } else if (syscall == "mq_setattr") {
-  } else if (syscall == "mq_notify") {
-  } else if (syscall == "mq_send") {
-  } else if (syscall == "mq_receive") {
-  } else if (syscall == "compat_50_mq_timedsend") {
-  } else if (syscall == "compat_50_mq_timedreceive") {
-  } else if (syscall == "__posix_rename") {
-  } else if (syscall == "swapctl") {
-  } else if (syscall == "compat_30_getdents") {
-  } else if (syscall == "minherit") {
-  } else if (syscall == "lchmod") {
-  } else if (syscall == "lchown") {
-  } else if (syscall == "compat_50_lutimes") {
-  } else if (syscall == "__msync13") {
-  } else if (syscall == "compat_30___stat13") {
-  } else if (syscall == "compat_30___fstat13") {
-  } else if (syscall == "compat_30___lstat13") {
-  } else if (syscall == "__sigaltstack14") {
-  } else if (syscall == "__vfork14") {
-  } else if (syscall == "__posix_chown") {
-  } else if (syscall == "__posix_fchown") {
-  } else if (syscall == "__posix_lchown") {
-  } else if (syscall == "getsid") {
-  } else if (syscall == "__clone") {
-  } else if (syscall == "fktrace") {
-  } else if (syscall == "preadv") {
-  } else if (syscall == "pwritev") {
-  } else if (syscall == "compat_16___sigaction14") {
-  } else if (syscall == "__sigpending14") {
-  } else if (syscall == "__sigprocmask14") {
-  } else if (syscall == "__sigsuspend14") {
-  } else if (syscall == "compat_16___sigreturn14") {
-  } else if (syscall == "__getcwd") {
-  } else if (syscall == "fchroot") {
-  } else if (syscall == "compat_30_fhopen") {
-  } else if (syscall == "compat_30_fhstat") {
-  } else if (syscall == "compat_20_fhstatfs") {
-  } else if (syscall == "compat_50_____semctl13") {
-  } else if (syscall == "compat_50___msgctl13") {
-  } else if (syscall == "compat_50___shmctl13") {
-  } else if (syscall == "lchflags") {
-  } else if (syscall == "issetugid") {
-  } else if (syscall == "utrace") {
-  } else if (syscall == "getcontext") {
-  } else if (syscall == "setcontext") {
-  } else if (syscall == "_lwp_create") {
-  } else if (syscall == "_lwp_exit") {
-  } else if (syscall == "_lwp_self") {
-  } else if (syscall == "_lwp_wait") {
-  } else if (syscall == "_lwp_suspend") {
-  } else if (syscall == "_lwp_continue") {
-  } else if (syscall == "_lwp_wakeup") {
-  } else if (syscall == "_lwp_getprivate") {
-  } else if (syscall == "_lwp_setprivate") {
-  } else if (syscall == "_lwp_kill") {
-  } else if (syscall == "_lwp_detach") {
-  } else if (syscall == "compat_50__lwp_park") {
-  } else if (syscall == "_lwp_unpark") {
-  } else if (syscall == "_lwp_unpark_all") {
-  } else if (syscall == "_lwp_setname") {
-  } else if (syscall == "_lwp_getname") {
-  } else if (syscall == "_lwp_ctl") {
-  } else if (syscall == "compat_60_sa_register") {
-  } else if (syscall == "compat_60_sa_stacks") {
-  } else if (syscall == "compat_60_sa_enable") {
-  } else if (syscall == "compat_60_sa_setconcurrency") {
-  } else if (syscall == "compat_60_sa_yield") {
-  } else if (syscall == "compat_60_sa_preempt") {
-  } else if (syscall == "__sigaction_sigtramp") {
-  } else if (syscall == "pmc_get_info") {
-  } else if (syscall == "pmc_control") {
-  } else if (syscall == "rasctl") {
-  } else if (syscall == "kqueue") {
-  } else if (syscall == "compat_50_kevent") {
-  } else if (syscall == "_sched_setparam") {
-  } else if (syscall == "_sched_getparam") {
-  } else if (syscall == "_sched_setaffinity") {
-  } else if (syscall == "_sched_getaffinity") {
-  } else if (syscall == "sched_yield") {
-  } else if (syscall == "_sched_protect") {
-  } else if (syscall == "fsync_range") {
-  } else if (syscall == "uuidgen") {
-  } else if (syscall == "getvfsstat") {
-  } else if (syscall == "statvfs1") {
-  } else if (syscall == "fstatvfs1") {
-  } else if (syscall == "compat_30_fhstatvfs1") {
-  } else if (syscall == "extattrctl") {
-  } else if (syscall == "extattr_set_file") {
-  } else if (syscall == "extattr_get_file") {
-  } else if (syscall == "extattr_delete_file") {
-  } else if (syscall == "extattr_set_fd") {
-  } else if (syscall == "extattr_get_fd") {
-  } else if (syscall == "extattr_delete_fd") {
-  } else if (syscall == "extattr_set_link") {
-  } else if (syscall == "extattr_get_link") {
-  } else if (syscall == "extattr_delete_link") {
-  } else if (syscall == "extattr_list_fd") {
-  } else if (syscall == "extattr_list_file") {
-  } else if (syscall == "extattr_list_link") {
-  } else if (syscall == "compat_50_pselect") {
-  } else if (syscall == "compat_50_pollts") {
-  } else if (syscall == "setxattr") {
-  } else if (syscall == "lsetxattr") {
-  } else if (syscall == "fsetxattr") {
-  } else if (syscall == "getxattr") {
-  } else if (syscall == "lgetxattr") {
-  } else if (syscall == "fgetxattr") {
-  } else if (syscall == "listxattr") {
-  } else if (syscall == "llistxattr") {
-  } else if (syscall == "flistxattr") {
-  } else if (syscall == "removexattr") {
-  } else if (syscall == "lremovexattr") {
-  } else if (syscall == "fremovexattr") {
-  } else if (syscall == "compat_50___stat30") {
-  } else if (syscall == "compat_50___fstat30") {
-  } else if (syscall == "compat_50___lstat30") {
-  } else if (syscall == "__getdents30") {
-  } else if (syscall == "posix_fadvise") {
-  } else if (syscall == "compat_30___fhstat30") {
-  } else if (syscall == "compat_50___ntp_gettime30") {
-  } else if (syscall == "__socket30") {
-  } else if (syscall == "__getfh30") {
-  } else if (syscall == "__fhopen40") {
-  } else if (syscall == "__fhstatvfs140") {
-  } else if (syscall == "compat_50___fhstat40") {
-  } else if (syscall == "aio_cancel") {
-  } else if (syscall == "aio_error") {
-  } else if (syscall == "aio_fsync") {
-  } else if (syscall == "aio_read") {
-  } else if (syscall == "aio_return") {
-  } else if (syscall == "compat_50_aio_suspend") {
-  } else if (syscall == "aio_write") {
-  } else if (syscall == "lio_listio") {
-  } else if (syscall == "__mount50") {
-  } else if (syscall == "mremap") {
-  } else if (syscall == "pset_create") {
-  } else if (syscall == "pset_destroy") {
-  } else if (syscall == "pset_assign") {
-  } else if (syscall == "_pset_bind") {
-  } else if (syscall == "__posix_fadvise50") {
-  } else if (syscall == "__select50") {
-  } else if (syscall == "__gettimeofday50") {
-  } else if (syscall == "__settimeofday50") {
-  } else if (syscall == "__utimes50") {
-  } else if (syscall == "__adjtime50") {
-  } else if (syscall == "__lfs_segwait50") {
-  } else if (syscall == "__futimes50") {
-  } else if (syscall == "__lutimes50") {
-  } else if (syscall == "__setitimer50") {
-  } else if (syscall == "__getitimer50") {
-  } else if (syscall == "__clock_gettime50") {
-  } else if (syscall == "__clock_settime50") {
-  } else if (syscall == "__clock_getres50") {
-  } else if (syscall == "__nanosleep50") {
-  } else if (syscall == "____sigtimedwait50") {
-  } else if (syscall == "__mq_timedsend50") {
-  } else if (syscall == "__mq_timedreceive50") {
-  } else if (syscall == "compat_60__lwp_park") {
-  } else if (syscall == "__kevent50") {
-  } else if (syscall == "__pselect50") {
-  } else if (syscall == "__pollts50") {
-  } else if (syscall == "__aio_suspend50") {
-  } else if (syscall == "__stat50") {
-  } else if (syscall == "__fstat50") {
-  } else if (syscall == "__lstat50") {
-  } else if (syscall == "____semctl50") {
-  } else if (syscall == "__shmctl50") {
-  } else if (syscall == "__msgctl50") {
-  } else if (syscall == "__getrusage50") {
-  } else if (syscall == "__timer_settime50") {
-  } else if (syscall == "__timer_gettime50") {
-  } else if (syscall == "__ntp_gettime50") {
-  } else if (syscall == "__wait450") {
-  } else if (syscall == "__mknod50") {
-  } else if (syscall == "__fhstat50") {
-  } else if (syscall == "pipe2") {
-  } else if (syscall == "dup3") {
-  } else if (syscall == "kqueue1") {
-  } else if (syscall == "paccept") {
-  } else if (syscall == "linkat") {
-  } else if (syscall == "renameat") {
-  } else if (syscall == "mkfifoat") {
-  } else if (syscall == "mknodat") {
-  } else if (syscall == "mkdirat") {
-  } else if (syscall == "faccessat") {
-  } else if (syscall == "fchmodat") {
-  } else if (syscall == "fchownat") {
-  } else if (syscall == "fexecve") {
-  } else if (syscall == "fstatat") {
-  } else if (syscall == "utimensat") {
-  } else if (syscall == "openat") {
-  } else if (syscall == "readlinkat") {
-  } else if (syscall == "symlinkat") {
-  } else if (syscall == "unlinkat") {
-  } else if (syscall == "futimens") {
-  } else if (syscall == "__quotactl") {
-  } else if (syscall == "posix_spawn") {
-  } else if (syscall == "recvmmsg") {
-  } else if (syscall == "sendmmsg") {
-  } else if (syscall == "clock_nanosleep") {
-  } else if (syscall == "___lwp_park60") {
-  } else if (syscall == "posix_fallocate") {
-  } else if (syscall == "fdiscard") {
-  } else if (syscall == "wait6") {
-  } else if (syscall == "clock_getcpuclockid2") {
   } else {
     print "Unrecognized syscall: " syscall
     abnormal_exit = 1
