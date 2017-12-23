@@ -560,7 +560,7 @@ function syscall_body(syscall, mode)
     if (mode == "pre") {
       pcmd("const char *path = (const char *)path_;")
       pcmd("if (path) {")
-      pcmd("  " mode "_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("}")
     } else {
       pcmd("/* Nothing to do */")
