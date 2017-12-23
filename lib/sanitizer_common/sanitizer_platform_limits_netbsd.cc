@@ -115,30 +115,45 @@ const uptr sig_err = (uptr)SIG_ERR;
 const uptr sa_siginfo = (uptr)SA_SIGINFO;
 
 int ptrace_pt_io = PT_IO;
+int ptrace_pt_lwpinfo = PT_LWPINFO;
 int ptrace_pt_set_event_mask = PT_SET_EVENT_MASK;
+int ptrace_pt_get_event_mask = PT_GET_EVENT_MASK;
+int ptrace_pt_get_process_state = PT_GET_PROCESS_STATE;
 int ptrace_pt_set_siginfo = PT_SET_SIGINFO;
+int ptrace_pt_get_siginfo = PT_GET_SIGINFO;
 int ptrace_pt_set_sigmask = PT_SET_SIGMASK;
+int ptrace_pt_get_sigmask = PT_GET_SIGMASK;
+int ptrace_piod_read_d = PIOD_READ_D;
 int ptrace_piod_write_d = PIOD_WRITE_D;
+int ptrace_piod_read_i = PIOD_READ_I;
 int ptrace_piod_write_i = PIOD_WRITE_I;
+int ptrace_piod_read_auxv = PIOD_READ_AUXV;
 
-#if defined(PT_SETREGS)
+#if defined(PT_SETREGS) && defined(PT_GETREGS)
 int ptrace_pt_setregs = PT_SETREGS;
+int ptrace_pt_getregs = PT_GETREGS;
 #else
 int ptrace_pt_setregs = -1;
+int ptrace_pt_getregs = -1;
 #endif
 
-#if defined(PT_SETFPREGS)
+#if defined(PT_SETFPREGS) && defined(PT_GETFPREGS)
 int ptrace_pt_setfpregs = PT_SETFPREGS;
+int ptrace_pt_getfpregs = PT_GETFPREGS;
 #else
 int ptrace_pt_setfpregs = -1;
+int ptrace_pt_getfpregs = -1;
 #endif
 
-#if defined(PT_SETDBREGS)
+#if defined(PT_SETDBREGS) && defined(PT_GETDBREGS)
 int ptrace_pt_setdbregs = PT_SETDBREGS;
+int ptrace_pt_getdbregs = PT_GETDBREGS;
 #else
 int ptrace_pt_setdbregs = -1;
+int ptrace_pt_getdbregs = -1;
 #endif
 
+unsigned struct_ptrace_ptrace_io_desc_struct_sz = sizeof(struct ptrace_io_desc);
 unsigned struct_ptrace_ptrace_event_struct_sz = sizeof(ptrace_event_t);
 unsigned struct_ptrace_ptrace_siginfo_struct_sz = sizeof(ptrace_siginfo_t);
 

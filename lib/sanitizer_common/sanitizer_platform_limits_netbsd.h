@@ -361,14 +361,25 @@ extern int glob_altdirfunc;
 extern unsigned path_max;
 
 extern int ptrace_pt_io;
+extern int ptrace_pt_lwpinfo;
 extern int ptrace_pt_set_event_mask;
+extern int ptrace_pt_get_event_mask;
+extern int ptrace_pt_get_process_state;
 extern int ptrace_pt_set_siginfo;
+extern int ptrace_pt_get_siginfo;
 extern int ptrace_pt_set_sigmask;
+extern int ptrace_pt_get_sigmask;
+extern int ptrace_piod_read_d;
 extern int ptrace_piod_write_d;
+extern int ptrace_piod_read_i;
 extern int ptrace_piod_write_i;
+extern int ptrace_piod_read_auxv;
 extern int ptrace_pt_setregs;
+extern int ptrace_pt_getregs;
 extern int ptrace_pt_setfpregs;
+extern int ptrace_pt_getfpregs;
 extern int ptrace_pt_setdbregs;
+extern int ptrace_pt_getdbregs;
 
 struct __sanitizer_ptrace_io_desc {
   int piod_op;
@@ -377,6 +388,7 @@ struct __sanitizer_ptrace_io_desc {
   uptr piod_len;
 };
 
+extern unsigned struct_ptrace_ptrace_io_desc_struct_sz;
 extern unsigned struct_ptrace_ptrace_event_struct_sz;
 extern unsigned struct_ptrace_ptrace_siginfo_struct_sz;
 
