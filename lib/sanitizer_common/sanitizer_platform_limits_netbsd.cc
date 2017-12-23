@@ -154,6 +154,7 @@ int ptrace_pt_getdbregs = -1;
 #endif
 
 unsigned struct_ptrace_ptrace_io_desc_struct_sz = sizeof(struct ptrace_io_desc);
+unsigned struct_ptrace_ptrace_lwpinfo_struct_sz = sizeof(struct ptrace_lwpinfo);
 unsigned struct_ptrace_ptrace_event_struct_sz = sizeof(ptrace_event_t);
 unsigned struct_ptrace_ptrace_siginfo_struct_sz = sizeof(ptrace_siginfo_t);
 

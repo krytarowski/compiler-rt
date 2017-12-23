@@ -388,7 +388,13 @@ struct __sanitizer_ptrace_io_desc {
   uptr piod_len;
 };
 
+struct __sanitizer_ptrace_lwpinfo {
+  __sanitizer_lwpid_t pl_lwpid;
+  int pl_event;
+};
+
 extern unsigned struct_ptrace_ptrace_io_desc_struct_sz;
+extern unsigned struct_ptrace_ptrace_lwpinfo_struct_sz;
 extern unsigned struct_ptrace_ptrace_event_struct_sz;
 extern unsigned struct_ptrace_ptrace_siginfo_struct_sz;
 
