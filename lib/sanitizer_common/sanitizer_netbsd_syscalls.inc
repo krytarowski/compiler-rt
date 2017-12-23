@@ -130,7 +130,7 @@ POST_SYSCALL(write)(long res, long fd_, void *buf_, long nbyte_) {
 PRE_SYSCALL(open)(void *path_, long flags_, long mode_) {
   const char *path = (const char *)path_;
   if (path) {
-    pre_READ(path, __sanitizer::internal_strlen(path) + 1);
+    PRE_READ(path, __sanitizer::internal_strlen(path) + 1);
   }
 }
 POST_SYSCALL(open)(long res, void *path_, long flags_, long mode_) {
@@ -222,9 +222,9 @@ POST_SYSCALL(compat_40_mount)
   /* TODO */
 }
 PRE_SYSCALL(unmount)(void *path_, long flags_) {
-  const char *dir = (const char *)dir_;
-  if (dir) {
-    PRE_READ(dir, __sanitizer::internal_strlen(dir) + 1);
+  const char *path = (const char *)path_;
+  if (path) {
+    PRE_READ(path, __sanitizer::internal_strlen(path) + 1);
   }
 }
 POST_SYSCALL(unmount)(long res, void *path_, long flags_) {

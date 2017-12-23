@@ -640,9 +640,9 @@ function syscall_body(syscall, mode)
     pcmd("/* TODO */")
   } else if (syscall == "unmount") {
     if (mode == "pre") {
-      pcmd("const char *dir = (const char *)dir_;")
-      pcmd("if (dir) {")
-      pcmd("  PRE_READ(dir, __sanitizer::internal_strlen(dir) + 1);")
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("if (path) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("}")
     } else {
       pcmd("/* Nothing to do */")
