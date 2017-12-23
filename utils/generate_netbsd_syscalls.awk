@@ -609,32 +609,44 @@ function syscall_body(syscall, mode)
   } else if (syscall == "fchdir") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_mknod") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    pcmd("/* TODO */")
   } else if (syscall == "chmod") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("if (path) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "chown") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("if (path) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "break") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_20_getfsstat") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_olseek") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "getpid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_40_mount") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "unmount") {
-    pcmd("/* Nothing to do */")
+    if (mode == "pre") {
+      pcmd("const char *dir = (const char *)dir_;")
+      pcmd("if (dir) {")
+      pcmd("  PRE_READ(dir, __sanitizer::internal_strlen(dir) + 1);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "setuid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "getuid") {
@@ -642,24 +654,28 @@ function syscall_body(syscall, mode)
   } else if (syscall == "geteuid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "ptrace") {
-    pcmd("if (req_ == ptrace_pt_io) {")
-    pcmd("  struct __sanitizer_ptrace_io_desc *piod = (struct __sanitizer_ptrace_io_desc *)addr_;")
-    pcmd("  if (piod->piod_op == ptrace_piod_write_d || piod->piod_op == ptrace_piod_write_i) {")
-    pcmd("    PRE_READ(piod->piod_addr, piod->piod_len);")
-    pcmd("  }")
-    pcmd("} else if (req_ == ptrace_pt_set_event_mask) {")
-    pcmd("  PRE_READ(addr_, struct_ptrace_ptrace_event_struct_sz);")
-    pcmd("} else if (req_ == ptrace_pt_set_siginfo) {")
-    pcmd("  PRE_READ(addr_, struct_ptrace_ptrace_siginfo_struct_sz);")
-    pcmd("} else if (req_ == ptrace_pt_set_sigmask) {")
-    pcmd("  PRE_READ(addr_, sizeof(__sanitizer_sigset_t));")
-    pcmd("} else if (req_ == ptrace_pt_setregs) {")
-    pcmd("  PRE_READ(addr_, struct_ptrace_reg_struct_sz);")
-    pcmd("} else if (req_ == ptrace_pt_setfpregs) {")
-    pcmd("  PRE_READ(addr_, struct_ptrace_fpreg_struct_sz);")
-    pcmd("} else if (req_ == ptrace_pt_setdbregs) {")
-    pcmd("  PRE_READ(addr_, struct_ptrace_dbreg_struct_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (req_ == ptrace_pt_io) {")
+      pcmd("  struct __sanitizer_ptrace_io_desc *piod = (struct __sanitizer_ptrace_io_desc *)addr_;")
+      pcmd("  if (piod->piod_op == ptrace_piod_write_d || piod->piod_op == ptrace_piod_write_i) {")
+      pcmd("    PRE_READ(piod->piod_addr, piod->piod_len);")
+      pcmd("  }")
+      pcmd("} else if (req_ == ptrace_pt_set_event_mask) {")
+      pcmd("  PRE_READ(addr_, struct_ptrace_ptrace_event_struct_sz);")
+      pcmd("} else if (req_ == ptrace_pt_set_siginfo) {")
+      pcmd("  PRE_READ(addr_, struct_ptrace_ptrace_siginfo_struct_sz);")
+      pcmd("} else if (req_ == ptrace_pt_set_sigmask) {")
+      pcmd("  PRE_READ(addr_, sizeof(__sanitizer_sigset_t));")
+      pcmd("} else if (req_ == ptrace_pt_setregs) {")
+      pcmd("  PRE_READ(addr_, struct_ptrace_reg_struct_sz);")
+      pcmd("} else if (req_ == ptrace_pt_setfpregs) {")
+      pcmd("  PRE_READ(addr_, struct_ptrace_fpreg_struct_sz);")
+      pcmd("} else if (req_ == ptrace_pt_setdbregs) {")
+      pcmd("  PRE_READ(addr_, struct_ptrace_dbreg_struct_sz);")
+      pcmd("}")
+    } else {
+      pcmd("/* Nothing to do */")
+    }
   } else if (syscall == "recvmsg") {
     pcmd("PRE_READ(msg_, sizeof(__sanitizer_msghdr));")
   } else if (syscall == "sendmsg") {
@@ -689,17 +705,11 @@ function syscall_body(syscall, mode)
   } else if (syscall == "kill") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_stat43") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    pcmd("/* TODO */")
   } else if (syscall == "getppid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_lstat43") {
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
+    pcmd("/* TODO */")
   } else if (syscall == "dup") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "pipe") {
@@ -711,16 +721,11 @@ function syscall_body(syscall, mode)
   } else if (syscall == "ktrace") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigaction13") {
-    pcmd("struct __sanitizer_sigaction13 *nsa = (struct __sanitizer_sigaction13 *)nsa_;")
-    pcmd("if (nsa) {")
-    pcmd("  PRE_READ(&nsa->osa_handler, sizeof(nsa->osa_handler));")
-    pcmd("  PRE_READ(&nsa->osa_flags, sizeof(nsa->osa_flags));")
-    pcmd("  PRE_READ(&nsa->osa_mask, sizeof(nsa->osa_mask));")
-    pcmd("}")
+    pcmd("/* TODO */")
   } else if (syscall == "getgid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_13_sigprocmask13") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "__getlogin") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__setlogin") {
@@ -734,13 +739,13 @@ function syscall_body(syscall, mode)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
     pcmd("}")
   } else if (syscall == "compat_13_sigpending13") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_13_sigaltstack13") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "ioctl") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_12_oreboot") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "revoke") {
     pcmd("const char *path = (const char *)path_;")
     pcmd("if (path) {")
@@ -787,17 +792,17 @@ function syscall_body(syscall, mode)
     pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
     pcmd("}")
   } else if (syscall == "compat_43_fstat43") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogetkerninfo") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogetpagesize") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_12_msync") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "vfork") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_ommap") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "munmap") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "mprotect") {
@@ -818,46 +823,43 @@ function syscall_body(syscall, mode)
   } else if (syscall == "setpgid") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_setitimer") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_owait") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_12_oswapon") {
-    pcmd("const char *name = (const char *)name_;")
-    pcmd("if (name) {")
-    pcmd("  PRE_READ(name, __sanitizer::internal_strlen(name) + 1);")
-    pcmd("}")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_50_getitimer") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogethostname") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_osethostname") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_ogetdtablesize") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "dup2") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "fcntl") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_select") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "fsync") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "setpriority") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_30_socket") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "connect") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_oaccept") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "getpriority") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_43_osend") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_43_orecv") {
-    pcmd("/* Nothing to do */")
+    pcmd("/* TODO */")
   } else if (syscall == "compat_13_sigreturn13") {
-    pcmd("/* Missing on amd64? */")
+    pcmd("/* TODO */")
   } else if (syscall == "bind") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "setsockopt") {
