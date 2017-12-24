@@ -133,6 +133,8 @@ struct __sanitizer_ifaddrs {
   unsigned int ifa_addrflags;
 };
 
+typedef unsigned int __sanitizer_socklen_t;
+
 typedef unsigned __sanitizer_pthread_key_t;
 
 typedef long long __sanitizer_time_t;
