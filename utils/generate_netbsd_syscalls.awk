@@ -238,7 +238,7 @@ END {
   pcmd("// actions for the active sanitizer.")
   pcmd("// Usage:")
   pcmd("//   __sanitizer_syscall_pre_getfoo(...args...);")
-  pcmd("//   long res = syscall(SYS_getfoo, ...args...);")
+  pcmd("//   long long res = syscall(SYS_getfoo, ...args...);")
   pcmd("//   __sanitizer_syscall_post_getfoo(res, ...args...);")
   pcmd("//")
   pcmd("// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!")
@@ -275,8 +275,8 @@ END {
     outargs = ""
 
     if (syscallargs[i] != "void") {
-      outargs = "(long)(" syscallargs[i] ")"
-      gsub(/\$/, "), (long)(", outargs)
+      outargs = "(long long)(" syscallargs[i] ")"
+      gsub(/\$/, "), (long long)(", outargs)
     }
 
     pcmd("#define __sanitizer_syscall_pre_" sn "(" inargs ") \\")
@@ -324,14 +324,14 @@ END {
     preargs = syscallargs[i]
 
     if (preargs != "void") {
-      preargs = "long " preargs
-      gsub(/\$/, ", long ", preargs)
+      preargs = "long long " preargs
+      gsub(/\$/, ", long long ", preargs)
     }
 
     if (preargs == "void") {
-      postargs = "long res"
+      postargs = "long long res"
     } else {
-      postargs = "long res, " preargs
+      postargs = "long long res, " preargs
     }
 
     pcmd("void __sanitizer_syscall_pre_impl_" sn "(" preargs ");")
@@ -395,7 +395,7 @@ END {
   pcmd("//          Release memory visibility to fd.")
   pcmd("//   COMMON_SYSCALL_PRE_FORK()")
   pcmd("//          Called before fork syscall.")
-  pcmd("//   COMMON_SYSCALL_POST_FORK(long res)")
+  pcmd("//   COMMON_SYSCALL_POST_FORK(long long res)")
   pcmd("//          Called after fork syscall.")
   pcmd("//")
   pcmd("// DO NOT EDIT! THIS FILE HAS BEEN GENERATED!")
@@ -470,15 +470,15 @@ END {
     preargs = syscallfullargs[i]
 
     if (preargs != "void") {
-      preargs = "long " preargs
-      gsub(/\$/, ", long ", preargs)
-      gsub(/long \*/, "void *", preargs)
+      preargs = "long long " preargs
+      gsub(/\$/, ", long long ", preargs)
+      gsub(/long long \*/, "void *", preargs)
     }
 
     if (preargs == "void") {
-      postargs = "long res"
+      postargs = "long long res"
     } else {
-      postargs = "long res, " preargs
+      postargs = "long long res, " preargs
     }
 
     pcmd("PRE_SYSCALL(" sn ")(" preargs ")")
@@ -789,7 +789,13 @@ function syscall_body(syscall, mode)
       pcmd("POST_READ(msg_, sizeof(__sanitizer_msghdr));")
     }
   } else if (syscall == "recvfrom") {
-    pcmd("/* Nothing to do */")
+    if (mode == "pre") {
+      pcmd("PRE_WRITE(buf_, len_);");
+    } else {
+      pcmd("if (res >= 0) {");
+      pcmd("  POST_WRITE(buf_, res);")
+      pcmd("}");
+    }
   } else if (syscall == "accept") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "getpeername") {
