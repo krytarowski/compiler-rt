@@ -43,7 +43,7 @@
 // DO NOT EDIT! THIS FILE HAS BEEN GENERATED!
 //
 // Generated with: generate_netbsd_syscalls.awk
-// Generated date: 2017-12-24
+// Generated date: 2017-12-26
 // Generated from: syscalls.master,v 1.290 2017/12/19 19:40:03 kamil Exp
 //
 //===----------------------------------------------------------------------===//
@@ -404,40 +404,58 @@ PRE_SYSCALL(sendmsg)(long long s_, void *msg_, long long flags_) {
 }
 POST_SYSCALL(sendmsg)
 (long long res, long long s_, void *msg_, long long flags_) {
-  POST_READ(msg_, sizeof(__sanitizer_msghdr));
+  if (res > 0) {
+    POST_READ(msg_, sizeof(__sanitizer_msghdr));
+  }
 }
 PRE_SYSCALL(recvfrom)
 (long long s_, void *buf_, long long len_, long long flags_, void *from_,
   void *fromlenaddr_) {
   PRE_WRITE(buf_, len_);
+  PRE_WRITE(from_, struct_sockaddr_sz);
+  PRE_WRITE(fromlenaddr_, sizeof(__sanitizer_socklen_t));
 }
 POST_SYSCALL(recvfrom)
 (long long res, long long s_, void *buf_, long long len_, long long flags_,
   void *from_, void *fromlenaddr_) {
   if (res >= 0) {
     POST_WRITE(buf_, res);
+    POST_WRITE(from_, struct_sockaddr_sz);
+    POST_WRITE(fromlenaddr_, sizeof(__sanitizer_socklen_t));
   }
 }
 PRE_SYSCALL(accept)(long long s_, void *name_, void *anamelen_) {
-  /* Nothing to do */
+  PRE_WRITE(name_, struct_sockaddr_sz);
+  PRE_WRITE(anamelen_, sizeof(__sanitizer_socklen_t));
 }
 POST_SYSCALL(accept)
 (long long res, long long s_, void *name_, void *anamelen_) {
-  /* Nothing to do */
+  if (res == 0) {
+    POST_WRITE(name_, struct_sockaddr_sz);
+    POST_WRITE(anamelen_, sizeof(__sanitizer_socklen_t));
+  }
 }
 PRE_SYSCALL(getpeername)(long long fdes_, void *asa_, void *alen_) {
-  /* Nothing to do */
+  PRE_WRITE(asa_, struct_sockaddr_sz);
+  PRE_WRITE(alen_, sizeof(__sanitizer_socklen_t));
 }
 POST_SYSCALL(getpeername)
 (long long res, long long fdes_, void *asa_, void *alen_) {
-  /* Nothing to do */
+  if (res == 0) {
+    POST_WRITE(asa_, struct_sockaddr_sz);
+    POST_WRITE(alen_, sizeof(__sanitizer_socklen_t));
+  }
 }
 PRE_SYSCALL(getsockname)(long long fdes_, void *asa_, void *alen_) {
-  /* Nothing to do */
+  PRE_WRITE(asa_, struct_sockaddr_sz);
+  PRE_WRITE(alen_, sizeof(__sanitizer_socklen_t));
 }
 POST_SYSCALL(getsockname)
 (long long res, long long fdes_, void *asa_, void *alen_) {
-  /* Nothing to do */
+  if (res == 0) {
+    POST_WRITE(asa_, struct_sockaddr_sz);
+    POST_WRITE(alen_, sizeof(__sanitizer_socklen_t));
+  }
 }
 PRE_SYSCALL(access)(void *path_, long long flags_) {
   const char *path = (const char *)path_;
@@ -446,9 +464,11 @@ PRE_SYSCALL(access)(void *path_, long long flags_) {
   }
 }
 POST_SYSCALL(access)(long long res, void *path_, long long flags_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(chflags)(void *path_, long long flags_) {
@@ -458,9 +478,11 @@ PRE_SYSCALL(chflags)(void *path_, long long flags_) {
   }
 }
 POST_SYSCALL(chflags)(long long res, void *path_, long long flags_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(fchflags)(long long fd_, long long flags_) { /* Nothing to do */ }
@@ -485,26 +507,42 @@ POST_SYSCALL(compat_43_lstat43)(long long res, void *path_, void *ub_) {
 }
 PRE_SYSCALL(dup)(long long fd_) { /* Nothing to do */ }
 POST_SYSCALL(dup)(long long res, long long fd_) { /* Nothing to do */ }
-PRE_SYSCALL(pipe)(void) { /* Nothing to do */ }
-POST_SYSCALL(pipe)(long long res) { /* Nothing to do */ }
+PRE_SYSCALL(pipe)(void) {
+  /* pipe returns two descriptors through two returned values */
+}
+POST_SYSCALL(pipe)(long long res) {
+  /* pipe returns two descriptors through two returned values */
+}
 PRE_SYSCALL(getegid)(void) { /* Nothing to do */ }
 POST_SYSCALL(getegid)(long long res) { /* Nothing to do */ }
 PRE_SYSCALL(profil)
 (void *samples_, long long size_, long long offset_, long long scale_) {
-  /* Nothing to do */
+  if (samples_) {
+    PRE_WRITE(samples_, size_);
+  }
 }
 POST_SYSCALL(profil)
 (long long res, void *samples_, long long size_, long long offset_,
   long long scale_) {
-  /* Nothing to do */
+  if (res == 0) {
+    if (samples_) {
+      POST_WRITE(samples_, size_);
+    }
+  }
 }
 PRE_SYSCALL(ktrace)
 (void *fname_, long long ops_, long long facs_, long long pid_) {
-  /* Nothing to do */
+  if (tracefile_) {
+    PRE_READ(tracefile_, __sanitizer::internal_strlen(tracefile_) + 1);
+  }
 }
 POST_SYSCALL(ktrace)
 (long long res, void *fname_, long long ops_, long long facs_, long long pid_) {
-  /* Nothing to do */
+  if (res == 0) {
+    if (tracefile_) {
+      POST_READ(tracefile_, __sanitizer::internal_strlen(tracefile_) + 1);
+    }
+  }
 }
 PRE_SYSCALL(compat_13_sigaction13)(long long signum_, void *nsa_, void *osa_) {
   /* TODO */
@@ -528,8 +566,10 @@ PRE_SYSCALL(__getlogin)(void *namebuf_, long long namelen_) {
   }
 }
 POST_SYSCALL(__getlogin)(long long res, void *namebuf_, long long namelen_) {
-  if (namebuf_) {
-    POST_WRITE(namebuf_, namelen_);
+  if (res == 0) {
+    if (namebuf_) {
+      POST_WRITE(namebuf_, namelen_);
+    }
   }
 }
 PRE_SYSCALL(__setlogin)(void *namebuf_) {
@@ -539,9 +579,11 @@ PRE_SYSCALL(__setlogin)(void *namebuf_) {
   }
 }
 POST_SYSCALL(__setlogin)(long long res, void *namebuf_) {
-  const char *namebuf = (const char *)namebuf_;
-  if (namebuf) {
-    POST_READ(namebuf, __sanitizer::internal_strlen(namebuf) + 1);
+  if (res == 0) {
+    const char *namebuf = (const char *)namebuf_;
+    if (namebuf) {
+      POST_READ(namebuf, __sanitizer::internal_strlen(namebuf) + 1);
+    }
   }
 }
 PRE_SYSCALL(acct)(void *path_) {
@@ -551,9 +593,11 @@ PRE_SYSCALL(acct)(void *path_) {
   }
 }
 POST_SYSCALL(acct)(long long res, void *path_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(compat_13_sigpending13)(void) { /* TODO */ }
@@ -577,9 +621,11 @@ PRE_SYSCALL(revoke)(void *path_) {
   }
 }
 POST_SYSCALL(revoke)(long long res, void *path_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(symlink)(void *path_, void *link_) {
@@ -593,13 +639,15 @@ PRE_SYSCALL(symlink)(void *path_, void *link_) {
   }
 }
 POST_SYSCALL(symlink)(long long res, void *path_, void *link_) {
-  const char *path = (const char *)path_;
-  const char *link = (const char *)link_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
-  }
-  if (link) {
-    POST_READ(link, __sanitizer::internal_strlen(link) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    const char *link = (const char *)link_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
+    if (link) {
+      POST_READ(link, __sanitizer::internal_strlen(link) + 1);
+    }
   }
 }
 PRE_SYSCALL(readlink)(void *path_, void *buf_, long long count_) {
@@ -644,6 +692,7 @@ PRE_SYSCALL(execve)(void *path_, void *argp_, void *envp_) {
   }
 }
 POST_SYSCALL(execve)(long long res, void *path_, void *argp_, void *envp_) {
+  /* If we are here, something went wrong */
   const char *path = (const char *)path_;
   char **argp = (char **)argp_;
   char **envp = (char **)envp_;
@@ -672,9 +721,11 @@ PRE_SYSCALL(chroot)(void *path_) {
   }
 }
 POST_SYSCALL(chroot)(long long res, void *path_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(compat_43_fstat43)(long long fd_, void *sb_) { /* TODO */ }
@@ -739,10 +790,18 @@ POST_SYSCALL(mincore)(long long res, void *addr_, long long len_, void *vec_) {
   /* Nothing to do */
 }
 PRE_SYSCALL(getgroups)(long long gidsetsize_, void *gidset_) {
-  /* Nothing to do */
+  unsigned int *gidset = (unsigned int *)gidset_;
+  if (gidset) {
+    PRE_WRITE(gidset, sizeof(*gidset) * gidsetsize_);
+  }
 }
 POST_SYSCALL(getgroups)(long long res, long long gidsetsize_, void *gidset_) {
-  /* Nothing to do */
+  if (res == 0) {
+    unsigned int *gidset = (unsigned int *)gidset_;
+    if (gidset) {
+      POST_WRITE(gidset, sizeof(*gidset) * gidsetsize_);
+    }
+  }
 }
 PRE_SYSCALL(setgroups)(long long gidsetsize_, void *gidset_) {
   unsigned int *gidset = (unsigned int *)gidset_;
@@ -751,9 +810,11 @@ PRE_SYSCALL(setgroups)(long long gidsetsize_, void *gidset_) {
   }
 }
 POST_SYSCALL(setgroups)(long long res, long long gidsetsize_, void *gidset_) {
-  unsigned int *gidset = (unsigned int *)gidset_;
-  if (gidset) {
-    POST_READ(gidset, sizeof(*gidset) * gidsetsize_);
+  if (res == 0) {
+    unsigned int *gidset = (unsigned int *)gidset_;
+    if (gidset) {
+      POST_READ(gidset, sizeof(*gidset) * gidsetsize_);
+    }
   }
 }
 PRE_SYSCALL(getpgrp)(void) { /* Nothing to do */ }
@@ -831,11 +892,13 @@ POST_SYSCALL(compat_30_socket)
   /* TODO */
 }
 PRE_SYSCALL(connect)(long long s_, void *name_, long long namelen_) {
-  /* Nothing to do */
+  PRE_READ(name_, namelen_);
 }
 POST_SYSCALL(connect)
 (long long res, long long s_, void *name_, long long namelen_) {
-  /* Nothing to do */
+  if (res == 0) {
+    POST_READ(name_, namelen_);
+  }
 }
 PRE_SYSCALL(compat_43_oaccept)(long long s_, void *name_, void *anamelen_) {
   /* TODO */
@@ -871,21 +934,29 @@ POST_SYSCALL(compat_13_sigreturn13)(long long res, void *sigcntxp_) {
   /* TODO */
 }
 PRE_SYSCALL(bind)(long long s_, void *name_, long long namelen_) {
-  /* Nothing to do */
+  PRE_READ(name_, namelen_);
 }
 POST_SYSCALL(bind)
 (long long res, long long s_, void *name_, long long namelen_) {
-  /* Nothing to do */
+  if (res == 0) {
+    PRE_READ(name_, namelen_);
+  }
 }
 PRE_SYSCALL(setsockopt)
 (long long s_, long long level_, long long name_, void *val_,
   long long valsize_) {
-  /* Nothing to do */
+  if (val_) {
+    PRE_READ(val_, valsize_);
+  }
 }
 POST_SYSCALL(setsockopt)
 (long long res, long long s_, long long level_, long long name_, void *val_,
   long long valsize_) {
-  /* Nothing to do */
+  if (res == 0) {
+    if (val_) {
+      POST_READ(val_, valsize_);
+    }
+  }
 }
 PRE_SYSCALL(listen)(long long s_, long long backlog_) { /* Nothing to do */ }
 POST_SYSCALL(listen)(long long res, long long s_, long long backlog_) {
@@ -939,27 +1010,69 @@ POST_SYSCALL(compat_50_getrusage)
 }
 PRE_SYSCALL(getsockopt)
 (long long s_, long long level_, long long name_, void *val_, void *avalsize_) {
-  /* Nothing to do */
+  if (val_) {
+    PRE_WRITE(val_, valsize_);
+  }
 }
 POST_SYSCALL(getsockopt)
 (long long res, long long s_, long long level_, long long name_, void *val_,
   void *avalsize_) {
-  /* Nothing to do */
+  if (res == 0) {
+    if (val_) {
+      POST_WRITE(val_, valsize_);
+    }
+  }
 }
 /* syscall 119 has been skipped */
 PRE_SYSCALL(readv)(long long fd_, void *iovp_, long long iovcnt_) {
-  /* Nothing to do */
+  struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;
+  int i;
+  if (iovp) {
+    PRE_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);
+    for (i = 0; i < iovcnt_; i++) {
+      PRE_WRITE(iovp[i].iov_base, iovp[i].iov_len);
+    }
+  }
 }
 POST_SYSCALL(readv)
 (long long res, long long fd_, void *iovp_, long long iovcnt_) {
-  /* Nothing to do */
+  struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;
+  int i, m, n = res;
+  if (res > 0) {
+    if (iovp) {
+      POST_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);
+      for (i = 0; i < iovcnt_ && n > 0; i++) {
+        m = n > iovp[i].iov_len ? iovp[i].iov_len : n;
+        POST_WRITE(iovp[i].iov_base, m);
+        n -= m;
+      }
+    }
+  }
 }
 PRE_SYSCALL(writev)(long long fd_, void *iovp_, long long iovcnt_) {
-  /* Nothing to do */
+  struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;
+  int i;
+  if (iovp) {
+    PRE_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);
+    for (i = 0; i < iovcnt_; i++) {
+      PRE_READ(iovp[i].iov_base, iovp[i].iov_len);
+    }
+  }
 }
 POST_SYSCALL(writev)
 (long long res, long long fd_, void *iovp_, long long iovcnt_) {
-  /* Nothing to do */
+  struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;
+  int i, m, n = res;
+  if (res > 0) {
+    if (iovp) {
+      POST_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);
+      for (i = 0; i < iovcnt_ && n > 0; i++) {
+        m = n > iovp[i].iov_len ? iovp[i].iov_len : n;
+        POST_READ(iovp[i].iov_base, m);
+        n -= m;
+      }
+    }
+  }
 }
 PRE_SYSCALL(compat_50_settimeofday)(void *tv_, void *tzp_) { /* TODO */ }
 POST_SYSCALL(compat_50_settimeofday)(long long res, void *tv_, void *tzp_) {
@@ -1005,13 +1118,15 @@ PRE_SYSCALL(rename)(void *from_, void *to_) {
   }
 }
 POST_SYSCALL(rename)(long long res, void *from_, void *to_) {
-  const char *from = (const char *)from_;
-  const char *to = (const char *)to_;
-  if (from) {
-    POST_READ(from, __sanitizer::internal_strlen(from) + 1);
-  }
-  if (to) {
-    POST_READ(to, __sanitizer::internal_strlen(to) + 1);
+  if (res == 0) {
+    const char *from = (const char *)from_;
+    const char *to = (const char *)to_;
+    if (from) {
+      POST_READ(from, __sanitizer::internal_strlen(from) + 1);
+    }
+    if (to) {
+      POST_READ(to, __sanitizer::internal_strlen(to) + 1);
+    }
   }
 }
 PRE_SYSCALL(compat_43_otruncate)(void *path_, long long length_) { /* TODO */ }
@@ -1037,20 +1152,26 @@ PRE_SYSCALL(mkfifo)(void *path_, long long mode_) {
   }
 }
 POST_SYSCALL(mkfifo)(long long res, void *path_, long long mode_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(sendto)
 (long long s_, void *buf_, long long len_, long long flags_, void *to_,
   long long tolen_) {
-  /* Nothing to do */
+  PRE_READ(buf_, len_);
+  PRE_READ(to_, tolen_);
 }
 POST_SYSCALL(sendto)
 (long long res, long long s_, void *buf_, long long len_, long long flags_,
   void *to_, long long tolen_) {
-  /* Nothing to do */
+  if (res >= 0) {
+    POST_READ(buf_, len_);
+    POST_READ(to_, tolen_);
+  }
 }
 PRE_SYSCALL(shutdown)(long long s_, long long how_) { /* Nothing to do */ }
 POST_SYSCALL(shutdown)(long long res, long long s_, long long how_) {
@@ -1058,12 +1179,14 @@ POST_SYSCALL(shutdown)(long long res, long long s_, long long how_) {
 }
 PRE_SYSCALL(socketpair)
 (long long domain_, long long type_, long long protocol_, void *rsv_) {
-  /* Nothing to do */
+  PRE_WRITE(rsv_, 2 * sizeof(int));
 }
 POST_SYSCALL(socketpair)
 (long long res, long long domain_, long long type_, long long protocol_,
   void *rsv_) {
-  /* Nothing to do */
+  if (res == 0) {
+    POST_WRITE(rsv_, 2 * sizeof(int));
+  }
 }
 PRE_SYSCALL(mkdir)(void *path_, long long mode_) {
   const char *path = (const char *)path_;
@@ -1072,9 +1195,11 @@ PRE_SYSCALL(mkdir)(void *path_, long long mode_) {
   }
 }
 POST_SYSCALL(mkdir)(long long res, void *path_, long long mode_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(rmdir)(void *path_) {
@@ -1084,9 +1209,11 @@ PRE_SYSCALL(rmdir)(void *path_) {
   }
 }
 POST_SYSCALL(rmdir)(long long res, void *path_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(compat_50_utimes)(void *path_, void *tptr_) { /* TODO */ }
@@ -1241,12 +1368,16 @@ POST_SYSCALL(compat_10_oshmsys)
 PRE_SYSCALL(pread)
 (long long fd_, void *buf_, long long nbyte_, long long PAD_,
   long long offset_) {
-  /* Nothing to do */
+  if (buf_) {
+    PRE_WRITE(buf_, nbyte_);
+  }
 }
 POST_SYSCALL(pread)
 (long long res, long long fd_, void *buf_, long long nbyte_, long long PAD_,
   long long offset_) {
-  /* Nothing to do */
+  if (res > 0) {
+    POST_WRITE(buf_, res);
+  }
 }
 PRE_SYSCALL(pwrite)
 (long long fd_, void *buf_, long long nbyte_, long long PAD_,
@@ -1258,8 +1389,8 @@ PRE_SYSCALL(pwrite)
 POST_SYSCALL(pwrite)
 (long long res, long long fd_, void *buf_, long long nbyte_, long long PAD_,
   long long offset_) {
-  if (buf_) {
-    PRE_READ(buf_, nbyte_);
+  if (res > 0) {
+    POST_READ(buf_, res);
   }
 }
 PRE_SYSCALL(compat_30_ntp_gettime)(void *ntvp_) { /* TODO */ }
@@ -1321,9 +1452,11 @@ PRE_SYSCALL(pathconf)(void *path_, long long name_) {
   }
 }
 POST_SYSCALL(pathconf)(long long res, void *path_, long long name_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res != -1) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(fpathconf)(long long fd_, long long name_) { /* Nothing to do */ }
@@ -1331,13 +1464,21 @@ POST_SYSCALL(fpathconf)(long long res, long long fd_, long long name_) {
   /* Nothing to do */
 }
 /* syscall 193 has been skipped */
-PRE_SYSCALL(getrlimit)(long long which_, void *rlp_) { /* Nothing to do */ }
-POST_SYSCALL(getrlimit)(long long res, long long which_, void *rlp_) {
-  /* Nothing to do */
+PRE_SYSCALL(getrlimit)(long long which_, void *rlp_) {
+  PRE_WRITE(rlp_, struct_rlimit_sz);
 }
-PRE_SYSCALL(setrlimit)(long long which_, void *rlp_) { /* Nothing to do */ }
+POST_SYSCALL(getrlimit)(long long res, long long which_, void *rlp_) {
+  if (res == 0) {
+    POST_WRITE(rlp_, struct_rlimit_sz);
+  }
+}
+PRE_SYSCALL(setrlimit)(long long which_, void *rlp_) {
+  PRE_READ(rlp_, struct_rlimit_sz);
+}
 POST_SYSCALL(setrlimit)(long long res, long long which_, void *rlp_) {
-  /* Nothing to do */
+  if (res == 0) {
+    POST_READ(rlp_, struct_rlimit_sz);
+  }
 }
 PRE_SYSCALL(compat_12_getdirentries)
 (long long fd_, void *buf_, long long count_, void *basep_) {
@@ -1381,9 +1522,11 @@ PRE_SYSCALL(truncate)(void *path_, long long PAD_, long long length_) {
 }
 POST_SYSCALL(truncate)
 (long long res, void *path_, long long PAD_, long long length_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(ftruncate)(long long fd_, long long PAD_, long long length_) {
@@ -1407,12 +1550,14 @@ PRE_SYSCALL(__sysctl)
 POST_SYSCALL(__sysctl)
 (long long res, void *name_, long long namelen_, void *oldv_, void *oldlenp_,
   void *newv_, long long newlen_) {
-  const int *name = (const int *)name_;
-  if (name) {
-    POST_READ(name, namelen_ * sizeof(*name));
-  }
-  if (newv_) {
-    POST_READ(name, newlen_);
+  if (res == 0) {
+    const int *name = (const int *)name_;
+    if (name) {
+      POST_READ(name, namelen_ * sizeof(*name));
+    }
+    if (newv_) {
+      POST_READ(name, newlen_);
+    }
   }
 }
 PRE_SYSCALL(mlock)(void *addr_, long long len_) { /* Nothing to do */ }
@@ -1430,9 +1575,11 @@ PRE_SYSCALL(undelete)(void *path_) {
   }
 }
 POST_SYSCALL(undelete)(long long res, void *path_) {
-  const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    const char *path = (const char *)path_;
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(compat_50_futimes)(long long fd_, void *tptr_) { /* TODO */ }
@@ -1448,6 +1595,7 @@ PRE_SYSCALL(reboot)(long long opt_, void *bootstr_) {
   }
 }
 POST_SYSCALL(reboot)(long long res, long long opt_, void *bootstr_) {
+  /* This call should never return */
   const char *bootstr = (const char *)bootstr_;
   if (bootstr) {
     POST_READ(bootstr, __sanitizer::internal_strlen(bootstr) + 1);
@@ -1496,11 +1644,17 @@ POST_SYSCALL(semget)
   /* Nothing to do */
 }
 PRE_SYSCALL(semop)(long long semid_, void *sops_, long long nsops_) {
-  /* Nothing to do */
+  if (sops_) {
+    PRE_READ(sops_, nsops_ * struct_sembuf_sz);
+  }
 }
 POST_SYSCALL(semop)
 (long long res, long long semid_, void *sops_, long long nsops_) {
-  /* Nothing to do */
+  if (res == 0) {
+    if (sops_) {
+      POST_READ(sops_, nsops_ * struct_sembuf_sz);
+    }
+  }
 }
 PRE_SYSCALL(semconfig)(long long flag_) { /* Nothing to do */ }
 POST_SYSCALL(semconfig)(long long res, long long flag_) { /* Nothing to do */ }
@@ -1524,8 +1678,10 @@ PRE_SYSCALL(msgsnd)
 POST_SYSCALL(msgsnd)
 (long long res, long long msqid_, void *msgp_, long long msgsz_,
   long long msgflg_) {
-  if (msgp_) {
-    PRE_READ(msgp_, msgsz_);
+  if (res == 0) {
+    if (msgp_) {
+      POST_READ(msgp_, msgsz_);
+    }
   }
 }
 PRE_SYSCALL(msgrcv)
@@ -1635,15 +1791,13 @@ PRE_SYSCALL(sigqueueinfo)(long long pid_, void *info_) {
     PRE_READ(info_, siginfo_t_sz);
   }
 }
-POST_SYSCALL(sigqueueinfo)(long long res, long long pid_, void *info_) {
-  if (info_) {
-    PRE_READ(info_, siginfo_t_sz);
-  }
-}
+POST_SYSCALL(sigqueueinfo)(long long res, long long pid_, void *info_) {}
 PRE_SYSCALL(modctl)(long long cmd_, void *arg_) { /* TODO */ }
 POST_SYSCALL(modctl)(long long res, long long cmd_, void *arg_) { /* TODO */ }
-PRE_SYSCALL(_ksem_init)(long long value_, void *idp_) {}
-POST_SYSCALL(_ksem_init)(long long res, long long value_, void *idp_) {}
+PRE_SYSCALL(_ksem_init)(long long value_, void *idp_) { /* Nothing to do */ }
+POST_SYSCALL(_ksem_init)(long long res, long long value_, void *idp_) {
+  /* Nothing to do */
+}
 PRE_SYSCALL(_ksem_open)
 (void *name_, long long oflag_, long long mode_, long long value_, void *idp_) {
   const char *name = (const char *)name_;
@@ -1694,11 +1848,7 @@ PRE_SYSCALL(_ksem_timedwait)(long long id_, void *abstime_) {
     PRE_READ(abstime_, struct_timespec_sz);
   }
 }
-POST_SYSCALL(_ksem_timedwait)(long long res, long long id_, void *abstime_) {
-  if (abstime_) {
-    PRE_READ(abstime_, struct_timespec_sz);
-  }
-}
+POST_SYSCALL(_ksem_timedwait)(long long res, long long id_, void *abstime_) {}
 PRE_SYSCALL(mq_open)
 (void *name_, long long oflag_, long long mode_, void *attr_) {
   const char *name = (const char *)name_;
@@ -1737,21 +1887,13 @@ PRE_SYSCALL(mq_setattr)(long long mqdes_, void *mqstat_, void *omqstat_) {
   }
 }
 POST_SYSCALL(mq_setattr)
-(long long res, long long mqdes_, void *mqstat_, void *omqstat_) {
-  if (mqstat_) {
-    PRE_READ(mqstat_, struct_mq_attr_sz);
-  }
-}
+(long long res, long long mqdes_, void *mqstat_, void *omqstat_) {}
 PRE_SYSCALL(mq_notify)(long long mqdes_, void *notification_) {
   if (notification_) {
     PRE_READ(notification_, struct_sigevent_sz);
   }
 }
-POST_SYSCALL(mq_notify)(long long res, long long mqdes_, void *notification_) {
-  if (notification_) {
-    PRE_READ(notification_, struct_sigevent_sz);
-  }
-}
+POST_SYSCALL(mq_notify)(long long res, long long mqdes_, void *notification_) {}
 PRE_SYSCALL(mq_send)
 (long long mqdes_, void *msg_ptr_, long long msg_len_, long long msg_prio_) {
   if (msg_ptr_) {
@@ -1760,11 +1902,7 @@ PRE_SYSCALL(mq_send)
 }
 POST_SYSCALL(mq_send)
 (long long res, long long mqdes_, void *msg_ptr_, long long msg_len_,
-  long long msg_prio_) {
-  if (msg_ptr_) {
-    PRE_READ(msg_ptr_, msg_len_);
-  }
-}
+  long long msg_prio_) {}
 PRE_SYSCALL(mq_receive)
 (long long mqdes_, void *msg_ptr_, long long msg_len_, void *msg_prio_) {
   /* Nothing to do */
@@ -1892,14 +2030,7 @@ PRE_SYSCALL(__sigaltstack14)(void *nss_, void *oss_) {
     PRE_READ(oss_, struct_sigaltstack_sz);
   }
 }
-POST_SYSCALL(__sigaltstack14)(long long res, void *nss_, void *oss_) {
-  if (nss_) {
-    PRE_READ(nss_, struct_sigaltstack_sz);
-  }
-  if (oss_) {
-    PRE_READ(oss_, struct_sigaltstack_sz);
-  }
-}
+POST_SYSCALL(__sigaltstack14)(long long res, void *nss_, void *oss_) {}
 PRE_SYSCALL(__vfork14)(void) { /* Nothing to do */ }
 POST_SYSCALL(__vfork14)(long long res) { /* Nothing to do */ }
 PRE_SYSCALL(__posix_chown)(void *path_, long long uid_, long long gid_) {
@@ -2083,22 +2214,14 @@ PRE_SYSCALL(setcontext)(void *ucp_) {
     PRE_READ(ucp_, ucontext_t_sz);
   }
 }
-POST_SYSCALL(setcontext)(long long res, void *ucp_) {
-  if (ucp_) {
-    PRE_READ(ucp_, ucontext_t_sz);
-  }
-}
+POST_SYSCALL(setcontext)(long long res, void *ucp_) {}
 PRE_SYSCALL(_lwp_create)(void *ucp_, long long flags_, void *new_lwp_) {
   if (ucp_) {
     PRE_READ(ucp_, ucontext_t_sz);
   }
 }
 POST_SYSCALL(_lwp_create)
-(long long res, void *ucp_, long long flags_, void *new_lwp_) {
-  if (ucp_) {
-    PRE_READ(ucp_, ucontext_t_sz);
-  }
-}
+(long long res, void *ucp_, long long flags_, void *new_lwp_) {}
 PRE_SYSCALL(_lwp_exit)(void) { /* Nothing to do */ }
 POST_SYSCALL(_lwp_exit)(long long res) { /* Nothing to do */ }
 PRE_SYSCALL(_lwp_self)(void) { /* Nothing to do */ }
@@ -2153,11 +2276,7 @@ PRE_SYSCALL(_lwp_unpark_all)(void *targets_, long long ntargets_, void *hint_) {
   }
 }
 POST_SYSCALL(_lwp_unpark_all)
-(long long res, void *targets_, long long ntargets_, void *hint_) {
-  if (targets_) {
-    PRE_READ(targets_, ntargets_ * sizeof(__sanitizer_lwpid_t));
-  }
-}
+(long long res, void *targets_, long long ntargets_, void *hint_) {}
 PRE_SYSCALL(_lwp_setname)(long long target_, void *name_) {
   const char *name = (const char *)name_;
   if (name) {
@@ -2735,8 +2854,10 @@ PRE_SYSCALL(__getfh30)(void *fname_, void *fhp_, void *fh_size_) {
 POST_SYSCALL(__getfh30)
 (long long res, void *fname_, void *fhp_, void *fh_size_) {
   const char *fname = (const char *)fname_;
-  if (fname) {
-    POST_READ(fname, __sanitizer::internal_strlen(fname) + 1);
+  if (res == 0) {
+    if (fname) {
+      POST_READ(fname, __sanitizer::internal_strlen(fname) + 1);
+    }
   }
 }
 PRE_SYSCALL(__fhopen40)(void *fhp_, long long fh_size_, long long flags_) {
@@ -2745,11 +2866,7 @@ PRE_SYSCALL(__fhopen40)(void *fhp_, long long fh_size_, long long flags_) {
   }
 }
 POST_SYSCALL(__fhopen40)
-(long long res, void *fhp_, long long fh_size_, long long flags_) {
-  if (fhp_) {
-    PRE_READ(fhp_, fh_size_);
-  }
-}
+(long long res, void *fhp_, long long fh_size_, long long flags_) {}
 PRE_SYSCALL(__fhstatvfs140)
 (void *fhp_, long long fh_size_, void *buf_, long long flags_) {
   if (fhp_) {
@@ -2757,72 +2874,44 @@ PRE_SYSCALL(__fhstatvfs140)
   }
 }
 POST_SYSCALL(__fhstatvfs140)
-(long long res, void *fhp_, long long fh_size_, void *buf_, long long flags_) {
-  if (fhp_) {
-    PRE_READ(fhp_, fh_size_);
-  }
-}
+(long long res, void *fhp_, long long fh_size_, void *buf_, long long flags_) {}
 PRE_SYSCALL(compat_50___fhstat40)(void *fhp_, long long fh_size_, void *sb_) {
   if (fhp_) {
     PRE_READ(fhp_, fh_size_);
   }
 }
 POST_SYSCALL(compat_50___fhstat40)
-(long long res, void *fhp_, long long fh_size_, void *sb_) {
-  if (fhp_) {
-    PRE_READ(fhp_, fh_size_);
-  }
-}
+(long long res, void *fhp_, long long fh_size_, void *sb_) {}
 PRE_SYSCALL(aio_cancel)(long long fildes_, void *aiocbp_) {
   if (aiocbp_) {
     PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
   }
 }
-POST_SYSCALL(aio_cancel)(long long res, long long fildes_, void *aiocbp_) {
-  if (aiocbp_) {
-    PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
-  }
-}
+POST_SYSCALL(aio_cancel)(long long res, long long fildes_, void *aiocbp_) {}
 PRE_SYSCALL(aio_error)(void *aiocbp_) {
   if (aiocbp_) {
     PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
   }
 }
-POST_SYSCALL(aio_error)(long long res, void *aiocbp_) {
-  if (aiocbp_) {
-    PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
-  }
-}
+POST_SYSCALL(aio_error)(long long res, void *aiocbp_) {}
 PRE_SYSCALL(aio_fsync)(long long op_, void *aiocbp_) {
   if (aiocbp_) {
     PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
   }
 }
-POST_SYSCALL(aio_fsync)(long long res, long long op_, void *aiocbp_) {
-  if (aiocbp_) {
-    PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
-  }
-}
+POST_SYSCALL(aio_fsync)(long long res, long long op_, void *aiocbp_) {}
 PRE_SYSCALL(aio_read)(void *aiocbp_) {
   if (aiocbp_) {
     PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
   }
 }
-POST_SYSCALL(aio_read)(long long res, void *aiocbp_) {
-  if (aiocbp_) {
-    PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
-  }
-}
+POST_SYSCALL(aio_read)(long long res, void *aiocbp_) {}
 PRE_SYSCALL(aio_return)(void *aiocbp_) {
   if (aiocbp_) {
     PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
   }
 }
-POST_SYSCALL(aio_return)(long long res, void *aiocbp_) {
-  if (aiocbp_) {
-    PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
-  }
-}
+POST_SYSCALL(aio_return)(long long res, void *aiocbp_) {}
 PRE_SYSCALL(compat_50_aio_suspend)
 (void *list_, long long nent_, void *timeout_) {
   /* TODO */
@@ -2836,11 +2925,7 @@ PRE_SYSCALL(aio_write)(void *aiocbp_) {
     PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
   }
 }
-POST_SYSCALL(aio_write)(long long res, void *aiocbp_) {
-  if (aiocbp_) {
-    PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));
-  }
-}
+POST_SYSCALL(aio_write)(long long res, void *aiocbp_) {}
 PRE_SYSCALL(lio_listio)
 (long long mode_, void *list_, long long nent_, void *sig_) {
   /* Nothing to do */
@@ -2944,14 +3029,7 @@ PRE_SYSCALL(__settimeofday50)(void *tv_, void *tzp_) {
     PRE_READ(tzp_, struct_timezone_sz);
   }
 }
-POST_SYSCALL(__settimeofday50)(long long res, void *tv_, void *tzp_) {
-  if (tv_) {
-    PRE_READ(tv_, timeval_sz);
-  }
-  if (tzp_) {
-    PRE_READ(tzp_, struct_timezone_sz);
-  }
-}
+POST_SYSCALL(__settimeofday50)(long long res, void *tv_, void *tzp_) {}
 PRE_SYSCALL(__utimes50)(void *path_, void *tptr_) {
   struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;
   const char *path = (const char *)path_;
@@ -2963,27 +3041,13 @@ PRE_SYSCALL(__utimes50)(void *path_, void *tptr_) {
     PRE_READ(tptr[1], struct_timespec_sz);
   }
 }
-POST_SYSCALL(__utimes50)(long long res, void *path_, void *tptr_) {
-  struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;
-  const char *path = (const char *)path_;
-  if (path) {
-    PRE_READ(path, __sanitizer::internal_strlen(path) + 1);
-  }
-  if (tptr) {
-    PRE_READ(tptr[0], struct_timespec_sz);
-    PRE_READ(tptr[1], struct_timespec_sz);
-  }
-}
+POST_SYSCALL(__utimes50)(long long res, void *path_, void *tptr_) {}
 PRE_SYSCALL(__adjtime50)(void *delta_, void *olddelta_) {
   if (delta_) {
     PRE_READ(delta_, timeval_sz);
   }
 }
-POST_SYSCALL(__adjtime50)(long long res, void *delta_, void *olddelta_) {
-  if (delta_) {
-    PRE_READ(delta_, timeval_sz);
-  }
-}
+POST_SYSCALL(__adjtime50)(long long res, void *delta_, void *olddelta_) {}
 PRE_SYSCALL(__lfs_segwait50)(void *fsidp_, void *tv_) { /* TODO */ }
 POST_SYSCALL(__lfs_segwait50)(long long res, void *fsidp_, void *tv_) {
   /* TODO */
@@ -2995,13 +3059,7 @@ PRE_SYSCALL(__futimes50)(long long fd_, void *tptr_) {
     PRE_READ(tptr[1], struct_timespec_sz);
   }
 }
-POST_SYSCALL(__futimes50)(long long res, long long fd_, void *tptr_) {
-  struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;
-  if (tptr) {
-    PRE_READ(tptr[0], struct_timespec_sz);
-    PRE_READ(tptr[1], struct_timespec_sz);
-  }
-}
+POST_SYSCALL(__futimes50)(long long res, long long fd_, void *tptr_) {}
 PRE_SYSCALL(__lutimes50)(void *path_, void *tptr_) {
   struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;
   const char *path = (const char *)path_;
@@ -3034,15 +3092,7 @@ PRE_SYSCALL(__setitimer50)(long long which_, void *itv_, void *oitv_) {
   }
 }
 POST_SYSCALL(__setitimer50)
-(long long res, long long which_, void *itv_, void *oitv_) {
-  struct __sanitizer_itimerval *itv = (struct __sanitizer_itimerval *)itv_;
-  if (itv) {
-    PRE_READ(&itv->it_interval.tv_sec, sizeof(__sanitizer_time_t));
-    PRE_READ(&itv->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));
-    PRE_READ(&itv->it_value.tv_sec, sizeof(__sanitizer_time_t));
-    PRE_READ(&itv->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));
-  }
-}
+(long long res, long long which_, void *itv_, void *oitv_) {}
 PRE_SYSCALL(__getitimer50)(long long which_, void *itv_) { /* Nothing to do */ }
 POST_SYSCALL(__getitimer50)(long long res, long long which_, void *itv_) {
   /* Nothing to do */
@@ -3058,11 +3108,8 @@ PRE_SYSCALL(__clock_settime50)(long long clock_id_, void *tp_) {
     PRE_READ(tp_, struct_timespec_sz);
   }
 }
-POST_SYSCALL(__clock_settime50)(long long res, long long clock_id_, void *tp_) {
-  if (tp_) {
-    PRE_READ(tp_, struct_timespec_sz);
-  }
-}
+POST_SYSCALL(__clock_settime50)
+(long long res, long long clock_id_, void *tp_) {}
 PRE_SYSCALL(__clock_getres50)(long long clock_id_, void *tp_) {
   /* Nothing to do */
 }
@@ -3074,11 +3121,7 @@ PRE_SYSCALL(__nanosleep50)(void *rqtp_, void *rmtp_) {
     PRE_READ(rqtp_, struct_timespec_sz);
   }
 }
-POST_SYSCALL(__nanosleep50)(long long res, void *rqtp_, void *rmtp_) {
-  if (rqtp_) {
-    PRE_READ(rqtp_, struct_timespec_sz);
-  }
-}
+POST_SYSCALL(__nanosleep50)(long long res, void *rqtp_, void *rmtp_) {}
 PRE_SYSCALL(____sigtimedwait50)(void *set_, void *info_, void *timeout_) {
   if (set_) {
     PRE_READ(set_, sizeof(__sanitizer_sigset_t));
@@ -3088,14 +3131,7 @@ PRE_SYSCALL(____sigtimedwait50)(void *set_, void *info_, void *timeout_) {
   }
 }
 POST_SYSCALL(____sigtimedwait50)
-(long long res, void *set_, void *info_, void *timeout_) {
-  if (set_) {
-    PRE_READ(set_, sizeof(__sanitizer_sigset_t));
-  }
-  if (timeout_) {
-    PRE_READ(timeout_, struct_timespec_sz);
-  }
-}
+(long long res, void *set_, void *info_, void *timeout_) {}
 PRE_SYSCALL(__mq_timedsend50)
 (long long mqdes_, void *msg_ptr_, long long msg_len_, long long msg_prio_,
   void *abs_timeout_) {
@@ -3108,14 +3144,7 @@ PRE_SYSCALL(__mq_timedsend50)
 }
 POST_SYSCALL(__mq_timedsend50)
 (long long res, long long mqdes_, void *msg_ptr_, long long msg_len_,
-  long long msg_prio_, void *abs_timeout_) {
-  if (msg_ptr_) {
-    PRE_READ(msg_ptr_, msg_len_);
-  }
-  if (abs_timeout_) {
-    PRE_READ(abs_timeout_, struct_timespec_sz);
-  }
-}
+  long long msg_prio_, void *abs_timeout_) {}
 PRE_SYSCALL(__mq_timedreceive50)
 (long long mqdes_, void *msg_ptr_, long long msg_len_, void *msg_prio_,
   void *abs_timeout_) {
@@ -3128,14 +3157,7 @@ PRE_SYSCALL(__mq_timedreceive50)
 }
 POST_SYSCALL(__mq_timedreceive50)
 (long long res, long long mqdes_, void *msg_ptr_, long long msg_len_,
-  void *msg_prio_, void *abs_timeout_) {
-  if (msg_ptr_) {
-    PRE_READ(msg_ptr_, msg_len_);
-  }
-  if (abs_timeout_) {
-    PRE_READ(abs_timeout_, struct_timespec_sz);
-  }
-}
+  void *msg_prio_, void *abs_timeout_) {}
 PRE_SYSCALL(compat_60__lwp_park)
 (void *ts_, long long unpark_, void *hint_, void *unparkhint_) {
   /* TODO */
@@ -3156,14 +3178,7 @@ PRE_SYSCALL(__kevent50)
 }
 POST_SYSCALL(__kevent50)
 (long long res, long long fd_, void *changelist_, long long nchanges_,
-  void *eventlist_, long long nevents_, void *timeout_) {
-  if (changelist_) {
-    PRE_READ(changelist_, nchanges_ * struct_kevent_sz);
-  }
-  if (timeout_) {
-    PRE_READ(timeout_, struct_timespec_sz);
-  }
-}
+  void *eventlist_, long long nevents_, void *timeout_) {}
 PRE_SYSCALL(__pselect50)
 (long long nd_, void *in_, void *ou_, void *ex_, void *ts_, void *mask_) {
   if (ts_) {
@@ -3175,14 +3190,7 @@ PRE_SYSCALL(__pselect50)
 }
 POST_SYSCALL(__pselect50)
 (long long res, long long nd_, void *in_, void *ou_, void *ex_, void *ts_,
-  void *mask_) {
-  if (ts_) {
-    PRE_READ(ts_, struct_timespec_sz);
-  }
-  if (mask_) {
-    PRE_READ(mask_, sizeof(struct __sanitizer_sigset_t));
-  }
-}
+  void *mask_) {}
 PRE_SYSCALL(__pollts50)(void *fds_, long long nfds_, void *ts_, void *mask_) {
   if (ts_) {
     PRE_READ(ts_, struct_timespec_sz);
@@ -3192,14 +3200,7 @@ PRE_SYSCALL(__pollts50)(void *fds_, long long nfds_, void *ts_, void *mask_) {
   }
 }
 POST_SYSCALL(__pollts50)
-(long long res, void *fds_, long long nfds_, void *ts_, void *mask_) {
-  if (ts_) {
-    PRE_READ(ts_, struct_timespec_sz);
-  }
-  if (mask_) {
-    PRE_READ(mask_, sizeof(struct __sanitizer_sigset_t));
-  }
-}
+(long long res, void *fds_, long long nfds_, void *ts_, void *mask_) {}
 PRE_SYSCALL(__aio_suspend50)(void *list_, long long nent_, void *timeout_) {
   int i;
   const struct aiocb *const *list = (const struct aiocb *const *)list_;
@@ -3215,20 +3216,7 @@ PRE_SYSCALL(__aio_suspend50)(void *list_, long long nent_, void *timeout_) {
   }
 }
 POST_SYSCALL(__aio_suspend50)
-(long long res, void *list_, long long nent_, void *timeout_) {
-  int i;
-  const struct aiocb *const *list = (const struct aiocb *const *)list_;
-  if (list) {
-    for (i = 0; i < nent_; i++) {
-      if (list[i]) {
-        PRE_READ(list[i], sizeof(struct __sanitizer_aiocb));
-      }
-    }
-  }
-  if (timeout_) {
-    PRE_READ(timeout_, struct_timespec_sz);
-  }
-}
+(long long res, void *list_, long long nent_, void *timeout_) {}
 PRE_SYSCALL(__stat50)(void *path_, void *ub_) {
   const char *path = (const char *)path_;
   if (path) {
@@ -3237,8 +3225,10 @@ PRE_SYSCALL(__stat50)(void *path_, void *ub_) {
 }
 POST_SYSCALL(__stat50)(long long res, void *path_, void *ub_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(__fstat50)(long long fd_, void *sb_) { /* Nothing to do */ }
@@ -3253,8 +3243,10 @@ PRE_SYSCALL(__lstat50)(void *path_, void *ub_) {
 }
 POST_SYSCALL(__lstat50)(long long res, void *path_, void *ub_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(____semctl50)
@@ -3300,11 +3292,13 @@ POST_SYSCALL(__timer_settime50)
 (long long res, long long timerid_, long long flags_, void *value_,
   void *ovalue_) {
   struct __sanitizer_itimerval *value = (struct __sanitizer_itimerval *)value_;
-  if (value) {
-    PRE_READ(&value->it_interval.tv_sec, sizeof(__sanitizer_time_t));
-    PRE_READ(&value->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));
-    PRE_READ(&value->it_value.tv_sec, sizeof(__sanitizer_time_t));
-    PRE_READ(&value->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));
+  if (res == 0) {
+    if (value) {
+      POST_READ(&value->it_interval.tv_sec, sizeof(__sanitizer_time_t));
+      POST_READ(&value->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));
+      POST_READ(&value->it_value.tv_sec, sizeof(__sanitizer_time_t));
+      POST_READ(&value->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));
+    }
   }
 }
 PRE_SYSCALL(__timer_gettime50)(long long timerid_, void *value_) {
@@ -3340,8 +3334,10 @@ PRE_SYSCALL(__mknod50)(void *path_, long long mode_, long long dev_) {
 POST_SYSCALL(__mknod50)
 (long long res, void *path_, long long mode_, long long dev_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(__fhstat50)(void *fhp_, long long fh_size_, void *sb_) {
@@ -3351,8 +3347,10 @@ PRE_SYSCALL(__fhstat50)(void *fhp_, long long fh_size_, void *sb_) {
 }
 POST_SYSCALL(__fhstat50)
 (long long res, void *fhp_, long long fh_size_, void *sb_) {
-  if (fhp_) {
-    PRE_READ(fhp_, fh_size_);
+  if (res == 0) {
+    if (fhp_) {
+      POST_READ(fhp_, fh_size_);
+    }
   }
 }
 /* syscall 452 has been skipped */
@@ -3378,8 +3376,10 @@ PRE_SYSCALL(paccept)
 POST_SYSCALL(paccept)
 (long long res, long long s_, void *name_, void *anamelen_, void *mask_,
   long long flags_) {
-  if (mask_) {
-    PRE_READ(mask_, sizeof(__sanitizer_sigset_t));
+  if (res >= 0) {
+    if (mask_) {
+      PRE_READ(mask_, sizeof(__sanitizer_sigset_t));
+    }
   }
 }
 PRE_SYSCALL(linkat)
@@ -3398,11 +3398,13 @@ POST_SYSCALL(linkat)
   long long flags_) {
   const char *name1 = (const char *)name1_;
   const char *name2 = (const char *)name2_;
-  if (name1) {
-    POST_READ(name1, __sanitizer::internal_strlen(name1) + 1);
-  }
-  if (name2) {
-    POST_READ(name2, __sanitizer::internal_strlen(name2) + 1);
+  if (res == 0) {
+    if (name1) {
+      POST_READ(name1, __sanitizer::internal_strlen(name1) + 1);
+    }
+    if (name2) {
+      POST_READ(name2, __sanitizer::internal_strlen(name2) + 1);
+    }
   }
 }
 PRE_SYSCALL(renameat)
@@ -3420,11 +3422,13 @@ POST_SYSCALL(renameat)
 (long long res, long long fromfd_, void *from_, long long tofd_, void *to_) {
   const char *from = (const char *)from_;
   const char *to = (const char *)to_;
-  if (from) {
-    POST_READ(from, __sanitizer::internal_strlen(from) + 1);
-  }
-  if (to) {
-    POST_READ(to, __sanitizer::internal_strlen(to) + 1);
+  if (res == 0) {
+    if (from) {
+      POST_READ(from, __sanitizer::internal_strlen(from) + 1);
+    }
+    if (to) {
+      POST_READ(to, __sanitizer::internal_strlen(to) + 1);
+    }
   }
 }
 PRE_SYSCALL(mkfifoat)(long long fd_, void *path_, long long mode_) {
@@ -3436,8 +3440,10 @@ PRE_SYSCALL(mkfifoat)(long long fd_, void *path_, long long mode_) {
 POST_SYSCALL(mkfifoat)
 (long long res, long long fd_, void *path_, long long mode_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(mknodat)
@@ -3451,8 +3457,10 @@ POST_SYSCALL(mknodat)
 (long long res, long long fd_, void *path_, long long mode_, long long PAD_,
   long long dev_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(mkdirat)(long long fd_, void *path_, long long mode_) {
@@ -3464,8 +3472,10 @@ PRE_SYSCALL(mkdirat)(long long fd_, void *path_, long long mode_) {
 POST_SYSCALL(mkdirat)
 (long long res, long long fd_, void *path_, long long mode_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(faccessat)
@@ -3478,8 +3488,10 @@ PRE_SYSCALL(faccessat)
 POST_SYSCALL(faccessat)
 (long long res, long long fd_, void *path_, long long amode_, long long flag_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(fchmodat)
@@ -3492,8 +3504,10 @@ PRE_SYSCALL(fchmodat)
 POST_SYSCALL(fchmodat)
 (long long res, long long fd_, void *path_, long long mode_, long long flag_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(fchownat)
@@ -3508,41 +3522,15 @@ POST_SYSCALL(fchownat)
 (long long res, long long fd_, void *path_, long long owner_, long long group_,
   long long flag_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
-  }
-}
-PRE_SYSCALL(fexecve)(long long fd_, void *argp_, void *envp_) {
-  char **argp = (char **)argp_;
-  char **envp = (char **)envp_;
-  if (argp && argp[0]) {
-    char *a = argp[0];
-    while (a++) {
-      PRE_READ(a, __sanitizer::internal_strlen(a) + 1);
-    }
-  }
-  if (envp && envp[0]) {
-    char *e = envp[0];
-    while (e++) {
-      PRE_READ(e, __sanitizer::internal_strlen(e) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
     }
   }
 }
+PRE_SYSCALL(fexecve)(long long fd_, void *argp_, void *envp_) { /* TODO */ }
 POST_SYSCALL(fexecve)(long long res, long long fd_, void *argp_, void *envp_) {
-  char **argp = (char **)argp_;
-  char **envp = (char **)envp_;
-  if (argp && argp[0]) {
-    char *a = argp[0];
-    while (a++) {
-      PRE_READ(a, __sanitizer::internal_strlen(a) + 1);
-    }
-  }
-  if (envp && envp[0]) {
-    char *e = envp[0];
-    while (e++) {
-      PRE_READ(e, __sanitizer::internal_strlen(e) + 1);
-    }
-  }
+  /* TODO */
 }
 PRE_SYSCALL(fstatat)(long long fd_, void *path_, void *buf_, long long flag_) {
   const char *path = (const char *)path_;
@@ -3570,11 +3558,13 @@ PRE_SYSCALL(utimensat)
 POST_SYSCALL(utimensat)
 (long long res, long long fd_, void *path_, void *tptr_, long long flag_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
-  }
-  if (tptr_) {
-    PRE_READ(tptr_, struct_timespec_sz);
+  if (res > 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
+    if (tptr_) {
+      POST_READ(tptr_, struct_timespec_sz);
+    }
   }
 }
 PRE_SYSCALL(openat)
@@ -3588,8 +3578,10 @@ POST_SYSCALL(openat)
 (long long res, long long fd_, void *path_, long long oflags_,
   long long mode_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res > 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(readlinkat)
@@ -3602,8 +3594,10 @@ PRE_SYSCALL(readlinkat)
 POST_SYSCALL(readlinkat)
 (long long res, long long fd_, void *path_, void *buf_, long long bufsize_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res > 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(symlinkat)(void *path1_, long long fd_, void *path2_) {
@@ -3620,11 +3614,13 @@ POST_SYSCALL(symlinkat)
 (long long res, void *path1_, long long fd_, void *path2_) {
   const char *path1 = (const char *)path1_;
   const char *path2 = (const char *)path2_;
-  if (path1) {
-    POST_READ(path1, __sanitizer::internal_strlen(path1) + 1);
-  }
-  if (path2) {
-    POST_READ(path2, __sanitizer::internal_strlen(path2) + 1);
+  if (res == 0) {
+    if (path1) {
+      POST_READ(path1, __sanitizer::internal_strlen(path1) + 1);
+    }
+    if (path2) {
+      POST_READ(path2, __sanitizer::internal_strlen(path2) + 1);
+    }
   }
 }
 PRE_SYSCALL(unlinkat)(long long fd_, void *path_, long long flag_) {
@@ -3636,8 +3632,10 @@ PRE_SYSCALL(unlinkat)(long long fd_, void *path_, long long flag_) {
 POST_SYSCALL(unlinkat)
 (long long res, long long fd_, void *path_, long long flag_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(futimens)(long long fd_, void *tptr_) {
@@ -3649,9 +3647,11 @@ PRE_SYSCALL(futimens)(long long fd_, void *tptr_) {
 }
 POST_SYSCALL(futimens)(long long res, long long fd_, void *tptr_) {
   struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;
-  if (tptr) {
-    PRE_READ(tptr[0], struct_timespec_sz);
-    PRE_READ(tptr[1], struct_timespec_sz);
+  if (res == 0) {
+    if (tptr) {
+      POST_READ(tptr[0], struct_timespec_sz);
+      POST_READ(tptr[1], struct_timespec_sz);
+    }
   }
 }
 PRE_SYSCALL(__quotactl)(void *path_, void *args_) {
@@ -3662,8 +3662,10 @@ PRE_SYSCALL(__quotactl)(void *path_, void *args_) {
 }
 POST_SYSCALL(__quotactl)(long long res, void *path_, void *args_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (res == 0) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(posix_spawn)
@@ -3678,8 +3680,10 @@ POST_SYSCALL(posix_spawn)
 (long long res, void *pid_, void *path_, void *file_actions_, void *attrp_,
   void *argv_, void *envp_) {
   const char *path = (const char *)path_;
-  if (path) {
-    POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+  if (pid_) {
+    if (path) {
+      POST_READ(path, __sanitizer::internal_strlen(path) + 1);
+    }
   }
 }
 PRE_SYSCALL(recvmmsg)
@@ -3691,8 +3695,10 @@ PRE_SYSCALL(recvmmsg)
 POST_SYSCALL(recvmmsg)
 (long long res, long long s_, void *mmsg_, long long vlen_, long long flags_,
   void *timeout_) {
-  if (timeout_) {
-    PRE_READ(timeout_, struct_timespec_sz);
+  if (res >= 0) {
+    if (timeout_) {
+      POST_READ(timeout_, struct_timespec_sz);
+    }
   }
 }
 PRE_SYSCALL(sendmmsg)
@@ -3707,8 +3713,10 @@ POST_SYSCALL(sendmmsg)
 (long long res, long long s_, void *mmsg_, long long vlen_, long long flags_) {
   struct __sanitizer_mmsghdr *mmsg = (struct __sanitizer_mmsghdr *)mmsg_;
   unsigned int vlen = (vlen_ > 1024 ? 1024 : vlen_);
-  if (mmsg) {
-    PRE_READ(mmsg, sizeof(struct __sanitizer_mmsghdr) * vlen);
+  if (res >= 0) {
+    if (mmsg) {
+      POST_READ(mmsg, sizeof(struct __sanitizer_mmsghdr) * vlen);
+    }
   }
 }
 PRE_SYSCALL(clock_nanosleep)
@@ -3721,7 +3729,7 @@ POST_SYSCALL(clock_nanosleep)
 (long long res, long long clock_id_, long long flags_, void *rqtp_,
   void *rmtp_) {
   if (rqtp_) {
-    PRE_READ(rqtp_, struct_timespec_sz);
+    POST_READ(rqtp_, struct_timespec_sz);
   }
 }
 PRE_SYSCALL(___lwp_park60)
@@ -3734,8 +3742,10 @@ PRE_SYSCALL(___lwp_park60)
 POST_SYSCALL(___lwp_park60)
 (long long res, long long clock_id_, long long flags_, void *ts_,
   long long unpark_, void *hint_, void *unparkhint_) {
-  if (ts_) {
-    PRE_READ(ts_, struct_timespec_sz);
+  if (res == 0) {
+    if (ts_) {
+      POST_READ(ts_, struct_timespec_sz);
+    }
   }
 }
 PRE_SYSCALL(posix_fallocate)
