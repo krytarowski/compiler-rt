@@ -1645,9 +1645,11 @@ function syscall_body(syscall, mode)
   } else if (syscall == "compat_50___sigtimedwait") {
     pcmd("/* TODO */")
   } else if (syscall == "sigqueueinfo") {
-    pcmd("if (info_) {")
-    pcmd("  PRE_READ(info_, siginfo_t_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (info_) {")
+      pcmd("  PRE_READ(info_, siginfo_t_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "modctl") {
     pcmd("/* TODO */")
   } else if (syscall == "_ksem_init") {
@@ -1689,9 +1691,11 @@ function syscall_body(syscall, mode)
   } else if (syscall == "_ksem_destroy") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "_ksem_timedwait") {
-    pcmd("if (abstime_) {")
-    pcmd("  PRE_READ(abstime_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (abstime_) {")
+      pcmd("  PRE_READ(abstime_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "mq_open") {
     if (mode == "pre") {
       pcmd("const char *name = (const char *)name_;")
@@ -1721,17 +1725,23 @@ function syscall_body(syscall, mode)
   } else if (syscall == "mq_getattr") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "mq_setattr") {
-    pcmd("if (mqstat_) {")
-    pcmd("  PRE_READ(mqstat_, struct_mq_attr_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (mqstat_) {")
+      pcmd("  PRE_READ(mqstat_, struct_mq_attr_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "mq_notify") {
-    pcmd("if (notification_) {")
-    pcmd("  PRE_READ(notification_, struct_sigevent_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (notification_) {")
+      pcmd("  PRE_READ(notification_, struct_sigevent_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "mq_send") {
-    pcmd("if (msg_ptr_) {")
-    pcmd("  PRE_READ(msg_ptr_, msg_len_);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (msg_ptr_) {")
+      pcmd("  PRE_READ(msg_ptr_, msg_len_);")
+      pcmd("}")
+    }
   } else if (syscall == "mq_receive") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_50_mq_timedsend") {
@@ -1799,12 +1809,14 @@ function syscall_body(syscall, mode)
   } else if (syscall == "compat_30___lstat13") {
     pcmd("/* TODO */")
   } else if (syscall == "__sigaltstack14") {
-    pcmd("if (nss_) {")
-    pcmd("  PRE_READ(nss_, struct_sigaltstack_sz);")
-    pcmd("}")
-    pcmd("if (oss_) {")
-    pcmd("  PRE_READ(oss_, struct_sigaltstack_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (nss_) {")
+      pcmd("  PRE_READ(nss_, struct_sigaltstack_sz);")
+      pcmd("}")
+      pcmd("if (oss_) {")
+      pcmd("  PRE_READ(oss_, struct_sigaltstack_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__vfork14") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__posix_chown") {
@@ -1906,13 +1918,17 @@ function syscall_body(syscall, mode)
   } else if (syscall == "getcontext") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "setcontext") {
-    pcmd("if (ucp_) {")
-    pcmd("  PRE_READ(ucp_, ucontext_t_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (ucp_) {")
+      pcmd("  PRE_READ(ucp_, ucontext_t_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "_lwp_create") {
-    pcmd("if (ucp_) {")
-    pcmd("  PRE_READ(ucp_, ucontext_t_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (ucp_) {")
+      pcmd("  PRE_READ(ucp_, ucontext_t_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "_lwp_exit") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_self") {
@@ -1938,9 +1954,11 @@ function syscall_body(syscall, mode)
   } else if (syscall == "_lwp_unpark") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "_lwp_unpark_all") {
-    pcmd("if (targets_) {")
-    pcmd("  PRE_READ(targets_, ntargets_ * sizeof(__sanitizer_lwpid_t));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (targets_) {")
+      pcmd("  PRE_READ(targets_, ntargets_ * sizeof(__sanitizer_lwpid_t));")
+      pcmd("}")
+    }
   } else if (syscall == "_lwp_setname") {
     if (mode == "pre") {
       pcmd("const char *name = (const char *)name_;")
@@ -2269,48 +2287,68 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *fname = (const char *)fname_;")
-      pcmd("if (fname) {")
-      pcmd("  POST_READ(fname, __sanitizer::internal_strlen(fname) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (fname) {")
+      pcmd("    POST_READ(fname, __sanitizer::internal_strlen(fname) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "__fhopen40") {
-    pcmd("if (fhp_) {")
-    pcmd("  PRE_READ(fhp_, fh_size_);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (fhp_) {")
+      pcmd("  PRE_READ(fhp_, fh_size_);")
+      pcmd("}")
+    }
   } else if (syscall == "__fhstatvfs140") {
-    pcmd("if (fhp_) {")
-    pcmd("  PRE_READ(fhp_, fh_size_);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (fhp_) {")
+      pcmd("  PRE_READ(fhp_, fh_size_);")
+      pcmd("}")
+    }
   } else if (syscall == "compat_50___fhstat40") {
-    pcmd("if (fhp_) {")
-    pcmd("  PRE_READ(fhp_, fh_size_);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (fhp_) {")
+      pcmd("  PRE_READ(fhp_, fh_size_);")
+      pcmd("}")
+    }
   } else if (syscall == "aio_cancel") {
-    pcmd("if (aiocbp_) {")
-    pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (aiocbp_) {")
+      pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
+      pcmd("}")
+    }
   } else if (syscall == "aio_error") {
-    pcmd("if (aiocbp_) {")
-    pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (aiocbp_) {")
+      pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
+      pcmd("}")
+    }
   } else if (syscall == "aio_fsync") {
-    pcmd("if (aiocbp_) {")
-    pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (aiocbp_) {")
+      pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
+      pcmd("}")
+    }
   } else if (syscall == "aio_read") {
-    pcmd("if (aiocbp_) {")
-    pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (aiocbp_) {")
+      pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
+      pcmd("}")
+    }
   } else if (syscall == "aio_return") {
-    pcmd("if (aiocbp_) {")
-    pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (aiocbp_) {")
+      pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
+      pcmd("}")
+    }
   } else if (syscall == "compat_50_aio_suspend") {
     pcmd("/* TODO */")
   } else if (syscall == "aio_write") {
-    pcmd("if (aiocbp_) {")
-    pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (aiocbp_) {")
+      pcmd("  PRE_READ(aiocbp_, sizeof(struct __sanitizer_aiocb));")
+      pcmd("}")
+    }
   } else if (syscall == "lio_listio") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__mount50") {
@@ -2356,34 +2394,42 @@ function syscall_body(syscall, mode)
   } else if (syscall == "__gettimeofday50") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__settimeofday50") {
-    pcmd("if (tv_) {")
-    pcmd("  PRE_READ(tv_, timeval_sz);")
-    pcmd("}")
-    pcmd("if (tzp_) {")
-    pcmd("  PRE_READ(tzp_, struct_timezone_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (tv_) {")
+      pcmd("  PRE_READ(tv_, timeval_sz);")
+      pcmd("}")
+      pcmd("if (tzp_) {")
+      pcmd("  PRE_READ(tzp_, struct_timezone_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__utimes50") {
-    pcmd("struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;")
-    pcmd("const char *path = (const char *)path_;")
-    pcmd("if (path) {")
-    pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
-    pcmd("}")
-    pcmd("if (tptr) {")
-    pcmd("  PRE_READ(tptr[0], struct_timespec_sz);")
-    pcmd("  PRE_READ(tptr[1], struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;")
+      pcmd("const char *path = (const char *)path_;")
+      pcmd("if (path) {")
+      pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("}")
+      pcmd("if (tptr) {")
+      pcmd("  PRE_READ(tptr[0], struct_timespec_sz);")
+      pcmd("  PRE_READ(tptr[1], struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__adjtime50") {
-    pcmd("if (delta_) {")
-    pcmd("  PRE_READ(delta_, timeval_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (delta_) {")
+      pcmd("  PRE_READ(delta_, timeval_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__lfs_segwait50") {
     pcmd("/* TODO */")
   } else if (syscall == "__futimes50") {
-    pcmd("struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;")
-    pcmd("if (tptr) {")
-    pcmd("  PRE_READ(tptr[0], struct_timespec_sz);")
-    pcmd("  PRE_READ(tptr[1], struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;")
+      pcmd("if (tptr) {")
+      pcmd("  PRE_READ(tptr[0], struct_timespec_sz);")
+      pcmd("  PRE_READ(tptr[1], struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__lutimes50") {
     if (mode == "pre") {
       pcmd("struct __sanitizer_timespec **tptr = (struct __sanitizer_timespec **)tptr_;")
@@ -2407,84 +2453,104 @@ function syscall_body(syscall, mode)
       pcmd("}")
     }
   } else if (syscall == "__setitimer50") {
-    pcmd("struct __sanitizer_itimerval *itv = (struct __sanitizer_itimerval *)itv_;")
-    pcmd("if (itv) {")
-    pcmd("  PRE_READ(&itv->it_interval.tv_sec, sizeof(__sanitizer_time_t));")
-    pcmd("  PRE_READ(&itv->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));")
-    pcmd("  PRE_READ(&itv->it_value.tv_sec, sizeof(__sanitizer_time_t));")
-    pcmd("  PRE_READ(&itv->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("struct __sanitizer_itimerval *itv = (struct __sanitizer_itimerval *)itv_;")
+      pcmd("if (itv) {")
+      pcmd("  PRE_READ(&itv->it_interval.tv_sec, sizeof(__sanitizer_time_t));")
+      pcmd("  PRE_READ(&itv->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));")
+      pcmd("  PRE_READ(&itv->it_value.tv_sec, sizeof(__sanitizer_time_t));")
+      pcmd("  PRE_READ(&itv->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));")
+      pcmd("}")
+    }
   } else if (syscall == "__getitimer50") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__clock_gettime50") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__clock_settime50") {
-    pcmd("if (tp_) {")
-    pcmd("  PRE_READ(tp_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (tp_) {")
+      pcmd("  PRE_READ(tp_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__clock_getres50") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__nanosleep50") {
-    pcmd("if (rqtp_) {")
-    pcmd("  PRE_READ(rqtp_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (rqtp_) {")
+      pcmd("  PRE_READ(rqtp_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "____sigtimedwait50") {
-    pcmd("if (set_) {")
-    pcmd("  PRE_READ(set_, sizeof(__sanitizer_sigset_t));")
-    pcmd("}")
-    pcmd("if (timeout_) {")
-    pcmd("  PRE_READ(timeout_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (set_) {")
+      pcmd("  PRE_READ(set_, sizeof(__sanitizer_sigset_t));")
+      pcmd("}")
+      pcmd("if (timeout_) {")
+      pcmd("  PRE_READ(timeout_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__mq_timedsend50") {
-    pcmd("if (msg_ptr_) {")
-    pcmd("  PRE_READ(msg_ptr_, msg_len_);")
-    pcmd("}")
-    pcmd("if (abs_timeout_) {")
-    pcmd("  PRE_READ(abs_timeout_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (msg_ptr_) {")
+      pcmd("  PRE_READ(msg_ptr_, msg_len_);")
+      pcmd("}")
+      pcmd("if (abs_timeout_) {")
+      pcmd("  PRE_READ(abs_timeout_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__mq_timedreceive50") {
-    pcmd("if (msg_ptr_) {")
-    pcmd("  PRE_READ(msg_ptr_, msg_len_);")
-    pcmd("}")
-    pcmd("if (abs_timeout_) {")
-    pcmd("  PRE_READ(abs_timeout_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (msg_ptr_) {")
+      pcmd("  PRE_READ(msg_ptr_, msg_len_);")
+      pcmd("}")
+      pcmd("if (abs_timeout_) {")
+      pcmd("  PRE_READ(abs_timeout_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "compat_60__lwp_park") {
     pcmd("/* TODO */")
   } else if (syscall == "__kevent50") {
-    pcmd("if (changelist_) {")
-    pcmd("  PRE_READ(changelist_, nchanges_ * struct_kevent_sz);")
-    pcmd("}")
-    pcmd("if (timeout_) {")
-    pcmd("  PRE_READ(timeout_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (changelist_) {")
+      pcmd("  PRE_READ(changelist_, nchanges_ * struct_kevent_sz);")
+      pcmd("}")
+      pcmd("if (timeout_) {")
+      pcmd("  PRE_READ(timeout_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__pselect50") {
-    pcmd("if (ts_) {")
-    pcmd("  PRE_READ(ts_, struct_timespec_sz);")
-    pcmd("}")
-    pcmd("if (mask_) {")
-    pcmd("  PRE_READ(mask_, sizeof(struct __sanitizer_sigset_t));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (ts_) {")
+      pcmd("  PRE_READ(ts_, struct_timespec_sz);")
+      pcmd("}")
+      pcmd("if (mask_) {")
+      pcmd("  PRE_READ(mask_, sizeof(struct __sanitizer_sigset_t));")
+      pcmd("}")
+    }
   } else if (syscall == "__pollts50") {
-    pcmd("if (ts_) {")
-    pcmd("  PRE_READ(ts_, struct_timespec_sz);")
-    pcmd("}")
-    pcmd("if (mask_) {")
-    pcmd("  PRE_READ(mask_, sizeof(struct __sanitizer_sigset_t));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (ts_) {")
+      pcmd("  PRE_READ(ts_, struct_timespec_sz);")
+      pcmd("}")
+      pcmd("if (mask_) {")
+      pcmd("  PRE_READ(mask_, sizeof(struct __sanitizer_sigset_t));")
+      pcmd("}")
+    }
   } else if (syscall == "__aio_suspend50") {
-    pcmd("int i;")
-    pcmd("const struct aiocb * const *list = (const struct aiocb * const *)list_;")
-    pcmd("if (list) {")
-    pcmd("  for (i = 0; i < nent_; i++) {")
-    pcmd("    if (list[i]) {")
-    pcmd("      PRE_READ(list[i], sizeof(struct __sanitizer_aiocb));")
-    pcmd("    }")
-    pcmd("  }")
-    pcmd("}")
-    pcmd("if (timeout_) {")
-    pcmd("  PRE_READ(timeout_, struct_timespec_sz);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("int i;")
+      pcmd("const struct aiocb * const *list = (const struct aiocb * const *)list_;")
+      pcmd("if (list) {")
+      pcmd("  for (i = 0; i < nent_; i++) {")
+      pcmd("    if (list[i]) {")
+      pcmd("      PRE_READ(list[i], sizeof(struct __sanitizer_aiocb));")
+      pcmd("    }")
+      pcmd("  }")
+      pcmd("}")
+      pcmd("if (timeout_) {")
+      pcmd("  PRE_READ(timeout_, struct_timespec_sz);")
+      pcmd("}")
+    }
   } else if (syscall == "__stat50") {
     if (mode == "pre") {
       pcmd("const char *path = (const char *)path_;")
@@ -2493,8 +2559,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "__fstat50") {
@@ -2507,8 +2575,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "____semctl50") {
@@ -2520,13 +2590,25 @@ function syscall_body(syscall, mode)
   } else if (syscall == "__getrusage50") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__timer_settime50") {
-    pcmd("struct __sanitizer_itimerval *value = (struct __sanitizer_itimerval *)value_;")
-    pcmd("if (value) {")
-    pcmd("  PRE_READ(&value->it_interval.tv_sec, sizeof(__sanitizer_time_t));")
-    pcmd("  PRE_READ(&value->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));")
-    pcmd("  PRE_READ(&value->it_value.tv_sec, sizeof(__sanitizer_time_t));")
-    pcmd("  PRE_READ(&value->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("struct __sanitizer_itimerval *value = (struct __sanitizer_itimerval *)value_;")
+      pcmd("if (value) {")
+      pcmd("  PRE_READ(&value->it_interval.tv_sec, sizeof(__sanitizer_time_t));")
+      pcmd("  PRE_READ(&value->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));")
+      pcmd("  PRE_READ(&value->it_value.tv_sec, sizeof(__sanitizer_time_t));")
+      pcmd("  PRE_READ(&value->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));")
+      pcmd("}")
+    } else {
+      pcmd("struct __sanitizer_itimerval *value = (struct __sanitizer_itimerval *)value_;")
+      pcmd("if (res == 0) {")
+      pcmd("  if (value) {")
+      pcmd("    POST_READ(&value->it_interval.tv_sec, sizeof(__sanitizer_time_t));")
+      pcmd("    POST_READ(&value->it_interval.tv_usec, sizeof(__sanitizer_suseconds_t));")
+      pcmd("    POST_READ(&value->it_value.tv_sec, sizeof(__sanitizer_time_t));")
+      pcmd("    POST_READ(&value->it_value.tv_usec, sizeof(__sanitizer_suseconds_t));")
+      pcmd("  }")
+      pcmd("}")
+    }
   } else if (syscall == "__timer_gettime50") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "__ntp_gettime50") {
@@ -2541,14 +2623,24 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "__fhstat50") {
-    pcmd("if (fhp_) {")
-    pcmd("  PRE_READ(fhp_, fh_size_);")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (fhp_) {")
+      pcmd("  PRE_READ(fhp_, fh_size_);")
+      pcmd("}")
+    } else {
+      pcmd("if (res == 0) {")
+      pcmd("  if (fhp_) {")
+      pcmd("    POST_READ(fhp_, fh_size_);")
+      pcmd("  }")
+      pcmd("}")
+    }
   } else if (syscall == "pipe2") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "dup3") {
@@ -2556,9 +2648,17 @@ function syscall_body(syscall, mode)
   } else if (syscall == "kqueue1") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "paccept") {
-    pcmd("if (mask_) {")
-    pcmd("  PRE_READ(mask_, sizeof(__sanitizer_sigset_t));")
-    pcmd("}")
+    if (mode == "pre") {
+      pcmd("if (mask_) {")
+      pcmd("  PRE_READ(mask_, sizeof(__sanitizer_sigset_t));")
+      pcmd("}")
+    } else {
+      pcmd("if (res >= 0) {")
+      pcmd("  if (mask_) {")
+      pcmd("    PRE_READ(mask_, sizeof(__sanitizer_sigset_t));")
+      pcmd("  }")
+      pcmd("}")
+    }
   } else if (syscall == "linkat") {
     if (mode == "pre") {
       pcmd("const char *name1 = (const char *)name1_;")
@@ -2572,11 +2672,13 @@ function syscall_body(syscall, mode)
     } else {
       pcmd("const char *name1 = (const char *)name1_;")
       pcmd("const char *name2 = (const char *)name2_;")
-      pcmd("if (name1) {")
-      pcmd("  POST_READ(name1, __sanitizer::internal_strlen(name1) + 1);")
-      pcmd("}")
-      pcmd("if (name2) {")
-      pcmd("  POST_READ(name2, __sanitizer::internal_strlen(name2) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (name1) {")
+      pcmd("    POST_READ(name1, __sanitizer::internal_strlen(name1) + 1);")
+      pcmd("  }")
+      pcmd("  if (name2) {")
+      pcmd("    POST_READ(name2, __sanitizer::internal_strlen(name2) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "renameat") {
@@ -2592,11 +2694,13 @@ function syscall_body(syscall, mode)
     } else {
       pcmd("const char *from = (const char *)from_;")
       pcmd("const char *to = (const char *)to_;")
-      pcmd("if (from) {")
-      pcmd("  POST_READ(from, __sanitizer::internal_strlen(from) + 1);")
-      pcmd("}")
-      pcmd("if (to) {")
-      pcmd("  POST_READ(to, __sanitizer::internal_strlen(to) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (from) {")
+      pcmd("    POST_READ(from, __sanitizer::internal_strlen(from) + 1);")
+      pcmd("  }")
+      pcmd("  if (to) {")
+      pcmd("    POST_READ(to, __sanitizer::internal_strlen(to) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "mkfifoat") {
@@ -2607,8 +2711,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "mknodat") {
@@ -2619,8 +2725,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "mkdirat") {
@@ -2631,8 +2739,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "faccessat") {
@@ -2643,8 +2753,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "fchmodat") {
@@ -2655,8 +2767,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "fchownat") {
@@ -2667,25 +2781,14 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "fexecve") {
-    pcmd("char **argp = (char **)argp_;")
-    pcmd("char **envp = (char **)envp_;")
-    pcmd("if (argp && argp[0]) {")
-    pcmd("  char *a = argp[0];")
-    pcmd("  while (a++) {")
-    pcmd("    PRE_READ(a, __sanitizer::internal_strlen(a) + 1);")
-    pcmd("  }")
-    pcmd("}")
-    pcmd("if (envp && envp[0]) {")
-    pcmd("  char *e = envp[0];")
-    pcmd("  while (e++) {")
-    pcmd("    PRE_READ(e, __sanitizer::internal_strlen(e) + 1);")
-    pcmd("  }")
-    pcmd("}")
+    pcmd("/* TODO */")
   } else if (syscall == "fstatat") {
     if (mode == "pre") {
       pcmd("const char *path = (const char *)path_;")
@@ -2709,11 +2812,13 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
-      pcmd("}")
-      pcmd("if (tptr_) {")
-      pcmd("  PRE_READ(tptr_, struct_timespec_sz);")
+      pcmd("if (res > 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
+      pcmd("  if (tptr_) {")
+      pcmd("    POST_READ(tptr_, struct_timespec_sz);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "openat") {
@@ -2724,8 +2829,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res > 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "readlinkat") {
@@ -2736,8 +2843,10 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res > 0) {")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "symlinkat") {
@@ -2753,11 +2862,13 @@ function syscall_body(syscall, mode)
     } else {
       pcmd("const char *path1 = (const char *)path1_;")
       pcmd("const char *path2 = (const char *)path2_;")
-      pcmd("if (path1) {")
-      pcmd("  POST_READ(path1, __sanitizer::internal_strlen(path1) + 1);")
-      pcmd("}")
-      pcmd("if (path2) {")
-      pcmd("  POST_READ(path2, __sanitizer::internal_strlen(path2) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  if (path1) {")
+      pcmd("    POST_READ(path1, __sanitizer::internal_strlen(path1) + 1);")
+      pcmd("  }")
+      pcmd("  if (path2) {")
+      pcmd("    POST_READ(path2, __sanitizer::internal_strlen(path2) + 1);")
+      pcmd("  }")
       pcmd("}")
     }
   } else if (syscall == "unlinkat") {
@@ -2767,8 +2878,8 @@ function syscall_body(syscall, mode)
       pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("}")
     } else {
+      pcmd("const char *path = (const char *)path_;")
       pcmd("if (res == 0) {")
-      pcmd("  const char *path = (const char *)path_;")
       pcmd("  if (path) {")
       pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("  }")
@@ -2797,8 +2908,8 @@ function syscall_body(syscall, mode)
       pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("}")
     } else {
+      pcmd("const char *path = (const char *)path_;")
       pcmd("if (res == 0) {")
-      pcmd("  const char *path = (const char *)path_;")
       pcmd("  if (path) {")
       pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("  }")
@@ -2811,8 +2922,8 @@ function syscall_body(syscall, mode)
       pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("}")
     } else {
+      pcmd("const char *path = (const char *)path_;")
       pcmd("if (pid_) {")
-      pcmd("  const char *path = (const char *)path_;")
       pcmd("  if (path) {")
       pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("  }")
@@ -2838,9 +2949,9 @@ function syscall_body(syscall, mode)
       pcmd("  PRE_READ(mmsg, sizeof(struct __sanitizer_mmsghdr) * vlen);")
       pcmd("}")
     } else {
+      pcmd("struct __sanitizer_mmsghdr *mmsg = (struct __sanitizer_mmsghdr *)mmsg_;")
+      pcmd("unsigned int vlen = (vlen_ > 1024 ? 1024 : vlen_);")
       pcmd("if (res >= 0) {")
-      pcmd("  struct __sanitizer_mmsghdr *mmsg = (struct __sanitizer_mmsghdr *)mmsg_;")
-      pcmd("  unsigned int vlen = (vlen_ > 1024 ? 1024 : vlen_);")
       pcmd("  if (mmsg) {")
       pcmd("    POST_READ(mmsg, sizeof(struct __sanitizer_mmsghdr) * vlen);")
       pcmd("  }")
