@@ -2771,8 +2771,8 @@ function syscall_body(syscall, mode)
       pcmd("  const char *path = (const char *)path_;")
       pcmd("  if (path) {")
       pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
-      pcmd("  }");
-      pcmd("}");
+      pcmd("  }")
+      pcmd("}")
     }
   } else if (syscall == "futimens") {
     if (mode == "pre") {
