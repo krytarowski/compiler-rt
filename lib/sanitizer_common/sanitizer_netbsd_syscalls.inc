@@ -1012,18 +1012,12 @@ POST_SYSCALL(compat_50_getrusage)
 }
 PRE_SYSCALL(getsockopt)
 (long long s_, long long level_, long long name_, void *val_, void *avalsize_) {
-  if (val_) {
-    PRE_WRITE(val_, valsize_);
-  }
+  /* TODO */
 }
 POST_SYSCALL(getsockopt)
 (long long res, long long s_, long long level_, long long name_, void *val_,
   void *avalsize_) {
-  if (res == 0) {
-    if (val_) {
-      POST_WRITE(val_, valsize_);
-    }
-  }
+  /* TODO */
 }
 /* syscall 119 has been skipped */
 PRE_SYSCALL(readv)(long long fd_, void *iovp_, long long iovcnt_) {
@@ -1039,7 +1033,8 @@ PRE_SYSCALL(readv)(long long fd_, void *iovp_, long long iovcnt_) {
 POST_SYSCALL(readv)
 (long long res, long long fd_, void *iovp_, long long iovcnt_) {
   struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;
-  int i, m, n = res;
+  int i;
+  uptr m, n = res;
   if (res > 0) {
     if (iovp) {
       POST_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);
@@ -1064,7 +1059,8 @@ PRE_SYSCALL(writev)(long long fd_, void *iovp_, long long iovcnt_) {
 POST_SYSCALL(writev)
 (long long res, long long fd_, void *iovp_, long long iovcnt_) {
   struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;
-  int i, m, n = res;
+  int i;
+  uptr m, n = res;
   if (res > 0) {
     if (iovp) {
       POST_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);

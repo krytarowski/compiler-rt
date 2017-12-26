@@ -1208,17 +1208,7 @@ function syscall_body(syscall, mode)
   } else if (syscall == "compat_50_getrusage") {
     pcmd("/* TODO */")
   } else if (syscall == "getsockopt") {
-    if (mode == "pre") {
-      pcmd("if (val_) {")
-      pcmd("  PRE_WRITE(val_, valsize_);")
-      pcmd("}")
-    } else {
-      pcmd("if (res == 0) {")
-      pcmd("  if (val_) {")
-      pcmd("    POST_WRITE(val_, valsize_);")
-      pcmd("  }")
-      pcmd("}")
-    }
+    pcmd("/* TODO */")
   } else if (syscall == "readv") {
     if (mode == "pre") {
       pcmd("struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;")
@@ -1231,7 +1221,8 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;")
-      pcmd("int i, m, n = res;")
+      pcmd("int i;")
+      pcmd("uptr m, n = res;")
       pcmd("if (res > 0) {")
       pcmd("  if (iovp) {")
       pcmd("    POST_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);")
@@ -1255,7 +1246,8 @@ function syscall_body(syscall, mode)
       pcmd("}")
     } else {
       pcmd("struct __sanitizer_iovec *iovp = (struct __sanitizer_iovec *)iovp_;")
-      pcmd("int i, m, n = res;")
+      pcmd("int i;")
+      pcmd("uptr m, n = res;")
       pcmd("if (res > 0) {")
       pcmd("  if (iovp) {")
       pcmd("    POST_READ(iovp, sizeof(struct __sanitizer_iovec) * iovcnt_);")
