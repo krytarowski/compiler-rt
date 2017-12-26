@@ -532,15 +532,17 @@ POST_SYSCALL(profil)
 }
 PRE_SYSCALL(ktrace)
 (void *fname_, long long ops_, long long facs_, long long pid_) {
-  if (tracefile_) {
-    PRE_READ(tracefile_, __sanitizer::internal_strlen(tracefile_) + 1);
+  const char *fname = (const char *)fname_;
+  if (fname) {
+    PRE_READ(fname, __sanitizer::internal_strlen(fname) + 1);
   }
 }
 POST_SYSCALL(ktrace)
 (long long res, void *fname_, long long ops_, long long facs_, long long pid_) {
+  const char *fname = (const char *)fname_;
   if (res == 0) {
-    if (tracefile_) {
-      POST_READ(tracefile_, __sanitizer::internal_strlen(tracefile_) + 1);
+    if (fname) {
+      POST_READ(fname, __sanitizer::internal_strlen(fname) + 1);
     }
   }
 }

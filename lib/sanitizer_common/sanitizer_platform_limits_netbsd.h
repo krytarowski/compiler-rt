@@ -438,11 +438,6 @@ struct __sanitizer_ifconf {
   } ifc_ifcu;
 };
 
-struct __sanitizer_iovec {
-  void *iov_base;
-  uptr iov_len;
-};
-
 #define IOC_NRBITS 8
 #define IOC_TYPEBITS 8
 #define IOC_SIZEBITS 14

@@ -892,13 +892,15 @@ function syscall_body(syscall, mode)
     }
   } else if (syscall == "ktrace") {
     if (mode == "pre") {
-      pcmd("if (tracefile_) {")
-      pcmd("  PRE_READ(tracefile_, __sanitizer::internal_strlen(tracefile_) + 1);")
+      pcmd("const char *fname = (const char *)fname_;")
+      pcmd("if (fname) {")
+      pcmd("  PRE_READ(fname, __sanitizer::internal_strlen(fname) + 1);")
       pcmd("}")
     } else {
+      pcmd("const char *fname = (const char *)fname_;")
       pcmd("if (res == 0) {")
-      pcmd("  if (tracefile_) {")
-      pcmd("    POST_READ(tracefile_, __sanitizer::internal_strlen(tracefile_) + 1);")
+      pcmd("  if (fname) {")
+      pcmd("    POST_READ(fname, __sanitizer::internal_strlen(fname) + 1);")
       pcmd("  }")
       pcmd("}")
     }
