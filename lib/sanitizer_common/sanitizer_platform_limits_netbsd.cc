@@ -45,6 +45,7 @@
 #include <sys/mtio.h>
 #include <sys/ptrace.h>
 #include <sys/resource.h>
+#include <sys/sem.h>
 #include <sys/shm.h>
 #include <sys/signal.h>
 #include <sys/socket.h>
@@ -100,6 +101,7 @@ unsigned struct_sockaddr_sz = sizeof(struct sockaddr);
 unsigned ucontext_t_sz = sizeof(ucontext_t);
 unsigned struct_rlimit_sz = sizeof(struct rlimit);
 unsigned struct_timespec_sz = sizeof(struct timespec);
+unsigned struct_sembuf_sz = sizeof(struct sembuf);
 unsigned struct_kevent_sz = sizeof(struct kevent);
 unsigned struct_utimbuf_sz = sizeof(struct utimbuf);
 unsigned struct_itimerspec_sz = sizeof(struct itimerspec);

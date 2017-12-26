@@ -57,6 +57,7 @@ extern unsigned ucontext_t_sz;
 extern unsigned struct_rlimit_sz;
 extern unsigned struct_utimbuf_sz;
 extern unsigned struct_timespec_sz;
+extern unsigned struct_sembuf_sz;
 
 extern unsigned struct_kevent_sz;
 

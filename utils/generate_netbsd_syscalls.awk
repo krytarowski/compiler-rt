@@ -1546,9 +1546,11 @@ function syscall_body(syscall, mode)
       pcmd("  PRE_READ(path, __sanitizer::internal_strlen(path) + 1);")
       pcmd("}")
     } else {
-      pcmd("const char *path = (const char *)path_;")
-      pcmd("if (path) {")
-      pcmd("  POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("if (res == 0) {")
+      pcmd("  const char *path = (const char *)path_;")
+      pcmd("  if (path) {")
+      pcmd("    POST_READ(path, __sanitizer::internal_strlen(path) + 1);")
+      pcmd("  }");
       pcmd("}");
     }
   } else if (syscall == "compat_50_futimes") {
@@ -1562,10 +1564,11 @@ function syscall_body(syscall, mode)
       pcmd("  PRE_READ(bootstr, __sanitizer::internal_strlen(bootstr) + 1);")
       pcmd("}")
     } else {
+      pcmd("/* This call should never return */")
       pcmd("const char *bootstr = (const char *)bootstr_;")
       pcmd("if (bootstr) {")
       pcmd("  POST_READ(bootstr, __sanitizer::internal_strlen(bootstr) + 1);")
-      pcmd("}");
+      pcmd("}")
     }
   } else if (syscall == "poll") {
     pcmd("/* Nothing to do */")
@@ -1576,7 +1579,11 @@ function syscall_body(syscall, mode)
   } else if (syscall == "semget") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "semop") {
-    pcmd("/* Nothing to do */")
+    if (mode == "pre") {
+      pcmd("if (sops_) {")
+      pcmd("}")
+    } else {
+    }
   } else if (syscall == "semconfig") {
     pcmd("/* Nothing to do */")
   } else if (syscall == "compat_14_msgctl") {
