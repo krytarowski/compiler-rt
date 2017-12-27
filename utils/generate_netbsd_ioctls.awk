@@ -63,13 +63,15 @@ NR == 1 {
 /[^a-zA-Z0-9_]_IO[W]*[R]*[ ]*\(/ && $2 ~ /^[A-Z_]+$/ {
   ioctl_name[ioctl_table_max] = $2
 
-  if ($3 ~ /_IO[ ]\*\(/) {
+  split($3, a, "(")
+  a3 = a[1]
+  if (a3 ~ /_IO[ ]*$/) {
     ioctl_mode[ioctl_table_max] = "NONE"
-  } else if ($3 ~ /_IOR[ ]*\(/) {
+  } else if (a3 ~ /_IOR[ ]*$/) {
     ioctl_mode[ioctl_table_max] = "READ"
-  } else if ($3 ~ /_IOW[ ]*\(/) {
+  } else if (a3 ~ /_IOW[ ]*$/) {
     ioctl_mode[ioctl_table_max] = "WRITE"
-  } else if ($3 ~ /_IOWR[ ]*\(/) {
+  } else if (a3 ~ /_IOWR[ ]*$/) {
     ioctl_mode[ioctl_table_max] = "READWRITE"
   } else {
     print "Unknown mode, cannot parse: '" $3 "'"
