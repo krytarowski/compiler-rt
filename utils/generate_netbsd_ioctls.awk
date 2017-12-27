@@ -200,7 +200,6 @@ END {
   pcmd("}")
   pcmd("")
   pcmd("static const ioctl_desc *ioctl_lookup(unsigned req) {")
-  pcmd("  req = ioctl_request_fixup(req);")
   pcmd("  const ioctl_desc *desc = ioctl_table_lookup(req);")
   pcmd("  if (desc) return desc;")
   pcmd("")
