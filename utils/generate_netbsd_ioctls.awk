@@ -50,8 +50,37 @@ BEGIN {
   ioctl_table_max = 0
 }
 
+# Scan RCS ID
 NR == 1 {
-  print
+  if (!match($0, /NetBSD: [a-z0-9]+.h/)) {
+    print "Fatal error! Current file: " FILENAME "does not contain RCS ID"
+    usage()
+  }
+  fname[ioctl_table_max] = substr($0, RSTART + 8, RLENGTH - 8)
+}
+
+# _IO
+/[^a-zA-Z0-9_]_IO[W]*[R]*[ ]*\(/ && $2 ~ /^[A-Z_]+$/ {
+  ioctl_name[ioctl_table_max] = $2
+
+  if ($3 ~ /_IO[ ]*\(/) {
+    ioctl_mode[ioctl_table_max] = "NONE"
+  } else if ($3 ~ /_IOR[ ]*\(/) {
+    ioctl_mode[ioctl_table_max] = "READ"
+  } else if ($3 ~ /_IOW[ ]*\(/) {
+    ioctl_mode[ioctl_table_max] = "WRITE"
+  } else if ($3 ~ /_IOWR[ ]*\(/) {
+    ioctl_mode[ioctl_table_max] = "READWRITE"
+  }
+
+  n = split($0, a, ",")
+  if (n == 3) {
+    gsub(/^[ ]+/, "", a[3])
+    gsub(/\)$/, "", a[3])
+    ioctl_type[ioctl_table_max] = a[3]
+  }
+
+  ioctl_table_max++
 }
 
 END {
@@ -120,7 +149,11 @@ END {
   pcmd("  }")
   pcmd("")
 
-
+  for (i = 0; i < ioctl_table_max; i++) {
+    if (i in fname) {
+      pcmd("  /* Entries from file: " fname[i] " */")
+    }
+  }
 
   pcmd("#undef _")
   pcmd("}")
