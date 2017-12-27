@@ -176,10 +176,10 @@ BEGIN {
 }
 
 # Scan RCS ID
-NR == 1 {
-  if (!match($0, /NetBSD: [a-z0-9_]+.h/)) {
-    print "Fatal error! Current file: " FILENAME "does not contain RCS ID"
-    usage()
+FNR == 1 {
+  while (!match($0, /NetBSD: [a-z0-9_-]+.h/)) {
+    print "mijam: " FILENAME
+    next
   }
   fname[ioctl_table_max] = substr($0, RSTART + 8, RLENGTH - 8)
 }
