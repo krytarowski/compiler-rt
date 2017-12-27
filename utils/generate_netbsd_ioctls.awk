@@ -177,11 +177,7 @@ BEGIN {
 
 # Scan RCS ID
 FNR == 1 {
-  while (!match($0, /NetBSD: [a-z0-9_-]+.h/)) {
-    print "mijam: " FILENAME
-    next
-  }
-  fname[ioctl_table_max] = substr($0, RSTART + 8, RLENGTH - 8)
+  fname[ioctl_table_max] = substr(FILENAME, length(rootdir) + 1)
 }
 
 # _IO
