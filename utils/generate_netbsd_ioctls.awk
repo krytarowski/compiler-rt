@@ -45,7 +45,7 @@ BEGIN {
   }
 
   # hardcode list of headers with ioctl(2) entries
-  ARGV[1] = rootdir "soundcard.h"
+  ARGV[ARGC++] = rootdir "soundcard.h"
 
   ioctl_table_max = 0
 }
