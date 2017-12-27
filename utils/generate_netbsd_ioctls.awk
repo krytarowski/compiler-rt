@@ -201,8 +201,10 @@ FNR == 1 {
   n = split($0, a, ",")
   if (n == 3) {
     gsub(/^[ ]+/, "", a[3])
-    gsub(/\)$/, "", a[3])
-    ioctl_type[ioctl_table_max] = a[3]
+    match(a[3], /[a-zA-Z0-9_ ]+/)
+    type = get_type(substr(a[3], 0, RLENGTH))
+    ioctl_type[ioctl_table_max] = type
+    print ioctl_type[ioctl_table_max]
   }
 
   ioctl_table_max++
@@ -279,7 +281,13 @@ END {
       pcmd("  /* Entries from file: " fname[i] " */")
     }
 
-    pcmd("  _(" ioctl_name[i] ", " ioctl_mode[i] ");")
+    if (i in ioctl_type) {
+      type = "," ioctl_type[i]
+    } else {
+      type = ""
+    }
+
+    pcmd("  _(" ioctl_name[i] ", " ioctl_mode[i] "" type ");")
   }
 
   pcmd("#undef _")
@@ -417,4 +425,15 @@ function usage()
 function pcmd(string)
 {
   print string | cmd
+}
+
+function get_type(string)
+{
+  if (string == "int") {
+    return "sizeof(int)"
+  } else {
+    return string
+  }
+
+  return string
 }
