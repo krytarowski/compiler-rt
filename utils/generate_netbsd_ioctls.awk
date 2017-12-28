@@ -250,6 +250,8 @@ END {
   pcmd("// Ioctl handling in common sanitizer interceptors.")
   pcmd("//===----------------------------------------------------------------------===//")
   pcmd("")
+  pcmd("#if SANITIZER_NETBSD")
+  pcmd("")
   pcmd("#include \"sanitizer_flags.h\"")
   pcmd("")
   pcmd("struct ioctl_desc {")
@@ -423,6 +425,8 @@ END {
   pcmd("    COMMON_INTERCEPTOR_WRITE_RANGE(ctx, ifc->ifc_ifcu.ifcu_req, ifc->ifc_len);")
   pcmd("  }")
   pcmd("}")
+  pcmd("")
+  pcmd("#endif // SANITIZER_NETBSD")
 
   close(cmd)
 }
