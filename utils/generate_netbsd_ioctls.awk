@@ -182,6 +182,11 @@ FNR == 1 {
 
 # _IO
 /[^a-zA-Z0-9_]_IO[W]*[R]*[ ]*\(/ && $2 ~ /^[A-Z_]+$/ {
+  if ($0 ~ /RAIDFRAME_GET_ACCTOTALS/) {
+    # broken entry, incomplete definition of the 3rd parameter
+    next
+  }
+
   ioctl_name[ioctl_table_max] = $2
 
   split($3, a, "(")
@@ -198,13 +203,20 @@ FNR == 1 {
     print "Unknown mode, cannot parse: '" $3 "'"
   }
 
-  n = split($0, a, ",")
-  if (n == 3) {
-    gsub(/^[ ]+/, "", a[3])
-    match(a[3], /[a-zA-Z0-9_ ]+/)
-    type = get_type(substr(a[3], 0, RLENGTH))
-    ioctl_type[ioctl_table_max] = type
-    print ioctl_type[ioctl_table_max]
+  # This !NONE check allows to skip some unparsable entries
+  if (ioctl_mode[ioctl_table_max] != "NONE") {
+    # special cases first
+    if ($0 ~ /POWER_IOC_GET_TYPE_WITH_LOSSAGE/) {
+      ioctl_type[ioctl_table_max] = "sizeof(uptr)"
+    } else {
+      n = split($0, a, ",")
+      if (n == 3) {
+        gsub(/^[ ]+/, "", a[3])
+        match(a[3], /[a-zA-Z0-9_* ]+/)
+        type = get_type(substr(a[3], 0, RLENGTH))
+        ioctl_type[ioctl_table_max] = type
+      }
+    }
   }
 
   ioctl_table_max++
@@ -431,8 +443,169 @@ function get_type(string)
 {
   if (string == "int") {
     return "sizeof(int)"
+  } else if (string == "unsigned int" || string == "u_int" || string == "uint") {
+    return "sizeof(unsigned int)"
+  } else if (string == "long") {
+    return "sizeof(long)"
+  } else if (string == "unsigned long" || string == "u_long") {
+    return "sizeof(unsigned long)"
+  } else if (string == "short") {
+    return "sizeof(short)"
+  } else if (string == "unsigned short") {
+    return "sizeof(unsigned short)"
+  } else if (string == "char") {
+    return "sizeof(char)"
+  } else if (string == "signed char") {
+    return "sizeof(signed char)"
+  } else if (string == "unsigned char") {
+    return "sizeof(unsigned char)"
+  } else if (string == "uint8_t") {
+    return "sizeof(u8)"
+  } else if (string == "uint16_t") {
+    return "sizeof(u16)"
+  } else if (string == "u_int32_t" || string == "uint32_t") {
+    return "sizeof(u32)"
+  } else if (string ~ /\*$/) {
+    return "sizeof(uptr)"
+  } else if (string == "off_t") {
+    return "sizeof(uptr)"
+  } else if (string == "pid_t" || string == "kbd_t") {
+    return "sizeof(int)"
+  } else if (string == "daddr_t" || string == "dev_t") {
+    return "sizeof(u64)"
+  } else if (substr(string, 0, 7) == "struct " ) {
+    return "struct_" substr(string, 8) "_sz"
+  } else if (string == "scsireq_t") {
+    return "struct_scsireq_sz"
+  } else if (string == "tone_t") {
+    return "struct_tone_sz"
+  } else if (string == "union twe_statrequest") {
+    return "union_twe_statrequest_sz"
+  } else if (string == "usb_device_descriptor_t") {
+    return "struct_usb_device_descriptor_sz"
+  } else if (string == "v4l2_std_id") {
+    return "sizeof(u64)"
+  } else if (string == "vtmode_t") {
+    return "struct_vt_mode_sz"
+  } else if (string == "_old_mixer_info") {
+    return "struct__old_mixer_info_sz"
+  } else if (string == "agp_allocate") {
+    return "struct__agp_allocate_sz"
+  } else if (string == "agp_bind") {
+    return "struct__agp_bind_sz"
+  } else if (string == "agp_info") {
+    return "struct__agp_info_sz"
+  } else if (string == "agp_region") {
+    return "struct__agp_region_sz"
+  } else if (string == "agp_setup") {
+    return "struct__agp_setup_sz"
+  } else if (string == "agp_unbind") {
+    return "struct__agp_unbind_sz"
+  } else if (string == "atareq_t") {
+    return "struct_atareq_sz"
+  } else if (string == "cpustate_t") {
+    return "struct_cpustate_sz"
+  } else if (string == "dmx_caps_t") {
+    return "struct_dmx_caps_sz"
+  } else if (string == "dmx_source_t") {
+    return "enum_dmx_source_sz"
+  } else if (string == "dvd_authinfo") {
+    return "union_dvd_authinfo_sz"
+  } else if (string == "dvd_struct") {
+    return "union_dvd_struct_sz"
+  } else if (string == "enum v4l2_priority") {
+    return "enum_v4l2_priority_sz"
+  } else if (string == "envsys_basic_info_t") {
+    return "struct_envsys_basic_info_sz"
+  } else if (string == "envsys_tre_data_t") {
+    return "struct_envsys_tre_data_sz"
+  } else if (string == "ext_accm") {
+    return "(8 * sizeof(u32))"
+  } else if (string == "fe_sec_mini_cmd_t") {
+    return "enum_fe_sec_mini_cmd_sz"
+  } else if (string == "fe_sec_tone_mode_t") {
+    return "enum_fe_sec_tone_mode_sz"
+  } else if (string == "fe_sec_voltage_t") {
+    return "enum_fe_sec_voltage_sz"
+  } else if (string == "fe_status_t") {
+    return "enum_fe_status_sz"
+  } else if (string == "gdt_ctrt_t") {
+    return "struct_gdt_ctrt_sz"
+  } else if (string == "gdt_event_t") {
+    return "struct_gdt_event_sz"
+  } else if (string == "gdt_osv_t") {
+    return "struct_gdt_osv_sz"
+  } else if (string == "gdt_rescan_t") {
+    return "struct_gdt_rescan_sz"
+  } else if (string == "gdt_statist_t") {
+    return "struct_gdt_statist_sz"
+  } else if (string == "gdt_ucmd_t") {
+    return "struct_gdt_ucmd_sz"
+  } else if (string == "iscsi_conn_status_parameters_t") {
+    return "struct_iscsi_conn_status_parameters_sz"
+  } else if (string == "iscsi_get_version_parameters_t") {
+    return "struct_iscsi_get_version_parameters_sz"
+  } else if (string == "iscsi_iocommand_parameters_t") {
+    return "struct_iscsi_iocommand_parameters_sz"
+  } else if (string == "iscsi_login_parameters_t") {
+    return "struct_iscsi_login_parameters_sz"
+  } else if (string == "iscsi_logout_parameters_t") {
+    return "struct_iscsi_logout_parameters_sz"
+  } else if (string == "iscsi_register_event_parameters_t") {
+    return "struct_iscsi_register_event_parameters_sz"
+  } else if (string == "iscsi_remove_parameters_t") {
+    return "struct_iscsi_remove_parameters_sz"
+  } else if (string == "iscsi_send_targets_parameters_t") {
+    return "struct_iscsi_send_targets_parameters_sz"
+  } else if (string == "iscsi_set_node_name_parameters_t") {
+    return "struct_iscsi_set_node_name_parameters_sz"
+  } else if (string == "iscsi_wait_event_parameters_t") {
+    return "struct_iscsi_wait_event_parameters_sz"
+  } else if (string == "isp_stats_t") {
+    return "struct_isp_stats_sz"
+  } else if (string == "lsenable_t") {
+    return "struct_lsenable_sz"
+  } else if (string == "lsdisable_t") {
+    return "struct_lsdisable_sz"
+  } else if (string == "mixer_ctrl_t") {
+    return "struct_mixer_ctrl_sz"
+  } else if (string == "mixer_devinfo_t") {
+    return "struct_mixer_devinfo_sz"
+  } else if (string == "mpu_command_rec") {
+    return "struct_mpu_command_rec_sz"
+  } else if (string == "rndstat_t") {
+    return "struct_rndstat_sz"
+  } else if (string == "rndstat_name_t") {
+    return "struct_rndstat_name_sz"
+  } else if (string == "rndctl_t") {
+    return "struct_rndctl_sz"
+  } else if (string == "rnddata_t") {
+    return "struct_rnddata_sz"
+  } else if (string == "rndpoolstat_t") {
+    return "struct_rndpoolstat_sz"
+  } else if (string == "rndstat_est_t") {
+    return "struct_rndstat_est_sz"
+  } else if (string == "rndstat_est_name_t") {
+    return "struct_rndstat_est_name_sz"
+  } else if (string == "pps_params_t") {
+    return "struct_pps_params_sz"
+  } else if (string == "pps_info_t") {
+    return "struct_pps_info_sz"
+  } else if (string == "linedn_t") {
+    return "(32 * sizeof(char))"
+  } else if (string == "mixer_info") {
+    return "struct_mixer_info_sz"
+  } else if (string == "RF_SparetWait_t") {
+    return "struct_RF_SparetWait_sz"
+  } else if (string == "RF_ComponentLabel_t") {
+    return "struct_RF_ComponentLabel_sz"
+  } else if (string == "RF_SingleComponent_t") {
+    return "struct_RF_SingleComponent_sz"
   } else {
-    return string
+    print "Unrecognized entry: " string
+    print "Aborting"
+    abnormal_exit = 1
+    exit 1
   }
 
   return string
