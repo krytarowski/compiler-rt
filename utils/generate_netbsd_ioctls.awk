@@ -178,8 +178,6 @@ BEGIN {
 # Scan RCS ID
 FNR == 1 {
   fname[ioctl_table_max] = substr(FILENAME, length(rootdir) + 1)
-
-  print "#include <" fname[ioctl_table_max] ">"
 }
 
 # _IO
@@ -480,6 +478,8 @@ function get_type(string)
   } else if (string == "daddr_t" || string == "dev_t") {
     return "sizeof(u64)"
   } else if (substr(string, 0, 7) == "struct " ) {
+#    print "unsigned " "struct_" substr(string, 8) "_sz = sizeof(" substr(string, 8) ");"
+    print "extern unsigned " "struct_" substr(string, 8) "_sz;"
     return "struct_" substr(string, 8) "_sz"
   } else if (string == "scsireq_t") {
     return "struct_scsireq_sz"
