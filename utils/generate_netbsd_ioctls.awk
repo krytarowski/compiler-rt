@@ -178,6 +178,8 @@ BEGIN {
 # Scan RCS ID
 FNR == 1 {
   fname[ioctl_table_max] = substr(FILENAME, length(rootdir) + 1)
+
+  print "#include <" fname[ioctl_table_max] ">"
 }
 
 # _IO
