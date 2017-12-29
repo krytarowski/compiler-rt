@@ -25,7 +25,7 @@ struct ioctl_desc {
   const char *name;
 };
 
-const unsigned ioctl_table_max = 1251;
+const unsigned ioctl_table_max = 1211;
 static ioctl_desc ioctl_table[ioctl_table_max];
 static unsigned ioctl_table_size = 0;
 
@@ -55,29 +55,21 @@ static void ioctl_table_fill() {
   /* Entries from file: altq/altq_blue.h */
   _(BLUE_IF_ATTACH, WRITE, struct_blue_interface_sz);
   _(BLUE_IF_DETACH, WRITE, struct_blue_interface_sz);
-  _(BLUE_ENABLE, WRITE, struct_blue_interface_sz);
   _(BLUE_DISABLE, WRITE, struct_blue_interface_sz);
   _(BLUE_CONFIG, READWRITE, struct_blue_conf_sz);
   _(BLUE_GETSTATS, READWRITE, struct_blue_stats_sz);
   /* Entries from file: altq/altq_cbq.h */
-  _(CBQ_IF_ATTACH, WRITE, struct_cbq_interface_sz);
-  _(CBQ_IF_DETACH, WRITE, struct_cbq_interface_sz);
   _(CBQ_ENABLE, WRITE, struct_cbq_interface_sz);
   _(CBQ_DISABLE, WRITE, struct_cbq_interface_sz);
   _(CBQ_CLEAR_HIERARCHY, WRITE, struct_cbq_interface_sz);
   _(CBQ_ADD_CLASS, READWRITE, struct_cbq_add_class_sz);
   _(CBQ_DEL_CLASS, WRITE, struct_cbq_delete_class_sz);
   _(CBQ_MODIFY_CLASS, READWRITE, struct_cbq_modify_class_sz);
-  _(CBQ_ADD_FILTER, READWRITE, struct_cbq_add_filter_sz);
   _(CBQ_DEL_FILTER, WRITE, struct_cbq_delete_filter_sz);
   _(CBQ_GETSTATS, READWRITE, struct_cbq_getstats_sz);
   /* Entries from file: altq/altq_cdnr.h */
-  _(CDNR_IF_ATTACH, WRITE, struct_cdnr_interface_sz);
   _(CDNR_IF_DETACH, WRITE, struct_cdnr_interface_sz);
-  _(CDNR_ENABLE, WRITE, struct_cdnr_interface_sz);
-  _(CDNR_DISABLE, WRITE, struct_cdnr_interface_sz);
   _(CDNR_ADD_FILTER, READWRITE, struct_cdnr_add_filter_sz);
-  _(CDNR_DEL_FILTER, WRITE, struct_cdnr_delete_filter_sz);
   _(CDNR_GETSTATS, READWRITE, struct_cdnr_get_stats_sz);
   _(CDNR_ADD_ELEM, READWRITE, struct_cdnr_add_element_sz);
   _(CDNR_DEL_ELEM, WRITE, struct_cdnr_delete_element_sz);
@@ -91,21 +83,14 @@ static void ioctl_table_fill() {
   _(CDNR_MOD_TSW, READWRITE, struct_cdnr_modify_tswtcm_sz);
   /* Entries from file: altq/altq_fifoq.h */
   _(FIFOQ_IF_ATTACH, WRITE, struct_fifoq_interface_sz);
-  _(FIFOQ_IF_DETACH, WRITE, struct_fifoq_interface_sz);
-  _(FIFOQ_ENABLE, WRITE, struct_fifoq_interface_sz);
-  _(FIFOQ_DISABLE, WRITE, struct_fifoq_interface_sz);
   _(FIFOQ_CONFIG, READWRITE, struct_fifoq_conf_sz);
   _(FIFOQ_GETSTATS, READWRITE, struct_fifoq_getstats_sz);
   /* Entries from file: altq/altq_hfsc.h */
   _(HFSC_IF_ATTACH, WRITE, struct_hfsc_attach_sz);
-  _(HFSC_IF_DETACH, WRITE, struct_hfsc_interface_sz);
-  _(HFSC_ENABLE, WRITE, struct_hfsc_interface_sz);
-  _(HFSC_DISABLE, WRITE, struct_hfsc_interface_sz);
   _(HFSC_CLEAR_HIERARCHY, WRITE, struct_hfsc_interface_sz);
   _(HFSC_ADD_CLASS, READWRITE, struct_hfsc_add_class_sz);
   _(HFSC_DEL_CLASS, WRITE, struct_hfsc_delete_class_sz);
   _(HFSC_MOD_CLASS, WRITE, struct_hfsc_modify_class_sz);
-  _(HFSC_ADD_FILTER, READWRITE, struct_hfsc_add_filter_sz);
   _(HFSC_DEL_FILTER, WRITE, struct_hfsc_delete_filter_sz);
   _(HFSC_GETSTATS, READWRITE, struct_hfsc_class_stats_sz);
   /* Entries from file: altq/altq_jobs.h */
@@ -115,16 +100,11 @@ static void ioctl_table_fill() {
   _(JOBS_DISABLE, WRITE, struct_jobs_interface_sz);
   _(JOBS_CLEAR, WRITE, struct_jobs_interface_sz);
   _(JOBS_ADD_CLASS, READWRITE, struct_jobs_add_class_sz);
-  _(JOBS_DEL_CLASS, WRITE, struct_jobs_delete_class_sz);
   _(JOBS_MOD_CLASS, WRITE, struct_jobs_modify_class_sz);
-  _(JOBS_ADD_FILTER, READWRITE, struct_jobs_add_filter_sz);
-  _(JOBS_DEL_FILTER, WRITE, struct_jobs_delete_filter_sz);
-  _(JOBS_GETSTATS, READWRITE, struct_jobs_class_stats_sz);
   /* Entries from file: altq/altq_priq.h */
   _(PRIQ_IF_ATTACH, WRITE, struct_priq_interface_sz);
   _(PRIQ_IF_DETACH, WRITE, struct_priq_interface_sz);
   _(PRIQ_ENABLE, WRITE, struct_priq_interface_sz);
-  _(PRIQ_DISABLE, WRITE, struct_priq_interface_sz);
   _(PRIQ_CLEAR, WRITE, struct_priq_interface_sz);
   _(PRIQ_ADD_CLASS, READWRITE, struct_priq_add_class_sz);
   _(PRIQ_DEL_CLASS, WRITE, struct_priq_delete_class_sz);
@@ -134,27 +114,17 @@ static void ioctl_table_fill() {
   _(PRIQ_GETSTATS, READWRITE, struct_priq_class_stats_sz);
   /* Entries from file: altq/altq_red.h */
   _(RED_IF_ATTACH, WRITE, struct_red_interface_sz);
-  _(RED_IF_DETACH, WRITE, struct_red_interface_sz);
-  _(RED_ENABLE, WRITE, struct_red_interface_sz);
   _(RED_DISABLE, WRITE, struct_red_interface_sz);
   _(RED_CONFIG, READWRITE, struct_red_conf_sz);
   _(RED_GETSTATS, READWRITE, struct_red_stats_sz);
   _(RED_SETDEFAULTS, WRITE, struct_redparams_sz);
   /* Entries from file: altq/altq_rio.h */
-  _(RIO_IF_ATTACH, WRITE, struct_rio_interface_sz);
-  _(RIO_IF_DETACH, WRITE, struct_rio_interface_sz);
-  _(RIO_ENABLE, WRITE, struct_rio_interface_sz);
-  _(RIO_DISABLE, WRITE, struct_rio_interface_sz);
   _(RIO_CONFIG, READWRITE, struct_rio_conf_sz);
   _(RIO_GETSTATS, READWRITE, struct_rio_stats_sz);
   _(RIO_SETDEFAULTS, WRITE, struct_redparams_sz);
   /* Entries from file: altq/altq_wfq.h */
   _(WFQ_IF_ATTACH, WRITE, struct_wfq_interface_sz);
-  _(WFQ_IF_DETACH, WRITE, struct_wfq_interface_sz);
-  _(WFQ_ENABLE, WRITE, struct_wfq_interface_sz);
-  _(WFQ_DISABLE, WRITE, struct_wfq_interface_sz);
   _(WFQ_CONFIG, READWRITE, struct_wfq_conf_sz);
-  _(WFQ_GET_STATS, READWRITE, struct_wfq_getstats_sz);
   _(WFQ_GET_QID, READWRITE, struct_wfq_getqid_sz);
   _(WFQ_SET_WEIGHT, READWRITE, struct_wfq_setweight_sz);
   /* Entries from file: crypto/cryptodev.h */
@@ -172,8 +142,6 @@ static void ioctl_table_fill() {
   _(CIOCASYMFEAT, READ, sizeof(u32));
   /* Entries from file: dev/apm/apmio.h */
   _(APM_IOC_REJECT, WRITE, struct_apm_event_info_sz);
-  _(APM_IOC_STANDBY, NONE, 0);
-  _(APM_IOC_SUSPEND, NONE, 0);
   _(OAPM_IOC_GETPOWER, READ, struct_apm_power_info_sz);
   _(APM_IOC_GETPOWER, READWRITE, struct_apm_power_info_sz);
   _(APM_IOC_NEXTEVENT, READ, struct_apm_event_info_sz);
@@ -344,7 +312,6 @@ static void ioctl_table_fill() {
   /* Entries from file: dev/isa/satlinkio.h */
   _(SATIORESET, NONE, 0);
   _(SATIOGID, READ, struct_satlink_id_sz);
-  _(SATIOSBUFSIZE, WRITE, sizeof(int));
   /* Entries from file: dev/isa/isvio.h */
   _(ISV_CMD, READWRITE, struct_isv_cmd_sz);
   /* Entries from file: dev/isa/wtreg.h */
@@ -535,7 +502,6 @@ static void ioctl_table_fill() {
   _(USB_SET_CM_OVER_DATA, WRITE, sizeof(int));
   /* Entries from file: dev/usb/utoppy.h */
   _(UTOPPYIOTURBO, WRITE, sizeof(int));
-  _(UTOPPYIOCANCEL, NONE, 0);
   _(UTOPPYIOREBOOT, NONE, 0);
   _(UTOPPYIOSTATS, READ, struct_utoppy_stats_sz);
   _(UTOPPYIORENAME, WRITE, struct_utoppy_rename_sz);
@@ -802,7 +768,6 @@ static void ioctl_table_fill() {
   _(TUNSDEBUG, WRITE, sizeof(int));
   _(TUNGDEBUG, READ, sizeof(int));
   _(TUNSIFMODE, WRITE, sizeof(int));
-  _(TUNSLMODE, WRITE, sizeof(int));
   _(TUNSIFHEAD, WRITE, sizeof(int));
   _(TUNGIFHEAD, READ, sizeof(int));
   /* Entries from file: net/pfvar.h */
@@ -872,8 +837,6 @@ static void ioctl_table_fill() {
   _(DIOCSETIFFLAG, READWRITE, struct_pfioc_iface_sz);
   _(DIOCCLRIFFLAG, READWRITE, struct_pfioc_iface_sz);
   _(DIOCKILLSRCNODES, READWRITE, struct_pfioc_src_node_kill_sz);
-  /* Entries from file: net/slip.h */
-  _(SLIOCGUNIT, READ, sizeof(int));
   /* Entries from file: netbt/hci.h */
   _(SIOCGBTINFO, READWRITE, struct_btreq_sz);
   _(SIOCGBTINFOA, READWRITE, struct_btreq_sz);
@@ -971,7 +934,6 @@ static void ioctl_table_fill() {
   _(CHIOMOVE, WRITE, struct_changer_move_request_sz);
   _(CHIOEXCHANGE, WRITE, struct_changer_exchange_request_sz);
   _(CHIOPOSITION, WRITE, struct_changer_position_request_sz);
-  _(CHIOGPICKER, READ, sizeof(int));
   _(CHIOSPICKER, WRITE, sizeof(int));
   _(CHIOGPARAMS, READ, struct_changer_params_sz);
   _(CHIOIELEM, NONE, 0);
@@ -1094,7 +1056,6 @@ static void ioctl_table_fill() {
   _(JOY_GETTIMEOUT, READ, sizeof(int));
   _(JOY_SET_X_OFFSET, WRITE, sizeof(int));
   _(JOY_SET_Y_OFFSET, WRITE, sizeof(int));
-  _(JOY_GET_X_OFFSET, READ, sizeof(int));
   _(JOY_GET_Y_OFFSET, READ, sizeof(int));
   /* Entries from file: sys/ksyms.h */
   _(OKIOCGSYMBOL, WRITE, struct_ksyms_ogsymbol_sz);
@@ -1164,7 +1125,6 @@ static void ioctl_table_fill() {
   _(SCIOCGET, READ, struct_scan_io_sz);
   _(SCIOCSET, WRITE, struct_scan_io_sz);
   _(SCIOCRESTART, NONE, 0);
-  _(SCIOC_USE_ADF, NONE, 0);
   /* Entries from file: sys/scsiio.h */
   _(SCIOCCOMMAND, READWRITE, struct_scsireq_sz);
   _(SCIOCDEBUG, WRITE, sizeof(int));
@@ -1177,7 +1137,6 @@ static void ioctl_table_fill() {
   _(SCBUSIORESET, NONE, 0);
   _(SCBUSIODETACH, WRITE, struct_scbusiodetach_args_sz);
   _(SCBUSACCEL, WRITE, struct_scbusaccel_args_sz);
-  _(SCBUSIOLLSCAN, NONE, 0);
   /* Entries from file: sys/sockio.h */
   _(SIOCSHIWAT, WRITE, sizeof(int));
   _(SIOCGHIWAT, READ, sizeof(int));

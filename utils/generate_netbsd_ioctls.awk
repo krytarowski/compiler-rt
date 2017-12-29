@@ -258,7 +258,51 @@ FNR == 1 {
       $0 ~ /EVTCHN_RESET/ ||
       $0 ~ /EVTCHN_BIND/ ||
       $0 ~ /EVTCHN_UNBIND/) {
-    # broken entry, incomplete definition of the 3rd parameter
+    # broken entry, incomplete definition of the 3rd parameterm etc
+    next
+  }
+
+  if ($0 ~ /APM_IOC_STANDBY/ ||
+      $0 ~ /APM_IOC_SUSPEND/ ||
+      $0 ~ /SCIOC_USE_ADF/ ||
+      $0 ~ /SCBUSIOLLSCAN/ ||
+      $0 ~ /UTOPPYIOCANCEL/ ||
+      $0 ~ /JOY_GET_X_OFFSET/ ||
+      $0 ~ /CHIOGPICKER/ ||
+      $0 ~ /SLIOCGUNIT/ ||
+      $0 ~ /SATIOSBUFSIZE/ ||
+      $0 ~ /TUNSLMODE/ ||
+      $0 ~ /CBQ_IF_ATTACH/ ||
+      $0 ~ /CDNR_IF_ATTACH/ ||
+      $0 ~ /RIO_IF_ATTACH/ ||
+      $0 ~ /CBQ_IF_DETACH/ ||
+      $0 ~ /HFSC_IF_DETACH/ ||
+      $0 ~ /WFQ_IF_DETACH/ ||
+      $0 ~ /RIO_IF_DETACH/ ||
+      $0 ~ /FIFOQ_IF_DETACH/ ||
+      $0 ~ /RED_IF_DETACH/ ||
+      $0 ~ /CDNR_ENABLE/ ||
+      $0 ~ /HFSC_ENABLE/ ||
+      $0 ~ /WFQ_ENABLE/ ||
+      $0 ~ /RIO_ENABLE/ ||
+      $0 ~ /FIFOQ_ENABLE/ ||
+      $0 ~ /RED_ENABLE/ ||
+      $0 ~ /BLUE_ENABLE/ ||
+      $0 ~ /CDNR_DISABLE/ ||
+      $0 ~ /HFSC_DISABLE/ ||
+      $0 ~ /WFQ_DISABLE/ ||
+      $0 ~ /RIO_DISABLE/ ||
+      $0 ~ /FIFOQ_DISABLE/ ||
+      $0 ~ /PRIQ_DISABLE/ ||
+      $0 ~ /CDNR_DEL_FILTER/ ||
+      $0 ~ /JOBS_DEL_CLASS/ ||
+      $0 ~ /JOBS_DEL_FILTER/ ||
+      $0 ~ /JOBS_GETSTATS/ ||
+      $0 ~ /WFQ_GET_STATS/ ||
+      $0 ~ /CBQ_ADD_FILTER/ ||
+      $0 ~ /HFSC_ADD_FILTER/ ||
+      $0 ~ /JOBS_ADD_FILTER/) {
+    # There are entries with duplicate codes.. disable the less used ones
     next
   }
 
