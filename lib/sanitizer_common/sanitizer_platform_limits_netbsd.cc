@@ -18,35 +18,8 @@
 #include <sys/param.h>
 #include <sys/types.h>
 
-#include <arpa/inet.h>
-#include <dirent.h>
-#include <glob.h>
-#include <grp.h>
-#include <ifaddrs.h>
-#include <limits.h>
-#include <link_elf.h>
-#include <net/if.h>
-#include <net/if_ether.h>
-#include <net/ppp_defs.h>
-#include <net/route.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <netinet/ip_mroute.h>
-#include <poll.h>
-#include <pthread.h>
-#include <pwd.h>
-#include <semaphore.h>
-#include <signal.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <sys/mount.h>
-#include <netinet/ip_compat.h>
-#include <netinet/ip_fil.h>
-#include <sys/disklabel.h>
-#include <sys/disk.h>
-#include <altq/altq_afmap.h>
-#include <altq/altq_afmap.h>
 #include <altq/altq.h>
+#include <altq/altq_afmap.h>
 #include <altq/altq_blue.h>
 #include <altq/altq_cbq.h>
 #include <altq/altq_cdnr.h>
@@ -57,6 +30,7 @@
 #include <altq/altq_red.h>
 #include <altq/altq_rio.h>
 #include <altq/altq_wfq.h>
+#include <arpa/inet.h>
 #include <crypto/cryptodev.h>
 #include <dev/apm/apmio.h>
 #include <dev/dm/netbsd-dm.h>
@@ -75,22 +49,59 @@
 #include <dev/ic/mlxio.h>
 #include <dev/ic/nvmeio.h>
 #include <dev/ir/irdaio.h>
-#include <dev/isa/satlinkio.h>
 #include <dev/isa/isvio.h>
+#include <dev/isa/satlinkio.h>
 #include <dev/isa/wtreg.h>
 #include <dev/iscsi/iscsi_ioctl.h>
 #include <dev/ofw/openfirmio.h>
 #include <dev/pci/amrio.h>
+
 #include <dev/pci/mlyreg.h>
 #include <dev/pci/mlyio.h>
+
 #include <dev/pci/pciio.h>
 #include <dev/pci/tweio.h>
 #include <dev/pcmcia/if_cnwioctl.h>
+#include <dirent.h>
+#include <glob.h>
+#include <grp.h>
+#include <ifaddrs.h>
+#include <limits.h>
+#include <link_elf.h>
+#include <net/if.h>
+#include <net/if_ether.h>
+#include <net/ppp_defs.h>
+#include <net/route.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/ip_compat.h>
+#include <netinet/ip_fil.h>
+#include <netinet/ip_mroute.h>
+#include <poll.h>
+#include <pthread.h>
+#include <pwd.h>
+#include <semaphore.h>
+#include <signal.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <sys/disk.h>
+#include <sys/disklabel.h>
+#include <sys/mount.h>
 #define RAY_DO_SIGLEV
+#include <dev/biovar.h>
+#include <dev/bluetooth/btdev.h>
+#include <dev/bluetooth/btsco.h>
+#include <dev/ccdvar.h>
+#include <dev/cgdvar.h>
+#include <dev/fssvar.h>
+#include <dev/kttcpio.h>
+#include <dev/lockstat.h>
+#include <dev/md.h>
 #include <dev/pcmcia/if_rayreg.h>
 #include <dev/raidframe/raidframeio.h>
 #include <dev/sbus/mbppio.h>
 #include <dev/scsipi/ses.h>
+#include <dev/spkrio.h>
 #include <dev/sun/disklabel.h>
 #include <dev/sun/fbio.h>
 #include <dev/sun/kbio.h>
@@ -101,29 +112,19 @@
 #include <dev/usb/usb.h>
 #include <dev/usb/utoppy.h>
 #include <dev/vme/xio.h>
-#include <dev/wscons/wsdisplay_usl_io.h>
-#include <dev/wscons/wsconsio.h>
-#include <dev/biovar.h>
-#include <dev/md.h>
-#include <dev/ccdvar.h>
-#include <dev/cgdvar.h>
-#include <dev/fssvar.h>
-#include <dev/bluetooth/btdev.h>
-#include <dev/bluetooth/btsco.h>
-#include <dev/kttcpio.h>
-#include <dev/lockstat.h>
 #include <dev/vndvar.h>
-#include <dev/spkrio.h>
+#include <dev/wscons/wsconsio.h>
+#include <dev/wscons/wsdisplay_usl_io.h>
 #include <net/bpf.h>
 #include <net/if_atm.h>
 #include <net/if_gre.h>
 #include <net/if_ppp.h>
-#include <net/npf.h>
 #include <net/if_pppoe.h>
 #include <net/if_sppp.h>
 #include <net/if_srt.h>
 #include <net/if_tap.h>
 #include <net/if_tun.h>
+#include <net/npf.h>
 #include <net/pfvar.h>
 #include <net/slip.h>
 #include <netbt/hci.h>
@@ -133,9 +134,10 @@
 #include <netinet6/nd6.h>
 #include <netnatm/natm.h>
 #include <netsmb/smb_dev.h>
+#include <soundcard.h>
 #include <sys/agpio.h>
-#include <sys/audioio.h>
 #include <sys/ataio.h>
+#include <sys/audioio.h>
 #include <sys/cdio.h>
 #include <sys/chio.h>
 #include <sys/clockctl.h>
@@ -166,7 +168,6 @@
 #include <sys/verified_exec.h>
 #include <sys/videoio.h>
 #include <sys/wdog.h>
-#include <soundcard.h>
 //#include <xen/xenio.h>
 #include <sys/event.h>
 #include <sys/filio.h>
@@ -399,12 +400,14 @@ unsigned struct_cdnr_tbmeter_stats_sz = sizeof(cdnr_tbmeter_stats);
 unsigned struct_cdnr_tcm_stats_sz = sizeof(cdnr_tcm_stats);
 unsigned struct_cgd_ioctl_sz = sizeof(cgd_ioctl);
 unsigned struct_cgd_user_sz = sizeof(cgd_user);
-unsigned struct_changer_element_status_request_sz = sizeof(changer_element_status_request);
+unsigned struct_changer_element_status_request_sz =
+    sizeof(changer_element_status_request);
 unsigned struct_changer_exchange_request_sz = sizeof(changer_exchange_request);
 unsigned struct_changer_move_request_sz = sizeof(changer_move_request);
 unsigned struct_changer_params_sz = sizeof(changer_params);
 unsigned struct_changer_position_request_sz = sizeof(changer_position_request);
-unsigned struct_changer_set_voltag_request_sz = sizeof(changer_set_voltag_request);
+unsigned struct_changer_set_voltag_request_sz =
+    sizeof(changer_set_voltag_request);
 unsigned struct_clockctl_adjtime_sz = sizeof(clockctl_adjtime);
 unsigned struct_clockctl_clock_settime_sz = sizeof(clockctl_clock_settime);
 unsigned struct_clockctl_ntp_adjtime_sz = sizeof(clockctl_ntp_adjtime);
@@ -544,7 +547,8 @@ unsigned struct_mtop_sz = sizeof(mtop);
 unsigned struct_npf_ioctl_table_sz = sizeof(npf_ioctl_table);
 unsigned struct_npioctl_sz = sizeof(npioctl);
 unsigned struct_nvme_pt_command_sz = sizeof(nvme_pt_command);
-unsigned struct_ochanger_element_status_request_sz = sizeof(ochanger_element_status_request);
+unsigned struct_ochanger_element_status_request_sz =
+    sizeof(ochanger_element_status_request);
 unsigned struct_ofiocdesc_sz = sizeof(ofiocdesc);
 unsigned struct_okiockey_sz = sizeof(okiockey);
 unsigned struct_ortentry_sz = sizeof(ortentry);
@@ -755,16 +759,23 @@ unsigned struct_gdt_osv_sz = sizeof(struct gdt_osv);
 unsigned struct_gdt_rescan_sz = sizeof(struct gdt_rescan);
 unsigned struct_gdt_statist_sz = sizeof(struct gdt_statist);
 unsigned struct_gdt_ucmd_sz = sizeof(struct gdt_ucmd);
-unsigned struct_iscsi_conn_status_parameters_sz = sizeof(iscsi_conn_status_parameters_t);
-unsigned struct_iscsi_get_version_parameters_sz = sizeof(iscsi_get_version_parameters_t);
-unsigned struct_iscsi_iocommand_parameters_sz = sizeof(iscsi_iocommand_parameters_t);
+unsigned struct_iscsi_conn_status_parameters_sz =
+    sizeof(iscsi_conn_status_parameters_t);
+unsigned struct_iscsi_get_version_parameters_sz =
+    sizeof(iscsi_get_version_parameters_t);
+unsigned struct_iscsi_iocommand_parameters_sz =
+    sizeof(iscsi_iocommand_parameters_t);
 unsigned struct_iscsi_login_parameters_sz = sizeof(iscsi_login_parameters_t);
 unsigned struct_iscsi_logout_parameters_sz = sizeof(iscsi_logout_parameters_t);
-unsigned struct_iscsi_register_event_parameters_sz = sizeof(iscsi_register_event_parameters_t);
+unsigned struct_iscsi_register_event_parameters_sz =
+    sizeof(iscsi_register_event_parameters_t);
 unsigned struct_iscsi_remove_parameters_sz = sizeof(iscsi_remove_parameters_t);
-unsigned struct_iscsi_send_targets_parameters_sz = sizeof(iscsi_send_targets_parameters_t);
-unsigned struct_iscsi_set_node_name_parameters_sz = sizeof(iscsi_set_node_name_parameters_t);
-unsigned struct_iscsi_wait_event_parameters_sz = sizeof(iscsi_wait_event_parameters_t);
+unsigned struct_iscsi_send_targets_parameters_sz =
+    sizeof(iscsi_send_targets_parameters_t);
+unsigned struct_iscsi_set_node_name_parameters_sz =
+    sizeof(iscsi_set_node_name_parameters_t);
+unsigned struct_iscsi_wait_event_parameters_sz =
+    sizeof(iscsi_wait_event_parameters_t);
 unsigned struct_isp_stats_sz = sizeof(isp_stats_t);
 unsigned struct_lsenable_sz = sizeof(struct lsenable);
 unsigned struct_lsdisable_sz = sizeof(struct lsdisable);
@@ -1129,20 +1140,28 @@ unsigned IOCTL_RAIDFRAME_ADD_HOT_SPARE = RAIDFRAME_ADD_HOT_SPARE;
 unsigned IOCTL_RAIDFRAME_REMOVE_HOT_SPARE = RAIDFRAME_REMOVE_HOT_SPARE;
 unsigned IOCTL_RAIDFRAME_REBUILD_IN_PLACE = RAIDFRAME_REBUILD_IN_PLACE;
 unsigned IOCTL_RAIDFRAME_CHECK_PARITY = RAIDFRAME_CHECK_PARITY;
-unsigned IOCTL_RAIDFRAME_CHECK_PARITYREWRITE_STATUS = RAIDFRAME_CHECK_PARITYREWRITE_STATUS;
-unsigned IOCTL_RAIDFRAME_CHECK_COPYBACK_STATUS = RAIDFRAME_CHECK_COPYBACK_STATUS;
+unsigned IOCTL_RAIDFRAME_CHECK_PARITYREWRITE_STATUS =
+    RAIDFRAME_CHECK_PARITYREWRITE_STATUS;
+unsigned IOCTL_RAIDFRAME_CHECK_COPYBACK_STATUS =
+    RAIDFRAME_CHECK_COPYBACK_STATUS;
 unsigned IOCTL_RAIDFRAME_SET_AUTOCONFIG = RAIDFRAME_SET_AUTOCONFIG;
 unsigned IOCTL_RAIDFRAME_SET_ROOT = RAIDFRAME_SET_ROOT;
 unsigned IOCTL_RAIDFRAME_DELETE_COMPONENT = RAIDFRAME_DELETE_COMPONENT;
-unsigned IOCTL_RAIDFRAME_INCORPORATE_HOT_SPARE = RAIDFRAME_INCORPORATE_HOT_SPARE;
-unsigned IOCTL_RAIDFRAME_CHECK_RECON_STATUS_EXT = RAIDFRAME_CHECK_RECON_STATUS_EXT;
-unsigned IOCTL_RAIDFRAME_CHECK_PARITYREWRITE_STATUS_EXT = RAIDFRAME_CHECK_PARITYREWRITE_STATUS_EXT;
-unsigned IOCTL_RAIDFRAME_CHECK_COPYBACK_STATUS_EXT = RAIDFRAME_CHECK_COPYBACK_STATUS_EXT;
+unsigned IOCTL_RAIDFRAME_INCORPORATE_HOT_SPARE =
+    RAIDFRAME_INCORPORATE_HOT_SPARE;
+unsigned IOCTL_RAIDFRAME_CHECK_RECON_STATUS_EXT =
+    RAIDFRAME_CHECK_RECON_STATUS_EXT;
+unsigned IOCTL_RAIDFRAME_CHECK_PARITYREWRITE_STATUS_EXT =
+    RAIDFRAME_CHECK_PARITYREWRITE_STATUS_EXT;
+unsigned IOCTL_RAIDFRAME_CHECK_COPYBACK_STATUS_EXT =
+    RAIDFRAME_CHECK_COPYBACK_STATUS_EXT;
 unsigned IOCTL_RAIDFRAME_CONFIGURE = RAIDFRAME_CONFIGURE;
 unsigned IOCTL_RAIDFRAME_GET_INFO = RAIDFRAME_GET_INFO;
 unsigned IOCTL_RAIDFRAME_PARITYMAP_STATUS = RAIDFRAME_PARITYMAP_STATUS;
-unsigned IOCTL_RAIDFRAME_PARITYMAP_GET_DISABLE = RAIDFRAME_PARITYMAP_GET_DISABLE;
-unsigned IOCTL_RAIDFRAME_PARITYMAP_SET_DISABLE = RAIDFRAME_PARITYMAP_SET_DISABLE;
+unsigned IOCTL_RAIDFRAME_PARITYMAP_GET_DISABLE =
+    RAIDFRAME_PARITYMAP_GET_DISABLE;
+unsigned IOCTL_RAIDFRAME_PARITYMAP_SET_DISABLE =
+    RAIDFRAME_PARITYMAP_SET_DISABLE;
 unsigned IOCTL_RAIDFRAME_PARITYMAP_SET_PARAMS = RAIDFRAME_PARITYMAP_SET_PARAMS;
 unsigned IOCTL_RAIDFRAME_SET_LAST_UNIT = RAIDFRAME_SET_LAST_UNIT;
 unsigned IOCTL_MBPPIOCSPARAM = MBPPIOCSPARAM;
@@ -1783,7 +1802,8 @@ unsigned IOCTL_MTIOCSLOCATE = MTIOCSLOCATE;
 unsigned IOCTL_MTIOCHLOCATE = MTIOCHLOCATE;
 unsigned IOCTL_POWER_EVENT_RECVDICT = POWER_EVENT_RECVDICT;
 unsigned IOCTL_POWER_IOC_GET_TYPE = POWER_IOC_GET_TYPE;
-unsigned IOCTL_POWER_IOC_GET_TYPE_WITH_LOSSAGE = POWER_IOC_GET_TYPE_WITH_LOSSAGE;
+unsigned IOCTL_POWER_IOC_GET_TYPE_WITH_LOSSAGE =
+    POWER_IOC_GET_TYPE_WITH_LOSSAGE;
 unsigned IOCTL_RIOCGINFO = RIOCGINFO;
 unsigned IOCTL_RIOCSINFO = RIOCSINFO;
 unsigned IOCTL_RIOCSSRCH = RIOCSSRCH;
