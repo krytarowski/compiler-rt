@@ -25,7 +25,7 @@ struct ioctl_desc {
   const char *name;
 };
 
-const unsigned ioctl_table_max = 1256;
+const unsigned ioctl_table_max = 1251;
 static ioctl_desc ioctl_table[ioctl_table_max];
 static unsigned ioctl_table_size = 0;
 
@@ -887,11 +887,6 @@ static void ioctl_table_fill() {
   _(SIOCSBTSCOMTU, READWRITE, struct_btreq_sz);
   _(SIOCGBTFEAT, READWRITE, struct_btreq_sz);
   /* Entries from file: netinet/ip_nat.h */
-  _(SIOCADNAT, WRITE, struct_ipfobj_sz);
-  _(SIOCRMNAT, WRITE, struct_ipfobj_sz);
-  _(SIOCGNATS, READWRITE, struct_ipfobj_sz);
-  _(SIOCGNATL, READWRITE, struct_ipfobj_sz);
-  _(SIOCPURGENAT, READWRITE, struct_ipfobj_sz);
   _(SIOCADNAT, WRITE, struct_ipfobj_sz);
   _(SIOCRMNAT, WRITE, struct_ipfobj_sz);
   _(SIOCGNATS, READWRITE, struct_ipfobj_sz);

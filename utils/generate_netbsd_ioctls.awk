@@ -262,6 +262,14 @@ FNR == 1 {
     next
   }
 
+  if ($2 in known) {
+    # Avoid duplicates
+    # There are entries compatible with K&R and ANSI preprocessor
+    next
+  }
+
+  known[$2] = 1
+
   ioctl_name[ioctl_table_max] = $2
 
   split($3, a, "(")
