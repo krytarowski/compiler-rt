@@ -860,7 +860,6 @@ extern unsigned struct__old_mixer_info_sz;
 extern unsigned struct__agp_allocate_sz;
 extern unsigned struct__agp_bind_sz;
 extern unsigned struct__agp_info_sz;
-extern unsigned struct__agp_region_sz;
 extern unsigned struct__agp_setup_sz;
 extern unsigned struct__agp_unbind_sz;
 extern unsigned struct_atareq_sz;
