@@ -38,6 +38,7 @@
 #if SANITIZER_NETBSD
 #define gettimeofday __gettimeofday50
 #define getrusage __getrusage50
+#define fstat __fstat50
 #endif
 
 #include <stdarg.h>
@@ -688,6 +689,19 @@ INTERCEPTOR(int, putenv, char *string) {
   if (!res) UnpoisonEnviron();
   return res;
 }
+
+#if SANITIZER_NETBSD
+INTERCEPTOR(int, fstat, int fd, void *buf) {
+  ENSURE_MSAN_INITED();
+  int res = REAL(fstat)(fd, buf);
+  if (!res)
+    __msan_unpoison(buf, __sanitizer::struct_stat_sz);
+  return res;
+}
+#define MSAN_MAYBE_INTERCEPT_FSTAT INTERCEPT_FUNCTION(fstat)
+#else
+#define MSAN_MAYBE_INTERCEPT_FSTAT
+#endif
 
 #if !SANITIZER_FREEBSD && !SANITIZER_NETBSD
 INTERCEPTOR(int, __fxstat, int magic, int fd, void *buf) {
@@ -1693,6 +1707,7 @@ void InitializeInterceptors() {
   INTERCEPT_FUNCTION(putenv);
   INTERCEPT_FUNCTION(gettimeofday);
   MSAN_MAYBE_INTERCEPT_FCVT;
+  MSAN_MAYBE_INTERCEPT_FSTAT;
   MSAN_MAYBE_INTERCEPT___FXSTAT;
   MSAN_INTERCEPT_FSTATAT;
   MSAN_MAYBE_INTERCEPT___FXSTAT64;
