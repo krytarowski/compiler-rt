@@ -553,8 +553,8 @@ function get_type(string)
   } else if (string == "daddr_t" || string == "dev_t") {
     return "sizeof(u64)"
   } else if (substr(string, 0, 7) == "struct " ) {
-    substr(/ /, "", string)
-    return "struct_" substr(string, 8) "_sz"
+    gsub(/ /, "", string)
+    return "struct_" substr(string, 7) "_sz"
   } else if (string == "scsireq_t") {
     return "struct_scsireq_sz"
   } else if (string == "tone_t") {

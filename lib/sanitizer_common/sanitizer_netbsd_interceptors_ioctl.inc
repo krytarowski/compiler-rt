@@ -947,7 +947,7 @@ static void ioctl_table_fill() {
   /* Entries from file: sys/cdio.h */
   _(CDIOCPLAYTRACKS, WRITE, struct_ioc_play_track_sz);
   _(CDIOCPLAYBLOCKS, WRITE, struct_ioc_play_blocks_sz);
-  _(CDIOCREADSUBCHANNEL, READWRITE, struct_ioc_read_subchannel _sz);
+  _(CDIOCREADSUBCHANNEL, READWRITE, struct_ioc_read_subchannel_sz);
   _(CDIOREADTOCHEADER, READ, struct_ioc_toc_header_sz);
   _(CDIOREADTOCENTRIES, READWRITE, struct_ioc_read_toc_entry_sz);
   _(CDIOREADMSADDR, READWRITE, sizeof(int));
