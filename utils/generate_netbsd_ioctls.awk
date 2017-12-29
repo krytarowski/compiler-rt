@@ -332,9 +332,9 @@ FNR == 1 {
   if (a3 ~ /_IO[ ]*$/) {
     ioctl_mode[ioctl_table_max] = "NONE"
   } else if (a3 ~ /_IOR[ ]*$/) {
-    ioctl_mode[ioctl_table_max] = "READ"
-  } else if (a3 ~ /_IOW[ ]*$/) {
     ioctl_mode[ioctl_table_max] = "WRITE"
+  } else if (a3 ~ /_IOW[ ]*$/) {
+    ioctl_mode[ioctl_table_max] = "READ"
   } else if (a3 ~ /_IOWR[ ]*$/) {
     ioctl_mode[ioctl_table_max] = "READWRITE"
   } else {
