@@ -371,12 +371,12 @@ END {
     }
 
     if (i in ioctl_type) {
-      type = "," ioctl_type[i]
+      type = ioctl_type[i]
     } else {
-      type = ""
+      type = "0"
     }
 
-    pcmd("  _(" ioctl_name[i] ", " ioctl_mode[i] "" type ");")
+    pcmd("  _(" ioctl_name[i] ", " ioctl_mode[i] "," type ");")
   }
 
   pcmd("#undef _")

@@ -172,8 +172,8 @@ static void ioctl_table_fill() {
   _(CIOCASYMFEAT, READ, sizeof(u32));
   /* Entries from file: dev/apm/apmio.h */
   _(APM_IOC_REJECT, WRITE, struct_apm_event_info_sz);
-  _(APM_IOC_STANDBY, NONE);
-  _(APM_IOC_SUSPEND, NONE);
+  _(APM_IOC_STANDBY, NONE, 0);
+  _(APM_IOC_SUSPEND, NONE, 0);
   _(OAPM_IOC_GETPOWER, READ, struct_apm_power_info_sz);
   _(APM_IOC_GETPOWER, READWRITE, struct_apm_power_info_sz);
   _(APM_IOC_NEXTEVENT, READ, struct_apm_event_info_sz);
@@ -183,11 +183,11 @@ static void ioctl_table_fill() {
   /* Entries from file: dev/dmover/dmover_io.h */
   _(DMIO_SETFUNC, WRITE, struct_dmio_setfunc_sz);
   /* Entries from file: dev/dtv/dtvio_demux.h */
-  _(DMX_START, NONE);
-  _(DMX_STOP, NONE);
+  _(DMX_START, NONE, 0);
+  _(DMX_STOP, NONE, 0);
   _(DMX_SET_FILTER, WRITE, struct_dmx_sct_filter_params_sz);
   _(DMX_SET_PES_FILTER, WRITE, struct_dmx_pes_filter_params_sz);
-  _(DMX_SET_BUFFER_SIZE, NONE);
+  _(DMX_SET_BUFFER_SIZE, NONE, 0);
   _(DMX_GET_STC, READWRITE, struct_dmx_stc_sz);
   _(DMX_ADD_PID, WRITE, sizeof(u16));
   _(DMX_REMOVE_PID, WRITE, sizeof(u16));
@@ -203,7 +203,7 @@ static void ioctl_table_fill() {
   _(FE_GET_FRONTEND, READ, struct_dvb_frontend_parameters_sz);
   _(FE_GET_EVENT, READ, struct_dvb_frontend_event_sz);
   _(FE_GET_INFO, READ, struct_dvb_frontend_info_sz);
-  _(FE_DISEQC_RESET_OVERLOAD, NONE);
+  _(FE_DISEQC_RESET_OVERLOAD, NONE, 0);
   _(FE_DISEQC_SEND_MASTER_CMD, WRITE, struct_dvb_diseqc_master_cmd_sz);
   _(FE_DISEQC_RECV_SLAVE_REPLY, READ, struct_dvb_diseqc_slave_reply_sz);
   _(FE_DISEQC_SEND_BURST, WRITE, enum_fe_sec_mini_cmd_sz);
@@ -239,7 +239,7 @@ static void ioctl_table_fill() {
   _(IOPIOCPT, READWRITE, struct_ioppt_sz);
   _(IOPIOCGLCT, READWRITE, struct_iovec_sz);
   _(IOPIOCGSTATUS, READWRITE, struct_iovec_sz);
-  _(IOPIOCRECONFIG, NONE);
+  _(IOPIOCRECONFIG, NONE, 0);
   _(IOPIOCGTIDMAP, READWRITE, struct_iovec_sz);
   /* Entries from file: dev/ic/athioctl.h */
   _(SIOCGATHSTATS, READWRITE, struct_ifreq_sz);
@@ -307,24 +307,24 @@ static void ioctl_table_fill() {
   _(GDT_IOCTL_RESCAN, READWRITE, struct_gdt_rescan_sz);
   /* Entries from file: dev/ic/isp_ioctl.h */
   _(ISP_SDBLEV, READWRITE, sizeof(int));
-  _(ISP_RESETHBA, NONE);
-  _(ISP_RESCAN, NONE);
+  _(ISP_RESETHBA, NONE, 0);
+  _(ISP_RESCAN, NONE, 0);
   _(ISP_SETROLE, READWRITE, sizeof(int));
   _(ISP_GETROLE, READ, sizeof(int));
   _(ISP_GET_STATS, READ, struct_isp_stats_sz);
-  _(ISP_CLR_STATS, NONE);
-  _(ISP_FC_LIP, NONE);
+  _(ISP_CLR_STATS, NONE, 0);
+  _(ISP_FC_LIP, NONE, 0);
   _(ISP_FC_GETDINFO, READWRITE, struct_isp_fc_device_sz);
-  _(ISP_GET_FW_CRASH_DUMP, NONE);
-  _(ISP_FORCE_CRASH_DUMP, NONE);
+  _(ISP_GET_FW_CRASH_DUMP, NONE, 0);
+  _(ISP_FORCE_CRASH_DUMP, NONE, 0);
   _(ISP_FC_GETHINFO, READWRITE, struct_isp_hba_device_sz);
   _(ISP_TSK_MGMT, READWRITE, struct_isp_fc_tsk_mgmt_sz);
-  _(ISP_FC_GETDLIST, NONE);
+  _(ISP_FC_GETDLIST, NONE, 0);
   /* Entries from file: dev/ic/mlxio.h */
   _(MLXD_STATUS, READ, sizeof(int));
   _(MLXD_CHECKASYNC, READ, sizeof(int));
   _(MLXD_DETACH, WRITE, sizeof(int));
-  _(MLX_RESCAN_DRIVES, NONE);
+  _(MLX_RESCAN_DRIVES, NONE, 0);
   _(MLX_PAUSE_CHANNEL, WRITE, struct_mlx_pause_sz);
   _(MLX_COMMAND, READWRITE, struct_mlx_usercommand_sz);
   _(MLX_REBUILDASYNC, READWRITE, struct_mlx_rebuild_request_sz);
@@ -334,7 +334,7 @@ static void ioctl_table_fill() {
   /* Entries from file: dev/ic/nvmeio.h */
   _(NVME_PASSTHROUGH_CMD, READWRITE, struct_nvme_pt_command_sz);
   /* Entries from file: dev/ir/irdaio.h */
-  _(IRDA_RESET_PARAMS, NONE);
+  _(IRDA_RESET_PARAMS, NONE, 0);
   _(IRDA_SET_PARAMS, WRITE, struct_irda_params_sz);
   _(IRDA_GET_SPEEDMASK, READ, sizeof(unsigned int));
   _(IRDA_GET_TURNAROUNDMASK, READ, sizeof(unsigned int));
@@ -342,13 +342,13 @@ static void ioctl_table_fill() {
   _(IRFRAMETTY_GET_DONGLE, READ, sizeof(unsigned int));
   _(IRFRAMETTY_SET_DONGLE, WRITE, sizeof(unsigned int));
   /* Entries from file: dev/isa/satlinkio.h */
-  _(SATIORESET, NONE);
+  _(SATIORESET, NONE, 0);
   _(SATIOGID, READ, struct_satlink_id_sz);
   _(SATIOSBUFSIZE, WRITE, sizeof(int));
   /* Entries from file: dev/isa/isvio.h */
   _(ISV_CMD, READWRITE, struct_isv_cmd_sz);
   /* Entries from file: dev/isa/wtreg.h */
-  _(WTQICMD, NONE);
+  _(WTQICMD, NONE, 0);
   /* Entries from file: dev/iscsi/iscsi_ioctl.h */
   _(ISCSI_GET_VERSION, READWRITE, struct_iscsi_get_version_parameters_sz);
   _(ISCSI_LOGIN, READWRITE, struct_iscsi_login_parameters_sz);
@@ -394,7 +394,7 @@ static void ioctl_table_fill() {
   _(TWEIO_AEN_WAIT, READ, sizeof(int));
   _(TWEIO_SET_PARAM, WRITE, struct_twe_paramcommand_sz);
   _(TWEIO_GET_PARAM, WRITE, struct_twe_paramcommand_sz);
-  _(TWEIO_RESET, NONE);
+  _(TWEIO_RESET, NONE, 0);
   _(TWEIO_ADD_UNIT, WRITE, struct_twe_drivecommand_sz);
   _(TWEIO_DEL_UNIT, WRITE, struct_twe_drivecommand_sz);
   /* Entries from file: dev/pcmcia/if_cnwioctl.h */
@@ -407,19 +407,19 @@ static void ioctl_table_fill() {
   /* Entries from file: dev/pcmcia/if_rayreg.h */
   _(SIOCGRAYSIGLEV, READWRITE, struct_ifreq_sz);
   /* Entries from file: dev/raidframe/raidframeio.h */
-  _(RAIDFRAME_SHUTDOWN, NONE);
+  _(RAIDFRAME_SHUTDOWN, NONE, 0);
   _(RAIDFRAME_TUR, WRITE, sizeof(u64));
   _(RAIDFRAME_FAIL_DISK, WRITE, struct_rf_recon_req_sz);
   _(RAIDFRAME_CHECK_RECON_STATUS, READWRITE, sizeof(int));
-  _(RAIDFRAME_REWRITEPARITY, NONE);
-  _(RAIDFRAME_COPYBACK, NONE);
+  _(RAIDFRAME_REWRITEPARITY, NONE, 0);
+  _(RAIDFRAME_COPYBACK, NONE, 0);
   _(RAIDFRAME_SPARET_WAIT, READ, struct_RF_SparetWait_sz);
   _(RAIDFRAME_SEND_SPARET, WRITE, sizeof(uptr));
-  _(RAIDFRAME_ABORT_SPARET_WAIT, NONE);
-  _(RAIDFRAME_START_ATRACE, NONE);
-  _(RAIDFRAME_STOP_ATRACE, NONE);
+  _(RAIDFRAME_ABORT_SPARET_WAIT, NONE, 0);
+  _(RAIDFRAME_START_ATRACE, NONE, 0);
+  _(RAIDFRAME_STOP_ATRACE, NONE, 0);
   _(RAIDFRAME_GET_SIZE, READ, sizeof(int));
-  _(RAIDFRAME_RESET_ACCTOTALS, NONE);
+  _(RAIDFRAME_RESET_ACCTOTALS, NONE, 0);
   _(RAIDFRAME_KEEP_ACCTOTALS, WRITE, sizeof(int));
   _(RAIDFRAME_GET_COMPONENT_LABEL, READWRITE, sizeof(uptr));
   _(RAIDFRAME_SET_COMPONENT_LABEL, WRITE, struct_RF_ComponentLabel_sz);
@@ -449,14 +449,14 @@ static void ioctl_table_fill() {
   _(MBPPIOCGPARAM, READ, struct_mbpp_param_sz);
   _(MBPPIOCGSTAT, READ, sizeof(int));
   /* Entries from file: dev/scsipi/ses.h */
-  _(SESIOC_GETNOBJ, NONE);
-  _(SESIOC_GETOBJMAP, NONE);
-  _(SESIOC_GETENCSTAT, NONE);
-  _(SESIOC_SETENCSTAT, NONE);
-  _(SESIOC_GETOBJSTAT, NONE);
-  _(SESIOC_SETOBJSTAT, NONE);
-  _(SESIOC_GETTEXT, NONE);
-  _(SESIOC_INIT, NONE);
+  _(SESIOC_GETNOBJ, NONE, 0);
+  _(SESIOC_GETOBJMAP, NONE, 0);
+  _(SESIOC_GETENCSTAT, NONE, 0);
+  _(SESIOC_SETENCSTAT, NONE, 0);
+  _(SESIOC_GETOBJSTAT, NONE, 0);
+  _(SESIOC_SETOBJSTAT, NONE, 0);
+  _(SESIOC_GETTEXT, NONE, 0);
+  _(SESIOC_INIT, NONE, 0);
   /* Entries from file: dev/sun/disklabel.h */
   _(SUN_DKIOCGGEOM, READ, struct_sun_dkgeom_sz);
   _(SUN_DKIOCINFO, READ, struct_sun_dkctlr_sz);
@@ -491,9 +491,9 @@ static void ioctl_table_fill() {
   _(VUIDGFORMAT, READ, sizeof(int));
   /* Entries from file: dev/tc/sticio.h */
   _(STICIO_GXINFO, READ, struct_stic_xinfo_sz);
-  _(STICIO_RESET, NONE);
-  _(STICIO_STARTQ, NONE);
-  _(STICIO_STOPQ, NONE);
+  _(STICIO_RESET, NONE, 0);
+  _(STICIO_STARTQ, NONE, 0);
+  _(STICIO_STOPQ, NONE, 0);
   /* Entries from file: dev/usb/ukyopon.h */
   _(UKYOPON_IDENTIFY, READ, struct_ukyopon_identify_sz);
   /* Entries from file: dev/usb/urio.h */
@@ -502,7 +502,7 @@ static void ioctl_table_fill() {
   /* Entries from file: dev/usb/usb.h */
   _(USB_REQUEST, READWRITE, struct_usb_ctl_request_sz);
   _(USB_SETDEBUG, WRITE, sizeof(int));
-  _(USB_DISCOVER, NONE);
+  _(USB_DISCOVER, NONE, 0);
   _(USB_DEVICEINFO, READWRITE, struct_usb_device_info_sz);
   _(USB_DEVICEINFO_OLD, READWRITE, struct_usb_device_info_old_sz);
   _(USB_DEVICESTATS, READ, struct_usb_device_stats_sz);
@@ -535,8 +535,8 @@ static void ioctl_table_fill() {
   _(USB_SET_CM_OVER_DATA, WRITE, sizeof(int));
   /* Entries from file: dev/usb/utoppy.h */
   _(UTOPPYIOTURBO, WRITE, sizeof(int));
-  _(UTOPPYIOCANCEL, NONE);
-  _(UTOPPYIOREBOOT, NONE);
+  _(UTOPPYIOCANCEL, NONE, 0);
+  _(UTOPPYIOREBOOT, NONE, 0);
   _(UTOPPYIOSTATS, READ, struct_utoppy_stats_sz);
   _(UTOPPYIORENAME, WRITE, struct_utoppy_rename_sz);
   _(UTOPPYIOMKDIR, WRITE, sizeof(uptr));
@@ -550,27 +550,27 @@ static void ioctl_table_fill() {
   _(VT_OPENQRY, READ, sizeof(int));
   _(VT_SETMODE, WRITE, struct_vt_mode_sz);
   _(VT_GETMODE, READ, struct_vt_mode_sz);
-  _(VT_RELDISP, NONE);
-  _(VT_ACTIVATE, NONE);
-  _(VT_WAITACTIVE, NONE);
+  _(VT_RELDISP, NONE, 0);
+  _(VT_ACTIVATE, NONE, 0);
+  _(VT_WAITACTIVE, NONE, 0);
   _(VT_GETACTIVE, READ, sizeof(int));
   _(VT_GETSTATE, READ, struct_vt_stat_sz);
   _(KDGETKBENT, READWRITE, struct_kbentry_sz);
   _(KDGKBMODE, READ, sizeof(int));
-  _(KDSKBMODE, NONE);
-  _(KDMKTONE, NONE);
-  _(KDSETMODE, NONE);
-  _(KDENABIO, NONE);
-  _(KDDISABIO, NONE);
+  _(KDSKBMODE, NONE, 0);
+  _(KDMKTONE, NONE, 0);
+  _(KDSETMODE, NONE, 0);
+  _(KDENABIO, NONE, 0);
+  _(KDDISABIO, NONE, 0);
   _(KDGKBTYPE, READ, sizeof(char));
   _(KDGETLED, READ, sizeof(int));
-  _(KDSETLED, NONE);
-  _(KDSETRAD, NONE);
+  _(KDSETLED, NONE, 0);
+  _(KDSETRAD, NONE, 0);
   _(VGAPCVTID, READWRITE, struct_pcvtid_sz);
   _(CONS_GETVERS, READ, sizeof(int));
   /* Entries from file: dev/wscons/wsconsio.h */
   _(WSKBDIO_GTYPE, READ, sizeof(unsigned int));
-  _(WSKBDIO_BELL, NONE);
+  _(WSKBDIO_BELL, NONE, 0);
   _(WSKBDIO_COMPLEXBELL, WRITE, struct_wskbd_bell_data_sz);
   _(WSKBDIO_SETBELL, WRITE, struct_wskbd_bell_data_sz);
   _(WSKBDIO_GETBELL, READ, struct_wskbd_bell_data_sz);
@@ -669,7 +669,7 @@ static void ioctl_table_fill() {
   /* Entries from file: dev/fssvar.h */
   _(FSSIOCSET, WRITE, struct_fss_set_sz);
   _(FSSIOCGET, READ, struct_fss_get_sz);
-  _(FSSIOCCLR, NONE);
+  _(FSSIOCCLR, NONE, 0);
   _(FSSIOFSET, WRITE, sizeof(int));
   _(FSSIOFGET, READ, sizeof(int));
   /* Entries from file: dev/bluetooth/btdev.h */
@@ -690,15 +690,15 @@ static void ioctl_table_fill() {
   _(VNDIOCGET, READWRITE, struct_vnd_user_sz);
   /* Entries from file: dev/spkrio.h */
   _(SPKRTONE, WRITE, struct_tone_sz);
-  _(SPKRTUNE, NONE);
+  _(SPKRTUNE, NONE, 0);
   _(SPKRGETVOL, READ, sizeof(unsigned int));
   _(SPKRSETVOL, WRITE, sizeof(unsigned int));
   /* Entries from file: net/bpf.h */
   _(BIOCGBLEN, READ, sizeof(unsigned int));
   _(BIOCSBLEN, READWRITE, sizeof(unsigned int));
   _(BIOCSETF, WRITE, struct_bpf_program_sz);
-  _(BIOCFLUSH, NONE);
-  _(BIOCPROMISC, NONE);
+  _(BIOCFLUSH, NONE, 0);
+  _(BIOCPROMISC, NONE, 0);
   _(BIOCGDLT, READ, sizeof(unsigned int));
   _(BIOCGETIF, READ, struct_ifreq_sz);
   _(BIOCSETIF, WRITE, struct_ifreq_sz);
@@ -749,7 +749,7 @@ static void ioctl_table_fill() {
   _(PPPIOCSMAXCID, WRITE, sizeof(int));
   _(PPPIOCGXASYNCMAP, READ, (8 * sizeof(u32)));
   _(PPPIOCSXASYNCMAP, WRITE, (8 * sizeof(u32)));
-  _(PPPIOCXFERUNIT, NONE);
+  _(PPPIOCXFERUNIT, NONE, 0);
   _(PPPIOCSCOMPRESS, WRITE, struct_ppp_option_data_sz);
   _(PPPIOCGNPMODE, READWRITE, struct_npioctl_sz);
   _(PPPIOCSNPMODE, WRITE, struct_npioctl_sz);
@@ -806,8 +806,8 @@ static void ioctl_table_fill() {
   _(TUNSIFHEAD, WRITE, sizeof(int));
   _(TUNGIFHEAD, READ, sizeof(int));
   /* Entries from file: net/pfvar.h */
-  _(DIOCSTART, NONE);
-  _(DIOCSTOP, NONE);
+  _(DIOCSTART, NONE, 0);
+  _(DIOCSTOP, NONE, 0);
   _(DIOCADDRULE, READWRITE, struct_pfioc_rule_sz);
   _(DIOCGETRULES, READWRITE, struct_pfioc_rule_sz);
   _(DIOCGETRULE, READWRITE, struct_pfioc_rule_sz);
@@ -816,7 +816,7 @@ static void ioctl_table_fill() {
   _(DIOCGETSTATE, READWRITE, struct_pfioc_state_sz);
   _(DIOCSETSTATUSIF, READWRITE, struct_pfioc_if_sz);
   _(DIOCGETSTATUS, READWRITE, struct_pf_status_sz);
-  _(DIOCCLRSTATUS, NONE);
+  _(DIOCCLRSTATUS, NONE, 0);
   _(DIOCNATLOOK, READWRITE, struct_pfioc_natlook_sz);
   _(DIOCSETDEBUG, READWRITE, sizeof(u32));
   _(DIOCGETSTATES, READWRITE, struct_pfioc_states_sz);
@@ -824,12 +824,12 @@ static void ioctl_table_fill() {
   _(DIOCSETTIMEOUT, READWRITE, struct_pfioc_tm_sz);
   _(DIOCGETTIMEOUT, READWRITE, struct_pfioc_tm_sz);
   _(DIOCADDSTATE, READWRITE, struct_pfioc_state_sz);
-  _(DIOCCLRRULECTRS, NONE);
+  _(DIOCCLRRULECTRS, NONE, 0);
   _(DIOCGETLIMIT, READWRITE, struct_pfioc_limit_sz);
   _(DIOCSETLIMIT, READWRITE, struct_pfioc_limit_sz);
   _(DIOCKILLSTATES, READWRITE, struct_pfioc_state_kill_sz);
-  _(DIOCSTARTALTQ, NONE);
-  _(DIOCSTOPALTQ, NONE);
+  _(DIOCSTARTALTQ, NONE, 0);
+  _(DIOCSTOPALTQ, NONE, 0);
   _(DIOCADDALTQ, READWRITE, struct_pfioc_altq_sz);
   _(DIOCGETALTQS, READWRITE, struct_pfioc_altq_sz);
   _(DIOCGETALTQ, READWRITE, struct_pfioc_altq_sz);
@@ -859,14 +859,14 @@ static void ioctl_table_fill() {
   _(DIOCRTSTADDRS, READWRITE, struct_pfioc_table_sz);
   _(DIOCRSETTFLAGS, READWRITE, struct_pfioc_table_sz);
   _(DIOCRINADEFINE, READWRITE, struct_pfioc_table_sz);
-  _(DIOCOSFPFLUSH, NONE);
+  _(DIOCOSFPFLUSH, NONE, 0);
   _(DIOCOSFPADD, READWRITE, struct_pf_osfp_ioctl_sz);
   _(DIOCOSFPGET, READWRITE, struct_pf_osfp_ioctl_sz);
   _(DIOCXBEGIN, READWRITE, struct_pfioc_trans_sz);
   _(DIOCXCOMMIT, READWRITE, struct_pfioc_trans_sz);
   _(DIOCXROLLBACK, READWRITE, struct_pfioc_trans_sz);
   _(DIOCGETSRCNODES, READWRITE, struct_pfioc_src_nodes_sz);
-  _(DIOCCLRSRCNODES, NONE);
+  _(DIOCCLRSRCNODES, NONE, 0);
   _(DIOCSETHOSTID, READWRITE, sizeof(u32));
   _(DIOCIGETIFACES, READWRITE, struct_pfioc_iface_sz);
   _(DIOCSETIFFLAG, READWRITE, struct_pfioc_iface_sz);
@@ -911,8 +911,8 @@ static void ioctl_table_fill() {
   _(SMBIOC_WRITE, READWRITE, struct_smbioc_rw_sz);
   /* Entries from file: sys/agpio.h */
   _(AGPIOC_INFO, READ, struct__agp_info_sz);
-  _(AGPIOC_ACQUIRE, NONE);
-  _(AGPIOC_RELEASE, NONE);
+  _(AGPIOC_ACQUIRE, NONE, 0);
+  _(AGPIOC_RELEASE, NONE, 0);
   _(AGPIOC_SETUP, WRITE, struct__agp_setup_sz);
   _(AGPIOC_ALLOCATE, READWRITE, struct__agp_allocate_sz);
   _(AGPIOC_DEALLOCATE, WRITE, sizeof(int));
@@ -921,8 +921,8 @@ static void ioctl_table_fill() {
   /* Entries from file: sys/audioio.h */
   _(AUDIO_GETINFO, READ, struct_audio_info_sz);
   _(AUDIO_SETINFO, READWRITE, struct_audio_info_sz);
-  _(AUDIO_DRAIN, NONE);
-  _(AUDIO_FLUSH, NONE);
+  _(AUDIO_DRAIN, NONE, 0);
+  _(AUDIO_FLUSH, NONE, 0);
   _(AUDIO_WSEEK, READ, sizeof(unsigned long));
   _(AUDIO_RERROR, READ, sizeof(int));
   _(AUDIO_GETDEV, READ, struct_audio_device_sz);
@@ -942,7 +942,7 @@ static void ioctl_table_fill() {
   /* Entries from file: sys/ataio.h */
   _(ATAIOCCOMMAND, READWRITE, struct_atareq_sz);
   _(ATABUSIOSCAN, WRITE, struct_atabusioscan_args_sz);
-  _(ATABUSIORESET, NONE);
+  _(ATABUSIORESET, NONE, 0);
   _(ATABUSIODETACH, WRITE, struct_atabusiodetach_args_sz);
   /* Entries from file: sys/cdio.h */
   _(CDIOCPLAYTRACKS, WRITE, struct_ioc_play_track_sz);
@@ -954,22 +954,22 @@ static void ioctl_table_fill() {
   _(CDIOCSETPATCH, WRITE, struct_ioc_patch_sz);
   _(CDIOCGETVOL, READ, struct_ioc_vol_sz);
   _(CDIOCSETVOL, WRITE, struct_ioc_vol_sz);
-  _(CDIOCSETMONO, NONE);
-  _(CDIOCSETSTEREO, NONE);
-  _(CDIOCSETMUTE, NONE);
-  _(CDIOCSETLEFT, NONE);
-  _(CDIOCSETRIGHT, NONE);
-  _(CDIOCSETDEBUG, NONE);
-  _(CDIOCCLRDEBUG, NONE);
-  _(CDIOCPAUSE, NONE);
-  _(CDIOCRESUME, NONE);
-  _(CDIOCRESET, NONE);
-  _(CDIOCSTART, NONE);
-  _(CDIOCSTOP, NONE);
-  _(CDIOCEJECT, NONE);
-  _(CDIOCALLOW, NONE);
-  _(CDIOCPREVENT, NONE);
-  _(CDIOCCLOSE, NONE);
+  _(CDIOCSETMONO, NONE, 0);
+  _(CDIOCSETSTEREO, NONE, 0);
+  _(CDIOCSETMUTE, NONE, 0);
+  _(CDIOCSETLEFT, NONE, 0);
+  _(CDIOCSETRIGHT, NONE, 0);
+  _(CDIOCSETDEBUG, NONE, 0);
+  _(CDIOCCLRDEBUG, NONE, 0);
+  _(CDIOCPAUSE, NONE, 0);
+  _(CDIOCRESUME, NONE, 0);
+  _(CDIOCRESET, NONE, 0);
+  _(CDIOCSTART, NONE, 0);
+  _(CDIOCSTOP, NONE, 0);
+  _(CDIOCEJECT, NONE, 0);
+  _(CDIOCALLOW, NONE, 0);
+  _(CDIOCPREVENT, NONE, 0);
+  _(CDIOCCLOSE, NONE, 0);
   _(CDIOCPLAYMSF, WRITE, struct_ioc_play_msf_sz);
   _(CDIOCLOADUNLOAD, WRITE, struct_ioc_load_unload_sz);
   /* Entries from file: sys/chio.h */
@@ -979,7 +979,7 @@ static void ioctl_table_fill() {
   _(CHIOGPICKER, READ, sizeof(int));
   _(CHIOSPICKER, WRITE, sizeof(int));
   _(CHIOGPARAMS, READ, struct_changer_params_sz);
-  _(CHIOIELEM, NONE);
+  _(CHIOIELEM, NONE, 0);
   _(OCHIOGSTATUS, WRITE, struct_ochanger_element_status_request_sz);
   _(CHIOGSTATUS, WRITE, struct_changer_element_status_request_sz);
   _(CHIOSVOLTAG, WRITE, struct_changer_set_voltag_request_sz);
@@ -998,7 +998,7 @@ static void ioctl_table_fill() {
   /* Entries from file: sys/dkio.h */
   _(DIOCGDINFO, READ, struct_disklabel_sz);
   _(DIOCSDINFO, WRITE, struct_disklabel_sz);
-  _(DIOCWDINFO, WRITE);
+  _(DIOCWDINFO, WRITE, 0);
   _(DIOCRFORMAT, READWRITE, struct_format_op_sz);
   _(DIOCWFORMAT, READWRITE, struct_format_op_sz);
   _(DIOCSSTEP, WRITE, sizeof(int));
@@ -1007,15 +1007,15 @@ static void ioctl_table_fill() {
   _(DIOCWLABEL, WRITE, sizeof(int));
   _(DIOCSBAD, WRITE, struct_dkbad_sz);
   _(DIOCEJECT, WRITE, sizeof(int));
-  _(ODIOCEJECT, NONE);
+  _(ODIOCEJECT, NONE, 0);
   _(DIOCLOCK, WRITE, sizeof(int));
   _(DIOCGDEFLABEL, READ, struct_disklabel_sz);
-  _(DIOCCLRLABEL, NONE);
+  _(DIOCCLRLABEL, NONE, 0);
   _(DIOCGCACHE, READ, sizeof(int));
   _(DIOCSCACHE, WRITE, sizeof(int));
   _(DIOCCACHESYNC, WRITE, sizeof(int));
   _(DIOCBSLIST, READWRITE, struct_disk_badsecinfo_sz);
-  _(DIOCBSFLUSH, NONE);
+  _(DIOCBSFLUSH, NONE, 0);
   _(DIOCAWEDGE, READWRITE, struct_dkwedge_info_sz);
   _(DIOCGWEDGEINFO, READ, struct_dkwedge_info_sz);
   _(DIOCDWEDGE, WRITE, struct_dkwedge_info_sz);
@@ -1049,14 +1049,14 @@ static void ioctl_table_fill() {
   _(KFILTER_BYFILTER, READWRITE, struct_kfilter_mapping_sz);
   _(KFILTER_BYNAME, READWRITE, struct_kfilter_mapping_sz);
   /* Entries from file: sys/fdio.h */
-  _(FDIOCGETOPTS, READ);
+  _(FDIOCGETOPTS, READ, 0);
   _(FDIOCSETOPTS, WRITE, sizeof(int));
   _(FDIOCSETFORMAT, WRITE, struct_fdformat_parms_sz);
   _(FDIOCGETFORMAT, READ, struct_fdformat_parms_sz);
   _(FDIOCFORMAT_TRACK, WRITE, struct_fdformat_cmd_sz);
   /* Entries from file: sys/filio.h */
-  _(FIOCLEX, NONE);
-  _(FIONCLEX, NONE);
+  _(FIOCLEX, NONE, 0);
+  _(FIONCLEX, NONE, 0);
   _(FIONREAD, READ, sizeof(int));
   _(FIONBIO, WRITE, sizeof(int));
   _(FIOASYNC, WRITE, sizeof(int));
@@ -1081,10 +1081,10 @@ static void ioctl_table_fill() {
   _(PTIOCFREEBSD, WRITE, struct_ioctl_pt_sz);
   _(PTIOCULTRIX, WRITE, struct_ioctl_pt_sz);
   /* Entries from file: sys/ioctl_compat.h */
-  _(TIOCHPCL, NONE);
+  _(TIOCHPCL, NONE, 0);
   _(TIOCGETP, READ, struct_sgttyb_sz);
   _(TIOCSETP, WRITE, struct_sgttyb_sz);
-  _(TIOCSETN, WRITE);
+  _(TIOCSETN, WRITE, 0);
   _(TIOCSETC, WRITE, struct_tchars_sz);
   _(TIOCGETC, READ, struct_tchars_sz);
   _(TIOCLBIS, WRITE, sizeof(int));
@@ -1093,7 +1093,7 @@ static void ioctl_table_fill() {
   _(TIOCLGET, READ, sizeof(int));
   _(TIOCSLTC, WRITE, struct_ltchars_sz);
   _(TIOCGLTC, READ, struct_ltchars_sz);
-  _(OTIOCCONS, NONE);
+  _(OTIOCCONS, NONE, 0);
   /* Entries from file: sys/joystick.h */
   _(JOY_SETTIMEOUT, WRITE, sizeof(int));
   _(JOY_GETTIMEOUT, READ, sizeof(int));
@@ -1117,8 +1117,8 @@ static void ioctl_table_fill() {
   _(MIDI_PRETIME, READWRITE, sizeof(int));
   _(MIDI_MPUMODE, READWRITE, sizeof(int));
   _(MIDI_MPUCMD, READWRITE, struct_mpu_command_rec_sz);
-  _(SEQUENCER_RESET, NONE);
-  _(SEQUENCER_SYNC, NONE);
+  _(SEQUENCER_RESET, NONE, 0);
+  _(SEQUENCER_SYNC, NONE, 0);
   _(SEQUENCER_INFO, READWRITE, struct_synth_info_sz);
   _(SEQUENCER_CTRLRATE, READWRITE, sizeof(int));
   _(SEQUENCER_GETOUTCOUNT, READ, sizeof(int));
@@ -1128,13 +1128,13 @@ static void ioctl_table_fill() {
   _(SEQUENCER_NRMIDIS, READ, sizeof(int));
   _(SEQUENCER_THRESHOLD, WRITE, sizeof(int));
   _(SEQUENCER_MEMAVL, READWRITE, sizeof(int));
-  _(SEQUENCER_PANIC, NONE);
+  _(SEQUENCER_PANIC, NONE, 0);
   _(SEQUENCER_OUTOFBAND, WRITE, struct_seq_event_rec_sz);
   _(SEQUENCER_GETTIME, READ, sizeof(int));
   _(SEQUENCER_TMR_TIMEBASE, READWRITE, sizeof(int));
-  _(SEQUENCER_TMR_START, NONE);
-  _(SEQUENCER_TMR_STOP, NONE);
-  _(SEQUENCER_TMR_CONTINUE, NONE);
+  _(SEQUENCER_TMR_START, NONE, 0);
+  _(SEQUENCER_TMR_STOP, NONE, 0);
+  _(SEQUENCER_TMR_CONTINUE, NONE, 0);
   _(SEQUENCER_TMR_TEMPO, READWRITE, sizeof(int));
   _(SEQUENCER_TMR_SOURCE, READWRITE, sizeof(int));
   _(SEQUENCER_TMR_METRONOME, WRITE, sizeof(int));
@@ -1142,8 +1142,8 @@ static void ioctl_table_fill() {
   /* Entries from file: sys/mtio.h */
   _(MTIOCTOP, WRITE, struct_mtop_sz);
   _(MTIOCGET, READ, struct_mtget_sz);
-  _(MTIOCIEOT, NONE);
-  _(MTIOCEEOT, NONE);
+  _(MTIOCIEOT, NONE, 0);
+  _(MTIOCEEOT, NONE, 0);
   _(MTIOCRDSPOS, READ, sizeof(u32));
   _(MTIOCRDHPOS, READ, sizeof(u32));
   _(MTIOCSLOCATE, WRITE, sizeof(u32));
@@ -1168,21 +1168,21 @@ static void ioctl_table_fill() {
   /* Entries from file: sys/scanio.h */
   _(SCIOCGET, READ, struct_scan_io_sz);
   _(SCIOCSET, WRITE, struct_scan_io_sz);
-  _(SCIOCRESTART, NONE);
-  _(SCIOC_USE_ADF, NONE);
+  _(SCIOCRESTART, NONE, 0);
+  _(SCIOC_USE_ADF, NONE, 0);
   /* Entries from file: sys/scsiio.h */
   _(SCIOCCOMMAND, READWRITE, struct_scsireq_sz);
   _(SCIOCDEBUG, WRITE, sizeof(int));
   _(SCIOCIDENTIFY, READ, struct_scsi_addr_sz);
   _(OSCIOCIDENTIFY, READ, struct_oscsi_addr_sz);
-  _(SCIOCDECONFIG, NONE);
-  _(SCIOCRECONFIG, NONE);
-  _(SCIOCRESET, NONE);
+  _(SCIOCDECONFIG, NONE, 0);
+  _(SCIOCRECONFIG, NONE, 0);
+  _(SCIOCRESET, NONE, 0);
   _(SCBUSIOSCAN, WRITE, struct_scbusioscan_args_sz);
-  _(SCBUSIORESET, NONE);
+  _(SCBUSIORESET, NONE, 0);
   _(SCBUSIODETACH, WRITE, struct_scbusiodetach_args_sz);
   _(SCBUSACCEL, WRITE, struct_scbusaccel_args_sz);
-  _(SCBUSIOLLSCAN, NONE);
+  _(SCBUSIOLLSCAN, NONE, 0);
   /* Entries from file: sys/sockio.h */
   _(SIOCSHIWAT, WRITE, sizeof(int));
   _(SIOCGHIWAT, READ, sizeof(int));
@@ -1251,37 +1251,37 @@ static void ioctl_table_fill() {
   _(SIOCSETPFSYNC, WRITE, struct_ifreq_sz);
   _(SIOCGETPFSYNC, READWRITE, struct_ifreq_sz);
   /* Entries from file: sys/timepps.h */
-  _(PPS_IOC_CREATE, NONE);
-  _(PPS_IOC_DESTROY, NONE);
+  _(PPS_IOC_CREATE, NONE, 0);
+  _(PPS_IOC_DESTROY, NONE, 0);
   _(PPS_IOC_SETPARAMS, WRITE, struct_pps_params_sz);
   _(PPS_IOC_GETPARAMS, READ, struct_pps_params_sz);
   _(PPS_IOC_GETCAP, READ, sizeof(int));
   _(PPS_IOC_FETCH, READWRITE, struct_pps_info_sz);
   _(PPS_IOC_KCBIND, WRITE, sizeof(int));
   /* Entries from file: sys/ttycom.h */
-  _(TIOCEXCL, NONE);
-  _(TIOCNXCL, NONE);
+  _(TIOCEXCL, NONE, 0);
+  _(TIOCNXCL, NONE, 0);
   _(TIOCFLUSH, WRITE, sizeof(int));
   _(TIOCGETA, READ, struct_termios_sz);
   _(TIOCSETA, WRITE, struct_termios_sz);
-  _(TIOCSETAW, WRITE);
-  _(TIOCSETAF, WRITE);
+  _(TIOCSETAW, WRITE, 0);
+  _(TIOCSETAF, WRITE, 0);
   _(TIOCGETD, READ, sizeof(int));
   _(TIOCSETD, WRITE, sizeof(int));
   _(TIOCGLINED, READ, (32 * sizeof(char)));
   _(TIOCSLINED, WRITE, (32 * sizeof(char)));
-  _(TIOCSBRK, NONE);
-  _(TIOCCBRK, NONE);
-  _(TIOCSDTR, NONE);
-  _(TIOCCDTR, NONE);
+  _(TIOCSBRK, NONE, 0);
+  _(TIOCCBRK, NONE, 0);
+  _(TIOCSDTR, NONE, 0);
+  _(TIOCCDTR, NONE, 0);
   _(TIOCGPGRP, READ, sizeof(int));
   _(TIOCSPGRP, WRITE, sizeof(int));
   _(TIOCOUTQ, READ, sizeof(int));
   _(TIOCSTI, WRITE, sizeof(char));
-  _(TIOCNOTTY, NONE);
+  _(TIOCNOTTY, NONE, 0);
   _(TIOCPKT, WRITE, sizeof(int));
-  _(TIOCSTOP, NONE);
-  _(TIOCSTART, NONE);
+  _(TIOCSTOP, NONE, 0);
+  _(TIOCSTART, NONE, 0);
   _(TIOCMSET, WRITE, sizeof(int));
   _(TIOCMBIS, WRITE, sizeof(int));
   _(TIOCMBIC, WRITE, sizeof(int));
@@ -1293,17 +1293,17 @@ static void ioctl_table_fill() {
   _(TIOCSTAT, WRITE, sizeof(int));
   _(TIOCGSID, READ, sizeof(int));
   _(TIOCCONS, WRITE, sizeof(int));
-  _(TIOCSCTTY, NONE);
+  _(TIOCSCTTY, NONE, 0);
   _(TIOCEXT, WRITE, sizeof(int));
-  _(TIOCSIG, NONE);
-  _(TIOCDRAIN, NONE);
+  _(TIOCSIG, NONE, 0);
+  _(TIOCDRAIN, NONE, 0);
   _(TIOCGFLAGS, READ, sizeof(int));
   _(TIOCSFLAGS, WRITE, sizeof(int));
   _(TIOCDCDTIMESTAMP, READ, struct_timeval_sz);
   _(TIOCRCVFRAME, WRITE, sizeof(uptr));
   _(TIOCXMTFRAME, WRITE, sizeof(uptr));
   _(TIOCPTMGET, READ, struct_ptmget_sz);
-  _(TIOCGRANTPT, NONE);
+  _(TIOCGRANTPT, NONE, 0);
   _(TIOCPTSNAME, READ, struct_ptmget_sz);
   _(TIOCSQSIZE, WRITE, sizeof(int));
   _(TIOCGQSIZE, READ, sizeof(int));
@@ -1313,10 +1313,10 @@ static void ioctl_table_fill() {
   _(VERIEXEC_DELETE, WRITE, struct_plistref_sz);
   _(VERIEXEC_QUERY, READWRITE, struct_plistref_sz);
   _(VERIEXEC_DUMP, READ, struct_plistref_sz);
-  _(VERIEXEC_FLUSH, NONE);
+  _(VERIEXEC_FLUSH, NONE, 0);
   /* Entries from file: sys/videoio.h */
   _(VIDIOC_QUERYCAP, READ, struct_v4l2_capability_sz);
-  _(VIDIOC_RESERVED, NONE);
+  _(VIDIOC_RESERVED, NONE, 0);
   _(VIDIOC_ENUM_FMT, READWRITE, struct_v4l2_fmtdesc_sz);
   _(VIDIOC_G_FMT, READWRITE, struct_v4l2_format_sz);
   _(VIDIOC_S_FMT, READWRITE, struct_v4l2_format_sz);
@@ -1371,12 +1371,12 @@ static void ioctl_table_fill() {
   _(WDOGIOC_GMODE, READWRITE, struct_wdog_mode_sz);
   _(WDOGIOC_SMODE, WRITE, struct_wdog_mode_sz);
   _(WDOGIOC_WHICH, READ, struct_wdog_mode_sz);
-  _(WDOGIOC_TICKLE, NONE);
+  _(WDOGIOC_TICKLE, NONE, 0);
   _(WDOGIOC_GTICKLER, READ, sizeof(int));
   _(WDOGIOC_GWDOGS, READWRITE, struct_wdog_conf_sz);
   /* Entries from file: soundcard.h */
-  _(SNDCTL_DSP_RESET, NONE);
-  _(SNDCTL_DSP_SYNC, NONE);
+  _(SNDCTL_DSP_RESET, NONE, 0);
+  _(SNDCTL_DSP_SYNC, NONE, 0);
   _(SNDCTL_DSP_SPEED, READWRITE, sizeof(int));
   _(SOUND_PCM_READ_RATE, READ, sizeof(int));
   _(SNDCTL_DSP_STEREO, READWRITE, sizeof(int));
@@ -1387,13 +1387,13 @@ static void ioctl_table_fill() {
   _(SOUND_PCM_READ_CHANNELS, READ, sizeof(int));
   _(SOUND_PCM_WRITE_FILTER, READWRITE, sizeof(int));
   _(SOUND_PCM_READ_FILTER, READ, sizeof(int));
-  _(SNDCTL_DSP_POST, NONE);
+  _(SNDCTL_DSP_POST, NONE, 0);
   _(SNDCTL_DSP_SUBDIVIDE, READWRITE, sizeof(int));
   _(SNDCTL_DSP_SETFRAGMENT, READWRITE, sizeof(int));
   _(SNDCTL_DSP_GETFMTS, READ, sizeof(int));
   _(SNDCTL_DSP_GETOSPACE, READ, struct_audio_buf_info_sz);
   _(SNDCTL_DSP_GETISPACE, READ, struct_audio_buf_info_sz);
-  _(SNDCTL_DSP_NONBLOCK, NONE);
+  _(SNDCTL_DSP_NONBLOCK, NONE, 0);
   _(SNDCTL_DSP_GETCAPS, READ, sizeof(int));
   _(SNDCTL_DSP_GETTRIGGER, READ, sizeof(int));
   _(SNDCTL_DSP_SETTRIGGER, WRITE, sizeof(int));
@@ -1401,8 +1401,8 @@ static void ioctl_table_fill() {
   _(SNDCTL_DSP_GETOPTR, READ, struct_count_info_sz);
   _(SNDCTL_DSP_MAPINBUF, READ, struct_buffmem_desc_sz);
   _(SNDCTL_DSP_MAPOUTBUF, READ, struct_buffmem_desc_sz);
-  _(SNDCTL_DSP_SETSYNCRO, NONE);
-  _(SNDCTL_DSP_SETDUPLEX, NONE);
+  _(SNDCTL_DSP_SETSYNCRO, NONE, 0);
+  _(SNDCTL_DSP_SETDUPLEX, NONE, 0);
   _(SNDCTL_DSP_PROFILE, WRITE, sizeof(int));
   _(SNDCTL_DSP_GETODELAY, READ, sizeof(int));
   _(SOUND_MIXER_INFO, READ, struct_mixer_info_sz);
@@ -1415,8 +1415,8 @@ static void ioctl_table_fill() {
   _(SNDCTL_DSP_SETPLAYVOL, WRITE, sizeof(unsigned int));
   _(SNDCTL_DSP_GETRECVOL, READ, sizeof(unsigned int));
   _(SNDCTL_DSP_SETRECVOL, WRITE, sizeof(unsigned int));
-  _(SNDCTL_DSP_SKIP, NONE);
-  _(SNDCTL_DSP_SILENCE, NONE);
+  _(SNDCTL_DSP_SKIP, NONE, 0);
+  _(SNDCTL_DSP_SILENCE, NONE, 0);
 #undef _
 }
 
