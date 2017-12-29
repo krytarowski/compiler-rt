@@ -182,7 +182,8 @@ FNR == 1 {
 
 # _IO
 /[^a-zA-Z0-9_]_IO[W]*[R]*[ ]*\(/ && $2 ~ /^[A-Z_]+$/ {
-  if ($0 ~ /ALTQATTACH/ ||
+  if ($0 ~ /RAIDFRAME_GET_ACCTOTALS/ ||
+      $0 ~ /ALTQATTACH/ ||
       $0 ~ /ALTQDETACH/ ||
       $0 ~ /ALTQENABLE/ ||
       $0 ~ /ALTQDISABLE/ ||
@@ -552,8 +553,7 @@ function get_type(string)
   } else if (string == "daddr_t" || string == "dev_t") {
     return "sizeof(u64)"
   } else if (substr(string, 0, 7) == "struct " ) {
-#    print "unsigned " "struct_" substr(string, 8) "_sz = sizeof(" substr(string, 8) ");"
-    print "extern unsigned " "struct_" substr(string, 8) "_sz;"
+    substr(/ /, "", string)
     return "struct_" substr(string, 8) "_sz"
   } else if (string == "scsireq_t") {
     return "struct_scsireq_sz"

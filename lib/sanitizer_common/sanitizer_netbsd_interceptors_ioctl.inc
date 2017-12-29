@@ -25,7 +25,7 @@ struct ioctl_desc {
   const char *name;
 };
 
-const unsigned ioctl_table_max = 1332;
+const unsigned ioctl_table_max = 1256;
 static ioctl_desc ioctl_table[ioctl_table_max];
 static unsigned ioctl_table_size = 0;
 
@@ -50,19 +50,6 @@ static void ioctl_table_fill() {
   _(AFM_GETFMAP, READWRITE, struct_atm_flowmap_sz);
   /* Entries from file: altq/altq.h */
   _(ALTQGTYPE, READWRITE, struct_altqreq_sz);
-  _(ALTQATTACH, WRITE, struct_altqreq_sz);
-  _(ALTQDETACH, WRITE, struct_altqreq_sz);
-  _(ALTQENABLE, WRITE, struct_altqreq_sz);
-  _(ALTQDISABLE, WRITE, struct_altqreq_sz);
-  _(ALTQCLEAR, WRITE, struct_altqreq_sz);
-  _(ALTQCONFIG, READWRITE, struct_altqreq_sz);
-  _(ALTQADDCLASS, READWRITE, struct_altqreq_sz);
-  _(ALTQMODCLASS, READWRITE, struct_altqreq_sz);
-  _(ALTQDELCLASS, READWRITE, struct_altqreq_sz);
-  _(ALTQADDFILTER, READWRITE, struct_altqreq_sz);
-  _(ALTQDELFILTER, READWRITE, struct_altqreq_sz);
-  _(ALTQGETSTATS, READWRITE, struct_altqreq_sz);
-  _(ALTQGETCNTR, READWRITE, struct_altqreq_sz);
   _(ALTQTBRSET, WRITE, struct_tbrreq_sz);
   _(ALTQTBRGET, READWRITE, struct_tbrreq_sz);
   /* Entries from file: altq/altq_blue.h */
@@ -309,27 +296,6 @@ static void ioctl_table_fill() {
   _(METEORGSUPPIXFMT, READWRITE, struct_meteor_pixfmt_sz);
   _(TVTUNER_GETCHNLSET, READWRITE, struct_bktr_chnlset_sz);
   _(REMOTE_GETKEY, READ, struct_bktr_remote_sz);
-  /* Entries from file: dev/ic/hd44780var.h */
-  _(HLCD_DISPCTL, WRITE, struct_hd44780_dispctl_sz);
-  _(HLCD_RESET, NONE);
-  _(HLCD_CLEAR, NONE);
-  _(HLCD_CURSOR_LEFT, NONE);
-  _(HLCD_CURSOR_RIGHT, NONE);
-  _(HLCD_GET_CURSOR_POS, READ, struct_hd44780_io_sz);
-  _(HLCD_SET_CURSOR_POS, WRITE, struct_hd44780_io_sz);
-  _(HLCD_GETC, READ, struct_hd44780_io_sz);
-  _(HLCD_PUTC, WRITE, struct_hd44780_io_sz);
-  _(HLCD_SHIFT_LEFT, NONE);
-  _(HLCD_SHIFT_RIGHT, NONE);
-  _(HLCD_HOME, NONE);
-  _(HLCD_WRITE, READWRITE, struct_hd44780_io_sz);
-  _(HLCD_READ, READWRITE, struct_hd44780_io_sz);
-  _(HLCD_REDRAW, WRITE, struct_hd44780_io_sz);
-  _(HLCD_WRITE_INST, WRITE, struct_hd44780_io_sz);
-  _(HLCD_WRITE_DATA, WRITE, struct_hd44780_io_sz);
-  _(HLCD_GET_INFO, READ, struct_hd44780_info_sz);
-  _(HLCD_GET_CHIPNO, READ, sizeof(u8));
-  _(HLCD_SET_CHIPNO, WRITE, sizeof(u8));
   /* Entries from file: dev/ic/icp_ioctl.h */
   _(GDT_IOCTL_GENERAL, READWRITE, struct_gdt_ucmd_sz);
   _(GDT_IOCTL_DRVERS, READ, sizeof(int));
@@ -443,7 +409,6 @@ static void ioctl_table_fill() {
   /* Entries from file: dev/raidframe/raidframeio.h */
   _(RAIDFRAME_SHUTDOWN, NONE);
   _(RAIDFRAME_TUR, WRITE, sizeof(u64));
-  _(RAIDFRAME_TEST_ACC, READWRITE, struct_rf_test_acc_sz);
   _(RAIDFRAME_FAIL_DISK, WRITE, struct_rf_recon_req_sz);
   _(RAIDFRAME_CHECK_RECON_STATUS, READWRITE, sizeof(int));
   _(RAIDFRAME_REWRITEPARITY, NONE);
@@ -498,10 +463,8 @@ static void ioctl_table_fill() {
   _(SUN_DKIOCGPART, READ, struct_sun_dkpart_sz);
   /* Entries from file: dev/sun/fbio.h */
   _(FBIOGTYPE, READ, struct_fbtype_sz);
-  _(FBIOGINFO, READ, struct_fbinfo_sz);
   _(FBIOPUTCMAP, WRITE, struct_fbcmap_sz);
   _(FBIOGETCMAP, WRITE, struct_fbcmap_sz);
-  _(FBIOSATTR, WRITE, struct_fbsattr_sz);
   _(FBIOGATTR, READ, struct_fbgattr_sz);
   _(FBIOSVIDEO, WRITE, sizeof(int));
   _(FBIOGVIDEO, READ, sizeof(int));
@@ -688,9 +651,7 @@ static void ioctl_table_fill() {
   _(BIOCINQ, READWRITE, struct_bioc_inq_sz);
   _(BIOCDISK_NOVOL, READWRITE, struct_bioc_disk_sz);
   _(BIOCDISK, READWRITE, struct_bioc_disk_sz);
-  _(OBIOCDISK, READWRITE, struct_obioc_disk_sz);
   _(BIOCVOL, READWRITE, struct_bioc_vol_sz);
-  _(OBIOCVOL, READWRITE, struct_obioc_vol_sz);
   _(BIOCALARM, READWRITE, struct_bioc_alarm_sz);
   _(BIOCBLINK, READWRITE, struct_bioc_blink_sz);
   _(BIOCSETSTATE, READWRITE, struct_bioc_setstate_sz);
@@ -741,8 +702,6 @@ static void ioctl_table_fill() {
   _(BIOCGDLT, READ, sizeof(unsigned int));
   _(BIOCGETIF, READ, struct_ifreq_sz);
   _(BIOCSETIF, WRITE, struct_ifreq_sz);
-  _(BIOCSORTIMEOUT, WRITE, struct_timeval50_sz);
-  _(BIOCGORTIMEOUT, READ, struct_timeval50_sz);
   _(BIOCGSTATS, READ, struct_bpf_stat_sz);
   _(BIOCGSTATSOLD, READ, struct_bpf_stat_old_sz);
   _(BIOCIMMEDIATE, WRITE, sizeof(unsigned int));
@@ -795,12 +754,6 @@ static void ioctl_table_fill() {
   _(PPPIOCGNPMODE, READWRITE, struct_npioctl_sz);
   _(PPPIOCSNPMODE, WRITE, struct_npioctl_sz);
   _(PPPIOCGIDLE, READ, struct_ppp_idle_sz);
-  _(PPPIOCSPASS, WRITE, struct_bpf_program_sz);
-  _(PPPIOCSACTIVE, WRITE, struct_bpf_program_sz);
-  _(PPPIOCSIPASS, WRITE, struct_bpf_program_sz);
-  _(PPPIOCSOPASS, WRITE, struct_bpf_program_sz);
-  _(PPPIOCSIACTIVE, WRITE, struct_bpf_program_sz);
-  _(PPPIOCSOACTIVE, WRITE, struct_bpf_program_sz);
   _(PPPIOCGMTU, READ, sizeof(int));
   _(PPPIOCSMTU, WRITE, sizeof(int));
   _(SIOCGPPPSTATS, READWRITE, struct_ifpppstatsreq_sz);
@@ -944,15 +897,10 @@ static void ioctl_table_fill() {
   _(SIOCGNATS, READWRITE, struct_ipfobj_sz);
   _(SIOCGNATL, READWRITE, struct_ipfobj_sz);
   _(SIOCPURGENAT, READWRITE, struct_ipfobj_sz);
-  /* Entries from file: netinet/ip_proxy.h */
-  _(SIOCPROXY, READWRITE, struct_ap_control_sz);
-  _(SIOCPROXY, READWRITE, struct_ap_control_sz);
   /* Entries from file: netinet6/in6_var.h */
   _(SIOCSIFINFO_FLAGS, READWRITE, struct_in6_ndireq_sz);
   _(SIOCAADDRCTL_POLICY, WRITE, struct_in6_addrpolicy_sz);
   _(SIOCDADDRCTL_POLICY, WRITE, struct_in6_addrpolicy_sz);
-  /* Entries from file: netnatm/natm.h */
-  _(SIOCXRAWATM, READWRITE, struct_atm_rawioctl_sz);
   /* Entries from file: netsmb/smb_dev.h */
   _(SMBIOC_OPENSESSION, WRITE, struct_smbioc_ossn_sz);
   _(SMBIOC_OPENSHARE, WRITE, struct_smbioc_oshare_sz);
@@ -966,8 +914,6 @@ static void ioctl_table_fill() {
   _(AGPIOC_ACQUIRE, NONE);
   _(AGPIOC_RELEASE, NONE);
   _(AGPIOC_SETUP, WRITE, struct__agp_setup_sz);
-  _(AGPIOC_RESERVE, WRITE, struct__agp_region_sz);
-  _(AGPIOC_PROTECT, WRITE, struct__agp_region_sz);
   _(AGPIOC_ALLOCATE, READWRITE, struct__agp_allocate_sz);
   _(AGPIOC_DEALLOCATE, WRITE, sizeof(int));
   _(AGPIOC_BIND, WRITE, struct__agp_bind_sz);
@@ -1002,10 +948,8 @@ static void ioctl_table_fill() {
   _(CDIOCPLAYTRACKS, WRITE, struct_ioc_play_track_sz);
   _(CDIOCPLAYBLOCKS, WRITE, struct_ioc_play_blocks_sz);
   _(CDIOCREADSUBCHANNEL, READWRITE, struct_ioc_read_subchannel _sz);
-  _(CDIOCREADSUBCHANNEL_BUF, READWRITE, struct_ioc_read_subchannel_buf_sz);
   _(CDIOREADTOCHEADER, READ, struct_ioc_toc_header_sz);
   _(CDIOREADTOCENTRIES, READWRITE, struct_ioc_read_toc_entry_sz);
-  _(CDIOREADTOCENTRIES_BUF, READWRITE, struct_ioc_read_toc_entry_buf_sz);
   _(CDIOREADMSADDR, READWRITE, sizeof(int));
   _(CDIOCSETPATCH, WRITE, struct_ioc_patch_sz);
   _(CDIOCGETVOL, READ, struct_ioc_vol_sz);
@@ -1028,10 +972,6 @@ static void ioctl_table_fill() {
   _(CDIOCCLOSE, NONE);
   _(CDIOCPLAYMSF, WRITE, struct_ioc_play_msf_sz);
   _(CDIOCLOADUNLOAD, WRITE, struct_ioc_load_unload_sz);
-  _(MMCGETDISCINFO, READ, struct_mmc_discinfo_sz);
-  _(MMCGETTRACKINFO, READWRITE, struct_mmc_trackinfo_sz);
-  _(MMCOP, READWRITE, struct_mmc_op_sz);
-  _(MMCSETUPWRITEPARAMS, WRITE, struct_mmc_writeparams_sz);
   /* Entries from file: sys/chio.h */
   _(CHIOMOVE, WRITE, struct_changer_move_request_sz);
   _(CHIOEXCHANGE, WRITE, struct_changer_exchange_request_sz);
@@ -1059,10 +999,6 @@ static void ioctl_table_fill() {
   _(DIOCGDINFO, READ, struct_disklabel_sz);
   _(DIOCSDINFO, WRITE, struct_disklabel_sz);
   _(DIOCWDINFO, WRITE);
-  _(DIOCGPARTINFO, WRITE, struct_partinfo_sz);
-  _(ODIOCGDINFO, READ, struct_olddisklabel_sz);
-  _(ODIOCSDINFO, WRITE, struct_olddisklabel_sz);
-  _(ODIOCWDINFO, WRITE);
   _(DIOCRFORMAT, READWRITE, struct_format_op_sz);
   _(DIOCWFORMAT, READWRITE, struct_format_op_sz);
   _(DIOCSSTEP, WRITE, sizeof(int));
@@ -1075,7 +1011,6 @@ static void ioctl_table_fill() {
   _(DIOCLOCK, WRITE, sizeof(int));
   _(DIOCGDEFLABEL, READ, struct_disklabel_sz);
   _(DIOCCLRLABEL, NONE);
-  _(ODIOCGDEFLABEL, READ, struct_olddisklabel_sz);
   _(DIOCGCACHE, READ, sizeof(int));
   _(DIOCSCACHE, WRITE, sizeof(int));
   _(DIOCCACHESYNC, WRITE, sizeof(int));
@@ -1139,11 +1074,6 @@ static void ioctl_table_fill() {
   _(GPIOWRITE, READWRITE, struct_gpio_req_sz);
   _(GPIOTOGGLE, READWRITE, struct_gpio_req_sz);
   _(GPIOATTACH, READWRITE, struct_gpio_attach_sz);
-  _(GPIOPINREAD, READWRITE, struct_gpio_pin_op_sz);
-  _(GPIOPINWRITE, READWRITE, struct_gpio_pin_op_sz);
-  _(GPIOPINTOGGLE, READWRITE, struct_gpio_pin_op_sz);
-  _(GPIOPINCTL, READWRITE, struct_gpio_pin_ctl_sz);
-  _(GPIODETACH, READWRITE, struct_gpio_attach_sz);
   /* Entries from file: sys/ioctl.h */
   _(PTIOCNETBSD, WRITE, struct_ioctl_pt_sz);
   _(PTIOCSUNOS, WRITE, struct_ioctl_pt_sz);
@@ -1193,20 +1123,14 @@ static void ioctl_table_fill() {
   _(SEQUENCER_CTRLRATE, READWRITE, sizeof(int));
   _(SEQUENCER_GETOUTCOUNT, READ, sizeof(int));
   _(SEQUENCER_GETINCOUNT, READ, sizeof(int));
-  _(SEQUENCER_PERCMODE, WRITE, sizeof(int));
-  _(SEQUENCER_TESTMIDI, WRITE, sizeof(int));
   _(SEQUENCER_RESETSAMPLES, WRITE, sizeof(int));
   _(SEQUENCER_NRSYNTHS, READ, sizeof(int));
   _(SEQUENCER_NRMIDIS, READ, sizeof(int));
-  _(SEQUENCER_MIDI_INFO, READWRITE, struct_midi_info_sz);
   _(SEQUENCER_THRESHOLD, WRITE, sizeof(int));
   _(SEQUENCER_MEMAVL, READWRITE, sizeof(int));
   _(SEQUENCER_PANIC, NONE);
   _(SEQUENCER_OUTOFBAND, WRITE, struct_seq_event_rec_sz);
   _(SEQUENCER_GETTIME, READ, sizeof(int));
-  _(SEQUENCER_ID, READWRITE, struct_synth_info_sz);
-  _(SEQUENCER_CONTROL, READWRITE, struct_synth_control_sz);
-  _(SEQUENCER_REMOVESAMPLE, READWRITE, struct_remove_sample_sz);
   _(SEQUENCER_TMR_TIMEBASE, READWRITE, sizeof(int));
   _(SEQUENCER_TMR_START, NONE);
   _(SEQUENCER_TMR_STOP, NONE);
@@ -1493,10 +1417,6 @@ static void ioctl_table_fill() {
   _(SNDCTL_DSP_SETRECVOL, WRITE, sizeof(unsigned int));
   _(SNDCTL_DSP_SKIP, NONE);
   _(SNDCTL_DSP_SILENCE, NONE);
-  /* Entries from file: xen/xenio.h */
-  _(EVTCHN_RESET, NONE);
-  _(EVTCHN_BIND, WRITE, sizeof(unsigned long));
-  _(EVTCHN_UNBIND, WRITE, sizeof(unsigned long));
 #undef _
 }
 
