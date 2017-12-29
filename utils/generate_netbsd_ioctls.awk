@@ -301,7 +301,18 @@ FNR == 1 {
       $0 ~ /WFQ_GET_STATS/ ||
       $0 ~ /CBQ_ADD_FILTER/ ||
       $0 ~ /HFSC_ADD_FILTER/ ||
-      $0 ~ /JOBS_ADD_FILTER/) {
+      $0 ~ /JOBS_ADD_FILTER/ ||
+      $0 ~ /RED_IF_ATTACH/ ||
+      $0 ~ /FIFOQ_IF_ATTACH/ ||
+      $0 ~ /BLUE_IF_DETACH/ ||
+      $0 ~ /CBQ_DISABLE/ ||
+      $0 ~ /RED_DISABLE/ ||
+      $0 ~ /CBQ_CLEAR_HIERARCHY/ ||
+      $0 ~ /HFSC_DEL_CLASS/ ||
+      $0 ~ /PRIQ_IF_DETACH/ ||
+      $0 ~ /PRIQ_ENABLE/ ||
+      $0 ~ /WFQ_IF_ATTACH/ ||
+      $0 ~ /HFSC_DEL_FILTER/) {
     # There are entries with duplicate codes.. disable the less used ones
     next
   }

@@ -25,7 +25,7 @@ struct ioctl_desc {
   const char *name;
 };
 
-const unsigned ioctl_table_max = 1211;
+const unsigned ioctl_table_max = 1200;
 static ioctl_desc ioctl_table[ioctl_table_max];
 static unsigned ioctl_table_size = 0;
 
@@ -54,14 +54,11 @@ static void ioctl_table_fill() {
   _(ALTQTBRGET, READWRITE, struct_tbrreq_sz);
   /* Entries from file: altq/altq_blue.h */
   _(BLUE_IF_ATTACH, WRITE, struct_blue_interface_sz);
-  _(BLUE_IF_DETACH, WRITE, struct_blue_interface_sz);
   _(BLUE_DISABLE, WRITE, struct_blue_interface_sz);
   _(BLUE_CONFIG, READWRITE, struct_blue_conf_sz);
   _(BLUE_GETSTATS, READWRITE, struct_blue_stats_sz);
   /* Entries from file: altq/altq_cbq.h */
   _(CBQ_ENABLE, WRITE, struct_cbq_interface_sz);
-  _(CBQ_DISABLE, WRITE, struct_cbq_interface_sz);
-  _(CBQ_CLEAR_HIERARCHY, WRITE, struct_cbq_interface_sz);
   _(CBQ_ADD_CLASS, READWRITE, struct_cbq_add_class_sz);
   _(CBQ_DEL_CLASS, WRITE, struct_cbq_delete_class_sz);
   _(CBQ_MODIFY_CLASS, READWRITE, struct_cbq_modify_class_sz);
@@ -82,16 +79,13 @@ static void ioctl_table_fill() {
   _(CDNR_ADD_TSW, READWRITE, struct_cdnr_add_tswtcm_sz);
   _(CDNR_MOD_TSW, READWRITE, struct_cdnr_modify_tswtcm_sz);
   /* Entries from file: altq/altq_fifoq.h */
-  _(FIFOQ_IF_ATTACH, WRITE, struct_fifoq_interface_sz);
   _(FIFOQ_CONFIG, READWRITE, struct_fifoq_conf_sz);
   _(FIFOQ_GETSTATS, READWRITE, struct_fifoq_getstats_sz);
   /* Entries from file: altq/altq_hfsc.h */
   _(HFSC_IF_ATTACH, WRITE, struct_hfsc_attach_sz);
   _(HFSC_CLEAR_HIERARCHY, WRITE, struct_hfsc_interface_sz);
   _(HFSC_ADD_CLASS, READWRITE, struct_hfsc_add_class_sz);
-  _(HFSC_DEL_CLASS, WRITE, struct_hfsc_delete_class_sz);
   _(HFSC_MOD_CLASS, WRITE, struct_hfsc_modify_class_sz);
-  _(HFSC_DEL_FILTER, WRITE, struct_hfsc_delete_filter_sz);
   _(HFSC_GETSTATS, READWRITE, struct_hfsc_class_stats_sz);
   /* Entries from file: altq/altq_jobs.h */
   _(JOBS_IF_ATTACH, WRITE, struct_jobs_attach_sz);
@@ -103,8 +97,6 @@ static void ioctl_table_fill() {
   _(JOBS_MOD_CLASS, WRITE, struct_jobs_modify_class_sz);
   /* Entries from file: altq/altq_priq.h */
   _(PRIQ_IF_ATTACH, WRITE, struct_priq_interface_sz);
-  _(PRIQ_IF_DETACH, WRITE, struct_priq_interface_sz);
-  _(PRIQ_ENABLE, WRITE, struct_priq_interface_sz);
   _(PRIQ_CLEAR, WRITE, struct_priq_interface_sz);
   _(PRIQ_ADD_CLASS, READWRITE, struct_priq_add_class_sz);
   _(PRIQ_DEL_CLASS, WRITE, struct_priq_delete_class_sz);
@@ -113,8 +105,6 @@ static void ioctl_table_fill() {
   _(PRIQ_DEL_FILTER, WRITE, struct_priq_delete_filter_sz);
   _(PRIQ_GETSTATS, READWRITE, struct_priq_class_stats_sz);
   /* Entries from file: altq/altq_red.h */
-  _(RED_IF_ATTACH, WRITE, struct_red_interface_sz);
-  _(RED_DISABLE, WRITE, struct_red_interface_sz);
   _(RED_CONFIG, READWRITE, struct_red_conf_sz);
   _(RED_GETSTATS, READWRITE, struct_red_stats_sz);
   _(RED_SETDEFAULTS, WRITE, struct_redparams_sz);
@@ -123,7 +113,6 @@ static void ioctl_table_fill() {
   _(RIO_GETSTATS, READWRITE, struct_rio_stats_sz);
   _(RIO_SETDEFAULTS, WRITE, struct_redparams_sz);
   /* Entries from file: altq/altq_wfq.h */
-  _(WFQ_IF_ATTACH, WRITE, struct_wfq_interface_sz);
   _(WFQ_CONFIG, READWRITE, struct_wfq_conf_sz);
   _(WFQ_GET_QID, READWRITE, struct_wfq_getqid_sz);
   _(WFQ_SET_WEIGHT, READWRITE, struct_wfq_setweight_sz);
