@@ -462,24 +462,6 @@ struct __sanitizer_ifconf {
 #define IOC_NR(nr) (((nr) >> IOC_NRSHIFT) & IOC_NRMASK)
 #define IOC_SIZE(nr) (((nr) >> IOC_SIZESHIFT) & IOC_SIZEMASK)
 
-extern unsigned struct_ifreq_sz;
-extern unsigned struct_termios_sz;
-extern unsigned struct_winsize_sz;
-
-extern unsigned struct_arpreq_sz;
-
-extern unsigned struct_mtget_sz;
-extern unsigned struct_mtop_sz;
-extern unsigned struct_rtentry_sz;
-extern unsigned struct_sbi_instrument_sz;
-extern unsigned struct_seq_event_rec_sz;
-extern unsigned struct_synth_info_sz;
-extern unsigned struct_vt_mode_sz;
-extern unsigned struct_audio_buf_info_sz;
-extern unsigned struct_ppp_stats_sz;
-extern unsigned struct_sioc_sg_req_sz;
-extern unsigned struct_sioc_vif_req_sz;
-
 // ioctl request identifiers
 
 extern unsigned struct_altqreq_sz;
@@ -493,7 +475,6 @@ extern unsigned struct_atabusioscan_args_sz;
 extern unsigned struct_ath_diag_sz;
 extern unsigned struct_atm_flowmap_sz;
 extern unsigned struct_atm_pseudoioctl_sz;
-extern unsigned struct_atm_rawioctl_sz;
 extern unsigned struct_audio_buf_info_sz;
 extern unsigned struct_audio_device_sz;
 extern unsigned struct_audio_encoding_sz;
@@ -606,7 +587,6 @@ extern unsigned struct_fss_set_sz;
 extern unsigned struct_gpio_attach_sz;
 extern unsigned struct_gpio_info_sz;
 extern unsigned struct_gpio_pin_ctl_sz;
-extern unsigned struct_gpio_pin_op_sz;
 extern unsigned struct_gpio_req_sz;
 extern unsigned struct_gpio_set_sz;
 extern unsigned struct_hd44780_dispctl_sz;

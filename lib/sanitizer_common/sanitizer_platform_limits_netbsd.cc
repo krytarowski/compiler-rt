@@ -338,16 +338,6 @@ int glob_altdirfunc = GLOB_ALTDIRFUNC;
 unsigned path_max = PATH_MAX;
 
 // ioctl arguments
-unsigned struct_ifreq_sz = sizeof(struct ifreq);
-unsigned struct_termios_sz = sizeof(struct termios);
-unsigned struct_winsize_sz = sizeof(struct winsize);
-unsigned struct_mtget_sz = sizeof(struct mtget);
-unsigned struct_mtop_sz = sizeof(struct mtop);
-unsigned struct_audio_buf_info_sz = sizeof(struct audio_buf_info);
-unsigned struct_ppp_stats_sz = sizeof(struct ppp_stats);
-unsigned struct_sioc_sg_req_sz = sizeof(struct sioc_sg_req);
-unsigned struct_sioc_vif_req_sz = sizeof(struct sioc_vif_req);
-
 unsigned struct_altqreq_sz = sizeof(altqreq);
 unsigned struct_amr_user_ioctl_sz = sizeof(amr_user_ioctl);
 unsigned struct_ap_control_sz = sizeof(ap_control);
@@ -359,7 +349,6 @@ unsigned struct_atabusioscan_args_sz = sizeof(atabusioscan_args);
 unsigned struct_ath_diag_sz = sizeof(ath_diag);
 unsigned struct_atm_flowmap_sz = sizeof(atm_flowmap);
 unsigned struct_atm_pseudoioctl_sz = sizeof(atm_pseudoioctl);
-unsigned struct_atm_rawioctl_sz = sizeof(atm_rawioctl);
 unsigned struct_audio_buf_info_sz = sizeof(audio_buf_info);
 unsigned struct_audio_device_sz = sizeof(audio_device);
 unsigned struct_audio_encoding_sz = sizeof(audio_encoding);
@@ -472,7 +461,6 @@ unsigned struct_fss_set_sz = sizeof(fss_set);
 unsigned struct_gpio_attach_sz = sizeof(gpio_attach);
 unsigned struct_gpio_info_sz = sizeof(gpio_info);
 unsigned struct_gpio_pin_ctl_sz = sizeof(gpio_pin_ctl);
-unsigned struct_gpio_pin_op_sz = sizeof(gpio_pin_op);
 unsigned struct_gpio_req_sz = sizeof(gpio_req);
 unsigned struct_gpio_set_sz = sizeof(gpio_set);
 unsigned struct_hd44780_dispctl_sz = sizeof(hd44780_dispctl);
