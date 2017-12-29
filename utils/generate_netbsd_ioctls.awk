@@ -182,7 +182,81 @@ FNR == 1 {
 
 # _IO
 /[^a-zA-Z0-9_]_IO[W]*[R]*[ ]*\(/ && $2 ~ /^[A-Z_]+$/ {
-  if ($0 ~ /RAIDFRAME_GET_ACCTOTALS/) {
+  if ($0 ~ /ALTQATTACH/ ||
+      $0 ~ /ALTQDETACH/ ||
+      $0 ~ /ALTQENABLE/ ||
+      $0 ~ /ALTQDISABLE/ ||
+      $0 ~ /ALTQCLEAR/ ||
+      $0 ~ /ALTQCONFIG/ ||
+      $0 ~ /ALTQADDCLASS/ ||
+      $0 ~ /ALTQMODCLASS/ ||
+      $0 ~ /ALTQDELCLASS/ ||
+      $0 ~ /ALTQADDFILTER/ ||
+      $0 ~ /ALTQDELFILTER/ ||
+      $0 ~ /ALTQGETSTATS/ ||
+      $0 ~ /ALTQGETCNTR/ ||
+      $0 ~ /HLCD_DISPCTL/ ||
+      $0 ~ /HLCD_RESET/ ||
+      $0 ~ /HLCD_CLEAR/ ||
+      $0 ~ /HLCD_CURSOR_LEFT/ ||
+      $0 ~ /HLCD_CURSOR_RIGHT/ ||
+      $0 ~ /HLCD_GET_CURSOR_POS/ ||
+      $0 ~ /HLCD_SET_CURSOR_POS/ ||
+      $0 ~ /HLCD_GETC/ ||
+      $0 ~ /HLCD_PUTC/ ||
+      $0 ~ /HLCD_SHIFT_LEFT/ ||
+      $0 ~ /HLCD_SHIFT_RIGHT/ ||
+      $0 ~ /HLCD_HOME/ ||
+      $0 ~ /HLCD_WRITE/ ||
+      $0 ~ /HLCD_READ/ ||
+      $0 ~ /HLCD_REDRAW/ ||
+      $0 ~ /HLCD_WRITE_INST/ ||
+      $0 ~ /HLCD_WRITE_DATA/ ||
+      $0 ~ /HLCD_GET_INFO/ ||
+      $0 ~ /HLCD_GET_CHIPNO/ ||
+      $0 ~ /HLCD_SET_CHIPNO/ ||
+      $0 ~ /RAIDFRAME_TEST_ACC/ ||
+      $0 ~ /FBIOGINFO/ ||
+      $0 ~ /FBIOSATTR/ ||
+      $0 ~ /OBIOCDISK/ ||
+      $0 ~ /OBIOCVOL/ ||
+      $0 ~ /BIOCSORTIMEOUT/ ||
+      $0 ~ /BIOCGORTIMEOUT/ ||
+      $0 ~ /PPPIOCSPASS/ ||
+      $0 ~ /PPPIOCSACTIVE/ ||
+      $0 ~ /PPPIOCSIPASS/ ||
+      $0 ~ /PPPIOCSOPASS/ ||
+      $0 ~ /PPPIOCSIACTIVE/ ||
+      $0 ~ /PPPIOCSOACTIVE/ ||
+      $0 ~ /SIOCPROXY/ ||
+      $0 ~ /SIOCXRAWATM/ ||
+      $0 ~ /AGPIOC_RESERVE/ ||
+      $0 ~ /AGPIOC_PROTECT/ ||
+      $0 ~ /CDIOCREADSUBCHANNEL_BUF/ ||
+      $0 ~ /CDIOREADTOCENTRIES_BUF/ ||
+      $0 ~ /MMCGETDISCINFO/ ||
+      $0 ~ /MMCGETTRACKINFO/ ||
+      $0 ~ /MMCOP/ ||
+      $0 ~ /MMCSETUPWRITEPARAMS/ ||
+      $0 ~ /DIOCGPARTINFO/ ||
+      $0 ~ /ODIOCGDINFO/ ||
+      $0 ~ /ODIOCSDINFO/ ||
+      $0 ~ /ODIOCWDINFO/ ||
+      $0 ~ /ODIOCGDEFLABEL/ ||
+      $0 ~ /GPIOPINREAD/ ||
+      $0 ~ /GPIOPINWRITE/ ||
+      $0 ~ /GPIOPINTOGGLE/ ||
+      $0 ~ /GPIOPINCTL/ ||
+      $0 ~ /GPIODETACH/ ||
+      $0 ~ /SEQUENCER_PERCMODE/ ||
+      $0 ~ /SEQUENCER_TESTMIDI/ ||
+      $0 ~ /SEQUENCER_MIDI_INFO/ ||
+      $0 ~ /SEQUENCER_ID/ ||
+      $0 ~ /SEQUENCER_CONTROL/ ||
+      $0 ~ /SEQUENCER_REMOVESAMPLE/ ||
+      $0 ~ /EVTCHN_RESET/ ||
+      $0 ~ /EVTCHN_BIND/ ||
+      $0 ~ /EVTCHN_UNBIND/) {
     # broken entry, incomplete definition of the 3rd parameter
     next
   }

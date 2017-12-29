@@ -861,21 +861,6 @@ extern unsigned IOCTL_AFM_DELFMAP;
 extern unsigned IOCTL_AFM_CLEANFMAP;
 extern unsigned IOCTL_AFM_GETFMAP;
 extern unsigned IOCTL_ALTQGTYPE;
-#if 0
-extern unsigned IOCTL_ALTQATTACH;
-extern unsigned IOCTL_ALTQDETACH;
-extern unsigned IOCTL_ALTQENABLE;
-extern unsigned IOCTL_ALTQDISABLE;
-extern unsigned IOCTL_ALTQCLEAR;
-extern unsigned IOCTL_ALTQCONFIG;
-extern unsigned IOCTL_ALTQADDCLASS;
-extern unsigned IOCTL_ALTQMODCLASS;
-extern unsigned IOCTL_ALTQDELCLASS;
-extern unsigned IOCTL_ALTQADDFILTER;
-extern unsigned IOCTL_ALTQDELFILTER;
-extern unsigned IOCTL_ALTQGETSTATS;
-extern unsigned IOCTL_ALTQGETCNTR;
-#endif
 extern unsigned IOCTL_ALTQTBRSET;
 extern unsigned IOCTL_ALTQTBRGET;
 extern unsigned IOCTL_BLUE_IF_ATTACH;
@@ -1099,28 +1084,6 @@ extern unsigned IOCTL_METEORGACTPIXFMT;
 extern unsigned IOCTL_METEORGSUPPIXFMT;
 extern unsigned IOCTL_TVTUNER_GETCHNLSET;
 extern unsigned IOCTL_REMOTE_GETKEY;
-#if 0
-extern unsigned IOCTL_HLCD_DISPCTL;
-extern unsigned IOCTL_HLCD_RESET;
-extern unsigned IOCTL_HLCD_CLEAR;
-extern unsigned IOCTL_HLCD_CURSOR_LEFT;
-extern unsigned IOCTL_HLCD_CURSOR_RIGHT;
-extern unsigned IOCTL_HLCD_GET_CURSOR_POS;
-extern unsigned IOCTL_HLCD_SET_CURSOR_POS;
-extern unsigned IOCTL_HLCD_GETC;
-extern unsigned IOCTL_HLCD_PUTC;
-extern unsigned IOCTL_HLCD_SHIFT_LEFT;
-extern unsigned IOCTL_HLCD_SHIFT_RIGHT;
-extern unsigned IOCTL_HLCD_HOME;
-extern unsigned IOCTL_HLCD_WRITE;
-extern unsigned IOCTL_HLCD_READ;
-extern unsigned IOCTL_HLCD_REDRAW;
-extern unsigned IOCTL_HLCD_WRITE_INST;
-extern unsigned IOCTL_HLCD_WRITE_DATA;
-extern unsigned IOCTL_HLCD_GET_INFO;
-extern unsigned IOCTL_HLCD_GET_CHIPNO;
-extern unsigned IOCTL_HLCD_SET_CHIPNO;
-#endif
 extern unsigned IOCTL_GDT_IOCTL_GENERAL;
 extern unsigned IOCTL_GDT_IOCTL_DRVERS;
 extern unsigned IOCTL_GDT_IOCTL_CTRTYPE;
@@ -1216,9 +1179,6 @@ extern unsigned IOCTL_SIOCGCNWTRAIL;
 extern unsigned IOCTL_SIOCGRAYSIGLEV;
 extern unsigned IOCTL_RAIDFRAME_SHUTDOWN;
 extern unsigned IOCTL_RAIDFRAME_TUR;
-#if 0
-extern unsigned IOCTL_RAIDFRAME_TEST_ACC;
-#endif
 extern unsigned IOCTL_RAIDFRAME_FAIL_DISK;
 extern unsigned IOCTL_RAIDFRAME_CHECK_RECON_STATUS;
 extern unsigned IOCTL_RAIDFRAME_REWRITEPARITY;
@@ -1269,14 +1229,8 @@ extern unsigned IOCTL_SUN_DKIOCGGEOM;
 extern unsigned IOCTL_SUN_DKIOCINFO;
 extern unsigned IOCTL_SUN_DKIOCGPART;
 extern unsigned IOCTL_FBIOGTYPE;
-#if 0
-extern unsigned IOCTL_FBIOGINFO;
-#endif
 extern unsigned IOCTL_FBIOPUTCMAP;
 extern unsigned IOCTL_FBIOGETCMAP;
-#if 0
-extern unsigned IOCTL_FBIOSATTR;
-#endif
 extern unsigned IOCTL_FBIOGATTR;
 extern unsigned IOCTL_FBIOSVIDEO;
 extern unsigned IOCTL_FBIOGVIDEO;
@@ -1452,13 +1406,7 @@ extern unsigned IOCTL_BIOCLOCATE;
 extern unsigned IOCTL_BIOCINQ;
 extern unsigned IOCTL_BIOCDISK_NOVOL;
 extern unsigned IOCTL_BIOCDISK;
-#if 0
-extern unsigned IOCTL_OBIOCDISK;
-#endif
 extern unsigned IOCTL_BIOCVOL;
-#if 0
-extern unsigned IOCTL_OBIOCVOL;
-#endif
 extern unsigned IOCTL_BIOCALARM;
 extern unsigned IOCTL_BIOCBLINK;
 extern unsigned IOCTL_BIOCSETSTATE;
@@ -1498,10 +1446,6 @@ extern unsigned IOCTL_BIOCPROMISC;
 extern unsigned IOCTL_BIOCGDLT;
 extern unsigned IOCTL_BIOCGETIF;
 extern unsigned IOCTL_BIOCSETIF;
-#if 0
-extern unsigned IOCTL_BIOCSORTIMEOUT;
-extern unsigned IOCTL_BIOCGORTIMEOUT;
-#endif
 extern unsigned IOCTL_BIOCGSTATS;
 extern unsigned IOCTL_BIOCGSTATSOLD;
 extern unsigned IOCTL_BIOCIMMEDIATE;
@@ -1551,14 +1495,6 @@ extern unsigned IOCTL_PPPIOCSCOMPRESS;
 extern unsigned IOCTL_PPPIOCGNPMODE;
 extern unsigned IOCTL_PPPIOCSNPMODE;
 extern unsigned IOCTL_PPPIOCGIDLE;
-#if 0
-extern unsigned IOCTL_PPPIOCSPASS;
-extern unsigned IOCTL_PPPIOCSACTIVE;
-extern unsigned IOCTL_PPPIOCSIPASS;
-extern unsigned IOCTL_PPPIOCSOPASS;
-extern unsigned IOCTL_PPPIOCSIACTIVE;
-extern unsigned IOCTL_PPPIOCSOACTIVE;
-#endif
 extern unsigned IOCTL_PPPIOCGMTU;
 extern unsigned IOCTL_PPPIOCSMTU;
 extern unsigned IOCTL_SIOCGPPPSTATS;
@@ -1687,15 +1623,9 @@ extern unsigned IOCTL_SIOCRMNAT;
 extern unsigned IOCTL_SIOCGNATS;
 extern unsigned IOCTL_SIOCGNATL;
 extern unsigned IOCTL_SIOCPURGENAT;
-#if 0
-extern unsigned IOCTL_SIOCPROXY;
-#endif
 extern unsigned IOCTL_SIOCSIFINFO_FLAGS;
 extern unsigned IOCTL_SIOCAADDRCTL_POLICY;
 extern unsigned IOCTL_SIOCDADDRCTL_POLICY;
-#if 0
-extern unsigned IOCTL_SIOCXRAWATM;
-#endif
 extern unsigned IOCTL_SMBIOC_OPENSESSION;
 extern unsigned IOCTL_SMBIOC_OPENSHARE;
 extern unsigned IOCTL_SMBIOC_REQUEST;
@@ -1707,10 +1637,6 @@ extern unsigned IOCTL_AGPIOC_INFO;
 extern unsigned IOCTL_AGPIOC_ACQUIRE;
 extern unsigned IOCTL_AGPIOC_RELEASE;
 extern unsigned IOCTL_AGPIOC_SETUP;
-#if 0
-extern unsigned IOCTL_AGPIOC_RESERVE;
-extern unsigned IOCTL_AGPIOC_PROTECT;
-#endif
 extern unsigned IOCTL_AGPIOC_ALLOCATE;
 extern unsigned IOCTL_AGPIOC_DEALLOCATE;
 extern unsigned IOCTL_AGPIOC_BIND;
@@ -1742,14 +1668,8 @@ extern unsigned IOCTL_ATABUSIODETACH;
 extern unsigned IOCTL_CDIOCPLAYTRACKS;
 extern unsigned IOCTL_CDIOCPLAYBLOCKS;
 extern unsigned IOCTL_CDIOCREADSUBCHANNEL;
-#if 0
-extern unsigned IOCTL_CDIOCREADSUBCHANNEL_BUF;
-#endif
 extern unsigned IOCTL_CDIOREADTOCHEADER;
 extern unsigned IOCTL_CDIOREADTOCENTRIES;
-#if 0
-extern unsigned IOCTL_CDIOREADTOCENTRIES_BUF;
-#endif
 extern unsigned IOCTL_CDIOREADMSADDR;
 extern unsigned IOCTL_CDIOCSETPATCH;
 extern unsigned IOCTL_CDIOCGETVOL;
@@ -1772,12 +1692,6 @@ extern unsigned IOCTL_CDIOCPREVENT;
 extern unsigned IOCTL_CDIOCCLOSE;
 extern unsigned IOCTL_CDIOCPLAYMSF;
 extern unsigned IOCTL_CDIOCLOADUNLOAD;
-#if 0
-extern unsigned IOCTL_MMCGETDISCINFO;
-extern unsigned IOCTL_MMCGETTRACKINFO;
-extern unsigned IOCTL_MMCOP;
-extern unsigned IOCTL_MMCSETUPWRITEPARAMS;
-#endif
 extern unsigned IOCTL_CHIOMOVE;
 extern unsigned IOCTL_CHIOEXCHANGE;
 extern unsigned IOCTL_CHIOPOSITION;
@@ -1801,12 +1715,6 @@ extern unsigned IOCTL_IOC_CPU_UCODE_APPLY;
 extern unsigned IOCTL_DIOCGDINFO;
 extern unsigned IOCTL_DIOCSDINFO;
 extern unsigned IOCTL_DIOCWDINFO;
-#if 0
-extern unsigned IOCTL_DIOCGPARTINFO;
-extern unsigned IOCTL_ODIOCGDINFO;
-extern unsigned IOCTL_ODIOCSDINFO;
-extern unsigned IOCTL_ODIOCWDINFO;
-#endif
 extern unsigned IOCTL_DIOCRFORMAT;
 extern unsigned IOCTL_DIOCWFORMAT;
 extern unsigned IOCTL_DIOCSSTEP;
@@ -1819,9 +1727,6 @@ extern unsigned IOCTL_ODIOCEJECT;
 extern unsigned IOCTL_DIOCLOCK;
 extern unsigned IOCTL_DIOCGDEFLABEL;
 extern unsigned IOCTL_DIOCCLRLABEL;
-#if 0
-extern unsigned IOCTL_ODIOCGDEFLABEL;
-#endif
 extern unsigned IOCTL_DIOCGCACHE;
 extern unsigned IOCTL_DIOCSCACHE;
 extern unsigned IOCTL_DIOCCACHESYNC;
@@ -1878,13 +1783,6 @@ extern unsigned IOCTL_GPIOREAD;
 extern unsigned IOCTL_GPIOWRITE;
 extern unsigned IOCTL_GPIOTOGGLE;
 extern unsigned IOCTL_GPIOATTACH;
-#if 0
-extern unsigned IOCTL_GPIOPINREAD;
-extern unsigned IOCTL_GPIOPINWRITE;
-extern unsigned IOCTL_GPIOPINTOGGLE;
-extern unsigned IOCTL_GPIOPINCTL;
-extern unsigned IOCTL_GPIODETACH;
-#endif
 extern unsigned IOCTL_PTIOCNETBSD;
 extern unsigned IOCTL_PTIOCSUNOS;
 extern unsigned IOCTL_PTIOCLINUX;
@@ -1928,26 +1826,14 @@ extern unsigned IOCTL_SEQUENCER_INFO;
 extern unsigned IOCTL_SEQUENCER_CTRLRATE;
 extern unsigned IOCTL_SEQUENCER_GETOUTCOUNT;
 extern unsigned IOCTL_SEQUENCER_GETINCOUNT;
-#if 0
-extern unsigned IOCTL_SEQUENCER_PERCMODE;
-extern unsigned IOCTL_SEQUENCER_TESTMIDI;
-#endif
 extern unsigned IOCTL_SEQUENCER_RESETSAMPLES;
 extern unsigned IOCTL_SEQUENCER_NRSYNTHS;
 extern unsigned IOCTL_SEQUENCER_NRMIDIS;
-#if 0
-extern unsigned IOCTL_SEQUENCER_MIDI_INFO;
-#endif
 extern unsigned IOCTL_SEQUENCER_THRESHOLD;
 extern unsigned IOCTL_SEQUENCER_MEMAVL;
 extern unsigned IOCTL_SEQUENCER_PANIC;
 extern unsigned IOCTL_SEQUENCER_OUTOFBAND;
 extern unsigned IOCTL_SEQUENCER_GETTIME;
-#if 0
-extern unsigned IOCTL_SEQUENCER_ID;
-extern unsigned IOCTL_SEQUENCER_CONTROL;
-extern unsigned IOCTL_SEQUENCER_REMOVESAMPLE;
-#endif
 extern unsigned IOCTL_SEQUENCER_TMR_TIMEBASE;
 extern unsigned IOCTL_SEQUENCER_TMR_START;
 extern unsigned IOCTL_SEQUENCER_TMR_STOP;
@@ -2221,11 +2107,6 @@ extern unsigned IOCTL_SNDCTL_DSP_GETRECVOL;
 extern unsigned IOCTL_SNDCTL_DSP_SETRECVOL;
 extern unsigned IOCTL_SNDCTL_DSP_SKIP;
 extern unsigned IOCTL_SNDCTL_DSP_SILENCE;
-#if 0
-extern unsigned IOCTL_EVTCHN_RESET;
-extern unsigned IOCTL_EVTCHN_BIND;
-extern unsigned IOCTL_EVTCHN_UNBIND;
-#endif
 
 extern const int si_SEGV_MAPERR;
 extern const int si_SEGV_ACCERR;
