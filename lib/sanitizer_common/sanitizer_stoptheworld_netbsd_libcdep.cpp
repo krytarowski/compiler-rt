@@ -52,6 +52,7 @@ class SuspendedThreadsListNetBSD : public SuspendedThreadsList {
  public:
   SuspendedThreadsListNetBSD() { thread_ids_.reserve(1024); }
 
+  pid_t GetProcessID() const;
   tid_t GetThreadID(uptr index) const;
   uptr ThreadCount() const;
   bool ContainsTid(tid_t thread_id) const;
@@ -303,6 +304,10 @@ void StopTheWorld(StopTheWorldCallback callback, void *argument) {
       break;
     }
   }
+}
+
+pid_t SuspendedThreadsListNetBSD::GetProcessID() const {
+  return internal_getppid();
 }
 
 tid_t SuspendedThreadsListNetBSD::GetThreadID(uptr index) const {

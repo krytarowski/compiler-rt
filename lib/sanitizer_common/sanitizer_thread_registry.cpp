@@ -75,6 +75,7 @@ void ThreadContextBase::SetStarted(pid_t _os_pid, tid_t _os_tid,
   status = ThreadStatusRunning;
   os_pid = _os_pid;
   os_tid = _os_tid;
+//  Printf("%s() os_pid=%d os_tid=%d\n", __func__, os_pid, os_tid);
   thread_type = _thread_type;
   OnStarted(arg);
 }
@@ -209,6 +210,8 @@ struct os_id {
 static bool FindThreadContextByOsIdCallback(ThreadContextBase *tctx,
                                             void *arg) {
   os_id *id = (os_id *)arg;
+//  Printf("tctx->os_pid=%d id->os_pid=%d tctx->os_tid=%d id->os_tid=%d\n",
+//    tctx->os_pid, id->os_pid, tctx->os_tid, id->os_tid);
   return (tctx->os_pid == id->os_pid && tctx->os_tid == id->os_tid &&
       tctx->status != ThreadStatusInvalid && tctx->status != ThreadStatusDead);
 }
@@ -314,6 +317,9 @@ void ThreadRegistry::FinishThread(u32 tid) {
 void ThreadRegistry::StartThread(u32 tid, pid_t os_pid, tid_t os_tid,
                                  ThreadType thread_type, void *arg) {
   BlockingMutexLock l(&mtx_);
+//  Printf("%s() os_pid=%d os_tid=%d\n", __func__, os_pid, os_tid);
+  if (os_pid == os_tid)
+    __builtin_trap();
   running_threads_++;
   CHECK_LT(tid, n_contexts_);
   ThreadContextBase *tctx = threads_[tid];

@@ -219,7 +219,7 @@ static void ProcessThreads(SuspendedThreadsList const &suspended_threads,
   uptr registers_end =
       reinterpret_cast<uptr>(registers.data() + registers.size());
   for (uptr i = 0; i < suspended_threads.ThreadCount(); i++) {
-    pid_t os_pid = internal_getpid();
+    pid_t os_pid = suspended_threads.GetProcessID();
     tid_t os_tid = static_cast<tid_t>(suspended_threads.GetThreadID(i));
     LOG_THREADS("Processing thread %d.\n", os_tid);
     uptr stack_begin, stack_end, tls_begin, tls_end, cache_begin, cache_end;

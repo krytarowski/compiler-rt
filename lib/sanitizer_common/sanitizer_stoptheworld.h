@@ -40,6 +40,7 @@ class SuspendedThreadsList {
   // The buffer in GetRegistersAndSP should be at least this big.
   virtual uptr RegisterCount() const { UNIMPLEMENTED(); }
   virtual uptr ThreadCount() const { UNIMPLEMENTED(); }
+  virtual pid_t GetProcessID() const { UNIMPLEMENTED(); }
   virtual tid_t GetThreadID(uptr index) const { UNIMPLEMENTED(); }
 
  private:
