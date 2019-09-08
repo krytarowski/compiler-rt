@@ -50,7 +50,7 @@ unsigned long getauxval(unsigned long type);  // NOLINT
 #include <elf.h>
 #include <dlfcn.h>
 
-static inline unsigned long getauxval(unsigned int type) {
+static inline decltype(AuxInfo::a_v) getauxval(decltype(AuxInfo::a_type) type) {
   const AuxInfo *aux;
 
   aux = (const AuxInfo *)_dlauxinfo();
