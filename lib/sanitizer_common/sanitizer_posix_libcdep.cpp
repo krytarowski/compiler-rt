@@ -24,6 +24,8 @@
 #include "sanitizer_posix.h"
 #include "sanitizer_procmaps.h"
 
+#include "lsan/lsan_common.h"
+
 #include <errno.h>
 #include <fcntl.h>
 #include <pthread.h>
