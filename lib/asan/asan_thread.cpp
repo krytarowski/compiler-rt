@@ -246,6 +246,7 @@ thread_return_t AsanThread::ThreadStart(
     tid_t os_id, atomic_uintptr_t *signal_thread_is_registered) {
   Init();
   pid_t os_pid = internal_getpid();
+//  Printf("%s() os_pid=%d os_tid=%d\n", __func__, os_pid, os_id);
   asanThreadRegistry().StartThread(tid(), os_pid, os_id, ThreadType::Regular,
                                    nullptr);
   if (signal_thread_is_registered)
@@ -279,7 +280,7 @@ AsanThread *CreateMainThread() {
       /* start_routine */ nullptr, /* arg */ nullptr, /* parent_tid */ 0,
       /* stack */ nullptr, /* detached */ true);
   SetCurrentThread(main_thread);
-  main_thread->ThreadStart(internal_getpid(),
+  main_thread->ThreadStart(GetTid(),
                            /* signal_thread_is_registered */ nullptr);
   return main_thread;
 }
