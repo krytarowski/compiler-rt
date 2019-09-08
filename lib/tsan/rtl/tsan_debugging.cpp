@@ -253,7 +253,7 @@ int __tsan_get_alloc_stack(uptr addr, uptr *trace, uptr size, int *thread_id,
   // No locking.  This is supposed to be called from within the debugger when
   // other threads are stopped.
   ThreadContextBase *tctx = ctx->thread_registry->GetThreadLocked(b->tid);
-  *os_id = tctx->os_id;
+  *os_id = tctx->os_tid;
 
   StackTrace stack = StackDepotGet(b->stk);
   size = Min(size, (uptr)stack.size);

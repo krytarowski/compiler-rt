@@ -44,7 +44,8 @@ class ThreadContextBase {
   const u32 tid;  // Thread ID. Main thread should have tid = 0.
   u64 unique_id;  // Unique thread ID.
   u32 reuse_count;  // Number of times this tid was reused.
-  tid_t os_id;     // PID (used for reporting).
+  pid_t os_pid;     // PID (used for reporting).
+  tid_t os_tid;     // TID (used for reporting).
   uptr user_id;   // Some opaque user thread id (e.g. pthread_t).
   char name[64];  // As annotated by user.
 
@@ -62,7 +63,8 @@ class ThreadContextBase {
   void SetDead();
   void SetJoined(void *arg);
   void SetFinished();
-  void SetStarted(tid_t _os_id, ThreadType _thread_type, void *arg);
+  void SetStarted(pid_t _os_pid, tid_t _os_tid, ThreadType _thread_type,
+                  void *arg);
   void SetCreated(uptr _user_id, u64 _unique_id, bool _detached,
                   u32 _parent_tid, void *arg);
   void Reset();
@@ -119,14 +121,15 @@ class ThreadRegistry {
   // is found.
   ThreadContextBase *FindThreadContextLocked(FindThreadCallback cb,
                                              void *arg);
-  ThreadContextBase *FindThreadContextByOsIDLocked(tid_t os_id);
+  ThreadContextBase *FindThreadContextByOsIDLocked(pid_t os_pid, tid_t os_tid);
 
   void SetThreadName(u32 tid, const char *name);
   void SetThreadNameByUserId(uptr user_id, const char *name);
   void DetachThread(u32 tid, void *arg);
   void JoinThread(u32 tid, void *arg);
   void FinishThread(u32 tid);
-  void StartThread(u32 tid, tid_t os_id, ThreadType thread_type, void *arg);
+  void StartThread(u32 tid, pid_t os_pid, tid_t os_tid, ThreadType thread_type,
+                   void *arg);
   void SetThreadUserId(u32 tid, uptr user_id);
 
  private:

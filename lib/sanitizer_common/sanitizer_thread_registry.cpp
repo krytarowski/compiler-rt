@@ -16,7 +16,7 @@
 namespace __sanitizer {
 
 ThreadContextBase::ThreadContextBase(u32 tid)
-    : tid(tid), unique_id(0), reuse_count(), os_id(0), user_id(0),
+    : tid(tid), unique_id(0), reuse_count(), os_pid(0), os_tid(0), user_id(0),
       status(ThreadStatusInvalid), detached(false),
       thread_type(ThreadType::Regular), parent_tid(0), next(0) {
   name[0] = '\0';
@@ -70,10 +70,11 @@ void ThreadContextBase::SetFinished() {
   OnFinished();
 }
 
-void ThreadContextBase::SetStarted(tid_t _os_id, ThreadType _thread_type,
-                                   void *arg) {
+void ThreadContextBase::SetStarted(pid_t _os_pid, tid_t _os_tid,
+                                   ThreadType _thread_type, void *arg) {
   status = ThreadStatusRunning;
-  os_id = _os_id;
+  os_pid = _os_pid;
+  os_tid = _os_tid;
   thread_type = _thread_type;
   OnStarted(arg);
 }
@@ -200,15 +201,23 @@ ThreadRegistry::FindThreadContextLocked(FindThreadCallback cb, void *arg) {
   return 0;
 }
 
+struct os_id {
+  pid_t os_pid;
+  tid_t os_tid;
+};
+
 static bool FindThreadContextByOsIdCallback(ThreadContextBase *tctx,
                                             void *arg) {
-  return (tctx->os_id == (uptr)arg && tctx->status != ThreadStatusInvalid &&
-      tctx->status != ThreadStatusDead);
+  os_id *id = (os_id *)arg;
+  return (tctx->os_pid == id->os_pid && tctx->os_tid == id->os_tid &&
+      tctx->status != ThreadStatusInvalid && tctx->status != ThreadStatusDead);
 }
 
-ThreadContextBase *ThreadRegistry::FindThreadContextByOsIDLocked(tid_t os_id) {
+ThreadContextBase *ThreadRegistry::FindThreadContextByOsIDLocked(pid_t os_pid,
+                                                                 tid_t os_tid) {
+  os_id id = {os_pid, os_tid};
   return FindThreadContextLocked(FindThreadContextByOsIdCallback,
-                                 (void *)os_id);
+                                 (void *)&id);
 }
 
 void ThreadRegistry::SetThreadName(u32 tid, const char *name) {
@@ -302,15 +311,15 @@ void ThreadRegistry::FinishThread(u32 tid) {
   tctx->SetDestroyed();
 }
 
-void ThreadRegistry::StartThread(u32 tid, tid_t os_id, ThreadType thread_type,
-                                 void *arg) {
+void ThreadRegistry::StartThread(u32 tid, pid_t os_pid, tid_t os_tid,
+                                 ThreadType thread_type, void *arg) {
   BlockingMutexLock l(&mtx_);
   running_threads_++;
   CHECK_LT(tid, n_contexts_);
   ThreadContextBase *tctx = threads_[tid];
   CHECK_NE(tctx, 0);
   CHECK_EQ(ThreadStatusCreated, tctx->status);
-  tctx->SetStarted(os_id, thread_type, arg);
+  tctx->SetStarted(os_pid, os_tid, thread_type, arg);
 }
 
 void ThreadRegistry::QuarantinePush(ThreadContextBase *tctx) {

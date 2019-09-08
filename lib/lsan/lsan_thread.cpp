@@ -78,6 +78,7 @@ u32 ThreadCreate(u32 parent_tid, uptr user_id, bool detached) {
 
 void ThreadStart(u32 tid, tid_t os_id, ThreadType thread_type) {
   OnStartedArgs args;
+  pid_t os_pid = internal_getpid();
   uptr stack_size = 0;
   uptr tls_size = 0;
   GetThreadStackAndTls(tid == 0, &args.stack_begin, &stack_size,
@@ -86,7 +87,7 @@ void ThreadStart(u32 tid, tid_t os_id, ThreadType thread_type) {
   args.tls_end = args.tls_begin + tls_size;
   GetAllocatorCacheRange(&args.cache_begin, &args.cache_end);
   args.dtls = DTLS_Get();
-  thread_registry->StartThread(tid, os_id, thread_type, &args);
+  thread_registry->StartThread(tid, os_pid, os_id, thread_type, &args);
 }
 
 void ThreadFinish() {
@@ -120,17 +121,19 @@ void ThreadJoin(u32 tid) {
 }
 
 void EnsureMainThreadIDIsCorrect() {
-  if (GetCurrentThread() == 0)
-    CurrentThreadContext()->os_id = GetTid();
+  if (GetCurrentThread() == 0) {
+    CurrentThreadContext()->os_pid = internal_getpid();
+    CurrentThreadContext()->os_tid = GetTid();
+  }
 }
 
 ///// Interface to the common LSan module. /////
 
-bool GetThreadRangesLocked(tid_t os_id, uptr *stack_begin, uptr *stack_end,
-                           uptr *tls_begin, uptr *tls_end, uptr *cache_begin,
-                           uptr *cache_end, DTLS **dtls) {
+bool GetThreadRangesLocked(pid_t os_pid, tid_t os_tid, uptr *stack_begin,
+                           uptr *stack_end, uptr *tls_begin, uptr *tls_end,
+                           uptr *cache_begin, uptr *cache_end, DTLS **dtls) {
   ThreadContext *context = static_cast<ThreadContext *>(
-      thread_registry->FindThreadContextByOsIDLocked(os_id));
+      thread_registry->FindThreadContextByOsIDLocked(os_pid, os_tid));
   if (!context) return false;
   *stack_begin = context->stack_begin();
   *stack_end = context->stack_end();
@@ -142,8 +145,8 @@ bool GetThreadRangesLocked(tid_t os_id, uptr *stack_begin, uptr *stack_end,
   return true;
 }
 
-void ForEachExtraStackRange(tid_t os_id, RangeIteratorCallback callback,
-                            void *arg) {
+void ForEachExtraStackRange(pid_t os_pid, tid_t os_tid,
+                            RangeIteratorCallback callback, void *arg) {
 }
 
 void LockThreadRegistry() {

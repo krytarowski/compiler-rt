@@ -176,10 +176,11 @@ static void ThreadCreateHook(void *hook, bool aborted) {
 static void ThreadStartHook(void *hook, uptr os_id) {
   AsanThread *thread = static_cast<AsanThread *>(hook);
   SetCurrentThread(thread);
+  pid_t os_pid = internal_getpid();
 
   // In lieu of AsanThread::ThreadStart.
-  asanThreadRegistry().StartThread(thread->tid(), os_id, ThreadType::Regular,
-                                   nullptr);
+  asanThreadRegistry().StartThread(thread->tid(), os_pid, os_id,
+                                   ThreadType::Regular, nullptr);
 }
 
 // Each thread runs this just before it exits,
