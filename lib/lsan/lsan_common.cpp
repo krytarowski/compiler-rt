@@ -219,24 +219,25 @@ static void ProcessThreads(SuspendedThreadsList const &suspended_threads,
   uptr registers_end =
       reinterpret_cast<uptr>(registers.data() + registers.size());
   for (uptr i = 0; i < suspended_threads.ThreadCount(); i++) {
-    tid_t os_id = static_cast<tid_t>(suspended_threads.GetThreadID(i));
-    LOG_THREADS("Processing thread %d.\n", os_id);
+    pid_t os_pid = internal_getpid();
+    tid_t os_tid = static_cast<tid_t>(suspended_threads.GetThreadID(i));
+    LOG_THREADS("Processing thread %d.\n", os_tid);
     uptr stack_begin, stack_end, tls_begin, tls_end, cache_begin, cache_end;
     DTLS *dtls;
-    bool thread_found = GetThreadRangesLocked(os_id, &stack_begin, &stack_end,
-                                              &tls_begin, &tls_end,
+    bool thread_found = GetThreadRangesLocked(os_pid, os_tid, &stack_begin,
+                                              &stack_end, &tls_begin, &tls_end,
                                               &cache_begin, &cache_end, &dtls);
     if (!thread_found) {
       // If a thread can't be found in the thread registry, it's probably in the
       // process of destruction. Log this event and move on.
-      LOG_THREADS("Thread %d not found in registry.\n", os_id);
+      LOG_THREADS("Thread %d not found in registry.\n", os_tid);
       continue;
     }
     uptr sp;
     PtraceRegistersStatus have_registers =
         suspended_threads.GetRegistersAndSP(i, registers.data(), &sp);
     if (have_registers != REGISTERS_AVAILABLE) {
-      Report("Unable to get registers from thread %d.\n", os_id);
+      Report("Unable to get registers from thread %d.\n", os_tid);
       // If unable to get SP, consider the entire stack to be reachable unless
       // GetRegistersAndSP failed with ESRCH.
       if (have_registers == REGISTERS_UNAVAILABLE_FATAL) continue;
@@ -269,7 +270,8 @@ static void ProcessThreads(SuspendedThreadsList const &suspended_threads,
       }
       ScanRangeForPointers(stack_begin, stack_end, frontier, "STACK",
                            kReachable);
-      ForEachExtraStackRange(os_id, ForEachExtraStackRangeCb, frontier);
+      ForEachExtraStackRange(os_pid, os_tid, ForEachExtraStackRangeCb,
+                             frontier);
     }
 
     if (flags()->use_tls) {
@@ -302,7 +304,7 @@ static void ProcessThreads(SuspendedThreadsList const &suspended_threads,
       } else {
         // We are handling a thread with DTLS under destruction. Log about
         // this and continue.
-        LOG_THREADS("Thread %d has DTLS under destruction.\n", os_id);
+        LOG_THREADS("Thread %d has DTLS under destruction.\n", os_tid);
       }
     }
   }
@@ -531,10 +533,10 @@ static void ReportIfNotSuspended(ThreadContextBase *tctx, void *arg) {
       *(const InternalMmapVector<tid_t> *)arg;
   if (tctx->status == ThreadStatusRunning) {
     uptr i = InternalLowerBound(suspended_threads, 0, suspended_threads.size(),
-                                tctx->os_id, CompareLess<int>());
-    if (i >= suspended_threads.size() || suspended_threads[i] != tctx->os_id)
+                                tctx->os_tid, CompareLess<int>());
+    if (i >= suspended_threads.size() || suspended_threads[i] != tctx->os_tid)
       Report("Running thread %d was not suspended. False leaks are possible.\n",
-             tctx->os_id);
+             tctx->os_tid);
   };
 }
 

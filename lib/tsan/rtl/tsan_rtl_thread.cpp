@@ -259,7 +259,7 @@ void ThreadStart(ThreadState *thr, int tid, tid_t os_id,
 
   ThreadRegistry *tr = ctx->thread_registry;
   OnStartedArgs args = { thr, stk_addr, stk_size, tls_addr, tls_size };
-  tr->StartThread(tid, os_id, thread_type, &args);
+  tr->StartThread(tid, internal_getpid(), os_id, thread_type, &args);
 
   tr->Lock();
   thr->tctx = (ThreadContext*)tr->GetThreadLocked(tid);

@@ -245,7 +245,9 @@ void AsanThread::Init(const InitOptions *options) {
 thread_return_t AsanThread::ThreadStart(
     tid_t os_id, atomic_uintptr_t *signal_thread_is_registered) {
   Init();
-  asanThreadRegistry().StartThread(tid(), os_id, ThreadType::Regular, nullptr);
+  pid_t os_pid = internal_getpid();
+  asanThreadRegistry().StartThread(tid(), os_pid, os_id, ThreadType::Regular,
+                                   nullptr);
   if (signal_thread_is_registered)
     atomic_store(signal_thread_is_registered, 1, memory_order_release);
 
@@ -449,13 +451,16 @@ AsanThread *FindThreadByStackAddress(uptr addr) {
 void EnsureMainThreadIDIsCorrect() {
   AsanThreadContext *context =
       reinterpret_cast<AsanThreadContext *>(AsanTSDGet());
-  if (context && (context->tid == 0))
-    context->os_id = GetTid();
+  if (context && (context->tid == 0)) {
+    context->os_pid = internal_getpid();
+    context->os_tid = GetTid();
+  }
 }
 
-__asan::AsanThread *GetAsanThreadByOsIDLocked(tid_t os_id) {
+__asan::AsanThread *GetAsanThreadByOsIDLocked(pid_t os_pid, tid_t os_tid) {
   __asan::AsanThreadContext *context = static_cast<__asan::AsanThreadContext *>(
-      __asan::asanThreadRegistry().FindThreadContextByOsIDLocked(os_id));
+      __asan::asanThreadRegistry().FindThreadContextByOsIDLocked(os_pid,
+                                                                 os_tid));
   if (!context) return nullptr;
   return context->thread;
 }
@@ -463,10 +468,10 @@ __asan::AsanThread *GetAsanThreadByOsIDLocked(tid_t os_id) {
 
 // --- Implementation of LSan-specific functions --- {{{1
 namespace __lsan {
-bool GetThreadRangesLocked(tid_t os_id, uptr *stack_begin, uptr *stack_end,
-                           uptr *tls_begin, uptr *tls_end, uptr *cache_begin,
-                           uptr *cache_end, DTLS **dtls) {
-  __asan::AsanThread *t = __asan::GetAsanThreadByOsIDLocked(os_id);
+bool GetThreadRangesLocked(pid_t os_pid, tid_t os_tid, uptr *stack_begin,
+                           uptr *stack_end, uptr *tls_begin, uptr *tls_end,
+                           uptr *cache_begin, uptr *cache_end, DTLS **dtls) {
+  __asan::AsanThread *t = __asan::GetAsanThreadByOsIDLocked(os_pid, os_tid);
   if (!t) return false;
   *stack_begin = t->stack_bottom();
   *stack_end = t->stack_top();
@@ -479,9 +484,9 @@ bool GetThreadRangesLocked(tid_t os_id, uptr *stack_begin, uptr *stack_end,
   return true;
 }
 
-void ForEachExtraStackRange(tid_t os_id, RangeIteratorCallback callback,
-                            void *arg) {
-  __asan::AsanThread *t = __asan::GetAsanThreadByOsIDLocked(os_id);
+void ForEachExtraStackRange(pid_t os_pid, tid_t os_tid,
+                            RangeIteratorCallback callback, void *arg) {
+  __asan::AsanThread *t = __asan::GetAsanThreadByOsIDLocked(os_pid, os_tid);
   if (t && t->has_fake_stack())
     t->fake_stack()->ForEachFakeFrame(callback, arg);
 }
