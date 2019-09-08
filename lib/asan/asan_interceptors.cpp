@@ -573,11 +573,38 @@ INTERCEPTOR(int, __cxa_atexit, void (*func)(void *), void *arg,
   if (UNLIKELY(!asan_inited)) return REAL(__cxa_atexit)(func, arg, dso_handle);
 #endif
   ENSURE_ASAN_INITED();
+#if CAN_SANITIZE_LEAKS
+  __lsan::ScopedInterceptorDisabler disabler;
+#endif
   int res = REAL(__cxa_atexit)(func, arg, dso_handle);
   REAL(__cxa_atexit)(AtCxaAtexit, nullptr, nullptr);
   return res;
 }
 #endif  // ASAN_INTERCEPT___CXA_ATEXIT
+
+#if SANITIZER_NETBSD
+INTERCEPTOR(int, atexit, void (*f)()) {
+#if CAN_SANITIZE_LEAKS
+  __lsan::ScopedInterceptorDisabler disabler;
+#endif
+  return REAL(__cxa_atexit)((void (*)(void *a))f, 0, 0);
+}
+#endif
+
+#if SANITIZER_NETBSD
+extern "C" {
+extern int _pthread_atfork(void (*prepare)(), void (*parent)(),
+                           void (*child)());
+};
+
+INTERCEPTOR(int, pthread_atfork, void (*prepare)(), void (*parent)(),
+            void (*child)()) {
+#if CAN_SANITIZE_LEAKS
+  __lsan::ScopedInterceptorDisabler disabler;
+#endif
+  return _pthread_atfork(prepare, parent, child);
+}
+#endif
 
 #if ASAN_INTERCEPT_VFORK
 DEFINE_REAL(int, vfork)
@@ -659,6 +686,14 @@ void InitializeAsanInterceptors() {
   // Intercept atexit function.
 #if ASAN_INTERCEPT___CXA_ATEXIT
   ASAN_INTERCEPT_FUNC(__cxa_atexit);
+#endif
+
+#if SANITIZER_NETBSD
+  ASAN_INTERCEPT_FUNC(atexit);
+#endif
+
+#if SANITIZER_NETBSD
+  ASAN_INTERCEPT_FUNC(pthread_atfork);
 #endif
 
 #if ASAN_INTERCEPT_VFORK
