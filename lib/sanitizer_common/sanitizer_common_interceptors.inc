@@ -46,6 +46,8 @@
 #include "sanitizer_symbolizer.h"
 #include "sanitizer_tls_get_addr.h"
 
+#include "lsan/lsan_common.h"
+
 #include <stdarg.h>
 
 #if SANITIZER_INTERCEPTOR_HOOKS
@@ -3676,6 +3678,9 @@ INTERCEPTOR(int, sched_getparam, int pid, void *param) {
 INTERCEPTOR(char *, strerror, int errnum) {
   void *ctx;
   COMMON_INTERCEPTOR_ENTER(ctx, strerror, errnum);
+#if CAN_SANITIZE_LEAKS
+  __lsan::ScopedInterceptorDisabler disabler;
+#endif
   char *res = REAL(strerror)(errnum);
   if (res) COMMON_INTERCEPTOR_INITIALIZE_RANGE(res, REAL(strlen)(res) + 1);
   return res;

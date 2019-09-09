@@ -2,8 +2,7 @@
 // RUN: LSAN_BASE="report_objects=1:use_stacks=0:use_registers=0"
 // RUN: %clangxx_lsan %s -o %t
 // RUN: %env_lsan_opts=$LSAN_BASE:"use_tls=0" not %run %t 2>&1 | FileCheck %s
-// RUN: %env_lsan_opts=$LSAN_BASE:"use_tls=1" %run %t 2>&1
-// RUN: %env_lsan_opts="" %run %t 2>&1
+
 
 #include <assert.h>
 #include <pthread.h>
