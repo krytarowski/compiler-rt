@@ -382,6 +382,16 @@ INTERCEPTOR(int, pthread_atfork, void (*prepare)(), void (*parent)(),
 #define LSAN_MAYBE_INTERCEPT_PTHREAD_ATFORK
 #endif
 
+#if SANITIZER_NETBSD
+INTERCEPTOR(char *, strerror, int errnum) {
+  __lsan::ScopedInterceptorDisabler disabler;
+  return REAL(strerror)(errnum);
+}
+#define LSAN_MAYBE_INTERCEPT_STRERROR INTERCEPT_FUNCTION(strerror)
+#else
+#define LSAN_MAYBE_INTERCEPT_STRERROR
+#endif
+
 struct ThreadParam {
   void *(*callback)(void *arg);
   void *param;
@@ -409,6 +419,7 @@ extern "C" void *__lsan_thread_start_func(void *arg) {
   atomic_store(&p->tid, 0, memory_order_release);
   return callback(param);
 }
+
 
 INTERCEPTOR(int, pthread_create, void *th, void *attr,
             void *(*callback)(void *), void *param) {
@@ -494,6 +505,8 @@ void InitializeInterceptors() {
   LSAN_MAYBE_INTERCEPT___CXA_ATEXIT;
   LSAN_MAYBE_INTERCEPT_ATEXIT;
   LSAN_MAYBE_INTERCEPT_PTHREAD_ATFORK;
+
+  LSAN_MAYBE_INTERCEPT_STRERROR;
 
 #if !SANITIZER_NETBSD && !SANITIZER_FREEBSD
   if (pthread_key_create(&g_thread_finalize_key, &thread_finalize)) {
