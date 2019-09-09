@@ -33,6 +33,7 @@ static LoadedModule *linker = nullptr;
 
 static bool IsLinker(const LoadedModule& module) {
 #if SANITIZER_USE_GETAUXVAL
+  Printf("module.base_address()=0x%llx, getauxval(AT_BASE)=0x%llx\n", module.base_address(), getauxval(AT_BASE));
   return module.base_address() == getauxval(AT_BASE);
 #else
   return LibraryNameIs(module.full_name(), kLinkerName);
