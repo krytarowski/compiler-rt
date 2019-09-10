@@ -164,6 +164,8 @@ DECLARE_REAL_AND_INTERCEPTOR(void, free, void *)
     ASAN_MEMSET_IMPL(ctx, block, c, size);                  \
   } while (false)
 
+#undef SANITIZER_INTERCEPT_STRERROR
+
 #include "sanitizer_common/sanitizer_common_interceptors.inc"
 #include "sanitizer_common/sanitizer_signal_interceptors.inc"
 
@@ -247,6 +249,19 @@ INTERCEPTOR(int, pthread_join, void *t, void **arg) {
 
 DEFINE_REAL_PTHREAD_FUNCTIONS
 #endif  // ASAN_INTERCEPT_PTHREAD_CREATE
+
+#if SANITIZER_INTERCEPT_STRERROR
+INTERCEPTOR(char *, strerror, int errnum) {
+  void *ctx;
+  COMMON_INTERCEPTOR_ENTER(ctx, strerror, errnum);
+#if CAN_SANITIZE_LEAKS
+  __lsan::ScopedInterceptorDisabler disabler;
+#endif
+  char *res = REAL(strerror)(errnum);
+  if (res) COMMON_INTERCEPTOR_INITIALIZE_RANGE(res, REAL(strlen)(res) + 1);
+  return res;
+}
+#endif
 
 #if ASAN_INTERCEPT_SWAPCONTEXT
 static void ClearShadowMemoryForContextStack(uptr stack, uptr ssize) {
@@ -646,6 +661,9 @@ void InitializeAsanInterceptors() {
 
 #if ASAN_INTERCEPT_SWAPCONTEXT
   ASAN_INTERCEPT_FUNC(swapcontext);
+#endif
+#if SANITIZER_INTERCEPT_STRERROR
+  ASAN_INTERCEPT_FUNC(strerror);
 #endif
 #if ASAN_INTERCEPT__LONGJMP
   ASAN_INTERCEPT_FUNC(_longjmp);
